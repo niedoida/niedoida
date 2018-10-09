@@ -1,0 +1,264 @@
+/* CppForm: convert Yacas objects to C++ code. */
+
+/* version 0.1 */
+
+/* Changelog
+	0.1	CppForm() derived from CForm() v0.4.2.
+*/
+
+RuleBase("CppForm",{expression});
+RuleBase("CppForm",{expression, precedence});
+
+Function ("CppFormBracketIf", {predicate, string})
+[
+	Check(IsBoolean(predicate) And IsString(string), "CppForm internal error: non-boolean and/or non-string argument of CppFormBracketIf");
+	If(predicate, ConcatStrings("( ", string, ") "), string);
+];
+
+/* Proceed just like TeXForm()
+*/
+
+// CppFormMaxPrec should perhaps only be used from within this file, it is thus not in the .def file.
+CppFormMaxPrec() := 60000;	 /* This precedence will never be bracketed. It is equal to KMaxPrec */
+
+100 # CppForm(_x) <-- CppForm(x, CppFormMaxPrec());
+
+/* Replace numbers and variables -- never bracketed except explicitly */
+110 # CppForm(x_IsInteger, _p) <-- String(x);
+111 # CppForm(x_IsZero, _p) <-- "0.";
+112 # CppForm(x_IsNumber, _p) <-- String(x);
+/* Variables are left as is, except some special ones */
+190 # CppForm(False, _p) <-- "false";
+190 # CppForm(True, _p) <-- "true";
+200 # CppForm(x_IsAtom, _p) <-- String(x);
+
+/* Strings must be quoted but not bracketed */
+100 # CppForm(x_IsString, _p) <-- ConcatStrings("\"", x, "\"");
+
+/* Replace operations */
+
+/* arithmetic */
+
+/* addition, subtraction, multiplication, all comparison and logical operations are "regular" */
+
+
+LocalSymbols(cppformRegularOps) [
+  cppformRegularOps := { {"+"," + "}, {"-"," - "}, {"*"," * "},
+                       {"/"," / "}, {":="," = "}, {"=="," == "},
+                       {"="," == "}, {"!="," != "}, {"<="," <= "},
+                       {">="," >= "}, {"<"," < "}, {">"," > "},
+                       {"And"," && "}, {"Or"," || "}, {">>", " >> "},
+                       { "<<", " << " }, { "&", " & " }, { "|", " | " },
+                       { "%", " % " }, { "^", " ^ " },
+                     };
+
+  CppFormRegularOps() := cppformRegularOps;
+]; // LocalSymbols(cppformRegularOps)
+
+	/* This is the template for "regular" binary infix operators:
+100 # CppForm(_x + _y, _p) <-- CppFormBracketIf(p<OpPrecedence("+"), ConcatStrings(CppForm(x, OpLeftPrecedence("+")), " + ", CppForm(y, OpRightPrecedence("+")) ) );
+	*/ 
+
+	/* unary addition */
+100 # CppForm(+ _y, _p) <-- CppFormBracketIf(p<OpPrecedence("+"), ConcatStrings(" + ", CppForm(y, OpRightPrecedence("+")) ) );
+
+	/* unary subtraction */
+100 # CppForm(- _y, _p) <-- CppFormBracketIf(p<OpPrecedence("-"), ConcatStrings(" - ", CppForm(y, OpRightPrecedence("-")) ) );
+
+	/* power's argument is never bracketed but it must be put in braces. */
+100 # CppForm(_x ^ _y, _p) <-- CppFormBracketIf(p<=OpPrecedence("^"), ConcatStrings("std::pow(", CppForm(x, CppFormMaxPrec()), ", ", CppForm(y, CppFormMaxPrec()), ")" ) );
+
+100 # CppForm(if(_pred)_body, _p) <-- "if (":CppForm(pred,60000):") ":CppForm(body);
+100 # CppForm(_left else _right, _p) <-- CppForm(left):" else ":CppForm(right);
+
+
+LocalSymbols(cppformMathFunctions) [
+  cppformMathFunctions :=
+    {
+      {"Sqrt","std::sqrt"},
+      {"Cos","std::cos"},
+      {"Sin","std::sin"},
+      {"Tan","std::tan"},
+      {"Cosh","std::cosh"},
+      {"Sinh","std::sinh"},
+      {"Tanh","std::tanh"},
+      {"Exp","std::exp"},
+      {"Ln","std::log"},
+      {"ArcCos","std::acos"},
+      {"ArcSin","std::asin"},
+      {"ArcTan","std::atan"},
+      {"ArcCosh","std::acosh"},
+      {"ArcSinh","std::asinh"},
+      {"ArcTanh","std::atanh"},
+      {"Max","std::max"},
+      {"Min","std::min"},
+      {"Abs","std::abs"},
+      {"Floor","std::floor"},
+      {"Ceil","std::ceil"},
+    {"!","factorial"}
+    };
+
+  CppFormMathFunctions() := cppformMathFunctions;
+
+]; // LocalSymbols(cppformMathFunctions)
+
+/* Precedence of 120 because we'd like to process some special functions like pow() first */
+
+
+120 # CppForm(expr_IsFunction, _p)_(NrArgs(expr)=2 And Contains(AssocIndices(CppFormRegularOps()), Type(expr)) ) <--
+      CppFormBracketIf(p<OpPrecedence(Type(expr)), ConcatStrings(CppForm(Listify(expr)[2], OpLeftPrecedence(Type(expr))), CppFormRegularOps()[Type(expr)], CppForm(Listify(expr)[3], OpRightPrecedence(Type(expr))) ) );
+
+
+/* Sin, Cos, etc. and their argument is always bracketed */
+
+120 # CppForm(expr_IsFunction, _p) _
+      (NrArgs(expr)=1 And Contains(AssocIndices(CppFormMathFunctions()), Type(expr)) ) <--
+      ConcatStrings(CppFormMathFunctions()[Type(expr)], "(", CppForm( Listify(expr)[2], CppFormMaxPrec()),")" );
+
+/* functions */
+
+/* Unknown function, precedence 200. Leave as is, never bracket the function itself and bracket the argument(s) automatically since it's a list. Other functions are precedence 100 */
+
+CppFormArgs(list_IsList) <--
+[
+  Local(i,nr,result);
+  result:="";
+  nr:=Length(list);
+  For (i:=1,i<=nr,i++)
+  [
+    result:=result:CppForm(list[i]);
+    If (i<nr, result:=result:", ");
+  ];
+  result;
+];
+
+
+200 # CppForm(_x, _p)_(IsFunction(x)) <--
+[
+  ConcatStrings(Type(x), "(", CppFormArgs(Tail(Listify(x))),")" );
+];
+
+/* Complex numbers */
+100 # CppForm(Complex(0, 1), _p) <-- "I";
+100 # CppForm(Complex(_x, 0), _p) <-- CppForm(x, p);
+110 # CppForm(Complex(_x, 1), _p) <-- CppForm(x+Hold(I), p);
+110 # CppForm(Complex(0, _y), _p) <-- CppForm(Hold(I)*y, p);
+120 # CppForm(Complex(_x, _y), _p) <-- CppForm(x+Hold(I)*y, p);
+
+/* Some special functions: Mod */
+
+100 # CppForm(Mod(_x, _y), _p) <-- CppFormBracketIf(p<OpPrecedence("/"), ConcatStrings(CppForm(x, OpPrecedence("/")), " % ", CppForm(y, OpPrecedence("/")) ) )
+;
+
+/* Indexed expressions are never bracketed */
+// the rule with [ ] seems to have no effect?
+//100 # CppForm(_x [ _i ], _p) <-- ConcatStrings(CppForm(x, CppFormMaxPrec()), "[", CppForm(i, CppFormMaxPrec()), "]");
+100 # CppForm(Nth(_x, _i), _p) <-- ConcatStrings(CppForm(x, CppFormMaxPrec()), "[", CppForm(i, CppFormMaxPrec()), "]");
+
+LocalSymbols(cindent) [
+  cindent:=1;
+
+  NlIndented():=
+  [
+    Local(result);
+// carriage return, so needs to start at the beginning of the line
+    result:=
+"
+";
+    Local(i);
+    For(i:=1,i<cindent,i++)
+    [
+      result:=result:"  ";
+    ];
+    result;
+  ];
+  CIndent() :=
+  [
+  (cindent++);
+  "";
+  ];
+  CUndent() :=
+  [
+  (cindent--);
+  "";
+  ];
+]; // LocalSymbols(cindent)
+
+CppFormStatement(_x) <-- CppForm(x) : ";" : NlIndented();
+
+120 # CppForm(_x,_p)_(Type(x) = "Prog") <--
+[
+  Local(result);
+  result:=CIndent():"{":NlIndented();
+  ForEach(item,Tail(Listify(x)))
+  [
+    result:=result:CppFormStatement(item);
+  ];
+  result:=result:"}":CUndent():NlIndented();
+  result;
+];
+
+120 # CppForm(For(_from,_to,_step)_body,_p) <--
+  "for(" : CppForm(from,CppFormMaxPrec()) : ";"
+	: CppForm(to,CppFormMaxPrec()) : ";"
+	: CppForm(step,CppFormMaxPrec()) : ")"
+	: CIndent() : NlIndented()
+	: CppFormStatement(body) : CUndent();
+
+120 # CppForm(While(_pred)_body, _p) <--
+	"while(" : CppForm(pred,CppFormMaxPrec()) : ")"
+	: CIndent() : NlIndented()
+	: CppFormStatement(body) : CUndent();
+
+
+
+//////////////////////////////////////////////////
+/// IsCppFormable
+//////////////////////////////////////////////////
+
+LocalSymbols(CppFormAllFunctions) [
+
+  /// predicate to test whether an expression can be successfully exported to C code
+
+  /// interface with empty extra function list
+  // need the backquote stuff b/c we have HoldArg now
+  IsCppFormable(_expr) <-- `IsCppFormable(@expr, {});
+
+  // need to check that expr contains only allowed functions
+  IsCppFormable(_expr, funclist_IsList) <--
+  [
+    Local(bad'functions);
+    bad'functions := Difference(`FuncList(@expr), Concat(CppFormAllFunctions, funclist));
+    If(Length(bad'functions)=0,
+      True,
+      [
+        If(InVerboseMode(),
+          Echo(Concat({"IsCppFormable: Info: unexportable function(s): "}, bad'functions))
+        );
+        False;
+      ]
+    );
+  ];
+  HoldArgNr("IsCppFormable", 1, 1);
+  HoldArgNr("IsCppFormable", 2, 1);
+
+  /// This is a list of all function atoms which CppForm can safely handle
+  CppFormAllFunctions := MapSingle(Atom, Concat(AssocIndices(CppFormMathFunctions()), AssocIndices(CppFormRegularOps()),
+  // list of "other" (non-math) functions supported by CppForm: needs to be updated when CppForm is extended to handle new functions
+  {
+    "For",
+    "While",
+    "Prog",
+    "Nth",
+    "Mod",
+    "Complex",
+    "if",
+    "else",
+    "++",
+    "--",
+  }
+  ));
+
+
+]; // LocalSymbols(CppFormAllFunctions)
+

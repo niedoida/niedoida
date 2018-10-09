@@ -1,0 +1,838 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include "gto_kit/gto_value_engine.hpp"
+
+#include <algorithm>
+#include <cmath>
+#include <cstring>
+#include <limits>
+
+#include <boost/math/special_functions/legendre.hpp>
+
+namespace {
+    arma::mat _prenormed_contraction_coeffs(const niedoida::core::Shell* shell)
+    {
+        arma::mat prenormed_contraction_coeffs = 
+            shell->contraction_coeffs();
+
+        const arma::vec& primitive_exps = shell->primitive_exps();
+        for (unsigned p = 0; p < prenormed_contraction_coeffs.n_rows; ++p) {
+            const unsigned l = shell->l()[p];
+  
+            for (unsigned q = 0; q < prenormed_contraction_coeffs.n_cols; ++q)
+                prenormed_contraction_coeffs(p, q) *=
+                    std::sqrt(2 / boost::math::tgamma(1.5 + l)) *
+                    std::pow(2 * primitive_exps[q], 0.75 + l / 2.0) *
+                    std::sqrt((2 * l + 1) / (4 * boost::math::double_constants::pi));;
+        }
+
+        return prenormed_contraction_coeffs;
+    }
+}
+
+namespace niedoida {
+    namespace gto {
+        GTOValueEngine::GTOValueEngine(const core::BasisSet& basis_set)
+        {
+            for (const core::AtomicBasisSet* abs: basis_set.atomic_basis_sets()) 
+                for (auto shell: abs->valence_shells())
+                    m_shells.push_back(shell);
+
+            for (const core::Shell* shell: m_shells) {
+                m_atoms.push_back(&shell->atomic_basis_set().atom());
+                m_prenormed_contraction_coeffs.push_back(_prenormed_contraction_coeffs(shell));
+                m_shell_sizes.push_back(shell->real_size());
+            }
+
+            m_max_shell_size = 
+                *std::max_element(m_shell_sizes.begin(), m_shell_sizes.end());
+
+            m_max_no_primitives = 0;
+
+            for (const core::Shell* shell: m_shells) {
+                if(shell->primitive_exps().size() > m_max_no_primitives)
+                    m_max_no_primitives = shell->primitive_exps().size();
+
+                const unsigned max_l = 
+                    *std::max_element(shell->l().begin(), shell->l().end());
+
+                const unsigned min_l = 
+                    *std::min_element(shell->l().begin(), shell->l().end());
+
+                if (max_l == 0) {
+                    m_shell_types.push_back(SHELL_TYPE_S);
+                } else if(max_l == 1 && min_l == 1) {
+                    m_shell_types.push_back(SHELL_TYPE_P);
+                } else if(shell->l().size() == 2 && min_l == 0 && max_l == 1) {
+                    m_shell_types.push_back(SHELL_TYPE_SP);
+                } else {
+                    m_shell_types.push_back(SHELL_TYPE_GENERAL);
+                }
+            }
+
+            m_primitive_exp_values.reset(new double[m_max_no_primitives]);
+            //intermediate radial values
+            m_radial_values.reset(new double[m_max_shell_size]);
+            //intermediate radial derivatives
+            m_radial_derivs.reset(new double[m_max_shell_size]);
+            //intermediate second radial derivatives
+            m_radial_derivs2.reset(new double[m_max_shell_size]);
+        }
+
+        void GTOValueEngine::update_atom_point_pair(
+            const core::Atom* atom, 
+            const arma::vec::fixed<3>& coords) const
+        {
+            //update atom-block quantities needed by s and p 
+            m_atom = atom;
+            m_x = coords[0] - m_atom->coords[0];
+            m_y = coords[1] - m_atom->coords[1];
+            m_z = coords[2] - m_atom->coords[2];
+
+            m_r2 = m_x * m_x + m_y * m_y + m_z * m_z;
+        }
+
+        void GTOValueEngine::calc(
+            const arma::vec::fixed<3>& coords, 
+            const std::vector<std::size_t>& significant_shells, 
+            double* const values, 
+            double* const derivs,
+            double* const derivs2) const
+        {
+            double* p = values;
+            double* q = derivs;
+            double* r = derivs2;
+
+            //must be sth, so maybe first one?
+            update_atom_point_pair(m_atoms[0], coords);
+
+            //check if updates needed
+            //and choice of engine algorithm 
+            for(std::size_t i = 0; i < significant_shells.size(); ++i) {
+                const std::size_t si = significant_shells[i];
+
+                const core::Atom* atom = m_atoms[si];
+                if(atom != m_atom)
+                    update_atom_point_pair(atom, coords);
+
+                // precalculate exps
+                const core::Shell& shell = *m_shells[si];
+                for (unsigned i = 0; i < shell.primitive_exps().size(); ++i)
+                    m_primitive_exp_values[i] = std::exp(-shell.primitive_exps()[i] * m_r2);
+
+                switch (m_shell_types[si]) {
+                case SHELL_TYPE_S:
+                    do_calc_s(si, p, q, r);
+                    break;
+                case SHELL_TYPE_P:
+                    do_calc_p(si, p, q, r);
+                    break;
+                case SHELL_TYPE_SP:
+                    do_calc_segmented_sp(si, p, q, r);
+                    break;
+                default:
+                    do_calc(si, p, q, r);
+                    break;
+                }
+
+                //updating results' pointers, care with q 
+                const std::size_t shell_size = m_shell_sizes[si]; 
+                p += shell_size;
+                if (derivs)
+                    q += 3 * shell_size;
+                if (derivs2)
+                    r += 6 * shell_size;
+            }
+        }
+
+        inline void GTOValueEngine::do_calc_s(
+            const unsigned shell_idx, 
+            double* NIEDOIDA_RESTRICT values,
+            double* NIEDOIDA_RESTRICT derivs,
+            double* NIEDOIDA_RESTRICT derivs2) const
+        {
+            //s functions and derivatives 
+            const core::Shell& shell = *m_shells[shell_idx];
+
+            const std::size_t no_primitives = shell.primitive_exps().size();
+            const std::size_t naive_size = shell.naive_size();
+
+            const double* NIEDOIDA_RESTRICT exps = &shell.primitive_exps()[0];
+            double* NIEDOIDA_RESTRICT primitive_values = 
+                m_primitive_exp_values.get();
+            const double* NIEDOIDA_RESTRICT coeffs = 
+                &m_prenormed_contraction_coeffs[shell_idx](0, 0);
+
+            for(std::size_t i = 0; i < naive_size; ++i, coeffs += 1) {
+                *values = 0;
+                for (std::size_t j = 0; j < no_primitives; ++j)
+                    *values += *(coeffs + j * naive_size) * *(primitive_values + j);
+                values += 1;
+            } 
+
+            if (!derivs)
+                return;
+
+            double* NIEDOIDA_RESTRICT radial_derivs = m_radial_derivs.get();
+            coeffs = &m_prenormed_contraction_coeffs[shell_idx](0, 0);
+
+            for (unsigned i = 0; i < no_primitives; ++i)
+                primitive_values[i] *= exps[i];
+
+            for(std::size_t i = 0; i < naive_size; ++i, coeffs += 1) {
+                *radial_derivs = 0;
+                for (std::size_t j = 0; j < no_primitives; ++j)
+                    *radial_derivs += *(coeffs + j * naive_size) * *(primitive_values + j);
+                radial_derivs += 1;
+            } 
+
+            radial_derivs = m_radial_derivs.get(); 
+
+            for (std::size_t i = 0; i < naive_size; ++i, derivs += 3) {
+                const double t = -2 * *radial_derivs++;
+                *derivs = m_x * t;
+                *(derivs + 1) = m_y * t;
+                *(derivs + 2) = m_z * t;
+            }
+
+            if (!derivs2)
+                return;
+
+            double* NIEDOIDA_RESTRICT radial_derivs2 = m_radial_derivs2.get();
+            coeffs = &m_prenormed_contraction_coeffs[shell_idx](0, 0);
+
+            for (unsigned i = 0; i < no_primitives; ++i)
+                primitive_values[i] *= exps[i];
+
+            for(std::size_t i = 0; i < naive_size; ++i, coeffs += 1) {
+                *radial_derivs2 = 0;
+                for (std::size_t j = 0; j < no_primitives; ++j)
+                    *radial_derivs2 += *(coeffs + j * naive_size) * *(primitive_values + j);
+                radial_derivs2 += 1;
+            } 
+
+            radial_derivs2 = m_radial_derivs2.get(); 
+
+            for (std::size_t i = 0; i < naive_size; ++i, derivs += 3) {
+                const double t = 4 * *radial_derivs2++;
+                *derivs2 = m_x * m_x * t;
+                *(derivs2 + 1) = m_x * m_y * t;
+                *(derivs2 + 2) = m_x * m_z * t;
+                *(derivs2 + 3) = m_y * m_y * t;
+                *(derivs2 + 4) = m_y * m_z * t;
+                *(derivs2 + 5) = m_z * m_z * t;
+            }
+
+        }
+
+        inline void GTOValueEngine::do_calc_p( 
+            const unsigned shell_idx, 
+            double* NIEDOIDA_RESTRICT values,
+            double* NIEDOIDA_RESTRICT derivs,
+            double* NIEDOIDA_RESTRICT derivs2) const
+        {
+            //p shells - functions and derivatives
+            const core::Shell& shell = *m_shells[shell_idx];
+
+            const std::size_t no_primitives = shell.primitive_exps().size();
+            const std::size_t naive_size = shell.naive_size();
+
+            const double* NIEDOIDA_RESTRICT exps = &shell.primitive_exps()[0];
+            double* NIEDOIDA_RESTRICT primitive_values = 
+                m_primitive_exp_values.get();
+            const double* NIEDOIDA_RESTRICT coeffs = 
+                &m_prenormed_contraction_coeffs[shell_idx](0, 0);
+            double* NIEDOIDA_RESTRICT radial_values = m_radial_values.get();
+
+            for(std::size_t i = 0; i < naive_size; ++i, coeffs += 1) {
+                *radial_values = 0;
+                for (std::size_t j = 0; j < no_primitives; ++j)
+                    *radial_values += *(coeffs + j * naive_size) * *(primitive_values + j);
+                radial_values += 1;
+            } 
+
+            radial_values = m_radial_values.get();
+
+            for (std::size_t i = 0; i < naive_size; ++i) {
+                const double radial_value = *radial_values++;
+                *values++ = m_x * radial_value;
+                *values++ = m_y * radial_value;
+                *values++ = m_z * radial_value;
+            }
+
+            if (!derivs)
+                return;
+
+
+            for (unsigned i = 0; i < no_primitives; ++i)
+                primitive_values[i] *= exps[i];
+
+            double* NIEDOIDA_RESTRICT radial_derivs = m_radial_derivs.get();
+            coeffs = &m_prenormed_contraction_coeffs[shell_idx](0, 0);
+
+            for(std::size_t i = 0; i < naive_size; ++i, coeffs += 1) {
+                *radial_derivs = 0;
+                for (std::size_t j = 0; j < no_primitives; ++j)
+                    *radial_derivs += *(coeffs + j * naive_size) * *(primitive_values + j);
+                radial_derivs += 1;
+            } 
+
+            radial_values = m_radial_values.get(); 
+            radial_derivs = m_radial_derivs.get();
+
+            for (std::size_t i = 0; i < naive_size; ++i) {
+                const double radial_value = *radial_values++;
+                const double radial_value_2 = - 2 * *radial_derivs++;
+                *derivs++ = radial_value + m_x * m_x * radial_value_2;
+                *derivs++ = m_y * m_x * radial_value_2;
+                *derivs++ = m_x * m_z * radial_value_2;
+                *derivs++ = m_y * m_x * radial_value_2;
+                *derivs++ = radial_value + m_y * m_y * radial_value_2;
+                *derivs++ = m_z * m_y * radial_value_2;
+                *derivs++ = m_x * m_z * radial_value_2;
+                *derivs++ = m_z * m_y * radial_value_2;
+                *derivs++ = radial_value + m_z * m_z * radial_value_2;
+            }
+
+            if (!derivs2)
+                return;
+
+            for (unsigned i = 0; i < no_primitives; ++i)
+                primitive_values[i] *= exps[i];
+
+            double* NIEDOIDA_RESTRICT radial_derivs2 = m_radial_derivs2.get();
+            coeffs = &m_prenormed_contraction_coeffs[shell_idx](0, 0);
+
+            for(std::size_t i = 0; i < naive_size; ++i, coeffs += 1) {
+                *radial_derivs2 = 0;
+                for (std::size_t j = 0; j < no_primitives; ++j)
+                    *radial_derivs2 += *(coeffs + j * naive_size) * *(primitive_values + j);
+                radial_derivs2 += 1;
+            } 
+
+            radial_values = m_radial_values.get();  
+            radial_derivs = m_radial_derivs.get();
+            radial_derivs2 = m_radial_derivs2.get();
+
+            for (std::size_t i = 0; i < naive_size; ++i) {
+                //const double radial_value = *radial_values++;
+                const double radial_value_2 = -2 * *radial_derivs++;
+                const double radial_value4 = 4 * *radial_derivs2++;
+
+                *derivs2++ = 3 * radial_value_2 + m_x * m_x * m_x * radial_value4;
+                *derivs2++ = m_y * radial_value_2 + m_x * m_x * m_y * radial_value4;
+                *derivs2++ = m_z * radial_value_2 + m_x * m_x * m_z * radial_value4;
+                *derivs2++ = m_x * radial_value_2 + m_x * m_y * m_y * radial_value4;
+                *derivs2++ = m_x * m_y * m_z * radial_value4;
+                *derivs2++ = m_x * radial_value_2 + m_x * m_z * m_z * radial_value4;
+
+                *derivs2++ = m_y * radial_value_2 + m_y * m_x * m_x * radial_value4;
+                *derivs2++ = m_x * radial_value_2 + m_y * m_y * m_x * radial_value4;
+                *derivs2++ = m_x * m_y * m_z * radial_value4;       
+                *derivs2++ = 3 * radial_value_2 + m_y * m_y * m_y * radial_value4;
+                *derivs2++ = m_z * radial_value_2 + m_y * m_y * m_z * radial_value4;
+                *derivs2++ = m_y * radial_value_2 + m_y * m_z * m_z * radial_value4;
+
+                *derivs2++ = m_z * radial_value_2 + m_z * m_x * m_x * radial_value4;
+                *derivs2++ = m_x * m_y * m_z * radial_value4;
+                *derivs2++ = m_z * radial_value_2 + m_x * m_x * m_z * radial_value4;
+                *derivs2++ = m_z * radial_value_2 + m_z * m_y * m_y * radial_value4;
+                *derivs2++ = m_z * radial_value_2 + m_y * m_y * m_z * radial_value4;               
+                *derivs2++ = 3 * radial_value_2 + m_z * m_z * m_z * radial_value4;
+
+            }
+
+        }
+
+        inline void GTOValueEngine::do_calc_segmented_sp( 
+            const unsigned shell_idx, 
+            double* NIEDOIDA_RESTRICT values,
+            double* NIEDOIDA_RESTRICT derivs,
+            double* NIEDOIDA_RESTRICT derivs2) const
+        {
+            const core::Shell& shell = *m_shells[shell_idx];
+            const std::size_t no_primitives = shell.primitive_exps().size();
+            const double* NIEDOIDA_RESTRICT exps = &shell.primitive_exps()[0];
+            double* NIEDOIDA_RESTRICT primitive_values = 
+                m_primitive_exp_values.get();
+            const double* NIEDOIDA_RESTRICT coeffs = 
+                &m_prenormed_contraction_coeffs[shell_idx](0, 0);
+
+            double radial_value_s = 0, radial_value_p = 0;
+            for(std::size_t j = 0; j < no_primitives; ++j) {
+                const double exp_value = *(primitive_values + j);
+                radial_value_s += exp_value * *(coeffs + 2 * j);
+                radial_value_p += exp_value * *(coeffs + 1 + 2 * j);
+            }
+
+            *values = radial_value_s;
+            *(values + 1) = m_x * radial_value_p;
+            *(values + 2) = m_y * radial_value_p;
+            *(values + 3) = m_z * radial_value_p;
+
+            if(!derivs)
+                return;
+
+            for (unsigned i = 0; i < no_primitives; ++i)
+                primitive_values[i] *= exps[i];
+
+            coeffs = &m_prenormed_contraction_coeffs[shell_idx](0, 0);
+
+            double radial_deriv_s = 0, radial_deriv_p = 0;
+            for(std::size_t j = 0; j < no_primitives; ++j) {
+                const double exp_value = *(primitive_values + j);
+                radial_deriv_s += exp_value * *(coeffs + 2 * j);
+                radial_deriv_p += exp_value * *(coeffs + 1 + 2 * j);
+            }
+
+            radial_deriv_s *= -2;
+            radial_deriv_p *= -2;
+
+            // s
+            *derivs = m_x * radial_deriv_s;
+            *(derivs + 1) = m_y * radial_deriv_s;
+            *(derivs + 2) = m_z * radial_deriv_s;
+
+            // px
+            *(derivs + 3) = radial_value_p + m_x * m_x * radial_deriv_p;
+            *(derivs + 4) = m_y * m_x * radial_deriv_p;
+            *(derivs + 5) = m_x * m_z * radial_deriv_p;
+            // py
+            *(derivs + 6) = m_y * m_x * radial_deriv_p;
+            *(derivs + 7) = radial_value_p + m_y * m_y * radial_deriv_p;
+            *(derivs + 8) = m_z * m_y * radial_deriv_p;
+            // pz
+            *(derivs + 9) = m_x * m_z * radial_deriv_p;
+            *(derivs + 10) = m_z * m_y * radial_deriv_p;
+            *(derivs + 11) = radial_value_p + m_z * m_z * radial_deriv_p;
+
+            if (!derivs2)
+                return;
+
+            for (unsigned i = 0; i < no_primitives; ++i)
+                primitive_values[i] *= exps[i];
+
+            coeffs = &m_prenormed_contraction_coeffs[shell_idx](0, 0);
+
+            double radial_deriv2_s = 0, radial_deriv2_p = 0;
+            for(std::size_t j = 0; j < no_primitives; ++j) {
+                const double exp_value = *(primitive_values + j);
+                radial_deriv2_s += exp_value * *(coeffs + 2 * j);
+                radial_deriv2_p += exp_value * *(coeffs + 1 + 2 * j);
+            }
+
+            radial_deriv2_s *= 4;
+            radial_deriv2_p *= 4;
+
+            // s
+            *derivs2 = m_x * m_x * radial_deriv2_s;
+            *(derivs2 + 1) = m_x * m_y * radial_deriv2_s;
+            *(derivs2 + 2) = m_x * m_z * radial_deriv2_s;
+            *(derivs2 + 3) = m_y * m_y * radial_deriv2_s;
+            *(derivs2 + 4) = m_y * m_z * radial_deriv2_s;
+            *(derivs2 + 5) = m_z * m_z * radial_deriv2_s;
+            // px
+            *derivs2++ = 3 * radial_deriv_p + m_x * m_x * m_x * radial_deriv2_p;
+            *derivs2++ = m_y * radial_deriv_p + m_x * m_x * m_y * radial_deriv2_p;
+            *derivs2++ = m_z * radial_deriv_p + m_x * m_x * m_z * radial_deriv2_p;
+            *derivs2++ = m_x * radial_deriv_p + m_x * m_y * m_y * radial_deriv2_p;
+            *derivs2++ = m_x * m_y * m_z * radial_deriv2_p;
+            *derivs2++ = m_x * radial_deriv_p + m_x * m_z * m_z * radial_deriv2_p;
+            // py
+            *derivs2++ = m_y * radial_deriv_p + m_y * m_x * m_x * radial_deriv2_p;
+            *derivs2++ = m_x * radial_deriv_p + m_y * m_y * m_x * radial_deriv2_p;
+            *derivs2++ = m_x * m_y * m_z * radial_deriv2_p;       
+            *derivs2++ = 3 * radial_deriv_p + m_y * m_y * m_y * radial_deriv2_p;
+            *derivs2++ = m_z * radial_deriv_p + m_y * m_y * m_z * radial_deriv2_p;
+            *derivs2++ = m_y * radial_deriv_p + m_y * m_z * m_z * radial_deriv2_p;
+            // pz
+            *derivs2++ = m_z * radial_deriv_p + m_z * m_x * m_x * radial_deriv2_p;
+            *derivs2++ = m_x * m_y * m_z * radial_deriv2_p;
+            *derivs2++ = m_z * radial_deriv_p + m_x * m_x * m_z * radial_deriv2_p;
+            *derivs2++ = m_z * radial_deriv_p + m_z * m_y * m_y * radial_deriv2_p;
+            *derivs2++ = m_z * radial_deriv_p + m_y * m_y * m_z * radial_deriv2_p;               
+            *derivs2++ = 3 * radial_deriv_p + m_z * m_z * m_z * radial_deriv2_p;
+
+        }
+
+        /*<?
+            Builtin'Precision'Set(16);
+            gamma(l,m,k) := (-1)^k * 2.0^(-l) * Bin(l, k) * Bin(2*(l - k),l) * (l-2*k)! / (l-2*k-m)!;
+
+            P(l,m,x,y,z) := Sqrt(If(m=0,1,2) * ((l-m)! / (l+m)!)) * Sum(k,0,Floor((l-m)/2),gamma(l,m,k)*(x^2+y^2+z^2)^k*z^(l-2*k-m));
+
+            A(m, x, y) := Sum(p, 0, m, Bin(m,p) * x^p*y^(m-p)*Cos((m-p)*Pi/2));
+            B(m, x, y) := Sum(p, 0, m, Bin(m,p) * x^p*y^(m-p)*Sin((m-p)*Pi/2));
+
+            C(l,m,x,y,z) := Simplify(P(l,m,x,y,z)*A(m,x,y));
+            S(l,m,x,y,z) := Simplify(P(l,m,x,y,z)*B(m,x,y));
+
+            values(l) := [
+                Local(r);
+                r := "";
+                For(m := -l, m <= l, m++) [
+                    Local(e);
+                    e := If(m<0, S(l,-m,Atom("m_x"),Atom("m_y"),Atom("m_z")), C(l,m,Atom("m_x"),Atom("m_y"),Atom("m_z"))) * Atom("radial_factor");
+                    e := N(Eval(e));
+                    r := r : "            *values++ = " : CForm(e) : ";" : Nl();
+                ];
+                r;
+            ];
+
+            // workaround for a nasty bug in yacas 1.5.0
+            Deriv(x)x; 
+         
+            UnProtect(Deriv);
+            5 # (Deriv(_x)R(_x,_y,_z)) <-- -2*x*R'(x,y,z);
+            5 # (Deriv(_y)R(_x,_y,_z)) <-- -2*y*R'(x,y,z);
+            5 # (Deriv(_z)R(_x,_y,_z)) <-- -2*z*R'(x,y,z);
+
+            5 # (Deriv(_x)R'(_x,_y,_z)) <-- -2*x*R''(x,y,z);
+            5 # (Deriv(_y)R'(_x,_y,_z)) <-- -2*y*R''(x,y,z);
+            5 # (Deriv(_z)R'(_x,_y,_z)) <-- -2*z*R''(x,y,z);
+            Protect(Deriv);
+
+            derivs(l) := [
+                Local(r);
+                r := "";
+                For(m := -l, m <= l, m++) [
+                    Local(e,dex,dey,dez);
+                    e := If(m<0, S(l,-m,Atom("m_x"),Atom("m_y"),Atom("m_z")), C(l,m,Atom("m_x"),Atom("m_y"),Atom("m_z"))) * R(Atom("m_x"),Atom("m_y"),Atom("m_z"));
+                    e := N(Eval(e));
+                    dex := Deriv(Atom("m_x"))e;
+                    dey := Deriv(Atom("m_y"))e;
+                    dez := Deriv(Atom("m_z"))e;
+                    dex2 := Deriv(Atom("m_x"))dex;
+                    dexy := Deriv(Atom("m_x"))dey;
+                    dexz := Deriv(Atom("m_x"))dez;
+                    dey2 := Deriv(Atom("m_y"))dey;
+                    deyz := Deriv(Atom("m_y"))dez;
+                    dez2 := Deriv(Atom("m_z"))dez;
+                    dex := Subst(R(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_value"))dex;
+                    dey := Subst(R(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_value"))dey;
+                    dez := Subst(R(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_value"))dez;
+                    dex := Subst(R'(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_deriv"))dex;
+                    dey := Subst(R'(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_deriv"))dey;
+                    dez := Subst(R'(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_deriv"))dez;
+
+                    dex2 := Subst(R(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_value"))dex2;
+                    dexy := Subst(R(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_value"))dexy;
+                    dexz := Subst(R(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_value"))dexz;
+                    dey2 := Subst(R(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_value"))dey2;
+                    deyz := Subst(R(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_value"))deyz;
+                    dez2 := Subst(R(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_value"))dez2;
+
+                    dex2 := Subst(R'(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_deriv"))dex2;
+                    dexy := Subst(R'(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_deriv"))dexy;
+                    dexz := Subst(R'(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_deriv"))dexz;
+                    dey2 := Subst(R'(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_deriv"))dey2;
+                    deyz := Subst(R'(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_deriv"))deyz;
+                    dez2 := Subst(R'(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_deriv"))dez2;
+
+                    dex2 := Subst(R''(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_deriv2"))dex2;
+                    dexy := Subst(R''(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_deriv2"))dexy;
+                    dexz := Subst(R''(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_deriv2"))dexz;
+                    dey2 := Subst(R''(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_deriv2"))dey2;
+                    deyz := Subst(R''(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_deriv2"))deyz;
+                    dez2 := Subst(R''(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_deriv2"))dez2;
+
+                    r := r : "            *derivs++ = " : CForm(dex) : ";" : Nl();
+                    r := r : "            *derivs++ = " : CForm(dey) : ";" : Nl();
+                    r := r : "            *derivs++ = " : CForm(dez) : ";" : Nl();
+                ];
+                r;
+            ];
+
+            derivs2(l) := [
+                Local(r);
+                r := "";
+                For(m := -l, m <= l, m++) [
+                    Local(e,dex,dey,dez,dex2,dexy,dexz,dey2,deyz,dez2);
+                    e := If(m<0, S(l,-m,Atom("m_x"),Atom("m_y"),Atom("m_z")), C(l,m,Atom("m_x"),Atom("m_y"),Atom("m_z"))) * R(Atom("m_x"),Atom("m_y"),Atom("m_z"));
+                    e := N(Eval(e));
+                    dex := Deriv(Atom("m_x"))e;
+                    dey := Deriv(Atom("m_y"))e;
+                    dez := Deriv(Atom("m_z"))e;
+                    dex2 := Deriv(Atom("m_x"))dex;
+                    dexy := Deriv(Atom("m_x"))dey;
+                    dexz := Deriv(Atom("m_x"))dez;
+                    dey2 := Deriv(Atom("m_y"))dey;
+                    deyz := Deriv(Atom("m_y"))dez;
+                    dez2 := Deriv(Atom("m_z"))dez;
+                    dex := Subst(R(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_value"))dex;
+                    dey := Subst(R(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_value"))dey;
+                    dez := Subst(R(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_value"))dez;
+                    dex := Subst(R'(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_deriv"))dex;
+                    dey := Subst(R'(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_deriv"))dey;
+                    dez := Subst(R'(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_deriv"))dez;
+
+                    dex2 := Subst(R(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_value"))dex2;
+                    dexy := Subst(R(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_value"))dexy;
+                    dexz := Subst(R(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_value"))dexz;
+                    dey2 := Subst(R(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_value"))dey2;
+                    deyz := Subst(R(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_value"))deyz;
+                    dez2 := Subst(R(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_value"))dez2;
+
+                    dex2 := Subst(R'(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_deriv"))dex2;
+                    dexy := Subst(R'(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_deriv"))dexy;
+                    dexz := Subst(R'(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_deriv"))dexz;
+                    dey2 := Subst(R'(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_deriv"))dey2;
+                    deyz := Subst(R'(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_deriv"))deyz;
+                    dez2 := Subst(R'(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_deriv"))dez2;
+
+                    dex2 := Subst(R''(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_deriv2"))dex2;
+                    dexy := Subst(R''(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_deriv2"))dexy;
+                    dexz := Subst(R''(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_deriv2"))dexz;
+                    dey2 := Subst(R''(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_deriv2"))dey2;
+                    deyz := Subst(R''(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_deriv2"))deyz;
+                    dez2 := Subst(R''(Atom("m_x"),Atom("m_y"),Atom("m_z")),Atom("radial_deriv2"))dez2;
+
+                    r := r : "            *derivs++ = " : CForm(dex2) : ";" : Nl();
+                    r := r : "            *derivs++ = " : CForm(dexy) : ";" : Nl();
+                    r := r : "            *derivs++ = " : CForm(dexz) : ";" : Nl();
+                    r := r : "            *derivs++ = " : CForm(dey2) : ";" : Nl();
+                    r := r : "            *derivs++ = " : CForm(deyz) : ";" : Nl();
+                    r := r : "            *derivs++ = " : CForm(dez2) : ";" : Nl();
+                ];
+                r;
+            ];
+        ?>*/
+
+        void GTOValueEngine::do_calc( 
+            const unsigned shell_idx, 
+            double* NIEDOIDA_RESTRICT values,
+            double* NIEDOIDA_RESTRICT derivs,
+            double* NIEDOIDA_RESTRICT derivs2) const
+        {
+            // any shells - functions and derivatives
+
+            const core::Shell& shell = *m_shells[shell_idx];
+
+            const std::size_t no_primitives = shell.primitive_exps().size();
+            const std::size_t naive_size = shell.naive_size();
+
+            const double* NIEDOIDA_RESTRICT exps = &shell.primitive_exps()[0];
+            double* NIEDOIDA_RESTRICT primitive_values = 
+                m_primitive_exp_values.get();
+            const double* NIEDOIDA_RESTRICT coeffs = 
+                &m_prenormed_contraction_coeffs[shell_idx](0, 0);
+            double* NIEDOIDA_RESTRICT radial_values = m_radial_values.get();
+
+            for(std::size_t i = 0; i < naive_size; ++i, coeffs += 1) {
+                *radial_values = 0;
+                for (std::size_t j = 0; j < no_primitives; ++j)
+                    *radial_values += *(coeffs + j * naive_size) * *(primitive_values + j);
+                radial_values += 1;
+            } 
+
+            radial_values = m_radial_values.get();
+
+            for (std::size_t i = 0; i < naive_size; ++i) {
+                const int l = int(shell.l()[i]);
+                double radial_factor = *(radial_values + i);
+
+                switch (l) {
+                case 0:
+                    *values++ = radial_factor;
+                    break;
+                case 1:
+                    *values++ = m_x * radial_factor;
+                    *values++ = m_y * radial_factor;
+                    *values++ = m_z * radial_factor;
+                    break;
+                case 2: {
+        //<?
+                    Echo(Nl(), values(2));
+        //?>
+                    break;
+                }
+                case 3: {
+        //<?
+                    Echo(Nl(), values(3));
+        //?>
+                    break;
+                }
+                case 4: {
+        //<?
+                    Echo(Nl(), values(4));
+        //?>
+                    break;
+                }
+                case 5: {
+        //<?
+                    Echo(Nl(), values(5));
+        //?>
+                    break;
+                }
+                }
+            }
+
+            if (!derivs)
+                return;
+
+            double* NIEDOIDA_RESTRICT radial_derivs = m_radial_derivs.get();
+            coeffs = &m_prenormed_contraction_coeffs[shell_idx](0, 0);
+
+            for (unsigned i = 0; i < no_primitives; ++i)
+                primitive_values[i] *= exps[i];
+
+            for(std::size_t i = 0; i < naive_size; ++i, coeffs += 1) {
+                *radial_derivs = 0;
+                for (std::size_t j = 0; j < no_primitives; ++j)
+                    *radial_derivs += *(coeffs + j * naive_size) * *(primitive_values + j);
+                radial_derivs += 1;
+            } 
+
+            radial_derivs = m_radial_derivs.get();
+
+            for (std::size_t i = 0; i < naive_size; ++i) {
+                const unsigned l = shell.l()[i];
+                const double radial_value = *radial_values++;
+                const double radial_deriv = *radial_derivs++;
+                const double radial_value_2 = - 2 * radial_deriv;
+                switch (l) {
+                case 0:
+                    *derivs++ = m_x * radial_value_2;
+                    *derivs++ = m_y * radial_value_2;
+                    *derivs++ = m_z * radial_value_2;
+                    break;
+
+                case 1:
+                    // x
+                    *derivs++ = radial_value + m_x * m_x * radial_value_2;
+                    *derivs++ = m_y * m_x * radial_value_2;
+                    *derivs++ = m_x * m_z * radial_value_2;
+                    // y
+                    *derivs++ = m_y * m_x * radial_value_2;
+                    *derivs++ = radial_value + m_y * m_y * radial_value_2;
+                    *derivs++ = m_z * m_y * radial_value_2;
+                    // z
+                    *derivs++ = m_x * m_z * radial_value_2;
+                    *derivs++ = m_z * m_y * radial_value_2;
+                    *derivs++ = radial_value + m_z * m_z * radial_value_2;
+                    break;
+
+                case 2: {
+        //<?
+                    Echo(Nl(), derivs(2));
+        //?>
+                    break;
+                }
+
+                case 3: {
+        //<?
+                    Echo(Nl(), derivs(3));
+        //?>
+                    break;
+                }
+
+                case 4: {
+        //<?
+                    Echo(Nl(), derivs(4));
+        //?>
+                    break;
+                }
+
+                case 5: {
+        //<?
+                    Echo(Nl(), derivs(5));
+        //?>
+                    break;
+                }
+                }
+            }
+
+            if (!derivs2)
+                return;
+
+            double* NIEDOIDA_RESTRICT radial_derivs2 = m_radial_derivs2.get();
+            coeffs = &m_prenormed_contraction_coeffs[shell_idx](0, 0);
+
+            for (unsigned i = 0; i < no_primitives; ++i)
+                primitive_values[i] *= exps[i];
+
+            for(std::size_t i = 0; i < naive_size; ++i, coeffs += 1) {
+                *radial_derivs2 = 0;
+                for (std::size_t j = 0; j < no_primitives; ++j)
+                    *radial_derivs2 += *(coeffs + j * naive_size) * *(primitive_values + j);
+                radial_derivs2 += 1;
+            } 
+
+            radial_derivs2 = m_radial_derivs2.get();
+
+            for (std::size_t i = 0; i < naive_size; ++i) {
+                const unsigned l = shell.l()[i];
+                const double radial_value = *radial_values++;
+                const double radial_deriv = *radial_derivs++;
+                const double radial_value_2 = - 2 * radial_deriv;
+                const double radial_deriv2 = *radial_derivs2++;
+                const double radial_value4 = 4 * radial_deriv2;
+                switch (l) {
+                case 0:
+                    *derivs2++ = m_x * m_x * radial_value4;
+                    *derivs2++ = m_x * m_y * radial_value4;
+                    *derivs2++ = m_x * m_z * radial_value4;
+                    *derivs2++ = m_y * m_y * radial_value4;
+                    *derivs2++ = m_y * m_z * radial_value4;
+                    *derivs2++ = m_z * m_z * radial_value4;
+                    break;
+
+                case 1:
+                    // x
+                    *derivs2++ = 3 * radial_value_2 + m_x * m_x * m_x * radial_value4;
+                    *derivs2++ = m_y * radial_value_2 + m_x * m_x * m_y * radial_value4;
+                    *derivs2++ = m_z * radial_value_2 + m_x * m_x * m_z * radial_value4;
+                    *derivs2++ = m_x * radial_value_2 + m_x * m_y * m_y * radial_value4;
+                    *derivs2++ = m_x * m_y * m_z * radial_value4;
+                    *derivs2++ = m_x * radial_value_2 + m_x * m_z * m_z * radial_value4;
+                    // y
+                    *derivs2++ = m_y * radial_value_2 + m_y * m_x * m_x * radial_value4;
+                    *derivs2++ = m_x * radial_value_2 + m_y * m_y * m_x * radial_value4;
+                    *derivs2++ = m_x * m_y * m_z * radial_value4;       
+                    *derivs2++ = 3 * radial_value_2 + m_y * m_y * m_y * radial_value4;
+                    *derivs2++ = m_z * radial_value_2 + m_y * m_y * m_z * radial_value4;
+                    *derivs2++ = m_y * radial_value_2 + m_y * m_z * m_z * radial_value4;
+                    // z
+                    *derivs2++ = m_z * radial_value_2 + m_z * m_x * m_x * radial_value4;
+                    *derivs2++ = m_x * m_y * m_z * radial_value4;
+                    *derivs2++ = m_z * radial_value_2 + m_x * m_x * m_z * radial_value4;
+                    *derivs2++ = m_z * radial_value_2 + m_z * m_y * m_y * radial_value4;
+                    *derivs2++ = m_z * radial_value_2 + m_y * m_y * m_z * radial_value4;               
+                    *derivs2++ = 3 * radial_value_2 + m_z * m_z * m_z * radial_value4;
+                    break;
+
+                case 2: {
+        //<?
+                    Echo(Nl(), derivs2(2));
+        //?>
+                    break;
+                }
+
+                case 3: {
+        //<?
+                    Echo(Nl(), derivs2(3));
+        //?>
+                    break;
+                }
+
+                case 4: {
+        //<?
+                    Echo(Nl(), derivs2(4));
+        //?>
+                    break;
+                }
+
+                case 5: {
+        //<?
+                    Echo(Nl(), derivs2(5));
+        //?>
+                    break;
+                }
+                }
+            }
+
+        }
+    }
+}

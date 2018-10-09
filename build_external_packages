@@ -1,0 +1,308 @@
+#!/usr/bin/env bash
+
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+export CMAKE_RELEASE=3.12
+export CMAKE_VERSION=$CMAKE_RELEASE.2
+export CMAKE=cmake-$CMAKE_VERSION
+export BOOST_VERSION=1.68.0
+export BOOST=boost_1_68_0
+export MPICH_VERSION=3.2.1
+export MPI=mpich-$MPICH_VERSION
+export HYDRA=hydra-$MPICH_VERSION
+export OPENBLAS_VERSION=0.3.3
+export OPENBLAS=OpenBLAS-$OPENBLAS_VERSION
+export ARMADILLO=armadillo-7.800.2
+export PETSC=petsc-3.9.2
+export YAML_CPP=yaml-cpp-0.6.2
+export HDF_RELEASE=1.10
+export HDF_VERSION=$HDF_RELEASE.1
+export HDF=hdf5-$HDF_VERSION
+export YACAS_VERSION=1.6.1
+export YACAS=yacas-$YACAS_VERSION
+
+cd external_packages
+if [ $? != 0 ]; then
+   echo 'External packages directory not found' >&2
+   exit 1
+fi
+
+set -e
+
+export EP_PATH=`pwd`
+export PATH=$EP_PATH/bin:$PATH
+
+jobs=1
+force_build=0
+
+SHORT=fj:
+LONG=force,jobs:
+
+# -temporarily store output to be able to check for errors
+# -activate advanced mode getopt quoting e.g. via "--options"
+# -pass arguments only via   -- "$@"   to separate them correctly
+PARSED=`getopt --options $SHORT --longoptions $LONG --name "$0" -- "$@"`
+if [[ $? != 0 ]]; then
+    # e.g. $? == 1
+    #  then getopt has complained about wrong arguments to stdout
+    exit 2
+fi
+# use eval with "$PARSED" to properly handle the quoting
+eval set -- "$PARSED"
+
+# now enjoy the options in order and nicely split until we see --
+while true; do
+    case "$1" in
+        -f|--force)
+            force_build=1
+            shift 1
+            ;;
+        -j|--jobs)
+            jobs="$2"
+            shift 2
+            ;;
+        --)
+            shift
+            break
+            ;;
+        *)
+            echo "Programming error"
+            exit 3
+            ;;
+    esac
+done
+
+# checking if build is necessary
+ 
+if [ $force_build -ne 1 ]; then
+    
+    build_necessary=1
+
+    if [ -s checksums.md5 ]; then
+       build_necessary=0
+       md5sum *.tar.gz *.tar.bz2 *.tar.xz 2>/dev/null > checksums_cur.md5 
+       diff checksums.md5 checksums_cur.md5 > checksum_diff.md5
+    fi
+
+    if [ -s checksum_diff.md5 ]; then
+       build_necessary=1
+    fi 
+
+    if [ $build_necessary -eq 0 ]; then
+        exit 0
+    fi
+fi
+
+if [ ! -d bin ]; then
+    mkdir bin
+fi
+
+rm -f -r bin/*
+rm -f -r include/*
+rm -f -r etc/*
+rm -f -r lib/*
+rm -f -r share/*
+rm -f -r man/*
+
+    
+if [ ! -d bin ]; then
+    mkdir bin
+fi
+
+if [ ! -d lib ]; then
+    mkdir lib
+fi
+
+if [ ! -d include ]; then
+    mkdir include
+fi
+
+if [ ! -f $CMAKE.tar.gz ]; then
+    wget -o- https://cmake.org/files/v$CMAKE_RELEASE/$CMAKE.tar.gz
+fi
+
+if [ ! -f $MPI.tar.gz ]; then
+    wget -o- http://www.mpich.org/static/downloads/$MPICH_VERSION/$MPI.tar.gz
+fi
+
+if [ ! -f $HYDRA.tar.gz ]; then
+    wget -o- http://www.mpich.org/static/downloads/$MPICH_VERSION/$HYDRA.tar.gz
+fi
+
+if [ ! -f $BOOST.tar.gz ]; then
+    wget -o- http://downloads.sourceforge.net/project/boost/boost/$BOOST_VERSION/$BOOST.tar.gz
+fi
+
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+    if [ ! -f $OPENBLAS.tar.gz ]; then
+        wget -o- http://github.com/xianyi/OpenBLAS/archive/v$OPENBLAS_VERSION.tar.gz
+        mv v$OPENBLAS_VERSION.tar.gz $OPENBLAS.tar.gz
+    fi
+fi
+
+if [ ! -f $ARMADILLO.tar.xz ]; then
+    wget -o- https://downloads.sourceforge.net/project/arma/$ARMADILLO.tar.xz
+fi
+
+if [ ! -f $PETSC.tar.gz ]; then
+    wget -o- http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/$PETSC.tar.gz
+fi
+
+if [ ! -f $YAML_CPP.tar.gz ]; then
+    wget -o- https://github.com/jbeder/yaml-cpp/archive/$YAML_CPP.tar.gz
+fi
+
+if [ ! -f $HDF.tar.gz ]; then
+    wget --no-check-certificate -o- http://support.hdfgroup.org/ftp/HDF5/releases/hdf5-$HDF_RELEASE/$HDF/src/$HDF.tar.gz
+fi
+
+if [ ! -f $YACAS.tar.gz ]; then
+    wget -o- https://github.com/grzegorzmazur/yacas/archive/v$YACAS_VERSION.tar.gz
+    mv v$YACAS_VERSION.tar.gz $YACAS.tar.gz
+fi
+
+
+rm -rf $CMAKE
+tar xzf $CMAKE.tar.gz
+cd $CMAKE
+./bootstrap --prefix=$EP_PATH --parallel=$jobs -- -DCMAKE_BUILD_TYPE=Release
+make -j $jobs install
+cd $EP_PATH
+rm -rf $CMAKE
+
+# build MPICH2
+rm -rf $MPI
+tar xzf $MPI.tar.gz
+cd $MPI
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+    ./configure --prefix=$EP_PATH --enable-fast=all --disable-shared --enable-fortran=yes --enable-cxx=yes --enable-romio --enable-threads=multiple CFLAGS=-fPIC CXXFLAGS=-fPIC FFLAGS=-fPIC FCFLAGS=-fPIC
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    CC=/usr/bin/cc CXX=/usr/bin/c++ ./configure --prefix=$EP_PATH --enable-fast=all --disable-shared --enable-fortran=no --enable-cxx=yes --enable-romio --enable-threads=multiple CFLAGS=-fPIC CXXFLAGS=-fPIC
+fi
+make -j $jobs
+make install
+cd $EP_PATH
+rm -rf $MPI
+
+rm -rf $HYDRA
+tar xzf $HYDRA.tar.gz
+cd $HYDRA
+./configure --prefix=$EP_PATH
+make -j $jobs
+make install
+cd $EP_PATH
+rm -rf $HYDRA
+
+# unpack boost
+rm -rf $BOOST
+tar xzf $BOOST.tar.gz
+
+cd $BOOST
+
+./bootstrap.sh
+mkdir -p tools/build/v2
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+    echo "
+using mpi : : <include>$EP_PATH/include
+              <library-path>$EP_PATH/lib
+              <find-static-library>mpi ;
+" > tools/build/src/user-config.jam
+    ./b2 --prefix=$EP_PATH -j $jobs --layout=system toolset=gcc link=static cxxflags=-fPIC --with-program_options --with-filesystem --with-thread --with-serialization --with-mpi --with-test --with-math --with-timer --with-regex install 
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    echo "
+using mpi : : <include>$EP_PATH/include
+              <library-path>$EP_PATH/lib
+              <find-static-library>mpi
+              <find-static-library>pmpi ;
+" > tools/build/src/user-config.jam
+    ./b2 --prefix=$EP_PATH -j $jobs --layout=system toolset=clang link=static cxxflags=-fPIC --with-program_options --with-filesystem --with-thread --with-serialization --with-mpi --with-test --with-math --with-timer --with-regex install 
+fi
+cd $EP_PATH
+rm -rf $BOOST
+
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+    rm -rf $OPENBLAS
+    tar xf $OPENBLAS.tar.gz
+    cd $OPENBLAS
+    mkdir build
+    cd build
+    cmake -DCMAKE_INSTALL_PREFIX:PATH=$EP_PATH -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=Off -DTARGET=SANDYBRIDGE -DDYNAMIC_ARCH=Off -DUSE_THREAD=Off ..
+    make -j $jobs all
+    make install
+    cd $EP_PATH
+    rm -rf $OPENBLAS
+fi
+
+rm -rf $ARMADILLO
+tar xf $ARMADILLO.tar.xz
+cd $ARMADILLO
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+    patch < ../$ARMADILLO.patch
+fi
+mkdir build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX:PATH=$EP_PATH -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_PREFIX_PATH:PATH=$EP_PATH -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS:BOOL=OFF ..
+make -j $jobs all
+make install
+cd $EP_PATH
+rm -rf $ARMADILLO
+
+# build PETSc
+rm -rf $PETSC
+tar xzf $PETSC.tar.gz
+cd $PETSC
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+    ./config/configure.py --prefix=$EP_PATH --with-openblas=1 --with-openblas-dir=$EP_PATH --with-gnu-copyright-code=0 --with-mpi-dir=$EP_PATH --with-mpiexec=$EP_PATH/bin/mpiexec --with-debugging=0 --with-mpi-shared=0 --with-x=0 --with-x11=0 --with-shared-libraries=0  --LIBS="-lgfortran -lm"
+    make MAKE_NP=$jobs PETSC_DIR=$EP_PATH/$PETSC PETSC_ARCH=arch-linux2-c-opt all
+    make PETSC_DIR=$EP_PATH/$PETSC PETSC_ARCH=arch-linux2-c-opt install
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    ./config/configure.py --prefix=$EP_PATH  --with-gnu-copyright-code=0 --with-mpi-dir=$EP_PATH --with-mpiexec=$EP_PATH/bin/mpiexec --with-debugging=0 --with-mpi-shared=0 --with-x=0 --with-x11=0 --with-shared-libraries=0 
+    make MAKE_NP=$jobs PETSC_DIR=$EP_PATH/$PETSC PETSC_ARCH=arch-darwin-c-opt all
+    make PETSC_DIR=$EP_PATH/$PETSC PETSC_ARCH=arch-darwin-c-opt install
+fi
+cd $EP_PATH
+rm -rf $PETSC
+
+
+rm -rf $YAML_CPP
+tar xzf $YAML_CPP.tar.gz
+mv yaml-cpp-$YAML_CPP $YAML_CPP
+cd $YAML_CPP
+mkdir build
+cd build
+cmake -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_PREFIX=$EP_PATH -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_BUILD_TYPE=Release ..
+make -j $jobs
+make install
+cd $EP_PATH
+rm -rf $YAML_CPP
+
+rm -rf $HDF
+tar xzf $HDF.tar.gz
+cd $HDF
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+    ./configure --prefix=$EP_PATH --disable-shared --enable-build-mode=production --enable-cxx --enable-static-exec CFLAGS=-fPIC CXXFLAGS=-fPIC
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    CC=/usr/bin/cc CXX=/usr/bin/c++ ./configure --prefix=$EP_PATH --disable-shared --enable-build-mode=production --enable-cxx --enable-static-exec CFLAGS=-fPIC CXXFLAGS=-fPIC
+fi
+make -j $jobs all
+make install
+cd $EP_PATH
+rm -rf $HDF
+
+rm -rf $YACAS
+tar xzf $YACAS.tar.gz
+cd $YACAS
+patch -p0 < ../yacas-1.6.1.patch
+mkdir build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX:PATH=$EP_PATH -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_INSTALL_FRAMEWORK_PREFIX=$EP_PATH -DENABLE_CYACAS_GUI=no -DENABLE_CYACAS_KERNEL=no -DCMAKE_BUILD_TYPE=Release ..
+make -j $jobs
+make install
+cd $EP_PATH
+rm -rf $YACAS
+
+md5sum *.tar.gz *.tar.bz2 *.tar.xz 2>/dev/null > checksums.md5 
+
+echo "Build finished normally"

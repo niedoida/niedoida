@@ -1,0 +1,21 @@
+# Results from Gaussian09
+# Energy = -38.9102449585 hartrees
+
+title: methylene
+
+run_type: single_point
+basis_set: cc-pvtz
+multiplicity: 3
+theory: becke
+
+scf:
+  method: uhf 
+
+units:
+  length: angstrom
+  energy: hartree
+
+atoms: 
+- C     0.000000     0.000000 -0.020583
+- H    -0.828840     0.707900  0.010292
+- H     0.828840     0.707900  0.010292

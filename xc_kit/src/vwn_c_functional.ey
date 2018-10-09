@@ -1,0 +1,23 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+// <? WriteString("Auto-generated file, do not modify"); ?>
+#include "xc_kit/xc_functionals.hpp"
+
+#include <cmath>
+#include <limits>
+
+<?
+    Builtin'Precision'Set(16);
+    MaxEvalDepth(100000);
+    
+    Use("xc.ys");
+    Use("xc_generate.ys");
+
+    e5 := XC'CVWN'5(rhoa, rhob);
+    XCGenerate("c++", "vwn_c_functional", e5, rhoa, rhob);
+
+    e5rpa := XC'CVWN'5RPA(rhoa, rhob);
+    XCGenerate("c++", "vwn_rpa_c_functional", e5rpa, rhoa, rhob);
+?>

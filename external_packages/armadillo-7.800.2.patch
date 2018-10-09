@@ -1,0 +1,24 @@
+--- CMakeLists.txt.orig	2018-09-12 17:36:37.865543550 +0200
++++ CMakeLists.txt	2018-09-12 17:37:47.347221018 +0200
+@@ -119,13 +119,7 @@
+   
+   set(ARMA_OS unix)
+   
+-  include(ARMA_FindMKL)
+-  include(ARMA_FindACMLMP)
+-  include(ARMA_FindACML)
+   include(ARMA_FindOpenBLAS)
+-  include(ARMA_FindATLAS)
+-  include(ARMA_FindBLAS)
+-  include(ARMA_FindLAPACK)
+   
+   message(STATUS "     MKL_FOUND = ${MKL_FOUND}"     )
+   message(STATUS "  ACMLMP_FOUND = ${ACMLMP_FOUND}"  )
+@@ -195,6 +189,7 @@
+     if(OpenBLAS_FOUND)
+       
+       set(ARMA_USE_BLAS true)
++      set(ARMA_USE_LAPACK true)
+       set(ARMA_LIBS ${ARMA_LIBS} ${OpenBLAS_LIBRARIES})
+       
+       message(STATUS "")

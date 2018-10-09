@@ -1,0 +1,336 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+- name: InputData
+  classes:
+    - name: Limits
+      fields:
+        - { cpp-type: unsigned, cpp-name: cpu_time, cpp-init: =7*24*60*60, fill-strategy: optional-scalar}
+    - name: AtomInfo # ta klasa ma zdefiniowana swoja wlasna konwersje z yaml-node.
+      fields:
+        - { cpp-type: 'std::string', cpp-name: label}
+        - { cpp-type: "const core::Isotope*", cpp-name: isotope}
+        - { cpp-type: 'arma::vec3', cpp-name: coords}
+    - name: ChargeInfo # ta klasa ma zdefiniowana swoja wlasna konwersje z yaml-node.
+      fields:
+        - { cpp-type: 'arma::vec3', cpp-name: coords}
+        - { cpp-type: double, cpp-name: charge_value}
+    - name: FragmentInfo
+      fields:
+        - { cpp-type: 'std::string', cpp-name: label, fill-strategy: optional-scalar}
+        - { cpp-type: 'std::vector<AtomInfo>', cpp-name: atoms, container: optional-sequence, fill-strategy: optional-scalar}
+    - name: SCFParams
+      enums:
+        - cpp-name: InitialGuess
+          cpp-values: 
+            - INITIAL_GUESS_HCORE    
+            - INITIAL_GUESS_FRAGMENTS
+        - cpp-name: Method
+          cpp-values:
+            - METHOD_RHF
+            - METHOD_ROHF
+            - METHOD_UHF
+        - cpp-name: ConvergenceAccelerator
+          cpp-values:
+            - NULL_CONVERGENCE_ACCELERATOR
+            - DIIS_CONVERGENCE_ACCELERATOR
+        - cpp-name: Occupations
+          cpp-values:
+            - OCCUPATIONS_AUFBAU
+            - OCCUPATIONS_FERMI
+            - OCCUPATIONS_MAXIMUM_OVERLAP
+        - cpp-name: SymmetryLevel
+          cpp-values: 
+            - SYMMETRY_LEVEL_NONE
+            - SYMMETRY_LEVEL_SIMPLE
+      fields:
+        - { cpp-type: InitialGuess, cpp-name: initial_guess, cpp-init: =INITIAL_GUESS_FRAGMENTS, fill-strategy: optional-scalar}
+        - { cpp-type: 'std::string', cpp-name: initial_guess_fname, fill-strategy: optional-scalar, input-key: initial_guess_filename}
+        - { cpp-type: 'std::vector<std::pair<unsigned, unsigned>>', cpp-name: 'mo_transpose[2]', fill-strategy: optional-scalar} ####TRUDNY PRZYPADEK!!!!!!
+        - { cpp-type: Method, cpp-name: method, cpp-init: =METHOD_RHF, fill-strategy: optional-scalar}
+        - { cpp-type: bool, cpp-name: incremental, cpp-init: =true, fill-strategy: optional-scalar}
+        - { cpp-type: unsigned, cpp-name: max_no_iterations, cpp-init: =50, fill-strategy: optional-scalar}
+        - { cpp-type: double, cpp-name: energy_threshold, cpp-init: =1e-6, fill-strategy: optional-scalar}
+        - { cpp-type: double, cpp-name: density_threshold, cpp-init: =1e-6, fill-strategy: optional-scalar}
+        - { cpp-type: ConvergenceAccelerator, cpp-name: convergence_accelerator, cpp-init: =DIIS_CONVERGENCE_ACCELERATOR, fill-strategy: optional-scalar}
+        - { cpp-type: 'boost::optional<double>', cpp-name: shift_1, fill-strategy: optional-scalar}
+        - { cpp-type: 'boost::optional<double>', cpp-name: shift_2, fill-strategy: optional-scalar}
+        - { cpp-type: double, cpp-name: threshold_linear_independence, cpp-init: =0, fill-strategy: optional-scalar}
+        - { cpp-type: Occupations, cpp-name: occupations, cpp-init: =OCCUPATIONS_AUFBAU, fill-strategy: optional-scalar}
+        - { cpp-type: 'boost::optional<double>', cpp-name: degeneracy_threshold, fill-strategy: optional-scalar}
+        - { cpp-type: double, cpp-name: smear, cpp-init: = 0.001, fill-strategy: optional-scalar}
+        - { cpp-type: SymmetryLevel, cpp-name: symmetry_level, cpp-init: =SYMMETRY_LEVEL_NONE, fill-strategy: optional-scalar, input-key: symmetry}
+    - name: CDFTParams
+      enums:
+        - cpp-name: PopulationType
+          cpp-values:
+            - CDFT_POPULATION_LOWDIN
+            - CDFT_POPULATION_BECKE
+      fields:
+        - { cpp-type: PopulationType, cpp-name: population_type, fill-strategy: optional-scalar}
+        - { cpp-type: 'std::vector<double>', cpp-name: atomic_weights_alpha, fill-strategy: optional}
+        - { cpp-type: 'std::vector<double>', cpp-name: atomic_weights_beta, fill-strategy: optional}
+        - { cpp-type: double, cpp-name: constrained_value, fill-strategy: optional-scalar}
+        - { cpp-type: double, cpp-name: initial_multiplier, fill-strategy: optional-scalar}
+    - name: Units
+      enums:
+        - cpp-name: LengthUnit
+          cpp-values:
+            - LENGTH_UNIT_BOHR
+            - LENGTH_UNIT_ANGSTROM
+        - cpp-name: EnergyUnit
+          cpp-values:
+            - ENERGY_UNIT_HARTREE
+            - ENERGY_UNIT_EV
+        - cpp-name: StorageUnit
+          cpp-values:
+            - STORAGE_UNIT_BYTE
+            - STORAGE_UNIT_KILOBYTE
+            - STORAGE_UNIT_MEGABYTE
+            - STORAGE_UNIT_GIGABYTE
+      fields:
+        - { cpp-type: LengthUnit, cpp-name: length_unit, cpp-init: =LENGTH_UNIT_BOHR, fill-strategy: optional-scalar, input-key: length}
+        - { cpp-type: EnergyUnit, cpp-name: energy_unit, cpp-init: =ENERGY_UNIT_HARTREE, fill-strategy: optional-scalar, input-key: energy}
+        - { cpp-type: StorageUnit, cpp-name: storage_unit, cpp-init: =STORAGE_UNIT_MEGABYTE, fill-strategy: optional-scalar, input-key: storage}
+    - name: IntegrationParams
+      enums: 
+        - cpp-name: Engine
+          cpp-values: 
+            - NAIVE_ENGINE
+            - OS1_ENGINE
+        - cpp-name: Storage
+          cpp-values: 
+            - NO_STORAGE
+            - LOCAL_STORAGE
+            - SHARED_STORAGE
+            - IN_CORE_STORAGE
+      fields:
+        - { cpp-type: Engine, cpp-name: engine, cpp-init: =OS1_ENGINE, fill-strategy: optional-scalar}
+        - { cpp-type: double, cpp-name: threshold, cpp-init: =1e-12, fill-strategy: optional-scalar}
+        - { cpp-type: 'std::size_t', cpp-name: cache_size, cpp-init: =64, fill-strategy: optional-scalar}
+        - { cpp-type: 'std::size_t', cpp-name: aux_cache_size, cpp-init: =64, fill-strategy: optional-scalar}
+        - { cpp-type: Storage, cpp-name: storage, cpp-init: =NO_STORAGE, fill-strategy: optional-scalar}
+    - name: MollerPlessetParams
+      enums:
+        - cpp-name: Type
+          cpp-values:
+            - CONVENTIONAL_MP2
+            - CONVENTIONAL_MP2_IMP
+            - CONVENTIONAL_MP2_MINMEM
+            - CONVENTIONAL_MP2_IMP_2
+            - LT_MO_MP2
+            - LT_AO_MP2
+            - LS_LT_AO_MP2
+            - LT_CD_DF_MP2
+        - cpp-name: QuadratureType
+          cpp-values:
+            - FITTED_SIMPLE_QUADRATURE
+            - FITTED_NORMALIZED_QUADRATURE
+            - EM_STATIC_QUADRATURE
+            - EM_SIMPLE_QUADRATURE
+            - EM_NORMALIZED_QUADRATURE
+      fields:
+        - { cpp-type: unsigned, cpp-name: order, cpp-init: =0, fill-strategy: optional-scalar}
+        - { cpp-type: bool, cpp-name: energy_only, cpp-init: =true, fill-strategy: optional-scalar}
+        - { cpp-type: bool, cpp-name: dipole_moment, cpp-init: =false, fill-strategy: optional-scalar}
+        - { cpp-type: bool, cpp-name: degeneracy_corrected, cpp-init: =false, fill-strategy: optional-scalar}
+        - { cpp-type: 'std::size_t', cpp-name: memory_pool, cpp-init: =256, fill-strategy: optional-scalar}
+        - { cpp-type: unsigned, cpp-name: no_frozen, cpp-init: =0, fill-strategy: optional-scalar}
+        - { cpp-type: unsigned, cpp-name: no_deleted, cpp-init: =0, fill-strategy: optional-scalar}
+        - { cpp-type: unsigned, cpp-name: no_frozen_beta, cpp-init: =0, fill-strategy: optional-scalar}
+        - { cpp-type: unsigned, cpp-name: no_deleted_beta, cpp-init: =0, fill-strategy: optional-scalar}
+        - { cpp-type: Type, cpp-name: type, cpp-init: =CONVENTIONAL_MP2_IMP_2, fill-strategy: optional-scalar}
+        - { cpp-type: QuadratureType, cpp-name: quadrature_type, cpp-init: =EM_STATIC_QUADRATURE, fill-strategy: optional-scalar}
+        - { cpp-type: unsigned, cpp-name: no_points, cpp-init: =10, fill-strategy: optional-scalar}
+        - { cpp-type: double, cpp-name: eps, cpp-init: =1e-8, fill-strategy: optional-scalar}
+    - name: TDParams
+      enums:
+        - cpp-name: Type
+          cpp-values: 
+            - TD_NONE
+            - TDA
+            - RPA
+      fields:
+        - { cpp-type: Type, cpp-name: type, cpp-init: '=TDParams::TD_NONE', fill-strategy: optional-scalar}
+        - { cpp-type: unsigned, cpp-name: multiplicity, cpp-init: =1<<0|1<<1, fill-strategy: optional-scalar}
+        - { cpp-type: unsigned, cpp-name: no_frozen, cpp-init: =0, fill-strategy: optional-scalar}
+        - { cpp-type: unsigned, cpp-name: no_deleted, cpp-init: =0, fill-strategy: optional-scalar}
+        - { cpp-type: unsigned, cpp-name: no_states, cpp-init: =0, fill-strategy: optional-scalar}
+        - { cpp-type: unsigned, cpp-name: no_roots, cpp-init: =0, fill-strategy: optional-scalar}
+        - { cpp-type: unsigned, cpp-name: no_iterations, cpp-init: =50, fill-strategy: optional-scalar}
+        - { cpp-type: double, cpp-name: diagonalization_threshold, cpp-init: =1e-4, fill-strategy: optional-scalar, input-key: dress_davidson_threshold}
+        - { cpp-type: double, cpp-name: integral_threshold, cpp-init: =1e-10, fill-strategy: optional-scalar}
+        - { cpp-type: unsigned, cpp-name: dress_no_iterations, cpp-init: =0, fill-strategy: optional-scalar, input-key: max_no_dressing_iterations}
+        - { cpp-type: unsigned, cpp-name: dress_no_davidson_iterations, cpp-init: =0, fill-strategy: optional-scalar, input-key: max_no_davidson_dressing_iterations}
+        - { cpp-type: double, cpp-name: dress_diagonalization_threshold, cpp-init: =1e-3, fill-strategy: optional-scalar}
+        - { cpp-type: double, cpp-name: dress_double_config_energy_range, cpp-init: =0.2, fill-strategy: optional-scalar, input-key: dress_delta_energy}
+        - { cpp-type: unsigned, cpp-name: dress_state, cpp-init: =1, fill-strategy: optional-scalar}
+        - { cpp-type: unsigned, cpp-name: state_of_interest, cpp-init: =0, fill-strategy: optional-scalar}
+    - name: Properties
+      classes:
+        - name: PopulationAnalyses
+          fields: 
+            - { cpp-type: bool, cpp-name: mulliken, cpp-init: =true, fill-strategy: optional-scalar}
+            - { cpp-type: bool, cpp-name: lowdin, cpp-init: =true, fill-strategy: optional-scalar}
+            - { cpp-type: bool, cpp-name: hirshfeld, cpp-init: =false, fill-strategy: optional-scalar}
+            - { cpp-type: bool, cpp-name: voronoi, cpp-init: =false, fill-strategy: optional-scalar}
+            - { cpp-type: bool, cpp-name: bader, cpp-init: =false, fill-strategy: optional-scalar}
+        - name: BondOrderAnalyses 
+          fields:
+            - { cpp-type: bool, cpp-name: mayer, cpp-init: =true, fill-strategy: optional-scalar}
+            - { cpp-type: bool, cpp-name: gopinathan_jug, cpp-init: =true, fill-strategy: optional-scalar}
+            - { cpp-type: bool, cpp-name: nalewajski, cpp-init: =true, fill-strategy: optional-scalar}
+        - name: OrbitalLocalization
+          fields:
+            - { cpp-type: bool, cpp-name:  cholesky, cpp-init: =false, fill-strategy: optional-scalar}
+        - name: Electric
+          fields:
+            - { cpp-type: bool, cpp-name: charge, cpp-init: =false, fill-strategy: optional-scalar}
+            - { cpp-type: bool, cpp-name: dipole_in_std_frame, cpp-init: =false, fill-strategy: optional-scalar}
+            - { cpp-type: bool, cpp-name: dipole_in_inp_frame, cpp-init: =false, fill-strategy: optional-scalar}
+            - { cpp-type: bool, cpp-name: quadrupole_in_std_frame, cpp-init: =false, fill-strategy: optional-scalar}
+            - { cpp-type: bool, cpp-name: quadrupole_in_inp_frame, cpp-init: =false, fill-strategy: optional-scalar}
+            - { cpp-type: bool, cpp-name: atomic_partial_mulliken_charges, cpp-init: =false, fill-strategy: optional-scalar}
+            - { cpp-type: bool, cpp-name: atomic_partial_lowdin_charges, cpp-init: =false, fill-strategy: optional-scalar}
+            - { cpp-type: bool, cpp-name: atomic_partial_mulliken_dipoles_in_std_frame, cpp-init: =false, fill-strategy: optional-scalar}
+            - { cpp-type: bool, cpp-name: atomic_partial_mulliken_dipoles_in_inp_frame, cpp-init: =false, fill-strategy: optional-scalar}
+            - { cpp-type: bool, cpp-name: atomic_partial_lowdin_dipoles_in_std_frame, cpp-init: =false, fill-strategy: optional-scalar}
+            - { cpp-type: bool, cpp-name: atomic_partial_lowdin_dipoles_in_inp_frame, cpp-init: =false, fill-strategy: optional-scalar}
+            - { cpp-type: bool, cpp-name: atomic_partial_mulliken_quadrupoles_in_std_frame, cpp-init: =false, fill-strategy: optional-scalar}
+            - { cpp-type: bool, cpp-name: atomic_partial_mulliken_quadrupoles_in_inp_frame, cpp-init: =false, fill-strategy: optional-scalar}
+            - { cpp-type: bool, cpp-name: atomic_partial_lowdin_quadrupoles_in_std_frame, cpp-init: =false, fill-strategy: optional-scalar}
+            - { cpp-type: bool, cpp-name: atomic_partial_lowdin_quadrupoles_in_inp_frame, cpp-init: =false, fill-strategy: optional-scalar}
+            - { cpp-type: bool, cpp-name: polarizability, cpp-init: =false, fill-strategy: optional-scalar}
+            - { cpp-type: bool, cpp-name: polarizability_DCPHF, cpp-init: =false, fill-strategy: optional-scalar}
+            - { cpp-type: bool, cpp-name: hyperpolarizability, cpp-init: =false, fill-strategy: optional-scalar}
+            - { cpp-type: bool, cpp-name: atom_atom_N_mulliken, cpp-init: =false, fill-strategy: optional-scalar}
+            - { cpp-type: bool, cpp-name: atom_atom_N_lowdin, cpp-init: =false, fill-strategy: optional-scalar}
+            - { cpp-type: bool, cpp-name: atom_atom_4N_mulliken, cpp-init: =false, fill-strategy: optional-scalar}
+            - { cpp-type: bool, cpp-name: atom_atom_4N_lowdin, cpp-init: =false, fill-strategy: optional-scalar}
+            - { cpp-type: bool, cpp-name: atom_atom_10N_mulliken, cpp-init: =false, fill-strategy: optional-scalar}
+            - { cpp-type: bool, cpp-name: atom_atom_10N_lowdin, cpp-init: =false, fill-strategy: optional-scalar}
+            - { cpp-type: bool, cpp-name: only_sos, cpp-init: =false, fill-strategy: optional-scalar}
+            - { cpp-type: bool, cpp-name: mesh_london_homo_lumo_swap, cpp-init: =false, fill-strategy: optional-scalar}
+        - name: Spectroscopic
+          fields:
+            - { cpp-type: bool, cpp-name: ir_frequencies, cpp-init: =false, fill-strategy: optional-scalar}
+      fields:
+        - { cpp-type: PopulationAnalyses, cpp-name: population_analyses, fill-strategy: delegated}
+        - { cpp-type: BondOrderAnalyses, cpp-name: bond_order_analyses, fill-strategy: delegated}
+        - { cpp-type: OrbitalLocalization, cpp-name: orbital_localization, fill-strategy: delegated}
+        - { cpp-type: Electric, cpp-name: electric, fill-strategy: delegated}
+        - { cpp-type: Spectroscopic, cpp-name: spectroscopic, fill-strategy: delegated}
+        - { cpp-type: unsigned, cpp-name: max_multipole_moment_order, fill-strategy: optional-scalar}  ####??????
+    - name: ExtraOutput
+      fields:
+        - { cpp-type: 'io::Logger::VerbosityLevel', cpp-name: output_verbosity, cpp-init: '=io::Logger::NORMAL', fill-strategy: optional-scalar}
+        - { cpp-type: bool, cpp-name: binary, cpp-init: =false, fill-strategy: optional-scalar}
+        - { cpp-type: bool, cpp-name: molden, cpp-init: =false, fill-strategy: optional-scalar}
+        - { cpp-type: bool, cpp-name: pimuel, cpp-init: =false, fill-strategy: optional-scalar}
+        - { cpp-type: bool, cpp-name: mesh_london, cpp-init: =false, fill-strategy: optional-scalar}
+        - { cpp-type: bool, cpp-name: dump_scf_matrices, cpp-init: =false, fill-strategy: optional-scalar}
+        - { cpp-type: bool, cpp-name: dump_1e_matrices, cpp-init: =false, fill-strategy: optional-scalar}
+        - { cpp-type: bool, cpp-name: dump_external_charges_potential, cpp-init: =false, fill-strategy: optional-scalar}
+        - { cpp-type: bool, cpp-name: dump_uef_potential, cpp-init: =false, fill-strategy: optional-scalar}
+        - { cpp-type: bool, cpp-name: dump_multipole_matrices, cpp-init: =false, fill-strategy: optional-scalar}
+    - name: GeometryOptimizationParams
+      enums:
+        - cpp-name: Method
+          cpp-values:
+          - LMVM_METHOD
+          - NM_METHOD
+        - cpp-name: Coords
+          cpp-values:
+          - CARTESIAN_COORDS
+          - DELOCALIZED_INTERNAL_COORDS
+      fields:
+        - { cpp-type: Method, cpp-name: method, cpp-init: =NM_METHOD, fill-strategy: optional-scalar}
+        - { cpp-type: Coords, cpp-name: coords, cpp-init: =CARTESIAN_COORDS, fill-strategy: optional-scalar}
+        - { cpp-type: double, cpp-name: threshold, cpp-init: =1e-5, fill-strategy: optional-scalar}
+        - { cpp-type: unsigned, cpp-name: max_no_steps, cpp-init: =100, fill-strategy: optional-scalar}
+    - name: GridParams
+      fields:
+        - { cpp-type: GridType, cpp-name: grid_type, cpp-init: =ANGULAR_RHO0_ADAPTIVE_GRID, fill-strategy: optional-scalar, input-key: type}
+        - { cpp-type: AngularGridType, cpp-name: angular_grid_type, cpp-init: =LEBEDEV_LAIKOV_ANGULAR_GRID, fill-strategy: optional-scalar, input-key: angular}
+        - { cpp-type: RadialMapping, cpp-name: radial_mapping, fill-strategy: optional-scalar}
+        - { cpp-type: double, cpp-name: accuracy, cpp-init: =1e-6, fill-strategy: optional-scalar}
+        - { cpp-type: unsigned, cpp-name: max_no_radial_points, cpp-init: =75, fill-strategy: optional-scalar}
+        - { cpp-type: unsigned, cpp-name: max_no_angular_points, cpp-init: =1500, fill-strategy: optional-scalar}
+        - { cpp-type: 'std::size_t', cpp-name: cache_size, cpp-init: =64, fill-strategy: optional-scalar}
+  enums:
+    - cpp-name: RunType
+      cpp-values: 
+        - RUN_TYPE_SINGLE_POINT
+        - RUN_TYPE_GEOMETRY_OPTIMIZATION
+    - cpp-name: Theory
+      cpp-values: 
+        - THEORY_HF
+        - THEORY_HFVWN
+        - THEORY_SLATER
+        - THEORY_SVWN
+        - THEORY_SLYP
+        - THEORY_BECKE
+        - THEORY_BLYP
+        - THEORY_PW91
+        - THEORY_PBE
+        - THEORY_B3LYP
+        - THEORY_PBE0
+        - THEORY_MPW91
+        - THEORY_MPW91LYP
+        - THEORY_mB3LYP
+        - THEORY_B3LYP5
+        - THEORY_B3PW91
+        - THEORY_B2PLYP
+        - THEORY_mPW2PLYP
+        - THEORY_EH
+    - cpp-name: DispersionCorrection
+      cpp-values:
+        - DISPERSION_CORRECTION_NONE
+        - DISPERSION_CORRECTION_GRIMME_D3
+    - cpp-name: GridType
+      cpp-values:
+        - SIMPLE_GRID
+        - PRUNED_GRID
+        - ANGULAR_S_ADAPTIVE_GRID
+        - ANGULAR_RHO0_ADAPTIVE_GRID
+        - ANGULAR_VXC0_ADAPTIVE_GRID
+        - FULL_RHO0_ADAPTIVE_GRID
+    - cpp-name: AngularGridType
+      cpp-values:
+        - GAUSS_LEGENDRE_ANGULAR_GRID
+        - LEBEDEV_LAIKOV_ANGULAR_GRID
+    - cpp-name: RadialMapping
+      cpp-values:
+        - LOGM_RADIAL_MAPPING
+        - KOESTER_RADIAL_MAPPING
+  fields:
+    - { cpp-type: 'std::string', cpp-name: title, cpp-init: '="untitled"', fill-strategy: optional-scalar}
+    - { cpp-type: Limits, cpp-name: limits, fill-strategy: delegated}
+    - { cpp-type: RunType, cpp-name: run_type, cpp-init: =RUN_TYPE_SINGLE_POINT, fill-strategy: optional-scalar}
+    - { cpp-type: 'std::string', cpp-name: basis_set_name, cpp-init: '="sto-3g"', fill-strategy: optional-scalar, input-key: basis_set}
+    - { cpp-type: 'std::string', cpp-name: aux_basis_set_name, fill-strategy: optional-scalar, input-key: aux_basis_set}
+    - { cpp-type: 'std::string', cpp-name: posthf_aux_basis_set_name, fill-strategy: optional-scalar, input-key: posthf_aux_basis_set}
+    - { cpp-type: 'std::string', cpp-name: poisson_basis_set_name, fill-strategy: optional-scalar, input-key: poisson_basis_set}
+    - { cpp-type: 'std::vector<AtomInfo>', cpp-name: atoms, container: required-sequence, fill-strategy: required-scalar}
+    - { cpp-type: 'std::vector<ChargeInfo>', cpp-name: ext_chrgs, container: optional-sequence, fill-strategy: optional-scalar, input-key: external_charges}
+    - { cpp-type: 'std::vector<FragmentInfo>', cpp-name: fragments, container: optional-sequence, fill-strategy: delegated}
+    - { cpp-type: int, cpp-name: charge, cpp-init: =0, fill-strategy: optional-scalar}
+    - { cpp-type: unsigned, cpp-name: multiplicity, cpp-init: =1, fill-strategy: optional-scalar}
+    - { cpp-type: 'arma::vec', cpp-name: external_electric_field, cpp-init: '{3, arma::fill::zeros}', fill-strategy: optional}
+    - { cpp-type: double, cpp-name: tol_dist, cpp-init: =5e-3, fill-strategy: optional-scalar}
+    - { cpp-type: SCFParams, cpp-name: scf_params, fill-strategy: delegated, input-key: scf}
+    - { cpp-type: CDFTParams, cpp-name: cdft_params, fill-strategy: delegated, input-key: cdft}
+    - { cpp-type: Units, cpp-name: units, fill-strategy: delegated, fill-strategy: delegated}
+    - { cpp-type: IntegrationParams, cpp-name: integration_params, fill-strategy: delegated}
+    - { cpp-type: Theory, cpp-name: theory, cpp-init: =THEORY_HF, fill-strategy: optional-scalar}
+    - { cpp-type: DispersionCorrection, cpp-name: dispersion_correction, cpp-init: =DISPERSION_CORRECTION_NONE, fill-strategy: optional-scalar, input-key: dispersion}
+    - { cpp-type: MollerPlessetParams, cpp-name: moller_plesset_params, fill-strategy: delegated, input-key: moller_plesset}
+    - { cpp-type: TDParams, cpp-name: td_params, fill-strategy: delegated, input-key: td}
+    - { cpp-type: Properties, cpp-name: properties, fill-strategy: delegated}
+    - { cpp-type: ExtraOutput, cpp-name: extra_output, fill-strategy: delegated, input-key: output}
+    - { cpp-type: GeometryOptimizationParams, cpp-name: geometry_optimization_params, fill-strategy: delegated, input-key: geometry_optimization}
+    - { cpp-type: 'std::string', cpp-name: symmetry_group, fill-strategy: optional-scalar}
+    - { cpp-type: GridParams, cpp-name: grid_params, fill-strategy: delegated, input-key: grid}
+    - { cpp-type: bool, cpp-name: use_input_coords, cpp-init: =false, fill-strategy: optional-scalar}
+

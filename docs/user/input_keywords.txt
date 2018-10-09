@@ -1,0 +1,115 @@
+    read_field(inp, "title", id.title);
+    read_field(inp, "theory", id.theory);
+    read_field(inp, "dispersion", id.dispersion_correction);
+    read_field(inp, "run_type", id.run_type);
+    read_field(inp, "symmetry_group", id.symmetry_group);
+    read_field(inp, "charge", id.charge);
+    read_field(inp, "multiplicity", id.multiplicity);
+    read_field(inp, "basis_set", id.basis_set_name);
+    read_field(inp, "aux_basis_set", id.aux_basis_set_name);
+    read_field(inp, "posthf_aux_basis_set", id.posthf_aux_basis_set_name);
+    read_field(inp, "poisson_basis_set", id.poisson_basis_set_name);
+    read_field(inp, "external_electric_field", id.external_electric_field);
+
+    read_field(inp, "scf", "method", id.scf_params.method);
+    read_field(inp, "scf", "initial_guess", id.scf_params.initial_guess);
+    read_field(inp, "scf", "initial_guess_filename", id.scf_params.initial_guess_fname);
+    read_field(inp, "scf", "convergence_accelerator", id.scf_params.convergence_accelerator);
+    read_field(inp, "scf", "max_no_iterations", id.scf_params.max_no_iterations);
+    read_field(inp, "scf", "energy_threshold", id.scf_params.energy_threshold);
+    read_field(inp, "scf", "density_threshold", id.scf_params.density_threshold);
+    read_field(inp, "scf", "occupations", id.scf_params.occupations);
+    read_field(inp, "scf", "degeneracy_threshold", id.scf_params.degeneracy_threshold);
+    read_field(inp, "scf", "smear", id.scf_params.smear);
+    read_field(inp, "scf", "symmetry", id.scf_params.symmetry_level);
+    read_field(inp, "scf", "shift_1", id.scf_params.shift_1);
+    read_field(inp, "scf", "shift_2", id.scf_params.shift_2);
+    read_field(inp, "scf", "threshold_linear_independence", id.scf_params.threshold_linear_independence);
+
+    read_field(inp, "cdft", "population_type", id.cdft_params.population_type);
+    read_field(inp, "cdft", "atomic_weights_alpha", id.cdft_params.atomic_weights_alpha);
+    read_field(inp, "cdft", "atomic_weights_beta", id.cdft_params.atomic_weights_beta);
+    read_field(inp, "cdft", "constrained_value", id.cdft_params.constrained_value);
+    read_field(inp, "cdft", "initial_multiplier", id.cdft_params.initial_multiplier);
+
+    read_field(inp, "units", "energy", id.units.energy_unit);
+    read_field(inp, "units", "length", id.units.length_unit);
+    read_field(inp, "units", "storage", id.units.storage_unit);
+
+    read_field(inp, "limits", "cpu_time", id.limits.cpu_time);
+
+    read_field(inp, "geometry_optimization", "method", id.geometry_optimization_params.method);
+    read_field(inp, "geometry_optimization", "coords", id.geometry_optimization_params.coords);
+    read_field(inp, "geometry_optimization", "threshold", id.geometry_optimization_params.threshold);
+    read_field(inp, "geometry_optimization", "max_no_steps", id.geometry_optimization_params.max_no_steps);
+
+    read_field(inp, "integration_params", "engine", id.integration_params.engine);
+    read_field(inp, "integration_params", "threshold", id.integration_params.threshold);
+    read_field(inp, "integration_params", "cache_size", id.integration_params.cache_size);
+    read_field(inp, "integration_params", "aux_cache_size", id.integration_params.aux_cache_size);
+    read_field(inp, "integration_params", "storage", id.integration_params.storage);
+
+    read_field(inp, "moller_plesset", "order", id.moller_plesset_params.order);
+    read_field(inp, "moller_plesset", "dipole_moment", id.moller_plesset_params.dipole_moment);
+    read_field(inp, "moller_plesset", "degeneracy_corrected", id.moller_plesset_params.degeneracy_corrected);
+    read_field(inp, "moller_plesset", "memory_pool", id.moller_plesset_params.memory_pool);
+    read_field(inp, "moller_plesset", "no_frozen", id.moller_plesset_params.no_frozen);
+    read_field(inp, "moller_plesset", "no_deleted", id.moller_plesset_params.no_deleted);
+    read_field(inp, "moller_plesset", "no_frozen_beta", id.moller_plesset_params.no_frozen_beta);
+    read_field(inp, "moller_plesset", "no_deleted_beta", id.moller_plesset_params.no_deleted_beta);
+    read_field(inp, "moller_plesset", "type", id.moller_plesset_params.type);
+    read_field(inp, "moller_plesset", "quadrature", id.moller_plesset_params.quadrature_type);
+    read_field(inp, "moller_plesset", "no_points", id.moller_plesset_params.no_points);
+    read_field(inp, "moller_plesset", "eps", id.moller_plesset_params.eps);
+
+    read_field(inp, "td", "type", id.td_params.type);
+    read_field(inp, "td", "multiplicity", id.td_params.multiplicity);
+    read_field(inp, "td", "no_frozen", id.td_params.no_frozen);
+    read_field(inp, "td", "no_deleted", id.td_params.no_deleted);
+    read_field(inp, "td", "no_states", id.td_params.no_states);
+    read_field(inp, "td", "no_roots", id.td_params.no_roots);
+    read_field(inp, "td", "no_iterations", id.td_params.no_iterations);
+    read_field(inp, "td", "diagonalization_threshold", id.td_params.diagonalization_threshold);
+    read_field(inp, "td", "integral_threshold", id.td_params.integral_threshold);
+    read_field(inp, "td", "dress_davidson_threshold", id.td_params.dress_diagonalization_threshold);
+    read_field(inp, "td", "dress_delta_energy", id.td_params.dress_double_config_energy_range);
+    read_field(inp, "td", "max_no_dressing_iterations", id.td_params.dress_no_iterations);
+    read_field(inp, "td", "max_no_davidson_dressing_iterations", id.td_params.dress_no_davidson_iterations);
+    read_field(inp, "td", "dress_state", id.td_params.dress_state);
+
+    read_field(inp, "properties", "population_analyses", "mulliken", id.properties.population_analyses.mulliken);
+    read_field(inp, "properties", "population_analyses", "lowdin", id.properties.population_analyses.lowdin);
+    read_field(inp, "properties", "population_analyses", "hirshfeld", id.properties.population_analyses.hirshfeld);
+    read_field(inp, "properties", "population_analyses", "voronoi", id.properties.population_analyses.voronoi);
+    read_field(inp, "properties", "population_analyses", "bader", id.properties.population_analyses.bader);
+
+    read_field(inp, "properties", "bond_order_analyses", "mayer", id.properties.bond_order_analyses.mayer);
+    read_field(inp, "properties", "bond_order_analyses", "gopinathan_jug", id.properties.bond_order_analyses.gopinathan_jug);
+    read_field(inp, "properties", "bond_order_analyses", "nalewajski", id.properties.bond_order_analyses.nalewajski);
+
+    read_field(inp, "properties", "orbital_localization", "cholesky", id.properties.orbital_localization.cholesky);
+
+    read_field(inp, "properties", "max_multipole_moment_order", id.properties.max_multipole_moment_order);
+
+    read_field(inp, "properties", "electric", "polarizability", id.properties.electric.polarizability);
+    read_field(inp, "properties", "electric", "polarizability_DCPHF", id.properties.electric.polarizability_DCPHF);
+    read_field(inp, "properties", "electric", "hyperpolarizability", id.properties.electric.hyperpolarizability);
+    read_field(inp, "properties", "electric", "atom_atom_N_mulliken", id.properties.electric.atom_atom_N_mulliken);
+    read_field(inp, "properties", "electric", "atom_atom_N_lowdin", id.properties.electric.atom_atom_N_lowdin);
+    read_field(inp, "properties", "electric", "atom_atom_4N_mulliken", id.properties.electric.atom_atom_4N_mulliken);
+    read_field(inp, "properties", "electric", "atom_atom_4N_lowdin", id.properties.electric.atom_atom_4N_lowdin);
+    read_field(inp, "properties", "electric", "atom_atom_10N_mulliken", id.properties.electric.atom_atom_10N_mulliken);
+    read_field(inp, "properties", "electric", "atom_atom_10N_lowdin", id.properties.electric.atom_atom_10N_lowdin);
+    read_field(inp, "properties", "electric", "only_sos", id.properties.electric.only_sos);
+    read_field(inp, "properties", "electric", "create_files", id.properties.electric.create_files);
+
+    read_field(inp, "output", "binary", id.extra_output.binary);
+    read_field(inp, "output", "molden", id.extra_output.molden);
+
+    read_field(inp, "grid", "type", id.grid_params.grid_type);
+    read_field(inp, "grid", "angular", id.grid_params.angular_grid_type);
+    read_field(inp, "grid", "radial_mapping", id.grid_params.radial_mapping);
+    read_field(inp, "grid", "accuracy", id.grid_params.accuracy);
+    read_field(inp, "grid", "max_no_radial_points", id.grid_params.max_no_radial_points);
+    read_field(inp, "grid", "max_no_angular_points", id.grid_params.max_no_angular_points);
+    read_field(inp, "grid", "cache_size", id.grid_params.cache_size); 

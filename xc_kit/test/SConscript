@@ -1,0 +1,26 @@
+Import('e')
+
+v =  e['CXXVERSION'].split('.')
+
+if (int(v[0]) > 3 or (int(v[0]) == 3 and int(v[1]) > 3)):
+    xc_kit_test = e.Program('bin/xc_kit_test',
+                            ['src/check_b3lyp_xc_functional.cpp',
+                             'src/check_b3_x_functional.cpp',
+                             'src/check_becke88_x_functional.cpp',
+                             'src/check_lyp_c_functional.cpp',
+                             'src/check_pbe_c_functional.cpp',
+                             'src/check_pbe_x_functional.cpp',
+                             'src/check_pw91_c_functional.cpp',
+                             'src/check_pw91_xc_functional.cpp',
+                             'src/check_pw91_x_functional.cpp',
+                             'src/check_pw92_c_functional.cpp',
+                             'src/check_slater_x_functional.cpp',
+                             'src/check_vwn_c_functional.cpp',
+                             'src/check_vwn_rpa_c_functional.cpp',
+                             'src/check_accuracy.cpp',
+                             'src/xc_kit_test_suite.cpp'],
+                            LIBS = ['xc_kit'] + e['LIBS'] + e['UNIT_TEST_LIBS'])
+
+    e.Command('results/xc_kit_test.log',
+              xc_kit_test,
+              '$SOURCES 2> $TARGET')

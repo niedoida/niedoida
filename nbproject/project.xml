@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://www.netbeans.org/ns/project/1">
+    <type>org.netbeans.modules.cnd.makeproject</type>
+    <configuration>
+        <data xmlns="http://www.netbeans.org/ns/make-project/1">
+            <name>nowa</name>
+            <c-extensions/>
+            <cpp-extensions>cpp,ey</cpp-extensions>
+            <header-extensions>hpp</header-extensions>
+            <sourceEncoding>UTF-8</sourceEncoding>
+            <make-dep-projects/>
+            <sourceRootList>
+                <sourceRootElem>.</sourceRootElem>
+            </sourceRootList>
+            <confList>
+                <confElem>
+                    <name>Release</name>
+                    <type>0</type>
+                </confElem>
+                <confElem>
+                    <name>RelWithDebugInfo</name>
+                    <type>0</type>
+                </confElem>
+                <confElem>
+                    <name>Debug</name>
+                    <type>0</type>
+                </confElem>
+            </confList>
+            <formatting>
+                <project-formatting-style>true</project-formatting-style>
+                <c-style>ANSI|ANSI</c-style>
+                <cpp-style>Default_2|niedoida</cpp-style>
+                <header-style>Default_0|niedoida</header-style>
+            </formatting>
+        </data>
+    </configuration>
+</project>

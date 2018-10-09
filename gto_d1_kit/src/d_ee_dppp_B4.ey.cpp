@@ -1,0 +1,1005 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include "gto_d1_kit/gto_d1.hpp"
+#include <cmath>
+
+namespace {
+    static const double Pi = M_PI;
+}
+
+void eri_gradient_2111_2(const double ae,
+                         const double xA,
+                         const double yA,
+                         const double zA,
+                         const double be,
+                         const double xB,
+                         const double yB,
+                         const double zB,
+                         const double ce,
+                         const double xC,
+                         const double yC,
+                         const double zC,
+                         const double de,
+                         const double xD,
+                         const double yD,
+                         const double zD,
+                         const double* const bs,
+                         double* const gx,
+                         double* const gy,
+                         double* const gz)
+{
+    double g[172];
+    eri_gradient_2111_2_ints(
+        ae, xA, yA, zA, be, xB, yB, zB, ce, xC, yC, zC, de, xD, yD, zD, bs, g);
+    double vrx[56];
+    double vry[56];
+    double vrz[56];
+    eri_gradient_2111_2_vr(ae,
+                           xA,
+                           yA,
+                           zA,
+                           be,
+                           xB,
+                           yB,
+                           zB,
+                           ce,
+                           xC,
+                           yC,
+                           zC,
+                           de,
+                           xD,
+                           yD,
+                           zD,
+                           bs,
+                           g,
+                           vrx,
+                           vry,
+                           vrz);
+    double etx[144];
+    double ety[144];
+    double etz[144];
+    eri_gradient_2111_2_et(ae,
+                           xA,
+                           yA,
+                           zA,
+                           be,
+                           xB,
+                           yB,
+                           zB,
+                           ce,
+                           xC,
+                           yC,
+                           zC,
+                           de,
+                           xD,
+                           yD,
+                           zD,
+                           bs,
+                           g,
+                           vrx,
+                           vry,
+                           vrz,
+                           etx,
+                           ety,
+                           etz);
+    double hrx[162];
+    double hry[162];
+    double hrz[162];
+    eri_gradient_2111_2_hr(ae,
+                           xA,
+                           yA,
+                           zA,
+                           be,
+                           xB,
+                           yB,
+                           zB,
+                           ce,
+                           xC,
+                           yC,
+                           zC,
+                           de,
+                           xD,
+                           yD,
+                           zD,
+                           bs,
+                           g,
+                           etx,
+                           ety,
+                           etz,
+                           hrx,
+                           hry,
+                           hrz);
+    const double C40 = hrx[0];
+    const double C49 = hrx[1];
+    const double C56 = hrx[2];
+    const double C63 = hrx[3];
+    const double C70 = hrx[4];
+    const double C77 = hrx[5];
+    const double C84 = hrx[6];
+    const double C91 = hrx[7];
+    const double C98 = hrx[8];
+    const double C105 = hrx[9];
+    const double C112 = hrx[10];
+    const double C119 = hrx[11];
+    const double C126 = hrx[12];
+    const double C133 = hrx[13];
+    const double C140 = hrx[14];
+    const double C147 = hrx[15];
+    const double C154 = hrx[16];
+    const double C161 = hrx[17];
+    const double C168 = hrx[18];
+    const double C175 = hrx[19];
+    const double C182 = hrx[20];
+    const double C189 = hrx[21];
+    const double C196 = hrx[22];
+    const double C203 = hrx[23];
+    const double C210 = hrx[24];
+    const double C217 = hrx[25];
+    const double C224 = hrx[26];
+    const double C231 = hrx[27];
+    const double C238 = hrx[28];
+    const double C245 = hrx[29];
+    const double C252 = hrx[30];
+    const double C259 = hrx[31];
+    const double C266 = hrx[32];
+    const double C273 = hrx[33];
+    const double C280 = hrx[34];
+    const double C287 = hrx[35];
+    const double C294 = hrx[36];
+    const double C301 = hrx[37];
+    const double C308 = hrx[38];
+    const double C315 = hrx[39];
+    const double C322 = hrx[40];
+    const double C329 = hrx[41];
+    const double C336 = hrx[42];
+    const double C343 = hrx[43];
+    const double C350 = hrx[44];
+    const double C357 = hrx[45];
+    const double C364 = hrx[46];
+    const double C371 = hrx[47];
+    const double C378 = hrx[48];
+    const double C385 = hrx[49];
+    const double C392 = hrx[50];
+    const double C399 = hrx[51];
+    const double C406 = hrx[52];
+    const double C413 = hrx[53];
+    const double C420 = hrx[54];
+    const double C427 = hrx[55];
+    const double C434 = hrx[56];
+    const double C441 = hrx[57];
+    const double C448 = hrx[58];
+    const double C455 = hrx[59];
+    const double C462 = hrx[60];
+    const double C469 = hrx[61];
+    const double C476 = hrx[62];
+    const double C483 = hrx[63];
+    const double C490 = hrx[64];
+    const double C497 = hrx[65];
+    const double C504 = hrx[66];
+    const double C511 = hrx[67];
+    const double C518 = hrx[68];
+    const double C525 = hrx[69];
+    const double C532 = hrx[70];
+    const double C539 = hrx[71];
+    const double C546 = hrx[72];
+    const double C553 = hrx[73];
+    const double C560 = hrx[74];
+    const double C567 = hrx[75];
+    const double C574 = hrx[76];
+    const double C581 = hrx[77];
+    const double C588 = hrx[78];
+    const double C595 = hrx[79];
+    const double C602 = hrx[80];
+    const double C609 = hrx[81];
+    const double C616 = hrx[82];
+    const double C623 = hrx[83];
+    const double C630 = hrx[84];
+    const double C637 = hrx[85];
+    const double C644 = hrx[86];
+    const double C651 = hrx[87];
+    const double C658 = hrx[88];
+    const double C665 = hrx[89];
+    const double C672 = hrx[90];
+    const double C679 = hrx[91];
+    const double C686 = hrx[92];
+    const double C693 = hrx[93];
+    const double C700 = hrx[94];
+    const double C707 = hrx[95];
+    const double C714 = hrx[96];
+    const double C721 = hrx[97];
+    const double C728 = hrx[98];
+    const double C735 = hrx[99];
+    const double C742 = hrx[100];
+    const double C749 = hrx[101];
+    const double C756 = hrx[102];
+    const double C763 = hrx[103];
+    const double C770 = hrx[104];
+    const double C777 = hrx[105];
+    const double C784 = hrx[106];
+    const double C791 = hrx[107];
+    const double C798 = hrx[108];
+    const double C805 = hrx[109];
+    const double C812 = hrx[110];
+    const double C819 = hrx[111];
+    const double C826 = hrx[112];
+    const double C833 = hrx[113];
+    const double C840 = hrx[114];
+    const double C847 = hrx[115];
+    const double C854 = hrx[116];
+    const double C861 = hrx[117];
+    const double C868 = hrx[118];
+    const double C875 = hrx[119];
+    const double C882 = hrx[120];
+    const double C889 = hrx[121];
+    const double C896 = hrx[122];
+    const double C903 = hrx[123];
+    const double C910 = hrx[124];
+    const double C917 = hrx[125];
+    const double C924 = hrx[126];
+    const double C931 = hrx[127];
+    const double C938 = hrx[128];
+    const double C945 = hrx[129];
+    const double C952 = hrx[130];
+    const double C959 = hrx[131];
+    const double C966 = hrx[132];
+    const double C973 = hrx[133];
+    const double C980 = hrx[134];
+    const double C987 = hrx[135];
+    const double C994 = hrx[136];
+    const double C1001 = hrx[137];
+    const double C1008 = hrx[138];
+    const double C1015 = hrx[139];
+    const double C1022 = hrx[140];
+    const double C1029 = hrx[141];
+    const double C1036 = hrx[142];
+    const double C1043 = hrx[143];
+    const double C1050 = hrx[144];
+    const double C1057 = hrx[145];
+    const double C1064 = hrx[146];
+    const double C1071 = hrx[147];
+    const double C1078 = hrx[148];
+    const double C1085 = hrx[149];
+    const double C1092 = hrx[150];
+    const double C1099 = hrx[151];
+    const double C1106 = hrx[152];
+    const double C1113 = hrx[153];
+    const double C1120 = hrx[154];
+    const double C1127 = hrx[155];
+    const double C1134 = hrx[156];
+    const double C1141 = hrx[157];
+    const double C1148 = hrx[158];
+    const double C1155 = hrx[159];
+    const double C1162 = hrx[160];
+    const double C1169 = hrx[161];
+    const double C44 = hry[0];
+    const double C51 = hry[1];
+    const double C58 = hry[2];
+    const double C65 = hry[3];
+    const double C72 = hry[4];
+    const double C79 = hry[5];
+    const double C86 = hry[6];
+    const double C93 = hry[7];
+    const double C100 = hry[8];
+    const double C107 = hry[9];
+    const double C114 = hry[10];
+    const double C121 = hry[11];
+    const double C128 = hry[12];
+    const double C135 = hry[13];
+    const double C142 = hry[14];
+    const double C149 = hry[15];
+    const double C156 = hry[16];
+    const double C163 = hry[17];
+    const double C170 = hry[18];
+    const double C177 = hry[19];
+    const double C184 = hry[20];
+    const double C191 = hry[21];
+    const double C198 = hry[22];
+    const double C205 = hry[23];
+    const double C212 = hry[24];
+    const double C219 = hry[25];
+    const double C226 = hry[26];
+    const double C233 = hry[27];
+    const double C240 = hry[28];
+    const double C247 = hry[29];
+    const double C254 = hry[30];
+    const double C261 = hry[31];
+    const double C268 = hry[32];
+    const double C275 = hry[33];
+    const double C282 = hry[34];
+    const double C289 = hry[35];
+    const double C296 = hry[36];
+    const double C303 = hry[37];
+    const double C310 = hry[38];
+    const double C317 = hry[39];
+    const double C324 = hry[40];
+    const double C331 = hry[41];
+    const double C338 = hry[42];
+    const double C345 = hry[43];
+    const double C352 = hry[44];
+    const double C359 = hry[45];
+    const double C366 = hry[46];
+    const double C373 = hry[47];
+    const double C380 = hry[48];
+    const double C387 = hry[49];
+    const double C394 = hry[50];
+    const double C401 = hry[51];
+    const double C408 = hry[52];
+    const double C415 = hry[53];
+    const double C422 = hry[54];
+    const double C429 = hry[55];
+    const double C436 = hry[56];
+    const double C443 = hry[57];
+    const double C450 = hry[58];
+    const double C457 = hry[59];
+    const double C464 = hry[60];
+    const double C471 = hry[61];
+    const double C478 = hry[62];
+    const double C485 = hry[63];
+    const double C492 = hry[64];
+    const double C499 = hry[65];
+    const double C506 = hry[66];
+    const double C513 = hry[67];
+    const double C520 = hry[68];
+    const double C527 = hry[69];
+    const double C534 = hry[70];
+    const double C541 = hry[71];
+    const double C548 = hry[72];
+    const double C555 = hry[73];
+    const double C562 = hry[74];
+    const double C569 = hry[75];
+    const double C576 = hry[76];
+    const double C583 = hry[77];
+    const double C590 = hry[78];
+    const double C597 = hry[79];
+    const double C604 = hry[80];
+    const double C611 = hry[81];
+    const double C618 = hry[82];
+    const double C625 = hry[83];
+    const double C632 = hry[84];
+    const double C639 = hry[85];
+    const double C646 = hry[86];
+    const double C653 = hry[87];
+    const double C660 = hry[88];
+    const double C667 = hry[89];
+    const double C674 = hry[90];
+    const double C681 = hry[91];
+    const double C688 = hry[92];
+    const double C695 = hry[93];
+    const double C702 = hry[94];
+    const double C709 = hry[95];
+    const double C716 = hry[96];
+    const double C723 = hry[97];
+    const double C730 = hry[98];
+    const double C737 = hry[99];
+    const double C744 = hry[100];
+    const double C751 = hry[101];
+    const double C758 = hry[102];
+    const double C765 = hry[103];
+    const double C772 = hry[104];
+    const double C779 = hry[105];
+    const double C786 = hry[106];
+    const double C793 = hry[107];
+    const double C800 = hry[108];
+    const double C807 = hry[109];
+    const double C814 = hry[110];
+    const double C821 = hry[111];
+    const double C828 = hry[112];
+    const double C835 = hry[113];
+    const double C842 = hry[114];
+    const double C849 = hry[115];
+    const double C856 = hry[116];
+    const double C863 = hry[117];
+    const double C870 = hry[118];
+    const double C877 = hry[119];
+    const double C884 = hry[120];
+    const double C891 = hry[121];
+    const double C898 = hry[122];
+    const double C905 = hry[123];
+    const double C912 = hry[124];
+    const double C919 = hry[125];
+    const double C926 = hry[126];
+    const double C933 = hry[127];
+    const double C940 = hry[128];
+    const double C947 = hry[129];
+    const double C954 = hry[130];
+    const double C961 = hry[131];
+    const double C968 = hry[132];
+    const double C975 = hry[133];
+    const double C982 = hry[134];
+    const double C989 = hry[135];
+    const double C996 = hry[136];
+    const double C1003 = hry[137];
+    const double C1010 = hry[138];
+    const double C1017 = hry[139];
+    const double C1024 = hry[140];
+    const double C1031 = hry[141];
+    const double C1038 = hry[142];
+    const double C1045 = hry[143];
+    const double C1052 = hry[144];
+    const double C1059 = hry[145];
+    const double C1066 = hry[146];
+    const double C1073 = hry[147];
+    const double C1080 = hry[148];
+    const double C1087 = hry[149];
+    const double C1094 = hry[150];
+    const double C1101 = hry[151];
+    const double C1108 = hry[152];
+    const double C1115 = hry[153];
+    const double C1122 = hry[154];
+    const double C1129 = hry[155];
+    const double C1136 = hry[156];
+    const double C1143 = hry[157];
+    const double C1150 = hry[158];
+    const double C1157 = hry[159];
+    const double C1164 = hry[160];
+    const double C1171 = hry[161];
+    const double C46 = hrz[0];
+    const double C53 = hrz[1];
+    const double C60 = hrz[2];
+    const double C67 = hrz[3];
+    const double C74 = hrz[4];
+    const double C81 = hrz[5];
+    const double C88 = hrz[6];
+    const double C95 = hrz[7];
+    const double C102 = hrz[8];
+    const double C109 = hrz[9];
+    const double C116 = hrz[10];
+    const double C123 = hrz[11];
+    const double C130 = hrz[12];
+    const double C137 = hrz[13];
+    const double C144 = hrz[14];
+    const double C151 = hrz[15];
+    const double C158 = hrz[16];
+    const double C165 = hrz[17];
+    const double C172 = hrz[18];
+    const double C179 = hrz[19];
+    const double C186 = hrz[20];
+    const double C193 = hrz[21];
+    const double C200 = hrz[22];
+    const double C207 = hrz[23];
+    const double C214 = hrz[24];
+    const double C221 = hrz[25];
+    const double C228 = hrz[26];
+    const double C235 = hrz[27];
+    const double C242 = hrz[28];
+    const double C249 = hrz[29];
+    const double C256 = hrz[30];
+    const double C263 = hrz[31];
+    const double C270 = hrz[32];
+    const double C277 = hrz[33];
+    const double C284 = hrz[34];
+    const double C291 = hrz[35];
+    const double C298 = hrz[36];
+    const double C305 = hrz[37];
+    const double C312 = hrz[38];
+    const double C319 = hrz[39];
+    const double C326 = hrz[40];
+    const double C333 = hrz[41];
+    const double C340 = hrz[42];
+    const double C347 = hrz[43];
+    const double C354 = hrz[44];
+    const double C361 = hrz[45];
+    const double C368 = hrz[46];
+    const double C375 = hrz[47];
+    const double C382 = hrz[48];
+    const double C389 = hrz[49];
+    const double C396 = hrz[50];
+    const double C403 = hrz[51];
+    const double C410 = hrz[52];
+    const double C417 = hrz[53];
+    const double C424 = hrz[54];
+    const double C431 = hrz[55];
+    const double C438 = hrz[56];
+    const double C445 = hrz[57];
+    const double C452 = hrz[58];
+    const double C459 = hrz[59];
+    const double C466 = hrz[60];
+    const double C473 = hrz[61];
+    const double C480 = hrz[62];
+    const double C487 = hrz[63];
+    const double C494 = hrz[64];
+    const double C501 = hrz[65];
+    const double C508 = hrz[66];
+    const double C515 = hrz[67];
+    const double C522 = hrz[68];
+    const double C529 = hrz[69];
+    const double C536 = hrz[70];
+    const double C543 = hrz[71];
+    const double C550 = hrz[72];
+    const double C557 = hrz[73];
+    const double C564 = hrz[74];
+    const double C571 = hrz[75];
+    const double C578 = hrz[76];
+    const double C585 = hrz[77];
+    const double C592 = hrz[78];
+    const double C599 = hrz[79];
+    const double C606 = hrz[80];
+    const double C613 = hrz[81];
+    const double C620 = hrz[82];
+    const double C627 = hrz[83];
+    const double C634 = hrz[84];
+    const double C641 = hrz[85];
+    const double C648 = hrz[86];
+    const double C655 = hrz[87];
+    const double C662 = hrz[88];
+    const double C669 = hrz[89];
+    const double C676 = hrz[90];
+    const double C683 = hrz[91];
+    const double C690 = hrz[92];
+    const double C697 = hrz[93];
+    const double C704 = hrz[94];
+    const double C711 = hrz[95];
+    const double C718 = hrz[96];
+    const double C725 = hrz[97];
+    const double C732 = hrz[98];
+    const double C739 = hrz[99];
+    const double C746 = hrz[100];
+    const double C753 = hrz[101];
+    const double C760 = hrz[102];
+    const double C767 = hrz[103];
+    const double C774 = hrz[104];
+    const double C781 = hrz[105];
+    const double C788 = hrz[106];
+    const double C795 = hrz[107];
+    const double C802 = hrz[108];
+    const double C809 = hrz[109];
+    const double C816 = hrz[110];
+    const double C823 = hrz[111];
+    const double C830 = hrz[112];
+    const double C837 = hrz[113];
+    const double C844 = hrz[114];
+    const double C851 = hrz[115];
+    const double C858 = hrz[116];
+    const double C865 = hrz[117];
+    const double C872 = hrz[118];
+    const double C879 = hrz[119];
+    const double C886 = hrz[120];
+    const double C893 = hrz[121];
+    const double C900 = hrz[122];
+    const double C907 = hrz[123];
+    const double C914 = hrz[124];
+    const double C921 = hrz[125];
+    const double C928 = hrz[126];
+    const double C935 = hrz[127];
+    const double C942 = hrz[128];
+    const double C949 = hrz[129];
+    const double C956 = hrz[130];
+    const double C963 = hrz[131];
+    const double C970 = hrz[132];
+    const double C977 = hrz[133];
+    const double C984 = hrz[134];
+    const double C991 = hrz[135];
+    const double C998 = hrz[136];
+    const double C1005 = hrz[137];
+    const double C1012 = hrz[138];
+    const double C1019 = hrz[139];
+    const double C1026 = hrz[140];
+    const double C1033 = hrz[141];
+    const double C1040 = hrz[142];
+    const double C1047 = hrz[143];
+    const double C1054 = hrz[144];
+    const double C1061 = hrz[145];
+    const double C1068 = hrz[146];
+    const double C1075 = hrz[147];
+    const double C1082 = hrz[148];
+    const double C1089 = hrz[149];
+    const double C1096 = hrz[150];
+    const double C1103 = hrz[151];
+    const double C1110 = hrz[152];
+    const double C1117 = hrz[153];
+    const double C1124 = hrz[154];
+    const double C1131 = hrz[155];
+    const double C1138 = hrz[156];
+    const double C1145 = hrz[157];
+    const double C1152 = hrz[158];
+    const double C1159 = hrz[159];
+    const double C1166 = hrz[160];
+    const double C1173 = hrz[161];
+    gx[0] += std::sqrt(3.0) * C609;
+    gy[0] += std::sqrt(3.0) * C611;
+    gz[0] += std::sqrt(3.0) * C613;
+    gx[1] += std::sqrt(3.0) * C616;
+    gy[1] += std::sqrt(3.0) * C618;
+    gz[1] += std::sqrt(3.0) * C620;
+    gx[2] += std::sqrt(3.0) * C623;
+    gy[2] += std::sqrt(3.0) * C625;
+    gz[2] += std::sqrt(3.0) * C627;
+    gx[3] += std::sqrt(3.0) * C630;
+    gy[3] += std::sqrt(3.0) * C632;
+    gz[3] += std::sqrt(3.0) * C634;
+    gx[4] += std::sqrt(3.0) * C637;
+    gy[4] += std::sqrt(3.0) * C639;
+    gz[4] += std::sqrt(3.0) * C641;
+    gx[5] += std::sqrt(3.0) * C644;
+    gy[5] += std::sqrt(3.0) * C646;
+    gz[5] += std::sqrt(3.0) * C648;
+    gx[6] += std::sqrt(3.0) * C651;
+    gy[6] += std::sqrt(3.0) * C653;
+    gz[6] += std::sqrt(3.0) * C655;
+    gx[7] += std::sqrt(3.0) * C658;
+    gy[7] += std::sqrt(3.0) * C660;
+    gz[7] += std::sqrt(3.0) * C662;
+    gx[8] += std::sqrt(3.0) * C665;
+    gy[8] += std::sqrt(3.0) * C667;
+    gz[8] += std::sqrt(3.0) * C669;
+    gx[9] += std::sqrt(3.0) * C672;
+    gy[9] += std::sqrt(3.0) * C674;
+    gz[9] += std::sqrt(3.0) * C676;
+    gx[10] += std::sqrt(3.0) * C679;
+    gy[10] += std::sqrt(3.0) * C681;
+    gz[10] += std::sqrt(3.0) * C683;
+    gx[11] += std::sqrt(3.0) * C686;
+    gy[11] += std::sqrt(3.0) * C688;
+    gz[11] += std::sqrt(3.0) * C690;
+    gx[12] += std::sqrt(3.0) * C693;
+    gy[12] += std::sqrt(3.0) * C695;
+    gz[12] += std::sqrt(3.0) * C697;
+    gx[13] += std::sqrt(3.0) * C700;
+    gy[13] += std::sqrt(3.0) * C702;
+    gz[13] += std::sqrt(3.0) * C704;
+    gx[14] += std::sqrt(3.0) * C707;
+    gy[14] += std::sqrt(3.0) * C709;
+    gz[14] += std::sqrt(3.0) * C711;
+    gx[15] += std::sqrt(3.0) * C714;
+    gy[15] += std::sqrt(3.0) * C716;
+    gz[15] += std::sqrt(3.0) * C718;
+    gx[16] += std::sqrt(3.0) * C721;
+    gy[16] += std::sqrt(3.0) * C723;
+    gz[16] += std::sqrt(3.0) * C725;
+    gx[17] += std::sqrt(3.0) * C728;
+    gy[17] += std::sqrt(3.0) * C730;
+    gz[17] += std::sqrt(3.0) * C732;
+    gx[18] += std::sqrt(3.0) * C735;
+    gy[18] += std::sqrt(3.0) * C737;
+    gz[18] += std::sqrt(3.0) * C739;
+    gx[19] += std::sqrt(3.0) * C742;
+    gy[19] += std::sqrt(3.0) * C744;
+    gz[19] += std::sqrt(3.0) * C746;
+    gx[20] += std::sqrt(3.0) * C749;
+    gy[20] += std::sqrt(3.0) * C751;
+    gz[20] += std::sqrt(3.0) * C753;
+    gx[21] += std::sqrt(3.0) * C756;
+    gy[21] += std::sqrt(3.0) * C758;
+    gz[21] += std::sqrt(3.0) * C760;
+    gx[22] += std::sqrt(3.0) * C763;
+    gy[22] += std::sqrt(3.0) * C765;
+    gz[22] += std::sqrt(3.0) * C767;
+    gx[23] += std::sqrt(3.0) * C770;
+    gy[23] += std::sqrt(3.0) * C772;
+    gz[23] += std::sqrt(3.0) * C774;
+    gx[24] += std::sqrt(3.0) * C777;
+    gy[24] += std::sqrt(3.0) * C779;
+    gz[24] += std::sqrt(3.0) * C781;
+    gx[25] += std::sqrt(3.0) * C784;
+    gy[25] += std::sqrt(3.0) * C786;
+    gz[25] += std::sqrt(3.0) * C788;
+    gx[26] += std::sqrt(3.0) * C791;
+    gy[26] += std::sqrt(3.0) * C793;
+    gz[26] += std::sqrt(3.0) * C795;
+    gx[27] += std::sqrt(3.0) * C987;
+    gy[27] += std::sqrt(3.0) * C989;
+    gz[27] += std::sqrt(3.0) * C991;
+    gx[28] += std::sqrt(3.0) * C994;
+    gy[28] += std::sqrt(3.0) * C996;
+    gz[28] += std::sqrt(3.0) * C998;
+    gx[29] += std::sqrt(3.0) * C1001;
+    gy[29] += std::sqrt(3.0) * C1003;
+    gz[29] += std::sqrt(3.0) * C1005;
+    gx[30] += std::sqrt(3.0) * C1008;
+    gy[30] += std::sqrt(3.0) * C1010;
+    gz[30] += std::sqrt(3.0) * C1012;
+    gx[31] += std::sqrt(3.0) * C1015;
+    gy[31] += std::sqrt(3.0) * C1017;
+    gz[31] += std::sqrt(3.0) * C1019;
+    gx[32] += std::sqrt(3.0) * C1022;
+    gy[32] += std::sqrt(3.0) * C1024;
+    gz[32] += std::sqrt(3.0) * C1026;
+    gx[33] += std::sqrt(3.0) * C1029;
+    gy[33] += std::sqrt(3.0) * C1031;
+    gz[33] += std::sqrt(3.0) * C1033;
+    gx[34] += std::sqrt(3.0) * C1036;
+    gy[34] += std::sqrt(3.0) * C1038;
+    gz[34] += std::sqrt(3.0) * C1040;
+    gx[35] += std::sqrt(3.0) * C1043;
+    gy[35] += std::sqrt(3.0) * C1045;
+    gz[35] += std::sqrt(3.0) * C1047;
+    gx[36] += std::sqrt(3.0) * C1050;
+    gy[36] += std::sqrt(3.0) * C1052;
+    gz[36] += std::sqrt(3.0) * C1054;
+    gx[37] += std::sqrt(3.0) * C1057;
+    gy[37] += std::sqrt(3.0) * C1059;
+    gz[37] += std::sqrt(3.0) * C1061;
+    gx[38] += std::sqrt(3.0) * C1064;
+    gy[38] += std::sqrt(3.0) * C1066;
+    gz[38] += std::sqrt(3.0) * C1068;
+    gx[39] += std::sqrt(3.0) * C1071;
+    gy[39] += std::sqrt(3.0) * C1073;
+    gz[39] += std::sqrt(3.0) * C1075;
+    gx[40] += std::sqrt(3.0) * C1078;
+    gy[40] += std::sqrt(3.0) * C1080;
+    gz[40] += std::sqrt(3.0) * C1082;
+    gx[41] += std::sqrt(3.0) * C1085;
+    gy[41] += std::sqrt(3.0) * C1087;
+    gz[41] += std::sqrt(3.0) * C1089;
+    gx[42] += std::sqrt(3.0) * C1092;
+    gy[42] += std::sqrt(3.0) * C1094;
+    gz[42] += std::sqrt(3.0) * C1096;
+    gx[43] += std::sqrt(3.0) * C1099;
+    gy[43] += std::sqrt(3.0) * C1101;
+    gz[43] += std::sqrt(3.0) * C1103;
+    gx[44] += std::sqrt(3.0) * C1106;
+    gy[44] += std::sqrt(3.0) * C1108;
+    gz[44] += std::sqrt(3.0) * C1110;
+    gx[45] += std::sqrt(3.0) * C1113;
+    gy[45] += std::sqrt(3.0) * C1115;
+    gz[45] += std::sqrt(3.0) * C1117;
+    gx[46] += std::sqrt(3.0) * C1120;
+    gy[46] += std::sqrt(3.0) * C1122;
+    gz[46] += std::sqrt(3.0) * C1124;
+    gx[47] += std::sqrt(3.0) * C1127;
+    gy[47] += std::sqrt(3.0) * C1129;
+    gz[47] += std::sqrt(3.0) * C1131;
+    gx[48] += std::sqrt(3.0) * C1134;
+    gy[48] += std::sqrt(3.0) * C1136;
+    gz[48] += std::sqrt(3.0) * C1138;
+    gx[49] += std::sqrt(3.0) * C1141;
+    gy[49] += std::sqrt(3.0) * C1143;
+    gz[49] += std::sqrt(3.0) * C1145;
+    gx[50] += std::sqrt(3.0) * C1148;
+    gy[50] += std::sqrt(3.0) * C1150;
+    gz[50] += std::sqrt(3.0) * C1152;
+    gx[51] += std::sqrt(3.0) * C1155;
+    gy[51] += std::sqrt(3.0) * C1157;
+    gz[51] += std::sqrt(3.0) * C1159;
+    gx[52] += std::sqrt(3.0) * C1162;
+    gy[52] += std::sqrt(3.0) * C1164;
+    gz[52] += std::sqrt(3.0) * C1166;
+    gx[53] += std::sqrt(3.0) * C1169;
+    gy[53] += std::sqrt(3.0) * C1171;
+    gz[53] += std::sqrt(3.0) * C1173;
+    gx[54] += -0.5 * C40 - 0.5 * C231 + C420;
+    gy[54] += -0.5 * C44 - 0.5 * C233 + C422;
+    gz[54] += -0.5 * C46 - 0.5 * C235 + C424;
+    gx[55] += -0.5 * C49 - 0.5 * C238 + C427;
+    gy[55] += -0.5 * C51 - 0.5 * C240 + C429;
+    gz[55] += -0.5 * C53 - 0.5 * C242 + C431;
+    gx[56] += -0.5 * C56 - 0.5 * C245 + C434;
+    gy[56] += -0.5 * C58 - 0.5 * C247 + C436;
+    gz[56] += -0.5 * C60 - 0.5 * C249 + C438;
+    gx[57] += -0.5 * C63 - 0.5 * C252 + C441;
+    gy[57] += -0.5 * C65 - 0.5 * C254 + C443;
+    gz[57] += -0.5 * C67 - 0.5 * C256 + C445;
+    gx[58] += -0.5 * C70 - 0.5 * C259 + C448;
+    gy[58] += -0.5 * C72 - 0.5 * C261 + C450;
+    gz[58] += -0.5 * C74 - 0.5 * C263 + C452;
+    gx[59] += -0.5 * C77 - 0.5 * C266 + C455;
+    gy[59] += -0.5 * C79 - 0.5 * C268 + C457;
+    gz[59] += -0.5 * C81 - 0.5 * C270 + C459;
+    gx[60] += -0.5 * C84 - 0.5 * C273 + C462;
+    gy[60] += -0.5 * C86 - 0.5 * C275 + C464;
+    gz[60] += -0.5 * C88 - 0.5 * C277 + C466;
+    gx[61] += -0.5 * C91 - 0.5 * C280 + C469;
+    gy[61] += -0.5 * C93 - 0.5 * C282 + C471;
+    gz[61] += -0.5 * C95 - 0.5 * C284 + C473;
+    gx[62] += -0.5 * C98 - 0.5 * C287 + C476;
+    gy[62] += -0.5 * C100 - 0.5 * C289 + C478;
+    gz[62] += -0.5 * C102 - 0.5 * C291 + C480;
+    gx[63] += -0.5 * C105 - 0.5 * C294 + C483;
+    gy[63] += -0.5 * C107 - 0.5 * C296 + C485;
+    gz[63] += -0.5 * C109 - 0.5 * C298 + C487;
+    gx[64] += -0.5 * C112 - 0.5 * C301 + C490;
+    gy[64] += -0.5 * C114 - 0.5 * C303 + C492;
+    gz[64] += -0.5 * C116 - 0.5 * C305 + C494;
+    gx[65] += -0.5 * C119 - 0.5 * C308 + C497;
+    gy[65] += -0.5 * C121 - 0.5 * C310 + C499;
+    gz[65] += -0.5 * C123 - 0.5 * C312 + C501;
+    gx[66] += -0.5 * C126 - 0.5 * C315 + C504;
+    gy[66] += -0.5 * C128 - 0.5 * C317 + C506;
+    gz[66] += -0.5 * C130 - 0.5 * C319 + C508;
+    gx[67] += -0.5 * C133 - 0.5 * C322 + C511;
+    gy[67] += -0.5 * C135 - 0.5 * C324 + C513;
+    gz[67] += -0.5 * C137 - 0.5 * C326 + C515;
+    gx[68] += -0.5 * C140 - 0.5 * C329 + C518;
+    gy[68] += -0.5 * C142 - 0.5 * C331 + C520;
+    gz[68] += -0.5 * C144 - 0.5 * C333 + C522;
+    gx[69] += -0.5 * C147 - 0.5 * C336 + C525;
+    gy[69] += -0.5 * C149 - 0.5 * C338 + C527;
+    gz[69] += -0.5 * C151 - 0.5 * C340 + C529;
+    gx[70] += -0.5 * C154 - 0.5 * C343 + C532;
+    gy[70] += -0.5 * C156 - 0.5 * C345 + C534;
+    gz[70] += -0.5 * C158 - 0.5 * C347 + C536;
+    gx[71] += -0.5 * C161 - 0.5 * C350 + C539;
+    gy[71] += -0.5 * C163 - 0.5 * C352 + C541;
+    gz[71] += -0.5 * C165 - 0.5 * C354 + C543;
+    gx[72] += -0.5 * C168 - 0.5 * C357 + C546;
+    gy[72] += -0.5 * C170 - 0.5 * C359 + C548;
+    gz[72] += -0.5 * C172 - 0.5 * C361 + C550;
+    gx[73] += -0.5 * C175 - 0.5 * C364 + C553;
+    gy[73] += -0.5 * C177 - 0.5 * C366 + C555;
+    gz[73] += -0.5 * C179 - 0.5 * C368 + C557;
+    gx[74] += -0.5 * C182 - 0.5 * C371 + C560;
+    gy[74] += -0.5 * C184 - 0.5 * C373 + C562;
+    gz[74] += -0.5 * C186 - 0.5 * C375 + C564;
+    gx[75] += -0.5 * C189 - 0.5 * C378 + C567;
+    gy[75] += -0.5 * C191 - 0.5 * C380 + C569;
+    gz[75] += -0.5 * C193 - 0.5 * C382 + C571;
+    gx[76] += -0.5 * C196 - 0.5 * C385 + C574;
+    gy[76] += -0.5 * C198 - 0.5 * C387 + C576;
+    gz[76] += -0.5 * C200 - 0.5 * C389 + C578;
+    gx[77] += -0.5 * C203 - 0.5 * C392 + C581;
+    gy[77] += -0.5 * C205 - 0.5 * C394 + C583;
+    gz[77] += -0.5 * C207 - 0.5 * C396 + C585;
+    gx[78] += -0.5 * C210 - 0.5 * C399 + C588;
+    gy[78] += -0.5 * C212 - 0.5 * C401 + C590;
+    gz[78] += -0.5 * C214 - 0.5 * C403 + C592;
+    gx[79] += -0.5 * C217 - 0.5 * C406 + C595;
+    gy[79] += -0.5 * C219 - 0.5 * C408 + C597;
+    gz[79] += -0.5 * C221 - 0.5 * C410 + C599;
+    gx[80] += -0.5 * C224 - 0.5 * C413 + C602;
+    gy[80] += -0.5 * C226 - 0.5 * C415 + C604;
+    gz[80] += -0.5 * C228 - 0.5 * C417 + C606;
+    gx[81] += std::sqrt(3.0) * C798;
+    gy[81] += std::sqrt(3.0) * C800;
+    gz[81] += std::sqrt(3.0) * C802;
+    gx[82] += std::sqrt(3.0) * C805;
+    gy[82] += std::sqrt(3.0) * C807;
+    gz[82] += std::sqrt(3.0) * C809;
+    gx[83] += std::sqrt(3.0) * C812;
+    gy[83] += std::sqrt(3.0) * C814;
+    gz[83] += std::sqrt(3.0) * C816;
+    gx[84] += std::sqrt(3.0) * C819;
+    gy[84] += std::sqrt(3.0) * C821;
+    gz[84] += std::sqrt(3.0) * C823;
+    gx[85] += std::sqrt(3.0) * C826;
+    gy[85] += std::sqrt(3.0) * C828;
+    gz[85] += std::sqrt(3.0) * C830;
+    gx[86] += std::sqrt(3.0) * C833;
+    gy[86] += std::sqrt(3.0) * C835;
+    gz[86] += std::sqrt(3.0) * C837;
+    gx[87] += std::sqrt(3.0) * C840;
+    gy[87] += std::sqrt(3.0) * C842;
+    gz[87] += std::sqrt(3.0) * C844;
+    gx[88] += std::sqrt(3.0) * C847;
+    gy[88] += std::sqrt(3.0) * C849;
+    gz[88] += std::sqrt(3.0) * C851;
+    gx[89] += std::sqrt(3.0) * C854;
+    gy[89] += std::sqrt(3.0) * C856;
+    gz[89] += std::sqrt(3.0) * C858;
+    gx[90] += std::sqrt(3.0) * C861;
+    gy[90] += std::sqrt(3.0) * C863;
+    gz[90] += std::sqrt(3.0) * C865;
+    gx[91] += std::sqrt(3.0) * C868;
+    gy[91] += std::sqrt(3.0) * C870;
+    gz[91] += std::sqrt(3.0) * C872;
+    gx[92] += std::sqrt(3.0) * C875;
+    gy[92] += std::sqrt(3.0) * C877;
+    gz[92] += std::sqrt(3.0) * C879;
+    gx[93] += std::sqrt(3.0) * C882;
+    gy[93] += std::sqrt(3.0) * C884;
+    gz[93] += std::sqrt(3.0) * C886;
+    gx[94] += std::sqrt(3.0) * C889;
+    gy[94] += std::sqrt(3.0) * C891;
+    gz[94] += std::sqrt(3.0) * C893;
+    gx[95] += std::sqrt(3.0) * C896;
+    gy[95] += std::sqrt(3.0) * C898;
+    gz[95] += std::sqrt(3.0) * C900;
+    gx[96] += std::sqrt(3.0) * C903;
+    gy[96] += std::sqrt(3.0) * C905;
+    gz[96] += std::sqrt(3.0) * C907;
+    gx[97] += std::sqrt(3.0) * C910;
+    gy[97] += std::sqrt(3.0) * C912;
+    gz[97] += std::sqrt(3.0) * C914;
+    gx[98] += std::sqrt(3.0) * C917;
+    gy[98] += std::sqrt(3.0) * C919;
+    gz[98] += std::sqrt(3.0) * C921;
+    gx[99] += std::sqrt(3.0) * C924;
+    gy[99] += std::sqrt(3.0) * C926;
+    gz[99] += std::sqrt(3.0) * C928;
+    gx[100] += std::sqrt(3.0) * C931;
+    gy[100] += std::sqrt(3.0) * C933;
+    gz[100] += std::sqrt(3.0) * C935;
+    gx[101] += std::sqrt(3.0) * C938;
+    gy[101] += std::sqrt(3.0) * C940;
+    gz[101] += std::sqrt(3.0) * C942;
+    gx[102] += std::sqrt(3.0) * C945;
+    gy[102] += std::sqrt(3.0) * C947;
+    gz[102] += std::sqrt(3.0) * C949;
+    gx[103] += std::sqrt(3.0) * C952;
+    gy[103] += std::sqrt(3.0) * C954;
+    gz[103] += std::sqrt(3.0) * C956;
+    gx[104] += std::sqrt(3.0) * C959;
+    gy[104] += std::sqrt(3.0) * C961;
+    gz[104] += std::sqrt(3.0) * C963;
+    gx[105] += std::sqrt(3.0) * C966;
+    gy[105] += std::sqrt(3.0) * C968;
+    gz[105] += std::sqrt(3.0) * C970;
+    gx[106] += std::sqrt(3.0) * C973;
+    gy[106] += std::sqrt(3.0) * C975;
+    gz[106] += std::sqrt(3.0) * C977;
+    gx[107] += std::sqrt(3.0) * C980;
+    gy[107] += std::sqrt(3.0) * C982;
+    gz[107] += std::sqrt(3.0) * C984;
+    gx[108] += std::sqrt(0.75) * C40 - std::sqrt(0.75) * C231;
+    gy[108] += std::sqrt(0.75) * C44 - std::sqrt(0.75) * C233;
+    gz[108] += std::sqrt(0.75) * C46 - std::sqrt(0.75) * C235;
+    gx[109] += std::sqrt(0.75) * C49 - std::sqrt(0.75) * C238;
+    gy[109] += std::sqrt(0.75) * C51 - std::sqrt(0.75) * C240;
+    gz[109] += std::sqrt(0.75) * C53 - std::sqrt(0.75) * C242;
+    gx[110] += std::sqrt(0.75) * C56 - std::sqrt(0.75) * C245;
+    gy[110] += std::sqrt(0.75) * C58 - std::sqrt(0.75) * C247;
+    gz[110] += std::sqrt(0.75) * C60 - std::sqrt(0.75) * C249;
+    gx[111] += std::sqrt(0.75) * C63 - std::sqrt(0.75) * C252;
+    gy[111] += std::sqrt(0.75) * C65 - std::sqrt(0.75) * C254;
+    gz[111] += std::sqrt(0.75) * C67 - std::sqrt(0.75) * C256;
+    gx[112] += std::sqrt(0.75) * C70 - std::sqrt(0.75) * C259;
+    gy[112] += std::sqrt(0.75) * C72 - std::sqrt(0.75) * C261;
+    gz[112] += std::sqrt(0.75) * C74 - std::sqrt(0.75) * C263;
+    gx[113] += std::sqrt(0.75) * C77 - std::sqrt(0.75) * C266;
+    gy[113] += std::sqrt(0.75) * C79 - std::sqrt(0.75) * C268;
+    gz[113] += std::sqrt(0.75) * C81 - std::sqrt(0.75) * C270;
+    gx[114] += std::sqrt(0.75) * C84 - std::sqrt(0.75) * C273;
+    gy[114] += std::sqrt(0.75) * C86 - std::sqrt(0.75) * C275;
+    gz[114] += std::sqrt(0.75) * C88 - std::sqrt(0.75) * C277;
+    gx[115] += std::sqrt(0.75) * C91 - std::sqrt(0.75) * C280;
+    gy[115] += std::sqrt(0.75) * C93 - std::sqrt(0.75) * C282;
+    gz[115] += std::sqrt(0.75) * C95 - std::sqrt(0.75) * C284;
+    gx[116] += std::sqrt(0.75) * C98 - std::sqrt(0.75) * C287;
+    gy[116] += std::sqrt(0.75) * C100 - std::sqrt(0.75) * C289;
+    gz[116] += std::sqrt(0.75) * C102 - std::sqrt(0.75) * C291;
+    gx[117] += std::sqrt(0.75) * C105 - std::sqrt(0.75) * C294;
+    gy[117] += std::sqrt(0.75) * C107 - std::sqrt(0.75) * C296;
+    gz[117] += std::sqrt(0.75) * C109 - std::sqrt(0.75) * C298;
+    gx[118] += std::sqrt(0.75) * C112 - std::sqrt(0.75) * C301;
+    gy[118] += std::sqrt(0.75) * C114 - std::sqrt(0.75) * C303;
+    gz[118] += std::sqrt(0.75) * C116 - std::sqrt(0.75) * C305;
+    gx[119] += std::sqrt(0.75) * C119 - std::sqrt(0.75) * C308;
+    gy[119] += std::sqrt(0.75) * C121 - std::sqrt(0.75) * C310;
+    gz[119] += std::sqrt(0.75) * C123 - std::sqrt(0.75) * C312;
+    gx[120] += std::sqrt(0.75) * C126 - std::sqrt(0.75) * C315;
+    gy[120] += std::sqrt(0.75) * C128 - std::sqrt(0.75) * C317;
+    gz[120] += std::sqrt(0.75) * C130 - std::sqrt(0.75) * C319;
+    gx[121] += std::sqrt(0.75) * C133 - std::sqrt(0.75) * C322;
+    gy[121] += std::sqrt(0.75) * C135 - std::sqrt(0.75) * C324;
+    gz[121] += std::sqrt(0.75) * C137 - std::sqrt(0.75) * C326;
+    gx[122] += std::sqrt(0.75) * C140 - std::sqrt(0.75) * C329;
+    gy[122] += std::sqrt(0.75) * C142 - std::sqrt(0.75) * C331;
+    gz[122] += std::sqrt(0.75) * C144 - std::sqrt(0.75) * C333;
+    gx[123] += std::sqrt(0.75) * C147 - std::sqrt(0.75) * C336;
+    gy[123] += std::sqrt(0.75) * C149 - std::sqrt(0.75) * C338;
+    gz[123] += std::sqrt(0.75) * C151 - std::sqrt(0.75) * C340;
+    gx[124] += std::sqrt(0.75) * C154 - std::sqrt(0.75) * C343;
+    gy[124] += std::sqrt(0.75) * C156 - std::sqrt(0.75) * C345;
+    gz[124] += std::sqrt(0.75) * C158 - std::sqrt(0.75) * C347;
+    gx[125] += std::sqrt(0.75) * C161 - std::sqrt(0.75) * C350;
+    gy[125] += std::sqrt(0.75) * C163 - std::sqrt(0.75) * C352;
+    gz[125] += std::sqrt(0.75) * C165 - std::sqrt(0.75) * C354;
+    gx[126] += std::sqrt(0.75) * C168 - std::sqrt(0.75) * C357;
+    gy[126] += std::sqrt(0.75) * C170 - std::sqrt(0.75) * C359;
+    gz[126] += std::sqrt(0.75) * C172 - std::sqrt(0.75) * C361;
+    gx[127] += std::sqrt(0.75) * C175 - std::sqrt(0.75) * C364;
+    gy[127] += std::sqrt(0.75) * C177 - std::sqrt(0.75) * C366;
+    gz[127] += std::sqrt(0.75) * C179 - std::sqrt(0.75) * C368;
+    gx[128] += std::sqrt(0.75) * C182 - std::sqrt(0.75) * C371;
+    gy[128] += std::sqrt(0.75) * C184 - std::sqrt(0.75) * C373;
+    gz[128] += std::sqrt(0.75) * C186 - std::sqrt(0.75) * C375;
+    gx[129] += std::sqrt(0.75) * C189 - std::sqrt(0.75) * C378;
+    gy[129] += std::sqrt(0.75) * C191 - std::sqrt(0.75) * C380;
+    gz[129] += std::sqrt(0.75) * C193 - std::sqrt(0.75) * C382;
+    gx[130] += std::sqrt(0.75) * C196 - std::sqrt(0.75) * C385;
+    gy[130] += std::sqrt(0.75) * C198 - std::sqrt(0.75) * C387;
+    gz[130] += std::sqrt(0.75) * C200 - std::sqrt(0.75) * C389;
+    gx[131] += std::sqrt(0.75) * C203 - std::sqrt(0.75) * C392;
+    gy[131] += std::sqrt(0.75) * C205 - std::sqrt(0.75) * C394;
+    gz[131] += std::sqrt(0.75) * C207 - std::sqrt(0.75) * C396;
+    gx[132] += std::sqrt(0.75) * C210 - std::sqrt(0.75) * C399;
+    gy[132] += std::sqrt(0.75) * C212 - std::sqrt(0.75) * C401;
+    gz[132] += std::sqrt(0.75) * C214 - std::sqrt(0.75) * C403;
+    gx[133] += std::sqrt(0.75) * C217 - std::sqrt(0.75) * C406;
+    gy[133] += std::sqrt(0.75) * C219 - std::sqrt(0.75) * C408;
+    gz[133] += std::sqrt(0.75) * C221 - std::sqrt(0.75) * C410;
+    gx[134] += std::sqrt(0.75) * C224 - std::sqrt(0.75) * C413;
+    gy[134] += std::sqrt(0.75) * C226 - std::sqrt(0.75) * C415;
+    gz[134] += std::sqrt(0.75) * C228 - std::sqrt(0.75) * C417;
+}

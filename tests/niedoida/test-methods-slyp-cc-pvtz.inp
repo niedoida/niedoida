@@ -1,0 +1,18 @@
+# Results from Gaussian09
+# Energy = -75.576354943 hartrees
+
+title: water molecule
+
+run_type: single_point
+basis_set: cc-pvtz
+theory: slyp
+
+units:
+  length: angstrom
+  energy: hartree
+
+atoms: 
+ - O 0.0000 0.0000 0.1141
+ - H 0.0000 0.7803 -0.4563
+ - H 0.0000 -0.7803 -0.4563
+

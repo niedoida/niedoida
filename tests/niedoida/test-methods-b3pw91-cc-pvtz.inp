@@ -1,0 +1,18 @@
+# Results from Gaussian09
+# Energy = -76.4065185433 hartrees
+
+title: water molecule
+
+run_type: single_point
+basis_set: cc-pvtz
+theory: b3pw91
+
+units:
+  length: angstrom
+  energy: hartree
+
+atoms: 
+ - O 0.0000 0.0000 0.1141
+ - H 0.0000 0.7803 -0.4563
+ - H 0.0000 -0.7803 -0.4563
+

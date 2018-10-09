@@ -1,0 +1,39 @@
+find_package(Sphinx REQUIRED)
+
+if(NOT DEFINED SPHINX_THEME)
+    set(SPHINX_THEME default)
+endif()
+
+if(NOT DEFINED SPHINX_THEME_DIR)
+    set(SPHINX_THEME_DIR)
+endif()
+
+# configured documentation tools and intermediate build results
+set(BINARY_BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}/_build")
+
+# Sphinx cache with pickled ReST documents
+set(SPHINX_CACHE_DIR "${CMAKE_CURRENT_BINARY_DIR}/_doctrees")
+
+set(SPHINX_HTML_DIR "${CMAKE_CURRENT_BINARY_DIR}/html")
+set(SPHINX_SINGLEHTML_DIR "${CMAKE_CURRENT_BINARY_DIR}/singlehtml")
+
+file (
+    COPY
+      utils
+      niedoida_logo.png
+      conf.py
+    DESTINATION
+      "${BINARY_BUILD_DIR}")
+
+add_custom_target(user_docs ALL
+    ${SPHINX_EXECUTABLE}
+        -q -b singlehtml
+        -c "${BINARY_BUILD_DIR}"
+        -d "${SPHINX_CACHE_DIR}"
+        "${CMAKE_CURRENT_SOURCE_DIR}"
+        "${SPHINX_SINGLEHTML_DIR}"
+    COMMENT "Building HTML documentation with Sphinx")
+
+install(DIRECTORY "${SPHINX_SINGLEHTML_DIR}"
+        DESTINATION share/niedoida/documentation/user
+        PATTERN ".buildinfo" EXCLUDE)

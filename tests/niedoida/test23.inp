@@ -1,0 +1,18 @@
+title: water molecule, CIS
+
+run_type: single_point
+basis_set: 6-31g
+
+td:
+  type: tda
+  no_states: 5
+
+units:
+  length: bohr
+  energy: hartree
+
+atoms: 
+ - o  0.0000000    0.24618131   0.00000000
+ - h  1.4326629   -0.95521837   0.00000000
+ - h -1.4326629   -0.95521837   0.00000000
+

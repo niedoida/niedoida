@@ -1,0 +1,71 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "/usr/include/x86_64-linux-gnu/c++/7",
+                "/usr/include/c++/7",
+                "/usr/local/include",
+                "/usr/lib/gcc/x86_64-linux-gnu/7/include",
+                "/usr/include/x86_64-linux-gnu",
+                "${workspaceRoot}/external_packages/include",
+                "/usr/include",
+                "${workspaceRoot}/compat_kit/include",
+                "${workspaceRoot}/core_kit/include",
+                "${workspaceRoot}/cphf_kit/include",
+                "${workspaceRoot}/el_stat_prop_kit/include",
+                "${workspaceRoot}/grid_kit/include",
+                "${workspaceRoot}/gto_d1_kit/include",
+                "${workspaceRoot}/gto_d2_kit/include",
+                "${workspaceRoot}/gto_kit/include",
+                "${workspaceRoot}/io_kit/include",
+                "${workspaceRoot}/misc_kit/include",
+                "${workspaceRoot}/niedoida/include",
+                "${workspaceRoot}/posthf_kit/include",
+                "${workspaceRoot}/property_kit/include",
+                "${workspaceRoot}/scf_kit/include",
+                "${workspaceRoot}/semi_empirical_kit/include",
+                "${workspaceRoot}/symmetry_kit/include",
+                "${workspaceRoot}/td_kit/include",
+                "${workspaceRoot}/xc_kit/include"
+            ],
+            "defines": [
+                "NIEDOIDA_RESTRICT=__restrict"
+            ],
+            "browse": {
+                "path": [
+                    "/usr/include/x86_64-linux-gnu/c++/7",
+                    "/usr/include/c++/7",
+                    "/usr/local/include",
+                    "/usr/lib/gcc/x86_64-linux-gnu/7/include",
+                    "/usr/include/x86_64-linux-gnu",
+                    "${workspaceRoot}/external_packages/include",
+                    "/usr/include",
+                    "${workspaceRoot}/compat_kit/include",
+                    "${workspaceRoot}/core_kit/include",
+                    "${workspaceRoot}/cphf_kit/include",
+                    "${workspaceRoot}/el_stat_prop_kit/include",
+                    "${workspaceRoot}/grid_kit/include",
+                    "${workspaceRoot}/gto_d1_kit/include",
+                    "${workspaceRoot}/gto_d2_kit/include",
+                    "${workspaceRoot}/gto_kit/include",
+                    "${workspaceRoot}/io_kit/include",
+                    "${workspaceRoot}/misc_kit/include",
+                    "${workspaceRoot}/niedoida/include",
+                    "${workspaceRoot}/posthf_kit/include",
+                    "${workspaceRoot}/property_kit/include",
+                    "${workspaceRoot}/scf_kit/include",
+                    "${workspaceRoot}/semi_empirical_kit/include",
+                    "${workspaceRoot}/symmetry_kit/include",
+                    "${workspaceRoot}/td_kit/include",
+                    "${workspaceRoot}/xc_kit/include"
+                ],
+                "limitSymbolsToIncludedHeaders": true
+            },
+            "compilerPath": "/usr/bin/g++",
+            "cStandard": "c11",
+            "cppStandard": "c++17"
+        }
+    ],
+    "version": 4
+}

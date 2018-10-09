@@ -1,0 +1,4 @@
+Function("ArcSinh", {z})
+[
+   Ln(z + Sqrt(1 + z^2));
+];

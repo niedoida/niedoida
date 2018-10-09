@@ -1,0 +1,16 @@
+title: test
+
+run_type: single_point
+basis_set: test-small
+
+units:
+  length: bohr
+  energy: hartree
+
+atoms:
+- H 1.1 2.3 1.6
+- H 0.1 0.3 0.6
+- H 1.4 2.7 1.2
+- H 0.9 2.2 1.301
+
+

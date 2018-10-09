@@ -1,0 +1,599 @@
+
+ rhoa= 0.17E+01 rhob= 0.17E+01 sigmaaa= 0.81E-11 sigmaab= 0.81E-11 sigmabb= 0.81E-11
+ zk            = -0.277940424154E+00
+ vrhoa         = -0.904252506107E-01
+ vrhob         = -0.904252506107E-01
+ vsigmaaa      =  0.131220335326E-02
+ vsigmaab      =  0.000000000000E+00
+ vsigmabb      =  0.131220335326E-02
+
+ v2rhoa2       = -0.672553699227E-04
+ v2rhoab       = -0.522577773221E-02
+ v2rhob2       = -0.672553699227E-04
+
+ v2rhoasigmaaa = -0.766867892247E-03
+ v2rhoasigmaab =  0.000000000000E+00
+ v2rhoasigmabb = -0.801771234550E-04
+ v2rhobsigmaaa = -0.801771234550E-04
+ v2rhobsigmaab =  0.000000000000E+00
+ v2rhobsigmabb = -0.766867892247E-03
+
+ v2sigmaaa2    = -0.118563741608E-03
+ v2sigmaaaab   =  0.000000000000E+00
+ v2sigmaaabb   =  0.000000000000E+00
+ v2sigmaab2    =  0.000000000000E+00
+ v2sigmaabbb   =  0.000000000000E+00
+ v2sigmabb2    = -0.433959112245E-05
+
+ rhoa= 0.17E+01 rhob= 0.17E+01 sigmaaa= 0.17E+01 sigmaab= 0.17E+01 sigmabb= 0.17E+01
+ zk            = -0.273793101100E+00
+ vrhoa         = -0.915564241620E-01
+ vrhob         = -0.915564241620E-01
+ vsigmaaa      =  0.113580436333E-02
+ vsigmaab      =  0.000000000000E+00
+ vsigmabb      =  0.113580436333E-02
+
+ v2rhoa2       =  0.203973710966E-03
+ v2rhoab       = -0.455394033662E-02
+ v2rhob2       =  0.203973710966E-03
+
+ v2rhoasigmaaa = -0.430397216727E-03
+ v2rhoasigmaab =  0.000000000000E+00
+ v2rhoasigmabb = -0.840238863498E-04
+ v2rhobsigmaaa = -0.840238863498E-04
+ v2rhobsigmaab =  0.000000000000E+00
+ v2rhobsigmabb = -0.430397216727E-03
+
+ v2sigmaaa2    = -0.888508402469E-04
+ v2sigmaaaab   =  0.000000000000E+00
+ v2sigmaaabb   =  0.000000000000E+00
+ v2sigmaab2    =  0.000000000000E+00
+ v2sigmaabbb   =  0.000000000000E+00
+ v2sigmabb2    = -0.338067560132E-05
+
+ rhoa= 0.15E+01 rhob= 0.15E+01 sigmaaa= 0.36E+02 sigmaab= 0.36E+02 sigmabb= 0.36E+02
+ zk            = -0.138315145184E+00
+ vrhoa         = -0.423302526980E-01
+ vrhob         = -0.423302526980E-01
+ vsigmaaa      = -0.904612964543E-04
+ vsigmaab      =  0.000000000000E+00
+ vsigmabb      = -0.904612964543E-04
+
+ v2rhoa2       = -0.382704734499E-01
+ v2rhoab       =  0.638451802092E-02
+ v2rhob2       = -0.382704733771E-01
+
+ v2rhoasigmaaa =  0.521697671074E-03
+ v2rhoasigmaab =  0.000000000000E+00
+ v2rhoasigmabb = -0.708553608868E-04
+ v2rhobsigmaaa = -0.708553608868E-04
+ v2rhobsigmaab =  0.000000000000E+00
+ v2rhobsigmabb =  0.521697668225E-03
+
+ v2sigmaaa2    = -0.500245710853E-05
+ v2sigmaaaab   =  0.000000000000E+00
+ v2sigmaaabb   =  0.000000000000E+00
+ v2sigmaab2    =  0.000000000000E+00
+ v2sigmaabbb   =  0.000000000000E+00
+ v2sigmabb2    =  0.494985796112E-05
+
+ rhoa= 0.88E-01 rhob= 0.88E-01 sigmaaa= 0.87E-01 sigmaab= 0.87E-01 sigmabb= 0.87E-01
+ zk            = -0.457880573944E-02
+ vrhoa         = -0.146968730270E+00
+ vrhob         = -0.146968730270E+00
+ vsigmaaa      =  0.454263981336E-01
+ vsigmaab      =  0.000000000000E+00
+ vsigmabb      =  0.454263981336E-01
+
+ v2rhoa2       =  0.725094881237E+01
+ v2rhoab       = -0.274892701291E+01
+ v2rhob2       =  0.725094881237E+01
+
+ v2rhoasigmaaa = -0.224862379379E+01
+ v2rhoasigmaab =  0.000000000000E+00
+ v2rhoasigmabb =  0.516209069700E+00
+ v2rhobsigmaaa =  0.516209069700E+00
+ v2rhobsigmaab =  0.000000000000E+00
+ v2rhobsigmabb = -0.224862379379E+01
+
+ v2sigmaaa2    =  0.338637608367E+00
+ v2sigmaaaab   =  0.000000000000E+00
+ v2sigmaaabb   =  0.000000000000E+00
+ v2sigmaab2    =  0.000000000000E+00
+ v2sigmaabbb   =  0.000000000000E+00
+ v2sigmabb2    =  0.338637608367E+00
+
+ rhoa= 0.18E+04 rhob= 0.18E+04 sigmaaa= 0.55E+00 sigmaab= 0.55E+00 sigmabb= 0.55E+00
+ zk            = -0.532496189471E+03
+ vrhoa         = -0.157958504426E+00
+ vrhob         = -0.157958504426E+00
+ vsigmaaa      =  0.220290351047E-06
+ vsigmaab      =  0.000000000000E+00
+ vsigmabb      =  0.220290351047E-06
+
+ v2rhoa2       = -0.100250975858E-06
+ v2rhoab       = -0.552675866735E-05
+ v2rhob2       = -0.100250975858E-06
+
+ v2rhoasigmaaa = -0.191655033943E-09
+ v2rhoasigmaab =  0.000000000000E+00
+ v2rhoasigmabb =  0.315663112258E-10
+ v2rhobsigmaaa =  0.315663112258E-10
+ v2rhobsigmaab =  0.000000000000E+00
+ v2rhobsigmabb = -0.191655033943E-09
+
+ v2sigmaaa2    = -0.121453652131E-14
+ v2sigmaaaab   =  0.000000000000E+00
+ v2sigmaaabb   =  0.000000000000E+00
+ v2sigmaab2    =  0.000000000000E+00
+ v2sigmaabbb   =  0.000000000000E+00
+ v2sigmabb2    = -0.157672571157E-15
+
+ rhoa= 0.18E+04 rhob= 0.18E+04 sigmaaa= 0.86E+04 sigmaab= 0.86E+04 sigmabb= 0.86E+04
+ zk            = -0.532492400809E+03
+ vrhoa         = -0.157959881010E+00
+ vrhob         = -0.157959881010E+00
+ vsigmaaa      =  0.220279907224E-06
+ vsigmaab      =  0.000000000000E+00
+ vsigmabb      =  0.220279907224E-06
+
+ v2rhoa2       = -0.978023758795E-07
+ v2rhoab       = -0.552744613633E-05
+ v2rhob2       = -0.978023758795E-07
+
+ v2rhoasigmaaa = -0.191633067366E-09
+ v2rhoasigmaab =  0.000000000000E+00
+ v2rhoasigmabb =  0.315655579653E-10
+ v2rhobsigmaaa =  0.315655579653E-10
+ v2rhobsigmaab =  0.000000000000E+00
+ v2rhobsigmabb = -0.191633067366E-09
+
+ v2sigmaaa2    = -0.121441479277E-14
+ v2sigmaaaab   =  0.000000000000E+00
+ v2sigmaaabb   =  0.000000000000E+00
+ v2sigmaab2    =  0.000000000000E+00
+ v2sigmaabbb   =  0.000000000000E+00
+ v2sigmabb2    = -0.157665930567E-15
+
+ rhoa= 0.16E+04 rhob= 0.16E+04 sigmaaa= 0.37E+10 sigmaab= 0.37E+10 sigmabb= 0.37E+10
+ zk            = -0.172197298909E+03
+ vrhoa         = -0.768097547768E-01
+ vrhob         = -0.768097547768E-01
+ vsigmaaa      =  0.366757673580E-08
+ vsigmaab      =  0.000000000000E+00
+ vsigmabb      =  0.366757673580E-08
+
+ v2rhoa2       = -0.380073657779E-03
+ v2rhoab       = -0.908042456035E-05
+ v2rhob2       = -0.380073657778E-03
+
+ v2rhoasigmaaa =  0.622857102212E-10
+ v2rhoasigmaab =  0.000000000000E+00
+ v2rhoasigmabb =  0.697652528248E-12
+ v2rhobsigmaaa =  0.697652528248E-12
+ v2rhobsigmaab =  0.000000000000E+00
+ v2rhobsigmabb =  0.622857102212E-10
+
+ v2sigmaaa2    = -0.108174978009E-16
+ v2sigmaaaab   =  0.000000000000E+00
+ v2sigmaaabb   =  0.000000000000E+00
+ v2sigmaab2    =  0.000000000000E+00
+ v2sigmaabbb   =  0.000000000000E+00
+ v2sigmabb2    = -0.539202580370E-18
+
+ rhoa= 0.26E+00 rhob= 0.26E+00 sigmaaa= 0.28E+00 sigmaab= 0.28E+00 sigmabb= 0.28E+00
+ zk            = -0.216605910241E-01
+ vrhoa         = -0.508360898651E-01
+ vrhob         = -0.508360898651E-01
+ vsigmaaa      =  0.220064850650E-02
+ vsigmaab      =  0.000000000000E+00
+ vsigmabb      =  0.220064850650E-02
+
+ v2rhoa2       = -0.232421194774E+01
+ v2rhoab       =  0.702600863558E-01
+ v2rhob2       = -0.232421194774E+01
+
+ v2rhoasigmaaa =  0.791410371835E+00
+ v2rhoasigmaab =  0.000000000000E+00
+ v2rhoasigmabb = -0.159940442752E-01
+ v2rhobsigmaaa = -0.159940442752E-01
+ v2rhobsigmaab =  0.000000000000E+00
+ v2rhobsigmabb =  0.791410371835E+00
+
+ v2sigmaaa2    = -0.272822247010E+00
+ v2sigmaaaab   =  0.000000000000E+00
+ v2sigmaaabb   =  0.000000000000E+00
+ v2sigmaab2    =  0.000000000000E+00
+ v2sigmaabbb   =  0.000000000000E+00
+ v2sigmabb2    =  0.142722750699E-01
+
+ rhoa= 0.53E+05 rhob= 0.53E+05 sigmaaa= 0.96E+05 sigmaab= 0.96E+05 sigmabb= 0.96E+05
+ zk            = -0.193184689694E+05
+ vrhoa         = -0.192477384217E+00
+ vrhob         = -0.192477384217E+00
+ vsigmaaa      =  0.256441994883E-08
+ vsigmaab      =  0.000000000000E+00
+ vsigmabb      =  0.256441994883E-08
+
+ v2rhoa2       = -0.225936799283E-08
+ v2rhoab       = -0.191308051376E-06
+ v2rhob2       = -0.225936799283E-08
+
+ v2rhoasigmaaa = -0.771540185298E-13
+ v2rhoasigmaab =  0.000000000000E+00
+ v2rhoasigmabb =  0.131510494978E-13
+ v2rhobsigmaaa =  0.131510494978E-13
+ v2rhobsigmaab =  0.000000000000E+00
+ v2rhobsigmabb = -0.771540185298E-13
+
+ v2sigmaaa2    = -0.511453277110E-20
+ v2sigmaaaab   =  0.000000000000E+00
+ v2sigmaaabb   =  0.000000000000E+00
+ v2sigmaab2    =  0.000000000000E+00
+ v2sigmaabbb   =  0.000000000000E+00
+ v2sigmabb2    = -0.660667468689E-21
+
+ rhoa= 0.47E+05 rhob= 0.47E+05 sigmaaa= 0.29E+14 sigmaab= 0.29E+14 sigmabb= 0.29E+14
+ zk            = -0.518398357311E+04
+ vrhoa         = -0.928431270477E-01
+ vrhob         = -0.928431270477E-01
+ vsigmaaa      =  0.228259719332E-10
+ vsigmaab      =  0.000000000000E+00
+ vsigmabb      =  0.228259719332E-10
+
+ v2rhoa2       = -0.187572868905E-04
+ v2rhoab       = -0.397186234339E-06
+ v2rhob2       = -0.187572868905E-04
+
+ v2rhoasigmaaa =  0.115170171815E-13
+ v2rhoasigmaab =  0.000000000000E+00
+ v2rhoasigmabb =  0.118914762736E-15
+ v2rhobsigmaaa =  0.118914762736E-15
+ v2rhobsigmaab =  0.000000000000E+00
+ v2rhobsigmabb =  0.115170171815E-13
+
+ v2sigmaaa2    = -0.756124265210E-23
+ v2sigmaaaab   =  0.000000000000E+00
+ v2sigmaaabb   =  0.000000000000E+00
+ v2sigmaab2    =  0.000000000000E+00
+ v2sigmaabbb   =  0.000000000000E+00
+ v2sigmabb2    = -0.362916500267E-24
+
+ rhoa= 0.15E+00 rhob= 0.15E+00 sigmaaa= 0.16E+00 sigmaab= 0.16E+00 sigmabb= 0.16E+00
+ zk            = -0.127398697969E-01
+ vrhoa         = -0.497999066227E-01
+ vrhob         = -0.497999066227E-01
+ vsigmaaa      =  0.184632813904E-02
+ vsigmaab      =  0.000000000000E+00
+ vsigmabb      =  0.184632813904E-02
+
+ v2rhoa2       =  0.108994142626E+01
+ v2rhoab       = -0.977823195505E-01
+ v2rhob2       =  0.108994142626E+01
+
+ v2rhoasigmaaa = -0.372044710645E+00
+ v2rhoasigmaab =  0.000000000000E+00
+ v2rhoasigmabb =  0.123088542603E-01
+ v2rhobsigmaaa =  0.123088542603E-01
+ v2rhobsigmaab =  0.000000000000E+00
+ v2rhobsigmabb = -0.372044710645E+00
+
+ v2sigmaaa2    =  0.121685197847E+00
+ v2sigmaaaab   =  0.000000000000E+00
+ v2sigmaaabb   =  0.000000000000E+00
+ v2sigmaab2    =  0.000000000000E+00
+ v2sigmaabbb   =  0.000000000000E+00
+ v2sigmabb2    =  0.121685197847E+00
+
+ rhoa= 0.35E+01 rhob= 0.00E+00 sigmaaa= 0.46E-10 sigmaab= 0.00E+00 sigmabb= 0.00E+00
+ zk            = -0.148553256297E+00
+ vrhoa         = -0.468123727717E-01
+ vrhob         =  0.000000000000E+00
+ vsigmaaa      =  0.570402859923E-03
+ vsigmaab      =  0.000000000000E+00
+ vsigmabb      =  0.000000000000E+00
+
+ v2rhoa2       = -0.129891526234E-02
+ v2rhoab       =  0.000000000000E+00
+ v2rhob2       =  0.000000000000E+00
+
+ v2rhoasigmaaa = -0.210655135758E-03
+ v2rhoasigmaab =  0.000000000000E+00
+ v2rhoasigmabb =  0.000000000000E+00
+ v2rhobsigmaaa =  0.000000000000E+00
+ v2rhobsigmaab =  0.000000000000E+00
+ v2rhobsigmabb =  0.000000000000E+00
+
+ v2sigmaaa2    = -0.825428812836E-05
+ v2sigmaaaab   =  0.000000000000E+00
+ v2sigmaaabb   =  0.000000000000E+00
+ v2sigmaab2    =  0.000000000000E+00
+ v2sigmaabbb   =  0.000000000000E+00
+ v2sigmabb2    =  0.000000000000E+00
+
+ rhoa= 0.35E+01 rhob= 0.00E+00 sigmaaa= 0.34E+01 sigmaab= 0.00E+00 sigmabb= 0.00E+00
+ zk            = -0.146660155749E+00
+ vrhoa         = -0.474814334556E-01
+ vrhob         =  0.000000000000E+00
+ vsigmaaa      =  0.543600817986E-03
+ vsigmaab      =  0.000000000000E+00
+ vsigmabb      =  0.000000000000E+00
+
+ v2rhoa2       = -0.891541782489E-03
+ v2rhoab       =  0.000000000000E+00
+ v2rhob2       =  0.000000000000E+00
+
+ v2rhoasigmaaa = -0.183611981211E-03
+ v2rhoasigmaab =  0.000000000000E+00
+ v2rhoasigmabb =  0.000000000000E+00
+ v2rhobsigmaaa =  0.000000000000E+00
+ v2rhobsigmaab =  0.000000000000E+00
+ v2rhobsigmabb =  0.000000000000E+00
+
+ v2sigmaaa2    = -0.752145366182E-05
+ v2sigmaaaab   =  0.000000000000E+00
+ v2sigmaaabb   =  0.000000000000E+00
+ v2sigmaab2    =  0.000000000000E+00
+ v2sigmaabbb   =  0.000000000000E+00
+ v2sigmabb2    =  0.000000000000E+00
+
+ rhoa= 0.30E+01 rhob= 0.00E+00 sigmaaa= 0.20E+03 sigmaab= 0.00E+00 sigmabb= 0.00E+00
+ zk            = -0.768663439084E-03
+ vrhoa         = -0.120451005753E-01
+ vrhob         =  0.000000000000E+00
+ vsigmaaa      =  0.662328687878E-04
+ vsigmaab      =  0.000000000000E+00
+ vsigmabb      =  0.000000000000E+00
+
+ v2rhoa2       = -0.155323597267E+00
+ v2rhoab       =  0.000000000000E+00
+ v2rhob2       =  0.000000000000E+00
+
+ v2rhoasigmaaa =  0.872419275463E-03
+ v2rhoasigmaab =  0.000000000000E+00
+ v2rhoasigmabb =  0.000000000000E+00
+ v2rhobsigmaaa =  0.000000000000E+00
+ v2rhobsigmaab =  0.000000000000E+00
+ v2rhobsigmabb =  0.000000000000E+00
+
+ v2sigmaaa2    = -0.510726569448E-05
+ v2sigmaaaab   =  0.000000000000E+00
+ v2sigmaaabb   =  0.000000000000E+00
+ v2sigmaab2    =  0.000000000000E+00
+ v2sigmaabbb   =  0.000000000000E+00
+ v2sigmabb2    =  0.000000000000E+00
+
+ rhoa= 0.58E-01 rhob= 0.00E+00 sigmaaa= 0.47E-01 sigmaab= 0.00E+00 sigmabb= 0.00E+00
+ zk            =  0.000000000000E+00
+ vrhoa         =  0.000000000000E+00
+ vrhob         =  0.000000000000E+00
+ vsigmaaa      =  0.000000000000E+00
+ vsigmaab      =  0.000000000000E+00
+ vsigmabb      =  0.000000000000E+00
+
+ v2rhoa2       =  0.000000000000E+00
+ v2rhoab       =  0.000000000000E+00
+ v2rhob2       =  0.000000000000E+00
+
+ v2rhoasigmaaa =  0.000000000000E+00
+ v2rhoasigmaab =  0.000000000000E+00
+ v2rhoasigmabb =  0.000000000000E+00
+ v2rhobsigmaaa =  0.000000000000E+00
+ v2rhobsigmaab =  0.000000000000E+00
+ v2rhobsigmabb =  0.000000000000E+00
+
+ v2sigmaaa2    =  0.000000000000E+00
+ v2sigmaaaab   =  0.000000000000E+00
+ v2sigmaaabb   =  0.000000000000E+00
+ v2sigmaab2    =  0.000000000000E+00
+ v2sigmaabbb   =  0.000000000000E+00
+ v2sigmabb2    =  0.000000000000E+00
+
+ rhoa= 0.82E+02 rhob= 0.81E+02 sigmaaa= 0.49E+07 sigmaab= 0.49E+07 sigmabb= 0.49E+07
+ zk            = -0.706863265409E+01
+ vrhoa         = -0.102952562202E+00
+ vrhob         = -0.110308819415E+00
+ vsigmaaa      =  0.374542634680E-06
+ vsigmaab      =  0.000000000000E+00
+ vsigmabb      =  0.410777557133E-06
+
+ v2rhoa2       =  0.552120628319E-02
+ v2rhoab       = -0.155201623293E-02
+ v2rhob2       =  0.609727325509E-02
+
+ v2rhoasigmaaa = -0.301109005713E-07
+ v2rhoasigmaab =  0.000000000000E+00
+ v2rhoasigmabb =  0.500948240407E-08
+ v2rhobsigmaaa =  0.462398314420E-08
+ v2rhobsigmaab =  0.000000000000E+00
+ v2rhobsigmabb = -0.327566475436E-07
+
+ v2sigmaaa2    =  0.112894095762E-12
+ v2sigmaaaab   =  0.000000000000E+00
+ v2sigmaaabb   =  0.000000000000E+00
+ v2sigmaab2    =  0.000000000000E+00
+ v2sigmaabbb   =  0.000000000000E+00
+ v2sigmabb2    =  0.119596588781E-12
+
+ rhoa= 0.39E+02 rhob= 0.38E+02 sigmaaa= 0.81E+06 sigmaab= 0.82E+06 sigmabb= 0.82E+06
+ zk            = -0.283750883814E+01
+ vrhoa         = -0.124908194601E+00
+ vrhob         = -0.150117710184E+00
+ vsigmaaa      =  0.161191904994E-05
+ vsigmaab      =  0.000000000000E+00
+ vsigmabb      =  0.193645956513E-05
+
+ v2rhoa2       =  0.155424625275E-01
+ v2rhoab       = -0.522158146983E-02
+ v2rhob2       =  0.184102237414E-01
+
+ v2rhoasigmaaa = -0.239536897515E-06
+ v2rhoasigmaab =  0.000000000000E+00
+ v2rhoasigmabb =  0.496528093622E-07
+ v2rhobsigmaaa =  0.424189223667E-07
+ v2rhobsigmaab =  0.000000000000E+00
+ v2rhobsigmabb = -0.269246980247E-06
+
+ v2sigmaaa2    =  0.234249562015E-11
+ v2sigmaaaab   =  0.000000000000E+00
+ v2sigmaaabb   =  0.000000000000E+00
+ v2sigmaab2    =  0.000000000000E+00
+ v2sigmaabbb   =  0.000000000000E+00
+ v2sigmabb2    =  0.232512433989E-11
+
+ rhoa= 0.13E+00 rhob= 0.95E-01 sigmaaa= 0.15E+00 sigmaab= 0.18E+00 sigmabb= 0.22E+00
+ zk            = -0.381858512005E-02
+ vrhoa         = -0.254990443897E-01
+ vrhob         = -0.452858242880E-01
+ vsigmaaa      =  0.784586603788E-02
+ vsigmaab      =  0.000000000000E+00
+ vsigmabb      =  0.837545876006E-03
+
+ v2rhoa2       =  0.199559444599E+01
+ v2rhoab       = -0.307566312387E+00
+ v2rhob2       = -0.281373924605E+01
+
+ v2rhoasigmaaa = -0.590164166782E+00
+ v2rhoasigmaab =  0.000000000000E+00
+ v2rhoasigmabb =  0.644266058466E-02
+ v2rhobsigmaaa =  0.825880635567E-01
+ v2rhobsigmaab =  0.000000000000E+00
+ v2rhobsigmabb =  0.463846704591E+00
+
+ v2sigmaaa2    =  0.141388359414E+00
+ v2sigmaaaab   =  0.000000000000E+00
+ v2sigmaaabb   =  0.000000000000E+00
+ v2sigmaab2    =  0.000000000000E+00
+ v2sigmaabbb   =  0.000000000000E+00
+ v2sigmabb2    = -0.788188439541E-01
+
+ rhoa= 0.78E-01 rhob= 0.31E-01 sigmaaa= 0.41E-02 sigmaab= 0.38E-02 sigmabb= 0.36E-02
+ zk            = -0.551831772899E-02
+ vrhoa         = -0.866007527573E-01
+ vrhob         = -0.140341492064E+00
+ vsigmaaa      =  0.180002905016E+00
+ vsigmaab      =  0.000000000000E+00
+ vsigmabb      =  0.328848827752E+00
+
+ v2rhoa2       =  0.173420046589E+01
+ v2rhoab       = -0.131156577035E+01
+ v2rhob2       =  0.338009760872E+02
+
+ v2rhoasigmaaa = -0.131028284226E+02
+ v2rhoasigmaab =  0.000000000000E+00
+ v2rhoasigmabb =  0.421601061221E+01
+ v2rhobsigmaaa = -0.783702034921E+00
+ v2rhobsigmaab =  0.000000000000E+00
+ v2rhobsigmabb = -0.988514261730E+02
+
+ v2sigmaaa2    =  0.707253825481E+02
+ v2sigmaaaab   =  0.000000000000E+00
+ v2sigmaaabb   =  0.000000000000E+00
+ v2sigmaab2    =  0.000000000000E+00
+ v2sigmaabbb   =  0.000000000000E+00
+ v2sigmabb2    =  0.230975091612E+03
+
+ rhoa= 0.50E+02 rhob= 0.49E+02 sigmaaa= 0.11E+06 sigmaab= 0.11E+06 sigmabb= 0.11E+06
+ zk            = -0.867142335288E+01
+ vrhoa         = -0.139581408089E+00
+ vrhob         = -0.142427938036E+00
+ vsigmaaa      =  0.824054066684E-05
+ vsigmaab      =  0.000000000000E+00
+ vsigmabb      =  0.867783131050E-05
+
+ v2rhoa2       =  0.229898102653E-02
+ v2rhoab       = -0.339399360242E-03
+ v2rhob2       =  0.272494020134E-02
+
+ v2rhoasigmaaa = -0.385171896488E-06
+ v2rhoasigmaab =  0.000000000000E+00
+ v2rhoasigmabb =  0.209274376884E-07
+ v2rhobsigmaaa =  0.214419447418E-07
+ v2rhobsigmaab =  0.000000000000E+00
+ v2rhobsigmabb = -0.448218182512E-06
+
+ v2sigmaaa2    =  0.186603737199E-10
+ v2sigmaaaab   =  0.000000000000E+00
+ v2sigmaaabb   =  0.000000000000E+00
+ v2sigmaab2    =  0.000000000000E+00
+ v2sigmaabbb   =  0.000000000000E+00
+ v2sigmabb2    = -0.122862358606E-10
+
+ rhoa= 0.40E+02 rhob= 0.40E+02 sigmaaa= 0.99E+05 sigmaab= 0.98E+05 sigmabb= 0.98E+05
+ zk            = -0.599398175427E+01
+ vrhoa         = -0.174068521564E+00
+ vrhob         = -0.173087649987E+00
+ vsigmaaa      =  0.146892527589E-04
+ vsigmaab      =  0.000000000000E+00
+ vsigmabb      =  0.146343007723E-04
+
+ v2rhoa2       =  0.629608564785E-02
+ v2rhoab       = -0.297981677179E-03
+ v2rhob2       =  0.636257397250E-02
+
+ v2rhoasigmaaa = -0.954782297716E-06
+ v2rhoasigmaab =  0.000000000000E+00
+ v2rhoasigmabb =  0.162158688397E-07
+ v2rhobsigmaaa =  0.158935605714E-07
+ v2rhobsigmaab =  0.000000000000E+00
+ v2rhobsigmabb = -0.974522138175E-06
+
+ v2sigmaaa2    =  0.529868086380E-10
+ v2sigmaaaab   =  0.000000000000E+00
+ v2sigmaaabb   =  0.000000000000E+00
+ v2sigmaab2    =  0.000000000000E+00
+ v2sigmaabbb   =  0.000000000000E+00
+ v2sigmabb2    = -0.130223858036E-10
+
+ rhoa= 0.12E+00 rhob= 0.10E+00 sigmaaa= 0.12E+00 sigmaab= 0.13E+00 sigmabb= 0.14E+00
+ zk            = -0.634559036006E-02
+ vrhoa         = -0.473242099688E-01
+ vrhob         = -0.211606729755E+00
+ vsigmaaa      =  0.987665710431E-02
+ vsigmaab      =  0.000000000000E+00
+ vsigmabb      =  0.456545282426E-01
+
+ v2rhoa2       =  0.241104339140E+01
+ v2rhoab       = -0.170783231764E+01
+ v2rhob2       =  0.488243374927E+01
+
+ v2rhoasigmaaa = -0.824536703478E+00
+ v2rhoasigmaab =  0.000000000000E+00
+ v2rhoasigmabb =  0.380454402022E+00
+ v2rhobsigmaaa =  0.987665710431E-01
+ v2rhobsigmaab =  0.000000000000E+00
+ v2rhobsigmabb = -0.865649412095E+00
+
+ v2sigmaaa2    =  0.230017619864E+00
+ v2sigmaaaab   =  0.000000000000E+00
+ v2sigmaaabb   =  0.000000000000E+00
+ v2sigmaab2    =  0.000000000000E+00
+ v2sigmaabbb   =  0.000000000000E+00
+ v2sigmabb2    = -0.894309721821E-01
+
+ rhoa= 0.48E-01 rhob= 0.25E-01 sigmaaa= 0.46E-02 sigmaab= 0.44E-02 sigmabb= 0.41E-02
+ zk            = -0.142232374873E-02
+ vrhoa         = -0.390603826254E-02
+ vrhob         = -0.284413181065E+00
+ vsigmaaa      = -0.286449695266E-01
+ vsigmaab      =  0.000000000000E+00
+ vsigmabb      =  0.559687422676E+00
+
+ v2rhoa2       =  0.160351937331E+00
+ v2rhoab       = -0.489624634542E+01
+ v2rhob2       = -0.278412594541E+02
+
+ v2rhoasigmaaa = -0.117619172434E+01
+ v2rhoasigmaab =  0.000000000000E+00
+ v2rhoasigmabb =  0.116601546391E+02
+ v2rhobsigmaaa = -0.114579878106E+01
+ v2rhobsigmaab =  0.000000000000E+00
+ v2rhobsigmabb =  0.847925966637E+02
+
+ v2sigmaaa2    =  0.111817391657E+02
+ v2sigmaaaab   =  0.000000000000E+00
+ v2sigmaaabb   =  0.000000000000E+00
+ v2sigmaab2    =  0.000000000000E+00
+ v2sigmaabbb   =  0.000000000000E+00
+ v2sigmabb2    = -0.327194093916E+03
+

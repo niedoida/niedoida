@@ -1,0 +1,208 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+<? WriteString("// Auto-generated, do not modify"); ?>
+namespace niedoida {
+    namespace xc {
+        XCFunctionalData <? WriteString(fname); ?>(
+            double rhoa, double rhob, 
+            unsigned n)
+        {
+            const double eps = std::numeric_limits<double>::epsilon();
+            const double Pi = <? WriteString(CppForm(N(Pi, 32))); ?>;
+
+            XCFunctionalData result;
+
+            if (rhoa + rhob < 2 * eps)
+                return result;
+
+            // Value of the functional itself
+
+            if (rhoa >= eps && rhob >= eps) {
+<?
+                ForEach(d, Reverse(aecsl)) [ 
+                    WriteString("                const double " : CppForm(d) : ";" : Nl());
+                ];
+?>
+                result.e = <? WriteString(CppForm(e)); ?>;
+            } else if (rhoa < eps) {
+<?
+                ForEach(d, Reverse(aleacsl)) [ 
+                    WriteString("                const double " : CppForm(d) : ";" : Nl()); 
+                ];
+?>
+                result.e = <? WriteString(CppForm(lea)); ?>;
+            } else if (rhob < eps) {
+<?
+                ForEach(d, Reverse(alebcsl)) [ 
+                    WriteString("                const double " : CppForm(d) : ";" : Nl()); 
+                ];
+?>
+                result.e = <? WriteString(CppForm(leb)); ?>;
+            }
+
+            if (n < 1)
+                return result;
+
+            // First derivatives with respect to density
+
+            if (rhoa >= eps) {
+<?
+                ForEach(d, Reverse(alebcsl)) [ 
+                    WriteString("                const double " : CppForm(d) : ";" : Nl()); 
+                ];
+                ForEach(d, Reverse(adedracsl)) [ 
+                    WriteString("                const double " : CppForm(d) : ";" : Nl()); 
+                ];
+?>
+                result.de_dra = <? WriteString(CppForm(dedra)); ?>;
+            }
+
+            if (rhob >= eps) {
+<?
+                ForEach(d, Reverse(aleacsl)) [ 
+                    WriteString("                const double " : CppForm(d) : ";" : Nl()); 
+                ];
+                ForEach(d, Reverse(adedrbcsl)) [ 
+                    WriteString("                const double " : CppForm(d) : ";" : Nl()); 
+                ];
+?>
+                result.de_drb = <? WriteString(CppForm(dedrb)); ?>;
+            }
+
+            if (n < 2)
+                return result;
+
+            // Second derivatives with respect to density
+
+            if (rhoa >= eps) {
+<?
+                ForEach(d, Reverse(alebcsl)) [ 
+                    WriteString("                const double " : CppForm(d) : ";" : Nl()); 
+                ];
+                ForEach(d, Reverse(adedracsl)) [ 
+                    WriteString("                const double " : CppForm(d) : ";" : Nl()); 
+                ];
+                ForEach(d, Reverse(ad2edraracsl)) [ 
+                    WriteString("                const double " : CppForm(d) : ";" : Nl()); 
+                ];
+?>
+                result.d2e_drara = <? WriteString(CppForm(d2edrara)); ?>;
+            }
+
+            if (rhoa >= eps && rhob >= eps) {
+<? 
+                ForEach(d, Reverse(alebcsl)) [ 
+                    WriteString("                const double " : CppForm(d) : ";" : Nl()); 
+                ];
+                ForEach(d, Reverse(aleacsl)) [ 
+                    WriteString("                const double " : CppForm(d) : ";" : Nl()); 
+                ];
+                ForEach(d, Reverse(adedracsl)) [ 
+                    WriteString("                const double " : CppForm(d) : ";" : Nl()); 
+                ];
+                ForEach(d, Reverse(adedrbcsl)) [ 
+                    WriteString("                const double " : CppForm(d) : ";" : Nl()); 
+                ];
+                ForEach(d, Reverse(ad2edrarbcsl)) [ 
+                    WriteString("                const double " : CppForm(d) : ";" : Nl()); 
+                ];
+?>
+                result.d2e_drarb = <? WriteString(CppForm(d2edrarb)); ?>;
+            }
+
+            if (rhob >= eps) {
+<?
+                ForEach(d, Reverse(aleacsl)) [ 
+                    WriteString("                const double " : CppForm(d) : ";" : Nl()); 
+                ];
+                ForEach(d, Reverse(adedrbcsl)) [ 
+                    WriteString("                const double " : CppForm(d) : ";" : Nl()); 
+                ];
+                ForEach(d, Reverse(ad2edrbrbcsl)) [ 
+                    WriteString("                const double " : CppForm(d) : ";" : Nl()); 
+                ];
+?>
+                result.d2e_drbrb = <? WriteString(CppForm(d2edrbrb)); ?>;
+            }
+
+            if (n < 3)
+                return result;
+
+            // Third derivatives with respect to density
+
+            if (rhoa >= eps) {
+<?
+                ForEach(d, Reverse(alebcsl)) [ 
+                    WriteString("                const double " : CppForm(d) : ";" : Nl()); 
+                ];
+                ForEach(d, Reverse(adedracsl)) [ 
+                    WriteString("                const double " : CppForm(d) : ";" : Nl()); 
+                ];
+                ForEach(d, Reverse(ad2edraracsl)) [ 
+                    WriteString("                const double " : CppForm(d) : ";" : Nl()); 
+                ];
+                ForEach(d, Reverse(ad3edrararacsl)) [ 
+                    WriteString("                const double " : CppForm(d) : ";" : Nl()); 
+                ];
+?>
+                result.d3e_drarara = <? WriteString(CppForm(d3edrarara)); ?>;
+            }
+
+            if (rhoa >= eps && rhob >= eps) {
+<? 
+                ForEach(d, Reverse(alebcsl)) [ 
+                    WriteString("                const double " : CppForm(d) : ";" : Nl()); 
+                ];
+                ForEach(d, Reverse(aleacsl)) [ 
+                    WriteString("                const double " : CppForm(d) : ";" : Nl()); 
+                ];
+                ForEach(d, Reverse(adedracsl)) [ 
+                    WriteString("                const double " : CppForm(d) : ";" : Nl()); 
+                ];
+                ForEach(d, Reverse(adedrbcsl)) [ 
+                    WriteString("                const double " : CppForm(d) : ";" : Nl()); 
+                ];
+                ForEach(d, Reverse(ad2edraracsl)) [ 
+                    WriteString("                const double " : CppForm(d) : ";" : Nl()); 
+                ];
+                ForEach(d, Reverse(ad2edrarbcsl)) [ 
+                    WriteString("                const double " : CppForm(d) : ";" : Nl()); 
+                ];
+                ForEach(d, Reverse(ad2edrbrbcsl)) [ 
+                    WriteString("                const double " : CppForm(d) : ";" : Nl()); 
+                ];
+                ForEach(d, Reverse(ad3edrararbcsl)) [ 
+                    WriteString("                const double " : CppForm(d) : ";" : Nl()); 
+                ];
+                ForEach(d, Reverse(ad3edrarbrbcsl)) [ 
+                    WriteString("                const double " : CppForm(d) : ";" : Nl()); 
+                ];
+?>
+                result.d3e_drararb = <? WriteString(CppForm(d3edrararb)); ?>;
+                result.d3e_drarbrb = <? WriteString(CppForm(d3edrarbrb)); ?>;
+            }
+
+            if (rhob >= eps) {
+<?
+                ForEach(d, Reverse(aleacsl)) [ 
+                    WriteString("                const double " : CppForm(d) : ";" : Nl()); 
+                ];
+                ForEach(d, Reverse(adedrbcsl)) [ 
+                    WriteString("                const double " : CppForm(d) : ";" : Nl()); 
+                ];
+                ForEach(d, Reverse(ad2edrbrbcsl)) [
+                    WriteString("                const double " : CppForm(d) : ";" : Nl()); 
+                ];
+                ForEach(d, Reverse(ad3edrbrbrbcsl)) [
+                    WriteString("                const double " : CppForm(d) : ";" : Nl()); 
+                ];
+?>
+                result.d3e_drbrbrb = <? WriteString(CppForm(d3edrbrbrb)); ?>;
+            }
+
+            return result;
+        }
+    }
+}

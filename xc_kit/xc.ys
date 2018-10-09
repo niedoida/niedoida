@@ -1,0 +1,380 @@
+// Aux
+
+XC'Tiny := 1e-16;
+
+XC'Ax := N(3./2.*(3./(4.*Pi))^(1./3.));
+
+XC'x(rho,gamma) := Sqrt(gamma)/(rho+XC'Tiny)^(4./3.) ;
+
+XC'Gc(r,A,a1,b1,b2,b3,b4) := 
+   -2*A*(1+a1*r)*Ln(1+1./(2*A*(b1*r^(1./2.)+b2*r+b3*r^(3./2.)+b4*r^2)));
+
+XC'kF(rho) := (3. * Pi^2 * rho)^(1./3.);
+
+XC'eX(rho) := -3./4. * XC'kF(rho) / Pi;
+
+XC'S(rho,gamma) := 1./2. * Sqrt(gamma) / (XC'kF(rho) * rho + XC'Tiny);
+
+XC'fz(z) := 1./2. * ((1.+z*(1.-XC'Tiny))^(4./3.) + (1.-z*(1.-XC'Tiny))^(4./3.) - 2.) / (2.^(1./3.) - 1.);
+
+XC'rs(rho) := (3./(4. * Pi * rho))^(1./3.);
+
+XC'PBE'PW91rs(rho) := 1./4. * (3. * 4.^2 / (Pi * rho)) ^ (1./3.);
+
+XC'd2fz0 := N(Eval(WithValue(z, 0, D(z,2)XC'fz(z))));
+
+XC'phi(z) := 1./2.*(1+z*(1.-XC'Tiny))^(2./3.)+1./2.*(1.-z*(1-XC'Tiny))^(2./3.);
+
+XC'ks(rho) := 2. * Sqrt(XC'kF(rho)/Pi);
+
+XC'T(rho,gamma,z) := 1./2. * Sqrt(gamma) / (XC'phi(z)*XC'ks(rho)*rho + XC'Tiny);
+
+// eXchange, LDA
+
+XC'XSlater(rhoa, rhob) := [
+    Local(k);
+    k := -(3. / 4.) * (2. * (3. / Pi))^(1./3.);
+    k * (rhoa^(4./3.) + rhob^(4./3.));
+];
+
+// eXchange, GGA
+
+XC'XBecke88'g(x, b) := 
+    -3./2. * (3. / (4. * Pi))^(1./3.) - 
+    (b * x^2) / (1. + 6. * b * x * ArcSinh(x));
+
+XC'XBecke88(rhoa, rhob, gammaaa, gammaab, gammabb) := [
+    Local(g, xa, xb, beta);
+    g(x, b) := XC'XBecke88'g(x, b);
+    beta := 0.0042;
+    xa := Sqrt(gammaaa)/(rhoa + XC'Tiny)^(4./3.);
+    xb := Sqrt(gammabb)/(rhob + XC'Tiny)^(4./3.);
+    rhoa^(4./3.) * g(xa, beta) + rhob^(4./3.) * g(xb, beta);
+];
+
+XC'XPW91'FX(s) := 
+   (1+0.19645*s*ArcSinh(7.7956*s)+(0.2743-0.1508*Exp(-100*s^2))*s^2) / 
+   (1+0.19645*s*ArcSinh(7.7956*s)+0.004*s^4);
+
+XC'XPW91(rhoa, rhob, gammaaa, gammaab, gammabb) :=
+   rhoa*XC'eX(2*rhoa)*XC'XPW91'FX(XC'S(2*rhoa,4*gammaaa)) + 
+   rhob*XC'eX(2*rhob)*XC'XPW91'FX(XC'S(2*rhob,4*gammabb));
+
+XC'XmPW91'FX(x) :=
+   (0.00426*x^2-(0.00426-5.*(36.*Pi)^(-5./3.))*x^2*Exp(-1.6455*x^2)-0.000001*x^3.72) /
+   (1+6*0.00426*x*ArcSinh(x)+0.000001*x^3.72*2.*(4*Pi)^(1./3.)/(3.^(4./3.)));
+
+XC'XmPW91(rhoa, rhob, gammaaa, gammaab, gammabb) :=
+   XC'XSlater(rhoa, rhob)-
+   rhoa^(4./3.)*XC'XmPW91'FX(XC'x(rhoa,gammaaa))-
+   rhob^(4./3.)*XC'XmPW91'FX(XC'x(rhob,gammabb));
+
+XC'XPBE'mu := 0.2195149727645171;
+
+XC'XPBE'FX(s, kp) := 1 + kp - kp / (1 + (XC'XPBE'mu*s^2)/kp);
+
+XC'XPBE(rhoa, rhob, gammaaa, gammaab, gammabb) := [
+   Local(kp);
+   kp := 0.804;
+   rhoa*XC'eX(2*rhoa)*XC'XPBE'FX(XC'S(2*rhoa,4*gammaaa),kp) + 
+   rhob*XC'eX(2*rhob)*XC'XPBE'FX(XC'S(2*rhob,4*gammabb),kp);
+];
+
+XC'XmPBE'FX(s) := [
+   Local(a,C1,C2);
+   a := 0.157;
+   C1 := 0.21951;
+   C2 := -0.015;
+   1.0 + C1 * (s^2)/(1.0 + a * (s^2)) + 
+   C2 * ((s^2)/(1.0 + a * (s^2)))^2;
+];
+
+XC'XmPBE(rhoa, rhob, gammaaa, gammaab, gammabb) :=
+   rhoa*XC'eX(2*rhoa)*XC'XmPBE'FX(XC'S(2*rhoa,4*gammaaa)) + 
+   rhob*XC'eX(2*rhob)*XC'XmPBE'FX(XC'S(2*rhob,4*gammabb));
+
+XC'XrevPBE(rhoa, rhob, gammaaa, gammaab, gammabb) := [
+   Local(kp);
+   kp := 1.245;
+   rhoa*XC'eX(2*rhoa)*XC'XPBE'FX(XC'S(2*rhoa,4*gammaaa),kp) + 
+   rhob*XC'eX(2*rhob)*XC'XPBE'FX(XC'S(2*rhob,4*gammabb),kp);
+];
+
+XC'XRPBE'FX(s):= [
+   Local(ni,kappa);
+   ni := 0.21951;
+   kappa := 0.804;
+   1.0 + kappa * (1.0 - Exp(-(ni/kappa)*(s^2.0)));
+];
+
+XC'XRPBE(rhoa, rhob, gammaaa, gammaab, gammabb) :=
+   rhoa*XC'eX(2*rhoa)*XC'XRPBE'FX(XC'S(2*rhoa,4*gammaaa)) + 
+   rhob*XC'eX(2*rhob)*XC'XRPBE'FX(XC'S(2*rhob,4*gammabb));
+
+XC'XOPTX'x(rho,gamma) := [
+   Sqrt(gamma) / (rho^(4.0/3.0));
+];
+
+XC'XOPTX'u(x) := [
+   Local(gamma,x2);
+   gamma := 0.006;
+   x2 := x * x;
+   gamma * x2 / (1 + gamma * x2);
+];
+
+XC'XOPTX(rhoa, rhob, gammaaa, gammaab, gammabb) := [
+   Local(xa,xb,cx);
+   xa := XC'XOPTX'x(rhoa,gammaaa);
+   xb := XC'XOPTX'x(rhob,gammabb);
+   cx := (3.0/4.0) * (6.0/Pi)^(1.0/3.0);
+   -(1.05151 * cx + 1.43169 * (XC'XOPTX'u(XC'XOPTX'x(rhoa, gammaaa))^2)) * (rhoa^(4.0/3.0))
+   -(1.05151 * cx + 1.43169 * (XC'XOPTX'u(XC'XOPTX'x(rhob, gammabb))^2)) * (rhob^(4.0/3.0));
+];
+
+// Exchange, meta-GGA
+
+XC'TPSS'tauW (rho, gamma) := 1.0 / 8.0 * gamma / rho;
+
+XC'TPSS'z (t, tau) := t / (tau);
+
+XC'TPSS'alfa (s, z) := ((5.0 * s^2.0) / 3.0) * 
+   (1.0 / z - 1.0);
+
+XC'TPSS'q (alfa, s) := (9.0 / 20.0) * (alfa - 1.0)
+    / Sqrt(1.0 + 0.40 * alfa * (alfa-1.0))
+    + 2.0 * (s^2.0) / 3.0;
+
+XC'TPSS'x (z, s, q) := [
+    Local(c, e, ni, kappa);
+    c := 1.59096;
+    e := 1.537;
+    ni := 0.21951;
+    kappa := 0.804;
+
+    (   (10.0/81.0 + c * ((z^2.0) / 
+    (1.0 + (z^2.0))^2.0))*(s^2.0)
+    + 146.0 / 2025.0 * (q^2.0)
+    - 73.0 / 405.0 * q
+    * Sqrt (1.0 / 2.0 * ((3.0 / 5.0 * z)^2.0) + 1.0 / 2.0 * (s^4.0))
+    + 1.0 / kappa * ((10.0/81.0)^2.0) * (s^4.0)
+    + 2.0 * Sqrt (e) * 10.0 / 81.0 * ((3.0 / 5.0 * z)^2.0)
+    + e * ni * (s^6.0)    )
+    / ((1.0 + Sqrt (e) * (s^2.0))^2.0);
+];
+
+XC'TPSS'F (x) := [
+   Local(kappa);
+   kappa := 0.804;
+
+   1.0 + kappa - kappa / (1.0 + x / kappa);
+
+];
+
+XC'TPSS'eps (rho) := -3.0 / (4.0 * Pi) * ((3.0 * Pi * Pi * rho)^(1.0 / 3.0));
+
+
+XC'TPSS (rhoa, rhob, gammaaa, gammaab, gammabb, taua, taub) := [
+ 
+   0.5 * 2.0 * rhoa * XC'TPSS'eps(2.0 * rhoa) * 
+   XC'TPSS'F(XC'TPSS'x(XC'TPSS'z (XC'TPSS'tauW (2.0*rhoa, 4.0*gammaaa), taua), XC'S(2.0*rhoa,4.0*gammaaa), 
+   XC'TPSS'q (XC'TPSS'alfa (XC'S(2.0*rhoa,4.0*gammaaa), XC'TPSS'z (XC'TPSS'tauW (2.0*rhoa, 4.0*gammaaa), taua)), XC'S(2.0*rhoa,4.0*gammaaa)))) +
+   0.5 * 2.0 * rhob * XC'TPSS'eps(2.0 * rhob) * 
+   XC'TPSS'F(XC'TPSS'x(XC'TPSS'z (XC'TPSS'tauW (2.0*rhob, 4.0*gammabb), taub), XC'S(2.0*rhob,4.0*gammabb), 
+   XC'TPSS'q (XC'TPSS'alfa (XC'S(2.0*rhob,4.0*gammabb), XC'TPSS'z (XC'TPSS'tauW (2.0*rhob, 4.0*gammabb), taub)), XC'S(2.0*rhob,4.0*gammabb))));
+];
+
+// Correlation, LDA
+
+XC'CVWN'E(A,X0,B,C,x) := [
+    Local(XX, Q);
+
+    XX(x,b,c) := x^2 + b*x + c;
+    Q(b,c) := Sqrt(4 * c - b^2);
+    
+    A*(Ln(x^2 / XX(x,B,C)) + 2 * B * ArcTan(Q(B,C) / (2 * x + B)) / Q(B, C)
+            - B * X0 * (Ln((x - X0)^2/XX(x,B,C))
+        + 2*(B + 2 * X0) * ArcTan(Q(B,C)/(2 * x + B)) / Q(B, C)) / XX(X0,B,C));
+];
+
+XC'CVWN'5(rhoa, rhob) := [
+    Local(rho, z, x, EcP, EcF, Ac, B2, dEe, Ec);
+    rho := rhoa + rhob;
+    z := (rhoa - rhob) / rho;
+    x := Sqrt(XC'rs(rho));
+    EcP := XC'CVWN'E(0.03109070000,-0.10498,3.72744,12.9352,x);
+    EcF := XC'CVWN'E(0.01554535000,-0.32500,7.06042,18.0578,x);
+    Ac := XC'CVWN'E(-1./(6. * Pi^2), -0.00475840,1.13107,13.0045,x);
+    B2 := XC'd2fz0 * (EcF - EcP) / Ac - 1;
+    dEc := Ac * XC'fz(z) * (1 + B2 * z^4) / XC'd2fz0;
+    Ec := EcP + dEc;
+    rho * Ec;
+];
+
+XC'CVWN'5RPA(rhoa, rhob) := [
+    Local(rho, z, x, EcP, EcF, Ac, B2, dEe, Ec);
+    rho := rhoa + rhob;
+    z := (rhoa - rhob) / rho;
+    x := Sqrt(XC'rs(rho));
+    EcP := XC'CVWN'E(0.03109070000,-0.409286,13.0720,42.7198,x);
+    EcF := XC'CVWN'E(0.01554535000,-0.743294,20.1231,101.578,x);
+    Ac := XC'CVWN'E(-1./(6. * Pi^2), -0.228344,1.06835,11.4813,x);
+    B2 := XC'd2fz0 * (EcF - EcP) / Ac - 1;
+    dEc := Ac * XC'fz(z) * (1 + B2 * z^4) / XC'd2fz0;
+    Ec := EcP + dEc;
+    rho * Ec;
+];
+
+XC'CVWN'3(rhoa, rhob) := [
+    Local(rho, z, x, EcP, EcF, dEe, Ec);
+    rho := rhoa + rhob;
+    z := (rhoa - rhob) / rho;
+    x := Sqrt(XC'rs(rho));
+    EcP := XC'CVWN'E(0.03109070000,-0.409286,13.0720,42.7198,x);
+    EcF := XC'CVWN'E(0.01554535000,-0.743294,20.1231,101.578,x);
+    dEc := (EcF - EcP) * XC'fz(z);
+    Ec := EcP + dEc;
+    rho * Ec;
+];
+
+XC'CPW92'Ec(rho,z) := [
+   Local(Ac,EcP,EcF,d2fz0);
+   Ac  :=  XC'Gc(XC'rs(rho),0.016887, 0.11125,10.357, 3.6231,0.88026,0.49671);
+   EcP :=  XC'Gc(XC'rs(rho),0.031091, 0.21370,7.5957, 3.5876, 1.6382,0.49294);
+   EcF :=  XC'Gc(XC'rs(rho),0.015545, 0.20548,14.1189,6.1977, 3.3662,0.62517);
+   // FIXME:
+   // d2fz0 := XC'd2fz0
+   d2fz0 := 1.709921;
+   EcP - (Ac*XC'fz(z)*(1-z^4))/d2fz0 + (EcF-EcP)*XC'fz(z)*z^4;
+];
+
+XC'CPW92(rhoa, rhob) := [
+   Local(rho,z);
+
+   rho := rhoa + rhob;
+   z := (rhoa-rhob)/rho;
+   
+   rho * XC'CPW92'Ec(rho,z);
+];
+
+// Correlation, GGA
+
+XC'CLYP(rhoa, rhob, gammaaa, gammaab, gammabb) := [
+    Local(rho, rho13, a, b, c, d, omega, delta);
+
+    rho := rhoa + rhob;
+    rho13 := rho^(1./3.);
+
+    a := 0.04918;
+    b := 0.132;
+    c := 0.2533;
+    d := 0.349;
+
+    omega := Exp(-c/rho13) / (1 + d / rho13) * rho^(-11./3.);
+    delta := c / rho13 + (d / rho13) / (1 + d / rho13);
+
+    -(4 * a) / (1 + d / rho13) * (rhoa * rhob) / rho - 
+    2^(11./3.)*3./10.*(3*Pi^2)^(2./3.) * a*b*omega*rhoa*rhob*(rhoa^(8./3.) + rhob^(8./3.)) -
+    a*b*omega*(1./9.*rhoa*rhob*(1-3*delta-(delta-11)*rhoa/rho)-rhob^2)*gammaaa -
+    a*b*omega*(1./9.*rhoa*rhob*(47-7*delta)-4./3.*rho^2)*gammaab -
+    a*b*omega*(1./9.*rhoa*rhob*(1-3*delta-(delta-11)*rhob/rho)-rhoa^2)*gammabb;
+];
+
+XC'CPW91'Ec(rho,z) := [
+   Local(Ac,EcP,EcF,d2fz0);
+   Ac  :=  XC'Gc(XC'PBE'PW91rs(rho),0.016887, 0.11125,10.357, 3.6231,0.88026,0.49671);
+   EcP :=  XC'Gc(XC'PBE'PW91rs(rho),0.031091, 0.21370,7.5957, 3.5876, 1.6382,0.49294);
+   EcF :=  XC'Gc(XC'PBE'PW91rs(rho),0.015545, 0.20548,14.1189,6.1977, 3.3662,0.62517);
+   // FIXME:
+   //d2fz0 := XC'd2fz0;
+   d2fz0 := 1.709921;
+   EcP - (Ac*XC'fz(z)*(1-z^4))/d2fz0 + (EcF-EcP)*XC'fz(z)*z^4;
+];
+
+XC'CPW91'alpha := 0.09;
+
+XC'CPW91'Cc0 := 0.004235;
+
+XC'CPW91'Cx := -0.001667;
+
+XC'CPW91'nu := N(16 * (3*Pi^2)^(1./3.)/Pi);
+
+XC'CPW91'beta := XC'CPW91'nu * XC'CPW91'Cc0;
+
+XC'CPW91'A(rho,z) := 
+   2 * XC'CPW91'alpha / 
+   XC'CPW91'beta/
+   (Exp(-2*XC'CPW91'alpha*XC'CPW91'Ec(rho,z)/(XC'phi(z)^3*XC'CPW91'beta^2)) - 1);
+
+XC'CPW91'Cc(rho) := [
+   Local(r);
+   r:=XC'rs(rho);
+   (2.568+23.266*r+0.007389*r^2)/(1000*(1+8.723*r+0.472*r^2+0.073890*r^3)) - XC'CPW91'Cx;
+];
+
+XC'CPW91'H0(rho,gamma,z) := [
+   Local(phi3,T2,A);
+   phi3 := XC'phi(z)^3;
+   T2 := XC'T(rho,gamma,z)^2;
+   A := XC'CPW91'A(rho,z);
+
+   1./2.*phi3*XC'CPW91'beta^2*
+   Ln(1+(2*XC'CPW91'alpha*T2*(1+A*T2))/(XC'CPW91'beta*(1+A*T2+(A*T2)^2))) / 
+   XC'CPW91'alpha;
+];
+   
+XC'CPW91'H1(rho,gamma,z) := [
+   Local(phi3,phi4,T2);
+   phi3 := XC'phi(z)^3;
+   phi4 := XC'phi(z)^4;
+   T2 := XC'T(rho,gamma,z)^2;
+
+   XC'CPW91'nu*(XC'CPW91'Cc(rho)-XC'CPW91'Cc0-3./7.*XC'CPW91'Cx)*
+   phi3*T2*
+   Exp(-100*phi4*XC'ks(rho)^2*T2/XC'kF(rho)^2);
+];
+
+XC'CPW91'H(rho,gamma,z) := XC'CPW91'H0(rho,gamma,z) + XC'CPW91'H1(rho,gamma,z);
+
+XC'CPW91(rhoa, rhob, gammaaa, gammaab, gammabb) := [
+   Local(rho,z,gamma);
+
+   rho := rhoa + rhob;
+   z := (rhoa-rhob)/rho;
+   gamma := gammaaa+2*gammaab+gammabb;
+   
+   rho * (XC'CPW91'Ec(rho,z) + XC'CPW91'H(rho,gamma,z));
+];
+
+XC'CPBE'beta := 0.06672455060314922;
+
+XC'CPBE'gamma := N((1 - Ln(2)) / Pi^2);
+
+XC'CPBE'Ec(rho,z) := [
+   Local(Ac,EcP,EcF);
+   
+   Ac  :=  XC'Gc(XC'PBE'PW91rs(rho),0.0168869, 0.11125,10.357, 3.6231,0.88026,0.49671);
+   EcP :=  XC'Gc(XC'PBE'PW91rs(rho),0.0310907, 0.21370,7.5957, 3.5876, 1.6382,0.49294);
+   EcF :=  XC'Gc(XC'PBE'PW91rs(rho),0.01554535,0.20548,14.1189,6.1977, 3.3662,0.62517);
+   EcP - (Ac*XC'fz(z)*(1-z^4))/XC'd2fz0+(EcF-EcP)*XC'fz(z)*z^4;
+];
+
+XC'CPBE'A(rho,z) := XC'CPBE'beta/(XC'CPBE'gamma*(Exp(-XC'CPBE'Ec(rho,z)/(XC'CPBE'gamma*XC'phi(z)^3)) - 1));
+
+XC'CPBE'H(rho,gamma,z) := [
+   Local(phi3,T2,A);
+   phi3 := XC'phi(z)^3;
+   T2 := XC'T(rho,gamma,z)^2;
+   A := XC'CPBE'A(rho,z);
+   XC'CPBE'gamma * phi3 * Ln(1 + (XC'CPBE'beta*T2*(1+A*T2)) / (XC'CPBE'gamma*(1 + A*T2+(A*T2)^2)));
+];
+   
+XC'CPBE(rhoa, rhob, gammaaa, gammaab, gammabb) := [
+   Local(rho,z,gamma);
+
+   rho := rhoa + rhob;
+   z := (rhoa-rhob)/rho;
+   gamma := gammaaa+2*gammaab+gammabb;
+
+   rho * (XC'CPBE'Ec(rho,z) + XC'CPBE'H(rho,gamma,z));
+];
+

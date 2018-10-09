@@ -1,0 +1,19 @@
+# Results from CCCBDB 
+#  (<http://srdata.nist.gov/cccbdb/>)
+#      Energy =  -75.585960 hartrees
+#      Nuclear repulsion energy = 9.099179 hartrees
+
+title: water molecule
+
+run_type: single_point
+basis_set: 3-21g
+
+units:
+  length: angstrom
+  energy: hartree
+
+atoms:
+- O 0.0000 0.0000 0.1141
+- H 0.0000 0.7803 -0.4563
+- H 0.0000 -0.7803 -0.4563
+

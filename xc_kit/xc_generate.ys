@@ -1,0 +1,771 @@
+Use("cpp_form.ys");
+
+Function("SubstituteTaggedSubexpressions", {sl, e})
+[
+   Local(r);
+   r := e;
+   ForEach(i, sl) [
+      r := Subst(i[2], i[1])r;
+   ];
+   r;
+];
+
+
+Function("GenerateAssignments", {sl})
+[
+   Local(r);
+   r := {};
+   ForEach(i, sl) [
+      Local(a);
+      a := {:=, i[1], i[2] };
+      Push(r, UnList(a));
+   ];
+   r;
+];
+
+
+RuleBaseListed("XCGenerate", {language, fname, e, args});
+
+100 # XCGenerate(language_IsString, fname_IsString, e_IsFunction, {ra_IsAtom, rb_IsAtom}) <--
+    LDAGenerate(language, fname, e, ra, rb);
+
+100 # XCGenerate(language_IsString, fname_IsString, e_IsFunction, {ra_IsAtom, rb_IsAtom, gaa_IsAtom, gab_IsAtom, gbb_IsAtom}) <--
+    GGAGenerate(language, fname, e, ra, rb, gaa, gab, gbb);
+
+100 # XCGenerate(language_IsString, fname_IsString, e_IsFunction, {ra_IsAtom, rb_IsAtom, gaa_IsAtom, gab_IsAtom, gbb_IsAtom, ta_IsAtom, tb_IsAtom}) <--
+    MetaGGAGenerate(language, fname, e, ra, rb, gaa, gab, gbb, ta, tb);
+
+LDAGenerate(language, fname, e, ra, rb) := [
+
+    lea := WithValue(ra, 0, e);
+    If(lea = Undefined,lea:=Limit(ra,0,Right)e);
+    leb := WithValue(rb, 0, e);
+    If(leb = Undefined,leb:=Limit(rb,0,Right)e);    
+
+    dedra := Deriv(ra)e;        
+    dedra'b0 := Deriv(ra)leb;
+    dedrb := Deriv(rb)e;
+    dedrb'a0 := Deriv(rb)lea;   
+    d2edrara := Deriv(ra)dedra;
+    d2edrarb := Deriv(ra)dedrb;
+    d2edrbrb := Deriv(rb)dedrb;
+    d3edrarara := Deriv(ra)d2edrara;
+    d3edrararb := Deriv(rb)d2edrara;
+    d3edrarbrb := Deriv(rb)d2edrarb;
+    d3edrbrbrb := Deriv(rb)d2edrbrb;
+
+    // eliminate common subexpressions in e, lea, leb
+    {e, ecsl} := CSE(e);
+    {lea, leacsl} := CSE(lea);
+    {leb, lebcsl} := CSE(leb);
+
+    // first derivatives:
+    // eliminate common subexpressions already found in lea / leb
+    dedra := SubstituteTaggedSubexpressions(lebcsl, dedra);
+    dedrb := SubstituteTaggedSubexpressions(leacsl, dedrb);
+    // eliminate new common subexpressions  
+    {dedra, dedracsl} := CSE(dedra);
+    {dedrb, dedrbcsl} := CSE(dedrb);
+    {dedrb'a0, dedrb'a0csl} := CSE(dedrb'a0);
+    {dedra'b0, dedra'b0csl} := CSE(dedra'b0);
+
+    // second derivatives:
+    // eliminate common subexpressions already found in lea / leb 
+    // and dedra / dedrb
+    d2edrara := SubstituteTaggedSubexpressions(lebcsl, d2edrara);
+    d2edrara := SubstituteTaggedSubexpressions(dedracsl,d2edrara);
+
+    d2edrarb := SubstituteTaggedSubexpressions(lebcsl, d2edrarb);
+    d2edrarb := SubstituteTaggedSubexpressions(leacsl, d2edrarb);
+    d2edrarb := SubstituteTaggedSubexpressions(dedracsl,d2edrarb);
+    d2edrarb := SubstituteTaggedSubexpressions(dedrbcsl,d2edrarb);
+
+    d2edrbrb := SubstituteTaggedSubexpressions(leacsl, d2edrbrb);
+    d2edrbrb := SubstituteTaggedSubexpressions(dedrbcsl,d2edrbrb);
+    // eliminate new common subexpressions
+    {d2edrara, d2edraracsl} := CSE(d2edrara);
+    {d2edrarb, d2edrarbcsl} := CSE(d2edrarb);
+    {d2edrbrb, d2edrbrbcsl} := CSE(d2edrbrb);
+
+    // third derivatives
+    // eliminate common subexpressions already found in lea / leb,
+    // dedra / dedrb and d2edrara / d2edrarb / d2edrbrb
+    d3edrarara := SubstituteTaggedSubexpressions(lebcsl, d3edrarara);
+    d3edrarara := SubstituteTaggedSubexpressions(dedracsl,d3edrarara);
+    d3edrarara := SubstituteTaggedSubexpressions(d2edraracsl,d3edrarara);
+
+    d3edrararb := SubstituteTaggedSubexpressions(lebcsl, d3edrararb);
+    d3edrararb := SubstituteTaggedSubexpressions(leacsl, d3edrararb);
+    d3edrararb := SubstituteTaggedSubexpressions(dedracsl,d3edrararb);
+    d3edrararb := SubstituteTaggedSubexpressions(dedrbcsl,d3edrararb);
+    d3edrararb := SubstituteTaggedSubexpressions(d2edraracsl,d3edrararb);
+    d3edrararb := SubstituteTaggedSubexpressions(d2edrarbcsl,d3edrararb);
+   
+    d3edrarbrb := SubstituteTaggedSubexpressions(lebcsl, d3edrarbrb);
+    d3edrarbrb := SubstituteTaggedSubexpressions(leacsl, d3edrarbrb);
+    d3edrarbrb := SubstituteTaggedSubexpressions(dedracsl,d3edrarbrb);
+    d3edrarbrb := SubstituteTaggedSubexpressions(dedrbcsl,d3edrarbrb);
+    d3edrarbrb := SubstituteTaggedSubexpressions(d2edrarbcsl,d3edrarbrb);
+    d3edrarbrb := SubstituteTaggedSubexpressions(d2edrbrbcsl,d3edrarbrb);
+
+    d3edrbrbrb := SubstituteTaggedSubexpressions(leacsl, d3edrbrbrb);
+    d3edrbrbrb := SubstituteTaggedSubexpressions(dedrbcsl,d3edrbrbrb);
+    d3edrbrbrb := SubstituteTaggedSubexpressions(d2edrbrbcsl,d3edrbrbrb);
+
+
+    // eliminate new common subexpressions
+    {d3edrarara, d3edrararacsl} := CSE(d3edrarara);
+    {d3edrararb, d3edrararbcsl} := CSE(d3edrararb);
+    {d3edrarbrb, d3edrarbrbcsl} := CSE(d3edrarbrb);
+    {d3edrbrbrb, d3edrbrbrbcsl} := CSE(d3edrbrbrb);
+
+
+    aecsl :=  GenerateAssignments(ecsl);
+    aleacsl :=  GenerateAssignments(leacsl);
+    alebcsl :=  GenerateAssignments(lebcsl);
+    adedracsl :=  GenerateAssignments(dedracsl);
+    adedrbcsl :=  GenerateAssignments(dedrbcsl);
+    ad2edraracsl :=  GenerateAssignments(d2edraracsl);
+    ad2edrarbcsl :=  GenerateAssignments(d2edrarbcsl);
+    ad2edrbrbcsl :=  GenerateAssignments(d2edrbrbcsl);
+    ad3edrararacsl :=  GenerateAssignments(d3edrararacsl);
+    ad3edrararbcsl :=  GenerateAssignments(d3edrararbcsl);
+    ad3edrarbrbcsl :=  GenerateAssignments(d3edrarbrbcsl);
+    ad3edrbrbrbcsl :=  GenerateAssignments(d3edrbrbrbcsl);
+
+    PatchLoad(language : "_lda_skeleton.ey");
+];
+
+
+GGAGenerate(language, fname, e, ra, rb, gaa, gab, gbb) := [
+
+    lea := e;//WithValue(ra, 0, e);
+    //If(lea = Undefined,lea:=Limit(ra,0,Right)e);
+    leb := e;//WithValue(rb, 0, e);
+    //If(leb = Undefined,leb:=Limit(rb,0,Right)e);
+
+    dedra := Deriv(ra)e;
+    dedra'b0 := Deriv(ra)leb;
+    dedrb := Deriv(rb)e;
+    dedrb'a0 := Deriv(rb)lea;   
+    dedgaa := Deriv(gaa)e;
+    dedgab := Deriv(gab)e;
+    dedgbb := Deriv(gbb)e;
+    d2edrara := Deriv(ra)dedra;
+    d2edrarb := Deriv(ra)dedrb;
+    d2edrbrb := Deriv(rb)dedrb;
+    d2edragaa := Deriv(gaa)dedra;
+    d2edragab := Deriv(gab)dedra;
+    d2edragbb := Deriv(gbb)dedra;
+    d2edrbgaa := Deriv(gaa)dedrb;
+    d2edrbgab := Deriv(gab)dedrb;
+    d2edrbgbb := Deriv(gbb)dedrb;
+    d2edgaagaa := Deriv(gaa)dedgaa;
+    d2edgaagab := Deriv(gab)dedgaa;
+    d2edgaagbb := Deriv(gbb)dedgaa;
+    d2edgbbgab := Deriv(gab)dedgbb;
+    d2edgbbgbb := Deriv(gbb)dedgbb;
+    d2edgabgab := Deriv(gab)dedgab;
+
+    d3edrarara := Deriv(ra)d2edrara;
+    d3edrararb := Deriv(rb)d2edrara;
+    d3edrarbrb := Deriv(rb)d2edrarb;
+    d3edrbrbrb := Deriv(rb)d2edrbrb;
+    d3edraragaa := Deriv(gaa)d2edrara;
+    d3edraragab := Deriv(gab)d2edrara;
+    d3edraragbb := Deriv(gbb)d2edrara;
+    d3edrarbgaa := Deriv(gaa)d2edrarb;
+    d3edrarbgab := Deriv(gab)d2edrarb;
+    d3edrarbgbb := Deriv(gbb)d2edrarb;
+    d3edrbrbgaa := Deriv(gaa)d2edrbrb;
+    d3edrbrbgab := Deriv(gab)d2edrbrb;
+    d3edrbrbgbb := Deriv(gbb)d2edrbrb;
+    d3edragaagaa := Deriv(gaa)d2edragaa;
+    d3edragaagab := Deriv(gab)d2edragaa;
+    d3edragaagbb := Deriv(gbb)d2edragaa;
+    d3edragabgab := Deriv(gab)d2edragab;
+    d3edragabgbb := Deriv(gbb)d2edragab;
+    d3edragbbgbb := Deriv(gbb)d2edragbb;
+    d3edrbgaagaa := Deriv(gaa)d2edrbgaa;
+    d3edrbgaagab := Deriv(gab)d2edrbgaa;
+    d3edrbgaagbb := Deriv(gbb)d2edrbgaa;
+    d3edrbgabgab := Deriv(gab)d2edrbgab;
+    d3edrbgabgbb := Deriv(gbb)d2edrbgab;
+    d3edrbgbbgbb := Deriv(gbb)d2edrbgbb;
+    d3edgaagaagaa := Deriv(gaa)d2edgaagaa;
+    d3edgaagaagab := Deriv(gab)d2edgaagaa;
+    d3edgaagaagbb := Deriv(gbb)d2edgaagaa;
+    d3edgaagabgab := Deriv(gab)d2edgaagab;
+    d3edgaagabgbb := Deriv(gbb)d2edgaagab;
+    d3edgaagbbgbb := Deriv(gbb)d2edgaagbb;
+    d3edgabgabgab := Deriv(gab)d2edgabgab;
+    d3edgabgabgbb := Deriv(gbb)d2edgabgab;
+    d3edgabgbbgbb := Deriv(gbb)d2edgabgbb;
+    d3edgbbgbbgbb := Deriv(gbb)d2edgbbgbb;
+
+    // eliminate common subexpressions in e, lea, leb
+    {e, ecsl} := CSE(e);
+    {lea, leacsl} := CSE(lea);
+    {leb, lebcsl} := CSE(leb);
+
+    // first derivatives:
+    // eliminate common subexpressions already found in lea / leb
+    dedra := SubstituteTaggedSubexpressions(lebcsl, dedra);
+    dedrb := SubstituteTaggedSubexpressions(leacsl, dedrb);
+    // eliminate new common subexpressions  
+    {dedra, dedracsl} := CSE(dedra);
+    {dedrb, dedrbcsl} := CSE(dedrb);
+    {dedrb'a0, dedrb'a0csl} := CSE(dedrb'a0);
+    {dedra'b0, dedra'b0csl} := CSE(dedra'b0);
+    {dedgaa, dedgaacsl} := CSE(dedgaa);
+    {dedgab, dedgabcsl} := CSE(dedgab);
+    {dedgbb, dedgbbcsl} := CSE(dedgbb);
+
+    // second derivatives:
+    // eliminate common subexpressions already found in lea / leb 
+    // and dedra / dedrb
+    d2edrara := SubstituteTaggedSubexpressions(lebcsl, d2edrara);
+    d2edrara := SubstituteTaggedSubexpressions(dedracsl,d2edrara);
+
+    d2edrarb := SubstituteTaggedSubexpressions(lebcsl, d2edrarb);
+    d2edrarb := SubstituteTaggedSubexpressions(leacsl, d2edrarb);
+    d2edrarb := SubstituteTaggedSubexpressions(dedracsl,d2edrarb);
+    d2edrarb := SubstituteTaggedSubexpressions(dedrbcsl,d2edrarb);
+
+    d2edrbrb := SubstituteTaggedSubexpressions(leacsl, d2edrbrb);
+    d2edrbrb := SubstituteTaggedSubexpressions(dedrbcsl,d2edrbrb);
+
+    // eliminate common subexpressions already found in dedra / dedrb 
+    // and dedgaa/ab/bb
+    d2edragaa := SubstituteTaggedSubexpressions(lebcsl, d2edragaa);
+    d2edragaa := SubstituteTaggedSubexpressions(dedracsl, d2edragaa);
+    d2edragaa := SubstituteTaggedSubexpressions(dedgaacsl, d2edragaa);
+
+    d2edragab := SubstituteTaggedSubexpressions(lebcsl, d2edragab);
+    d2edragab := SubstituteTaggedSubexpressions(dedracsl, d2edragab);
+    d2edragab := SubstituteTaggedSubexpressions(dedgabcsl, d2edragab);
+
+    d2edragbb := SubstituteTaggedSubexpressions(lebcsl, d2edragbb);
+    d2edragbb := SubstituteTaggedSubexpressions(dedracsl, d2edragbb);
+    d2edragbb := SubstituteTaggedSubexpressions(dedgbbcsl, d2edragbb);
+
+    d2edrbgaa := SubstituteTaggedSubexpressions(leacsl, d2edrbgaa);
+    d2edrbgaa := SubstituteTaggedSubexpressions(dedrbcsl, d2edrbgaa);
+    d2edrbgaa := SubstituteTaggedSubexpressions(dedgaacsl, d2edrbgaa);
+
+    d2edrbgab := SubstituteTaggedSubexpressions(leacsl, d2edrbgab);
+    d2edrbgab := SubstituteTaggedSubexpressions(dedrbcsl, d2edrbgab);
+    d2edrbgab := SubstituteTaggedSubexpressions(dedgabcsl, d2edrbgab);
+
+    d2edrbgbb := SubstituteTaggedSubexpressions(leacsl, d2edrbgbb);
+    d2edrbgbb := SubstituteTaggedSubexpressions(dedrbcsl, d2edrbgbb);
+    d2edrbgbb := SubstituteTaggedSubexpressions(dedgbbcsl, d2edrbgbb);
+
+    // eliminate common subexpressions already found in dedgaa/ab/bb
+    d2edgaagaa := SubstituteTaggedSubexpressions(dedgaacsl, d2edgaagaa);
+
+    d2edgaagab := SubstituteTaggedSubexpressions(dedgaacsl, d2edgaagab);
+    d2edgaagab := SubstituteTaggedSubexpressions(dedgabcsl, d2edgaagab);
+
+    d2edgaagbb := SubstituteTaggedSubexpressions(dedgaacsl, d2edgaagbb);
+    d2edgaagbb := SubstituteTaggedSubexpressions(dedgbbcsl, d2edgaagbb);
+
+    d2edgbbgab := SubstituteTaggedSubexpressions(dedgbbcsl, d2edgbbgab);
+    d2edgbbgab := SubstituteTaggedSubexpressions(dedgabcsl, d2edgbbgab);
+
+    d2edgbbgbb := SubstituteTaggedSubexpressions(dedgbbcsl, d2edgbbgbb);
+
+    d2edgabgab := SubstituteTaggedSubexpressions(dedgabcsl, d2edgabgab);
+
+    // eliminate new common subexpressions 
+    {d2edrara, d2edraracsl} := CSE(d2edrara);
+    {d2edrarb, d2edrarbcsl} := CSE(d2edrarb);
+    {d2edrbrb, d2edrbrbcsl} := CSE(d2edrbrb);
+    {d2edragaa, d2edragaacsl} := CSE(d2edragaa);
+    {d2edragab, d2edragabcsl} := CSE(d2edragab);
+    {d2edragbb, d2edragbbcsl} := CSE(d2edragbb);
+    {d2edrbgaa, d2edrbgaacsl} := CSE(d2edrbgaa);
+    {d2edrbgab, d2edrbgabcsl} := CSE(d2edrbgab);
+    {d2edrbgbb, d2edrbgbbcsl} := CSE(d2edrbgbb);
+    {d2edgaagaa, d2edgaagaacsl} := CSE(d2edgaagaa);
+    {d2edgaagab, d2edgaagabcsl} := CSE(d2edgaagab);
+    {d2edgaagbb, d2edgaagbbcsl} := CSE(d2edgaagbb);
+    {d2edgbbgab, d2edgbbgabcsl} := CSE(d2edgbbgab);
+    {d2edgbbgbb, d2edgbbgbbcsl} := CSE(d2edgbbgbb);
+    {d2edgabgab, d2edgabgabcsl} := CSE(d2edgabgab);
+ 
+    // third derivatives
+    // eliminate common subexpressions already found in lea / leb,
+    // dedra / dedrb and d2edrara / d2edrarb / d2edrbrb
+    d3edrarara := SubstituteTaggedSubexpressions(lebcsl, d3edrarara);
+    d3edrarara := SubstituteTaggedSubexpressions(dedracsl,d3edrarara);
+    d3edrarara := SubstituteTaggedSubexpressions(d2edraracsl,d3edrarara);
+
+    d3edrararb := SubstituteTaggedSubexpressions(lebcsl, d3edrararb);
+    d3edrararb := SubstituteTaggedSubexpressions(leacsl, d3edrararb);
+    d3edrararb := SubstituteTaggedSubexpressions(dedracsl,d3edrararb);
+    d3edrararb := SubstituteTaggedSubexpressions(dedrbcsl,d3edrararb);
+    d3edrararb := SubstituteTaggedSubexpressions(d2edraracsl,d3edrararb);
+    d3edrararb := SubstituteTaggedSubexpressions(d2edrarbcsl,d3edrararb);
+   
+    d3edrarbrb := SubstituteTaggedSubexpressions(lebcsl, d3edrarbrb);
+    d3edrarbrb := SubstituteTaggedSubexpressions(leacsl, d3edrarbrb);
+    d3edrarbrb := SubstituteTaggedSubexpressions(dedracsl,d3edrarbrb);
+    d3edrarbrb := SubstituteTaggedSubexpressions(dedrbcsl,d3edrarbrb);
+    d3edrarbrb := SubstituteTaggedSubexpressions(d2edrarbcsl,d3edrarbrb);
+    d3edrarbrb := SubstituteTaggedSubexpressions(d2edrbrbcsl,d3edrarbrb);
+
+    d3edrbrbrb := SubstituteTaggedSubexpressions(leacsl, d3edrbrbrb);
+    d3edrbrbrb := SubstituteTaggedSubexpressions(dedrbcsl,d3edrbrbrb);
+    d3edrbrbrb := SubstituteTaggedSubexpressions(d2edrbrbcsl,d3edrbrbrb);
+
+    d3edraragaa := SubstituteTaggedSubexpressions(lebcsl, d3edraragaa);
+    d3edraragaa := SubstituteTaggedSubexpressions(dedracsl, d3edraragaa);
+    d3edraragaa := SubstituteTaggedSubexpressions(dedgaacsl, d3edraragaa);
+    d3edraragaa := SubstituteTaggedSubexpressions(d2edraracsl, d3edraragaa);
+    d3edraragaa := SubstituteTaggedSubexpressions(d2edragaacsl, d3edraragaa);
+
+    d3edraragab := SubstituteTaggedSubexpressions(lebcsl, d3edraragab);
+    d3edraragab := SubstituteTaggedSubexpressions(dedracsl, d3edraragab);
+    d3edraragab := SubstituteTaggedSubexpressions(dedgabcsl, d3edraragab);
+    d3edraragab := SubstituteTaggedSubexpressions(d2edraracsl, d3edraragab);
+    d3edraragab := SubstituteTaggedSubexpressions(d2edragabcsl, d3edraragab);
+
+    d3edraragbb := SubstituteTaggedSubexpressions(lebcsl, d3edraragbb);
+    d3edraragbb := SubstituteTaggedSubexpressions(dedracsl, d3edraragbb);
+    d3edraragbb := SubstituteTaggedSubexpressions(dedgbbcsl, d3edraragbb);
+    d3edraragbb := SubstituteTaggedSubexpressions(d2edraracsl, d3edraragbb);
+    d3edraragbb := SubstituteTaggedSubexpressions(d2edragbbcsl, d3edraragbb);
+
+    d3edrarbgaa := SubstituteTaggedSubexpressions(lebcsl, d3edrarbgaa);
+    d3edrarbgaa := SubstituteTaggedSubexpressions(leacsl, d3edrarbgaa);
+    d3edrarbgaa := SubstituteTaggedSubexpressions(dedracsl, d3edrarbgaa);
+    d3edrarbgaa := SubstituteTaggedSubexpressions(dedrbcsl, d3edrarbgaa);
+    d3edrarbgaa := SubstituteTaggedSubexpressions(dedgaacsl, d3edrarbgaa);
+    d3edrarbgaa := SubstituteTaggedSubexpressions(d2edrarbcsl, d3edrarbgaa);
+    d3edrarbgaa := SubstituteTaggedSubexpressions(d2edragaacsl, d3edrarbgaa);
+    d3edrarbgaa := SubstituteTaggedSubexpressions(d2edrbgaacsl, d3edrarbgaa);
+
+    d3edrarbgab := SubstituteTaggedSubexpressions(lebcsl, d3edrarbgab);
+    d3edrarbgab := SubstituteTaggedSubexpressions(leacsl, d3edrarbgab);
+    d3edrarbgab := SubstituteTaggedSubexpressions(dedracsl, d3edrarbgab);
+    d3edrarbgab := SubstituteTaggedSubexpressions(dedrbcsl, d3edrarbgab);
+    d3edrarbgab := SubstituteTaggedSubexpressions(dedgabcsl, d3edrarbgab);
+    d3edrarbgab := SubstituteTaggedSubexpressions(d2edrarbcsl, d3edrarbgab);
+    d3edrarbgab := SubstituteTaggedSubexpressions(d2edragabcsl, d3edrarbgab);
+    d3edrarbgab := SubstituteTaggedSubexpressions(d2edrbgabcsl, d3edrarbgab);
+
+    d3edrarbgbb := SubstituteTaggedSubexpressions(lebcsl, d3edrarbgbb);
+    d3edrarbgbb := SubstituteTaggedSubexpressions(leacsl, d3edrarbgbb);
+    d3edrarbgbb := SubstituteTaggedSubexpressions(dedracsl, d3edrarbgbb);
+    d3edrarbgbb := SubstituteTaggedSubexpressions(dedrbcsl, d3edrarbgbb);
+    d3edrarbgbb := SubstituteTaggedSubexpressions(dedgbbcsl, d3edrarbgbb);
+    d3edrarbgbb := SubstituteTaggedSubexpressions(d2edrarbcsl, d3edrarbgbb);
+    d3edrarbgbb := SubstituteTaggedSubexpressions(d2edragbbcsl, d3edrarbgbb);
+    d3edrarbgbb := SubstituteTaggedSubexpressions(d2edrbgbbcsl, d3edrarbgbb);
+
+    d3edrbrbgaa := SubstituteTaggedSubexpressions(leacsl, d3edrbrbgaa);
+    d3edrbrbgaa := SubstituteTaggedSubexpressions(dedrbcsl, d3edrbrbgaa);
+    d3edrbrbgaa := SubstituteTaggedSubexpressions(dedgaacsl, d3edrbrbgaa);
+    d3edrbrbgaa := SubstituteTaggedSubexpressions(d2edrbrbcsl, d3edrbrbgaa);
+    d3edrbrbgaa := SubstituteTaggedSubexpressions(d2edrbgaacsl, d3edrbrbgaa);
+
+    d3edrbrbgab := SubstituteTaggedSubexpressions(leacsl, d3edrbrbgab);
+    d3edrbrbgab := SubstituteTaggedSubexpressions(dedrbcsl, d3edrbrbgab);
+    d3edrbrbgab := SubstituteTaggedSubexpressions(dedgabcsl, d3edrbrbgab);
+    d3edrbrbgab := SubstituteTaggedSubexpressions(d2edrbrbcsl, d3edrbrbgab);
+    d3edrbrbgab := SubstituteTaggedSubexpressions(d2edrbgabcsl, d3edrbrbgab);
+
+    d3edrbrbgbb := SubstituteTaggedSubexpressions(leacsl, d3edrbrbgbb);
+    d3edrbrbgbb := SubstituteTaggedSubexpressions(dedrbcsl, d3edrbrbgbb);
+    d3edrbrbgbb := SubstituteTaggedSubexpressions(dedgbbcsl, d3edrbrbgbb);
+    d3edrbrbgbb := SubstituteTaggedSubexpressions(d2edrbrbcsl, d3edrbrbgbb);
+    d3edrbrbgbb := SubstituteTaggedSubexpressions(d2edrbgbbcsl, d3edrbrbgbb);
+
+    d3edragaagaa := SubstituteTaggedSubexpressions(lebcsl, d3edragaagaa);
+    d3edragaagaa := SubstituteTaggedSubexpressions(dedracsl, d3edragaagaa);
+    d3edragaagaa := SubstituteTaggedSubexpressions(dedgaacsl, d3edragaagaa);
+    d3edragaagaa := SubstituteTaggedSubexpressions(d2edragaacsl, d3edragaagaa);
+    d3edragaagaa := SubstituteTaggedSubexpressions(d2edgaagaacsl, d3edragaagaa);
+
+    d3edragaagab := SubstituteTaggedSubexpressions(lebcsl, d3edragaagab);
+    d3edragaagab := SubstituteTaggedSubexpressions(dedracsl, d3edragaagab);
+    d3edragaagab := SubstituteTaggedSubexpressions(dedgaacsl, d3edragaagab);
+    d3edragaagab := SubstituteTaggedSubexpressions(dedgabcsl, d3edragaagab);
+    d3edragaagab := SubstituteTaggedSubexpressions(d2edragaacsl, d3edragaagab);
+    d3edragaagab := SubstituteTaggedSubexpressions(d2edragabcsl, d3edragaagab);
+    d3edragaagab := SubstituteTaggedSubexpressions(d2edgaagabcsl, d3edragaagab);
+
+    d3edragaagbb := SubstituteTaggedSubexpressions(lebcsl, d3edragaagbb);
+    d3edragaagbb := SubstituteTaggedSubexpressions(dedracsl, d3edragaagbb);
+    d3edragaagbb := SubstituteTaggedSubexpressions(dedgaacsl, d3edragaagbb);
+    d3edragaagbb := SubstituteTaggedSubexpressions(dedgbbcsl, d3edragaagbb);
+    d3edragaagbb := SubstituteTaggedSubexpressions(d2edragaacsl, d3edragaagbb);
+    d3edragaagbb := SubstituteTaggedSubexpressions(d2edragbbcsl, d3edragaagbb);
+    d3edragaagbb := SubstituteTaggedSubexpressions(d2edgaagbbcsl, d3edragaagbb);
+
+    d3edragabgab := SubstituteTaggedSubexpressions(lebcsl, d3edragabgab);
+    d3edragabgab := SubstituteTaggedSubexpressions(dedracsl, d3edragabgab);
+    d3edragabgab := SubstituteTaggedSubexpressions(dedgabcsl, d3edragabgab);
+    d3edragabgab := SubstituteTaggedSubexpressions(d2edragabcsl, d3edragabgab);
+    d3edragabgab := SubstituteTaggedSubexpressions(d2edgabgabcsl, d3edragabgab);
+
+    d3edragabgbb := SubstituteTaggedSubexpressions(lebcsl, d3edragabgbb);
+    d3edragabgbb := SubstituteTaggedSubexpressions(dedracsl, d3edragabgbb);
+    d3edragabgbb := SubstituteTaggedSubexpressions(dedgabcsl, d3edragabgbb);
+    d3edragabgbb := SubstituteTaggedSubexpressions(dedgbbcsl, d3edragabgbb);
+    d3edragabgbb := SubstituteTaggedSubexpressions(d2edragabcsl, d3edragabgbb);
+    d3edragabgbb := SubstituteTaggedSubexpressions(d2edragbbcsl, d3edragabgbb);
+    d3edragabgbb := SubstituteTaggedSubexpressions(d2edgbbgabcsl, d3edragabgbb);
+
+    d3edragbbgbb := SubstituteTaggedSubexpressions(lebcsl, d3edragbbgbb);
+    d3edragbbgbb := SubstituteTaggedSubexpressions(dedracsl, d3edragbbgbb);
+    d3edragbbgbb := SubstituteTaggedSubexpressions(dedgbbcsl, d3edragbbgbb);
+    d3edragbbgbb := SubstituteTaggedSubexpressions(d2edragbbcsl, d3edragbbgbb);
+    d3edragbbgbb := SubstituteTaggedSubexpressions(d2edgbbgbbcsl, d3edragbbgbb);
+
+    d3edrbgaagaa := SubstituteTaggedSubexpressions(leacsl, d3edrbgaagaa);
+    d3edrbgaagaa := SubstituteTaggedSubexpressions(dedrbcsl, d3edrbgaagaa);
+    d3edrbgaagaa := SubstituteTaggedSubexpressions(dedgaacsl, d3edrbgaagaa);
+    d3edrbgaagaa := SubstituteTaggedSubexpressions(d2edrbgaacsl, d3edrbgaagaa);
+    d3edrbgaagaa := SubstituteTaggedSubexpressions(d2edgaagaacsl, d3edrbgaagaa);
+
+    d3edrbgaagab := SubstituteTaggedSubexpressions(leacsl, d3edrbgaagab);
+    d3edrbgaagab := SubstituteTaggedSubexpressions(dedrbcsl, d3edrbgaagab);
+    d3edrbgaagab := SubstituteTaggedSubexpressions(dedgaacsl, d3edrbgaagab);
+    d3edrbgaagab := SubstituteTaggedSubexpressions(dedgabcsl, d3edrbgaagab);
+    d3edrbgaagab := SubstituteTaggedSubexpressions(d2edrbgaacsl, d3edrbgaagab);
+    d3edrbgaagab := SubstituteTaggedSubexpressions(d2edrbgabcsl, d3edrbgaagab);
+    d3edrbgaagab := SubstituteTaggedSubexpressions(d2edgaagabcsl, d3edrbgaagab);
+
+    d3edrbgaagbb := SubstituteTaggedSubexpressions(leacsl, d3edrbgaagbb);
+    d3edrbgaagbb := SubstituteTaggedSubexpressions(dedrbcsl, d3edrbgaagbb);
+    d3edrbgaagbb := SubstituteTaggedSubexpressions(dedgaacsl, d3edrbgaagbb);
+    d3edrbgaagbb := SubstituteTaggedSubexpressions(dedgbbcsl, d3edrbgaagbb);
+    d3edrbgaagbb := SubstituteTaggedSubexpressions(d2edrbgaacsl, d3edrbgaagbb);
+    d3edrbgaagbb := SubstituteTaggedSubexpressions(d2edrbgbbcsl, d3edrbgaagbb);
+    d3edrbgaagbb := SubstituteTaggedSubexpressions(d2edgaagbbcsl, d3edrbgaagbb);
+
+    d3edrbgabgab := SubstituteTaggedSubexpressions(leacsl, d3edrbgabgab);
+    d3edrbgabgab := SubstituteTaggedSubexpressions(dedrbcsl, d3edrbgabgab);
+    d3edrbgabgab := SubstituteTaggedSubexpressions(dedgabcsl, d3edrbgabgab);
+    d3edrbgabgab := SubstituteTaggedSubexpressions(d2edrbgabcsl, d3edrbgabgab);
+    d3edrbgabgab := SubstituteTaggedSubexpressions(d2edgabgabcsl, d3edrbgabgab);
+
+    d3edrbgabgbb := SubstituteTaggedSubexpressions(leacsl, d3edrbgabgbb);
+    d3edrbgabgbb := SubstituteTaggedSubexpressions(dedrbcsl, d3edrbgabgbb);
+    d3edrbgabgbb := SubstituteTaggedSubexpressions(dedgabcsl, d3edrbgabgbb);
+    d3edrbgabgbb := SubstituteTaggedSubexpressions(dedgbbcsl, d3edrbgabgbb);
+    d3edrbgabgbb := SubstituteTaggedSubexpressions(d2edrbgabcsl, d3edrbgabgbb);
+    d3edrbgabgbb := SubstituteTaggedSubexpressions(d2edrbgbbcsl, d3edrbgabgbb);
+    d3edrbgabgbb := SubstituteTaggedSubexpressions(d2edgbbgabcsl, d3edrbgabgbb);
+
+    d3edrbgbbgbb := SubstituteTaggedSubexpressions(leacsl, d3edrbgbbgbb);
+    d3edrbgbbgbb := SubstituteTaggedSubexpressions(dedrbcsl, d3edrbgbbgbb);
+    d3edrbgbbgbb := SubstituteTaggedSubexpressions(dedgbbcsl, d3edrbgbbgbb);
+    d3edrbgbbgbb := SubstituteTaggedSubexpressions(d2edrbgbbcsl, d3edrbgbbgbb);
+    d3edrbgbbgbb := SubstituteTaggedSubexpressions(d2edgbbgbbcsl, d3edrbgbbgbb);
+
+    d3edgaagaagaa := SubstituteTaggedSubexpressions(dedgaacsl, d3edgaagaagaa);
+    d3edgaagaagaa := SubstituteTaggedSubexpressions(d2edgaagaacsl, d3edgaagaagaa);
+    
+    d3edgaagaagab := SubstituteTaggedSubexpressions(dedgaacsl, d3edgaagaagab);
+    d3edgaagaagab := SubstituteTaggedSubexpressions(dedgabcsl, d3edgaagaagab);
+    d3edgaagaagab := SubstituteTaggedSubexpressions(d2edgaagabcsl, d3edgaagaagab);
+
+    d3edgaagaagbb := SubstituteTaggedSubexpressions(dedgaacsl, d3edgaagaagbb);
+    d3edgaagaagbb := SubstituteTaggedSubexpressions(dedgbbcsl, d3edgaagaagbb);
+    d3edgaagaagbb := SubstituteTaggedSubexpressions(d2edgaagbbcsl, d3edgaagaagbb);
+
+    d3edgaagabgab := SubstituteTaggedSubexpressions(dedgaacsl, d3edgaagabgab);
+    d3edgaagabgab := SubstituteTaggedSubexpressions(dedgabcsl, d3edgaagabgab);
+    d3edgaagabgab := SubstituteTaggedSubexpressions(d2edgaagabcsl, d3edgaagabgab);
+    d3edgaagabgab := SubstituteTaggedSubexpressions(d2edgabgabcsl, d3edgaagabgab);
+
+    d3edgaagabgbb := SubstituteTaggedSubexpressions(dedgaacsl, d3edgaagabgbb);
+    d3edgaagabgbb := SubstituteTaggedSubexpressions(dedgabcsl, d3edgaagabgbb);
+    d3edgaagabgbb := SubstituteTaggedSubexpressions(dedgbbcsl, d3edgaagabgbb);
+    d3edgaagabgbb := SubstituteTaggedSubexpressions(d2edgaagabcsl, d3edgaagabgbb);
+    d3edgaagabgbb := SubstituteTaggedSubexpressions(d2edgaagbbcsl, d3edgaagabgbb);
+    d3edgaagabgbb := SubstituteTaggedSubexpressions(d2edgbbgabcsl, d3edgaagabgbb);
+
+    d3edgaagbbgbb := SubstituteTaggedSubexpressions(dedgaacsl, d3edgaagbbgbb);
+    d3edgaagbbgbb := SubstituteTaggedSubexpressions(dedgbbcsl, d3edgaagbbgbb);
+    d3edgaagbbgbb := SubstituteTaggedSubexpressions(d2edgaagbbcsl, d3edgaagbbgbb);
+    d3edgaagbbgbb := SubstituteTaggedSubexpressions(d2edgbbgbbcsl, d3edgaagbbgbb);
+
+    d3edgabgabgab := SubstituteTaggedSubexpressions(dedgabcsl, d3edgabgabgab);
+    d3edgabgabgab := SubstituteTaggedSubexpressions(d2edgabgabcsl, d3edgabgabgab);
+
+    d3edgabgabgbb := SubstituteTaggedSubexpressions(dedgabcsl, d3edgabgabgbb);
+    d3edgabgabgbb := SubstituteTaggedSubexpressions(dedgbbcsl, d3edgabgabgbb);
+    d3edgabgabgbb := SubstituteTaggedSubexpressions(d2edgabgabcsl, d3edgabgabgbb);
+    d3edgabgabgbb := SubstituteTaggedSubexpressions(d2edgbbgabcsl, d3edgabgabgbb);
+
+    d3edgabgbbgbb := SubstituteTaggedSubexpressions(dedgabcsl, d3edgabgbbgbb);
+    d3edgabgbbgbb := SubstituteTaggedSubexpressions(dedgbbcsl, d3edgabgbbgbb);
+    d3edgabgbbgbb := SubstituteTaggedSubexpressions(d2edgbbgabcsl, d3edgabgbbgbb);
+    d3edgabgbbgbb := SubstituteTaggedSubexpressions(d2edgbbgbbcsl, d3edgabgbbgbb);
+
+    d3edgbbgbbgbb := SubstituteTaggedSubexpressions(dedgbbcsl, d3edgbbgbbgbb);
+    d3edgbbgbbgbb := SubstituteTaggedSubexpressions(d2edgbbgbbcsl, d3edgbbgbbgbb);
+
+    // eliminate new common subexpressions
+    {d3edrarara, d3edrararacsl} := CSE(d3edrarara);
+    {d3edrararb, d3edrararbcsl} := CSE(d3edrararb);
+    {d3edrarbrb, d3edrarbrbcsl} := CSE(d3edrarbrb);
+    {d3edrbrbrb, d3edrbrbrbcsl} := CSE(d3edrbrbrb);
+
+    {d3edraragaa, d3edraragaacsl} := CSE(d3edraragaa); 
+    {d3edraragab, d3edraragabcsl} := CSE(d3edraragab);
+    {d3edraragbb, d3edraragbbcsl} := CSE(d3edraragbb);
+    {d3edrarbgaa, d3edrarbgaacsl} := CSE(d3edrarbgaa);
+    {d3edrarbgab, d3edrarbgabcsl} := CSE(d3edrarbgab);
+    {d3edrarbgbb, d3edrarbgbbcsl} := CSE(d3edrarbgbb);
+    {d3edrbrbgaa, d3edrbrbgaacsl} := CSE(d3edrbrbgaa);
+    {d3edrbrbgab, d3edrbrbgabcsl} := CSE(d3edrbrbgab);
+    {d3edrbrbgbb, d3edrbrbgbbcsl} := CSE(d3edrbrbgbb);
+
+    {d3edragaagaa, d3edragaagaacsl} := CSE(d3edragaagaa);
+    {d3edragaagab, d3edragaagabcsl} := CSE(d3edragaagab);
+    {d3edragaagbb, d3edragaagbbcsl} := CSE(d3edragaagbb);
+    {d3edragabgab, d3edragabgabcsl} := CSE(d3edragabgab);
+    {d3edragabgbb, d3edragabgbbcsl} := CSE(d3edragabgbb);
+    {d3edragbbgbb, d3edragbbgbbcsl} := CSE(d3edragbbgbb);
+    {d3edrbgaagaa, d3edrbgaagaacsl} := CSE(d3edrbgaagaa);
+    {d3edrbgaagab, d3edrbgaagabcsl} := CSE(d3edrbgaagab);
+    {d3edrbgaagbb, d3edrbgaagbbcsl} := CSE(d3edrbgaagbb);
+    {d3edrbgabgab, d3edrbgabgabcsl} := CSE(d3edrbgabgab);
+    {d3edrbgabgbb, d3edrbgabgbbcsl} := CSE(d3edrbgabgbb);
+    {d3edrbgbbgbb, d3edrbgbbgbbcsl} := CSE(d3edrbgbbgbb);
+
+    {d3edgaagaagaa, d3edgaagaagaacsl} := CSE(d3edgaagaagaa);
+    {d3edgaagaagab, d3edgaagaagabcsl} := CSE(d3edgaagaagab);
+    {d3edgaagaagbb, d3edgaagaagbbcsl} := CSE(d3edgaagaagbb);
+    {d3edgaagabgab, d3edgaagabgabcsl} := CSE(d3edgaagabgab);
+    {d3edgaagabgbb, d3edgaagabgbbcsl} := CSE(d3edgaagabgbb);
+    {d3edgaagbbgbb, d3edgaagbbgbbcsl} := CSE(d3edgaagbbgbb);
+    {d3edgabgabgab, d3edgabgabgabcsl} := CSE(d3edgabgabgab);
+    {d3edgabgabgbb, d3edgabgabgbbcsl} := CSE(d3edgabgabgbb);
+    {d3edgabgbbgbb, d3edgabgbbgbbcsl} := CSE(d3edgabgbbgbb);
+    {d3edgbbgbbgbb, d3edgbbgbbgbbcsl} := CSE(d3edgbbgbbgbb);
+
+    aecsl :=  GenerateAssignments(ecsl);
+    aleacsl :=  GenerateAssignments(leacsl);
+    alebcsl :=  GenerateAssignments(lebcsl);
+    adedracsl :=  GenerateAssignments(dedracsl);
+    adedrbcsl :=  GenerateAssignments(dedrbcsl);
+    adedra'b0csl := GenerateAssignments(dedra'b0csl);
+    adedrb'a0csl := GenerateAssignments(dedrb'a0csl);
+    adedgaacsl := GenerateAssignments(dedgaacsl);
+    adedgabcsl := GenerateAssignments(dedgabcsl);
+    adedgbbcsl := GenerateAssignments(dedgbbcsl);
+    ad2edraracsl := GenerateAssignments(d2edraracsl);
+    ad2edrarbcsl := GenerateAssignments(d2edrarbcsl);
+    ad2edrbrbcsl := GenerateAssignments(d2edrbrbcsl);
+    ad2edragaacsl := GenerateAssignments(d2edragaacsl);
+    ad2edragabcsl := GenerateAssignments(d2edragabcsl);
+    ad2edragbbcsl := GenerateAssignments(d2edragbbcsl);
+    ad2edrbgaacsl := GenerateAssignments(d2edrbgaacsl);
+    ad2edrbgabcsl := GenerateAssignments(d2edrbgabcsl);
+    ad2edrbgbbcsl := GenerateAssignments(d2edrbgbbcsl);
+    ad2edgaagaacsl := GenerateAssignments(d2edgaagaacsl);
+    ad2edgaagabcsl := GenerateAssignments(d2edgaagabcsl);
+    ad2edgaagbbcsl := GenerateAssignments(d2edgaagbbcsl);
+    ad2edgbbgabcsl := GenerateAssignments(d2edgbbgabcsl);
+    ad2edgbbgbbcsl := GenerateAssignments(d2edgbbgbbcsl);
+    ad2edgabgabcsl := GenerateAssignments(d2edgabgabcsl);
+    ad3edrararacsl :=  GenerateAssignments(d3edrararacsl);
+    ad3edrararbcsl :=  GenerateAssignments(d3edrararbcsl);
+    ad3edrarbrbcsl :=  GenerateAssignments(d3edrarbrbcsl);
+    ad3edrbrbrbcsl :=  GenerateAssignments(d3edrbrbrbcsl);
+    ad3edraragaacsl := GenerateAssignments(d3edraragaacsl);
+    ad3edraragabcsl := GenerateAssignments(d3edraragabcsl);
+    ad3edraragbbcsl := GenerateAssignments(d3edraragbbcsl);
+    ad3edrarbgaacsl := GenerateAssignments(d3edrarbgaacsl);
+    ad3edrarbgabcsl := GenerateAssignments(d3edrarbgabcsl);
+    ad3edrarbgbbcsl := GenerateAssignments(d3edrarbgbbcsl);
+    ad3edrbrbgaacsl := GenerateAssignments(d3edrbrbgaacsl);
+    ad3edrbrbgabcsl := GenerateAssignments(d3edrbrbgabcsl);
+    ad3edrbrbgbbcsl := GenerateAssignments(d3edrbrbgbbcsl);
+    ad3edragaagaacsl := GenerateAssignments(d3edragaagaacsl);
+    ad3edragaagabcsl := GenerateAssignments(d3edragaagabcsl);
+    ad3edragaagbbcsl := GenerateAssignments(d3edragaagbbcsl);
+    ad3edragabgabcsl := GenerateAssignments(d3edragabgabcsl);
+    ad3edragabgbbcsl := GenerateAssignments(d3edragabgbbcsl);
+    ad3edragbbgbbcsl := GenerateAssignments(d3edragbbgbbcsl);
+    ad3edrbgaagaacsl := GenerateAssignments(d3edrbgaagaacsl);
+    ad3edrbgaagabcsl := GenerateAssignments(d3edrbgaagabcsl);
+    ad3edrbgaagbbcsl := GenerateAssignments(d3edrbgaagbbcsl);
+    ad3edrbgabgabcsl := GenerateAssignments(d3edrbgabgabcsl);
+    ad3edrbgabgbbcsl := GenerateAssignments(d3edrbgabgbbcsl);
+    ad3edrbgbbgbbcsl := GenerateAssignments(d3edrbgbbgbbcsl);
+    ad3edgaagaagaacsl := GenerateAssignments(d3edgaagaagaacsl);
+    ad3edgaagaagabcsl := GenerateAssignments(d3edgaagaagabcsl);
+    ad3edgaagaagbbcsl := GenerateAssignments(d3edgaagaagbbcsl);
+    ad3edgaagabgabcsl := GenerateAssignments(d3edgaagabgabcsl);
+    ad3edgaagabgbbcsl := GenerateAssignments(d3edgaagabgbbcsl);
+    ad3edgaagbbgbbcsl := GenerateAssignments(d3edgaagbbgbbcsl);
+    ad3edgabgabgabcsl := GenerateAssignments(d3edgabgabgabcsl);
+    ad3edgabgabgbbcsl := GenerateAssignments(d3edgabgabgbbcsl);
+    ad3edgabgbbgbbcsl := GenerateAssignments(d3edgabgbbgbbcsl);
+    ad3edgbbgbbgbbcsl := GenerateAssignments(d3edgbbgbbgbbcsl);
+
+    PatchLoad(language : "_gga_skeleton.ey");
+];
+
+MetaGGAGenerate(language, fname, e, ra, rb, gaa, gab, gbb, ta, tb) := [
+
+    lea := e;//WithValue(ra, 0, e);
+    //If(lea = Undefined,lea:=Limit(ra,0,Right)e);
+    leb := e;//WithValue(rb, 0, e);
+    //If(leb = Undefined,leb:=Limit(rb,0,Right)e);
+
+    dedra := Deriv(ra)e;
+    dedra'b0 := Deriv(ra)leb;
+    dedrb := Deriv(rb)e;
+    dedrb'a0 := Deriv(rb)lea;   
+    dedgaa := Deriv(gaa)e;
+    dedgab := Deriv(gab)e;
+    dedgbb := Deriv(gbb)e;
+    dedta := Deriv(ta)e;
+    dedtb := Deriv(tb)e;
+    d2edrara := Deriv(ra)dedra;
+    d2edrarb := Deriv(ra)dedrb;
+    d2edrbrb := Deriv(rb)dedrb;
+    d2edragaa := Deriv(gaa)dedra;
+    d2edragab := Deriv(gab)dedra;
+    d2edragbb := Deriv(gbb)dedra;
+    d2edrbgaa := Deriv(gaa)dedrb;
+    d2edrbgab := Deriv(gab)dedrb;
+    d2edrbgbb := Deriv(gbb)dedrb;
+    d2edgaagaa := Deriv(gaa)dedgaa;
+    d2edgaagab := Deriv(gab)dedgaa;
+    d2edgaagbb := Deriv(gbb)dedgaa;
+    d2edgbbgab := Deriv(gab)dedgbb;
+    d2edgbbgbb := Deriv(gbb)dedgbb;
+    d2edgabgab := Deriv(gab)dedgab;
+
+    // eliminate common subexpressions in e, lea, leb
+    {e, ecsl} := CSE(e);
+    {lea, leacsl} := CSE(lea);
+    {leb, lebcsl} := CSE(leb);
+
+    // first derivatives:
+    // eliminate common subexpressions already found in lea / leb
+    dedra := SubstituteTaggedSubexpressions(lebcsl, dedra);
+    dedrb := SubstituteTaggedSubexpressions(leacsl, dedrb);
+    // eliminate new common subexpressions  
+    {dedra, dedracsl} := CSE(dedra);
+    {dedrb, dedrbcsl} := CSE(dedrb);
+    {dedrb'a0, dedrb'a0csl} := CSE(dedrb'a0);
+    {dedra'b0, dedra'b0csl} := CSE(dedra'b0);
+    {dedgaa, dedgaacsl} := CSE(dedgaa);
+    {dedgab, dedgabcsl} := CSE(dedgab);
+    {dedgbb, dedgbbcsl} := CSE(dedgbb);
+    {dedta, dedtacsl} := CSE(dedta);
+    {dedtb, dedtbcsl} := CSE(dedtb);
+
+    // second derivatives:
+    // eliminate common subexpressions already found in lea / leb 
+    // and dedra / dedrb
+    d2edrara := SubstituteTaggedSubexpressions(lebcsl, d2edrara);
+    d2edrara := SubstituteTaggedSubexpressions(dedracsl,d2edrara);
+
+    d2edrarb := SubstituteTaggedSubexpressions(lebcsl, d2edrarb);
+    d2edrarb := SubstituteTaggedSubexpressions(leacsl, d2edrarb);
+    d2edrarb := SubstituteTaggedSubexpressions(dedracsl,d2edrarb);
+    d2edrarb := SubstituteTaggedSubexpressions(dedrbcsl,d2edrarb);
+
+    d2edrbrb := SubstituteTaggedSubexpressions(leacsl, d2edrbrb);
+    d2edrbrb := SubstituteTaggedSubexpressions(dedrbcsl,d2edrbrb);
+
+    // eliminate common subexpressions already found in dedra / dedrb 
+    // and dedgaa/ab/bb
+    d2edragaa := SubstituteTaggedSubexpressions(lebcsl, d2edragaa);
+    d2edragaa := SubstituteTaggedSubexpressions(dedracsl, d2edragaa);
+    d2edragaa := SubstituteTaggedSubexpressions(dedgaacsl, d2edragaa);
+
+    d2edragab := SubstituteTaggedSubexpressions(lebcsl, d2edragab);
+    d2edragab := SubstituteTaggedSubexpressions(dedracsl, d2edragab);
+    d2edragab := SubstituteTaggedSubexpressions(dedgabcsl, d2edragab);
+
+    d2edragbb := SubstituteTaggedSubexpressions(lebcsl, d2edragbb);
+    d2edragbb := SubstituteTaggedSubexpressions(dedracsl, d2edragbb);
+    d2edragbb := SubstituteTaggedSubexpressions(dedgbbcsl, d2edragbb);
+
+    d2edrbgaa := SubstituteTaggedSubexpressions(leacsl, d2edrbgaa);
+    d2edrbgaa := SubstituteTaggedSubexpressions(dedrbcsl, d2edrbgaa);
+    d2edrbgaa := SubstituteTaggedSubexpressions(dedgaacsl, d2edrbgaa);
+
+    d2edrbgab := SubstituteTaggedSubexpressions(leacsl, d2edrbgab);
+    d2edrbgab := SubstituteTaggedSubexpressions(dedrbcsl, d2edrbgab);
+    d2edrbgab := SubstituteTaggedSubexpressions(dedgabcsl, d2edrbgab);
+
+    d2edrbgbb := SubstituteTaggedSubexpressions(leacsl, d2edrbgbb);
+    d2edrbgbb := SubstituteTaggedSubexpressions(dedrbcsl, d2edrbgbb);
+    d2edrbgbb := SubstituteTaggedSubexpressions(dedgbbcsl, d2edrbgbb);
+
+    // eliminate common subexpressions already found in dedgaa/ab/bb
+    d2edgaagaa := SubstituteTaggedSubexpressions(dedgaacsl, d2edgaagaa);
+
+    d2edgaagab := SubstituteTaggedSubexpressions(dedgaacsl, d2edgaagab);
+    d2edgaagab := SubstituteTaggedSubexpressions(dedgabcsl, d2edgaagab);
+
+    d2edgaagbb := SubstituteTaggedSubexpressions(dedgaacsl, d2edgaagbb);
+    d2edgaagbb := SubstituteTaggedSubexpressions(dedgbbcsl, d2edgaagbb);
+
+    d2edgbbgab := SubstituteTaggedSubexpressions(dedgbbcsl, d2edgbbgab);
+    d2edgbbgab := SubstituteTaggedSubexpressions(dedgabcsl, d2edgbbgab);
+
+    d2edgbbgbb := SubstituteTaggedSubexpressions(dedgbbcsl, d2edgbbgbb);
+
+    d2edgabgab := SubstituteTaggedSubexpressions(dedgabcsl, d2edgabgab);
+
+    // eliminate new common subexpressions 
+    {d2edrara, d2edraracsl} := CSE(d2edrara);
+    {d2edrarb, d2edrarbcsl} := CSE(d2edrarb);
+    {d2edrbrb, d2edrbrbcsl} := CSE(d2edrbrb);
+    {d2edragaa, d2edragaacsl} := CSE(d2edragaa);
+    {d2edragab, d2edragabcsl} := CSE(d2edragab);
+    {d2edragbb, d2edragbbcsl} := CSE(d2edragbb);
+    {d2edrbgaa, d2edrbgaacsl} := CSE(d2edrbgaa);
+    {d2edrbgab, d2edrbgabcsl} := CSE(d2edrbgab);
+    {d2edrbgbb, d2edrbgbbcsl} := CSE(d2edrbgbb);
+    {d2edgaagaa, d2edgaagaacsl} := CSE(d2edgaagaa);
+    {d2edgaagab, d2edgaagabcsl} := CSE(d2edgaagab);
+    {d2edgaagbb, d2edgaagbbcsl} := CSE(d2edgaagbb);
+    {d2edgbbgab, d2edgbbgabcsl} := CSE(d2edgbbgab);
+    {d2edgbbgbb, d2edgbbgbbcsl} := CSE(d2edgbbgbb);
+    {d2edgabgab, d2edgabgabcsl} := CSE(d2edgabgab);
+ 
+    aecsl :=  CSE'GenerateAssignments(ecsl);
+    aleacsl :=  CSE'GenerateAssignments(leacsl);
+    alebcsl :=  CSE'GenerateAssignments(lebcsl);
+    adedracsl :=  CSE'GenerateAssignments(dedracsl);
+    adedrbcsl :=  CSE'GenerateAssignments(dedrbcsl);
+    adedra'b0csl := CSE'GenerateAssignments(dedra'b0csl);
+    adedrb'a0csl := CSE'GenerateAssignments(dedrb'a0csl);
+    adedgaacsl := CSE'GenerateAssignments(dedgaacsl);
+    adedgabcsl := CSE'GenerateAssignments(dedgabcsl);
+    adedgbbcsl := CSE'GenerateAssignments(dedgbbcsl);
+    adedtacsl := CSE'GenerateAssignments(dedtacsl);
+    adedtbcsl := CSE'GenerateAssignments(dedtbcsl);
+    ad2edraracsl := CSE'GenerateAssignments(d2edraracsl);
+    ad2edrarbcsl := CSE'GenerateAssignments(d2edrarbcsl);
+    ad2edrbrbcsl := CSE'GenerateAssignments(d2edrbrbcsl);
+    ad2edragaacsl := CSE'GenerateAssignments(d2edragaacsl);
+    ad2edragabcsl := CSE'GenerateAssignments(d2edragabcsl);
+    ad2edragbbcsl := CSE'GenerateAssignments(d2edragbbcsl);
+    ad2edrbgaacsl := CSE'GenerateAssignments(d2edrbgaacsl);
+    ad2edrbgabcsl := CSE'GenerateAssignments(d2edrbgabcsl);
+    ad2edrbgbbcsl := CSE'GenerateAssignments(d2edrbgbbcsl);
+    ad2edgaagaacsl := CSE'GenerateAssignments(d2edgaagaacsl);
+    ad2edgaagabcsl := CSE'GenerateAssignments(d2edgaagabcsl);
+    ad2edgaagbbcsl := CSE'GenerateAssignments(d2edgaagbbcsl);
+    ad2edgbbgabcsl := CSE'GenerateAssignments(d2edgbbgabcsl);
+    ad2edgbbgbbcsl := CSE'GenerateAssignments(d2edgbbgbbcsl);
+    ad2edgabgabcsl := CSE'GenerateAssignments(d2edgabgabcsl);
+
+    PatchLoad(language : "_metagga_skeleton.ey");
+];

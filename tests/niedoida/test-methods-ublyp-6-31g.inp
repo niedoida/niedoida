@@ -1,0 +1,21 @@
+# Results from Gaussian09
+# Energy = -39.0954417503 hartrees
+
+title: methylene
+
+run_type: single_point
+basis_set: 6-31g
+multiplicity: 3
+theory: blyp
+
+scf:
+  method: uhf 
+
+units:
+  length: angstrom
+  energy: hartree
+
+atoms: 
+- C     0.000000     0.000000 -0.020583
+- H    -0.828840     0.707900  0.010292
+- H     0.828840     0.707900  0.010292

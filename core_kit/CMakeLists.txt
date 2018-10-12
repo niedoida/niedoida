@@ -2,7 +2,53 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-add_library (core_kit
+set (HDRS
+    include/core_kit/ao_symmetry.hpp
+    include/core_kit/ao_value_engine_factory.hpp
+    include/core_kit/ao_value_engine.hpp
+    include/core_kit/atom.hpp
+    include/core_kit/atomic_fragment.hpp
+    include/core_kit/basic_2el_int_prop.hpp
+    include/core_kit/basis_set_builder.hpp
+    include/core_kit/basis_set.hpp
+    include/core_kit/basis_set_info.hpp
+    include/core_kit/charge.hpp
+    include/core_kit/core_kit.hpp
+    include/core_kit/core_utils.hpp
+    include/core_kit/dFock.hpp
+    include/core_kit/dispersion.hpp
+    include/core_kit/efield.hpp
+    include/core_kit/factory.hpp
+    include/core_kit/fock_matrix_generator_factory.hpp
+    include/core_kit/fock_matrix_generator.hpp
+    include/core_kit/fragment.hpp
+    include/core_kit/grid.hpp
+    include/core_kit/hessian_engine.hpp
+    include/core_kit/initial_guess_factory.hpp
+    include/core_kit/initial_guess.hpp
+    include/core_kit/integral_cache.hpp
+    include/core_kit/integral_engine_factory.hpp
+    include/core_kit/integral_engine.hpp
+    include/core_kit/mo_symmetry.hpp
+    include/core_kit/occupations_factory.hpp
+    include/core_kit/occupations.hpp
+    include/core_kit/os1_integral_gradient_engine.hpp
+    include/core_kit/periodic_table.hpp
+    include/core_kit/promolecule.hpp
+    include/core_kit/pseudo_fock_matrix_generator.hpp
+    include/core_kit/schwartz_estimator.hpp
+    include/core_kit/shell_ACD_index_generator.hpp
+    include/core_kit/shell_pair_index_generator.hpp
+    include/core_kit/shell_quartet.hpp
+    include/core_kit/shell_quartet_index_generator.hpp
+    include/core_kit/shell_quartet_petite_list.hpp
+    include/core_kit/significant_shell_pairs_generator.hpp
+    include/core_kit/significant_shell_quartet_index_generator.hpp
+    include/core_kit/spectroscopic_properties.hpp
+    include/core_kit/spin.hpp
+    include/core_kit/system.hpp)
+
+set (SRCS
     src/ao_labels.cpp
     src/ao_symmetry.cpp
     src/atom.cpp
@@ -61,8 +107,9 @@ add_library (core_kit
     src/u_matrices_from_cphf.cpp
     src/spectroscopic_properties.cpp
     src/dS_dFock.cpp
-    src/dF_matrix_generator.cpp
-)
+    src/dF_matrix_generator.cpp)
+
+add_library (core_kit ${SRCS} ${HDRS})
 
 target_include_directories (core_kit PUBLIC include)
 #target_link_libraries(core_kit io_kit misc_kit symmetry_kit scf_kit gto_d1_kit gto_d2_kit cphf_kit)

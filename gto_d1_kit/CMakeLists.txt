@@ -4,7 +4,12 @@
 
 cmake_minimum_required (VERSION 3.5)
 project (LIBGTO_D1_KIT VERSION 0.1 LANGUAGES CXX)
-add_library (gto_d1_kit
+
+set (HDRS
+    include/gto_d1_kit/gto_d1.hpp
+    include/gto_d1_kit/gto_d1_kit.hpp)
+
+set (SRCS
     src/d_ee_ddpp_B0.ey.cpp
     src/d_ee_ddpp_B1.ey.cpp
     src/d_ee_ddpp_B2.ey.cpp
@@ -394,9 +399,10 @@ add_library (gto_d1_kit
     src/d_ee_dpss_C10.ey.cpp
     src/d_ne_sd_A0.ey.cpp
     src/gto_d1.cpp
-    src/gto_d1_driver.cpp
-)
+    src/gto_d1_driver.cpp)
 
-target_include_directories ( gto_d1_kit PUBLIC include)
+add_library (gto_d1_kit ${SRCS} ${HDRS})
+
+target_include_directories (gto_d1_kit PUBLIC include)
 enable_testing ()
 add_subdirectory (test)

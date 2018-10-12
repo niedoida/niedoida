@@ -2,7 +2,28 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-add_library(grid_kit
+set (HDRS
+    include/grid_kit/atomic_grid.hpp
+    include/grid_kit/gl_spherical_grid.hpp
+    include/grid_kit/grid_factory.hpp
+    include/grid_kit/grid_integral_implementation.hpp
+    include/grid_kit/grid_kit.hpp
+    include/grid_kit/grid_utils.hpp
+    include/grid_kit/ll_spherical_grid.hpp
+    include/grid_kit/partition_function.hpp
+    include/grid_kit/product_grid.hpp
+    include/grid_kit/pruned_grid.hpp
+    include/grid_kit/r_adaptive_product_grid.hpp
+    include/grid_kit/radial_grids.hpp
+    include/grid_kit/radial_mapping.hpp
+    include/grid_kit/rho0_adaptive_grid.hpp
+    include/grid_kit/s_adaptive_grid.hpp
+    include/grid_kit/sds_adaptive_grid.hpp
+    include/grid_kit/simple_grid.hpp
+    include/grid_kit/simple_spherical_grid.hpp
+    include/grid_kit/vxc0_adaptive_grid.hpp)
+
+set (SRCS
     src/atomic_grid.cpp
     src/emcl_radial_grid.cpp
     src/extended_simple_tg2_grid.cpp
@@ -26,6 +47,8 @@ add_library(grid_kit
     src/simple_spherical_grid.cpp
     src/ss_partition_function.cpp
     src/vxc0_adaptive_grid.cpp)
+
+add_library(grid_kit ${SRCS} ${HDRS})
 
 target_include_directories (grid_kit PUBLIC include)
 target_link_libraries (grid_kit xc_kit core_kit misc_kit)

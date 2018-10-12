@@ -2,7 +2,16 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-add_executable (niedoida
+set (HDRS
+    include/niedoida/config.hpp
+    include/niedoida/input_data_fill_functions.hpp
+    include/niedoida/input_data.hpp
+    include/niedoida/input_data_specification.yaml
+    include/niedoida/input_data_yaml_conversions.hpp
+    include/niedoida/niedoida.hpp
+    include/niedoida/parse_input.hpp)
+
+set (SRCS
     src/parse_input.cpp
     src/check_input.cpp
     src/config.cpp
@@ -37,6 +46,8 @@ add_executable (niedoida
     src/deep_copy.cpp
     src/geometry_optimization.cpp
     src/monitor.cpp)
+
+add_executable (niedoida ${SRCS} ${HDRS})
 
 target_include_directories (niedoida PRIVATE include ../yaml_inputter/include)
 

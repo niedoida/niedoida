@@ -2,6 +2,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+set (HDRS
+    include/xc_kit/xc_functional_data.hpp
+    include/xc_kit/xc_functional.hpp
+    include/xc_kit/xc_functionals.hpp
+    include/xc_kit/xc_kit.hpp)
+
 set (fnames
     slater_x_functional
     becke88_x_functional
@@ -15,6 +21,9 @@ set (fnames
     lyp_c_functional
     pbe_c_functional
     pw91_c_functional)
+
+list (TRANSFORM fnames PREPEND ${CMAKE_CURRENT_BINARY_DIR}/ OUTPUT_VARIABLE SRCS)
+list (TRANSFORM SRCS APPEND .cpp OUTPUT_VARIABLE SRCS)
 
 execute_process (COMMAND ${YACAS} -d OUTPUT_VARIABLE YACAS_SCRIPTS_PATH OUTPUT_STRIP_TRAILING_WHITESPACE)
 
@@ -31,18 +40,6 @@ foreach (_fn ${fnames})
         MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/src/${_fn}.ey)
 endforeach ()
 
-add_library(xc_kit 
-    ${CMAKE_CURRENT_BINARY_DIR}/slater_x_functional.cpp
-    ${CMAKE_CURRENT_BINARY_DIR}/becke88_x_functional.cpp
-    ${CMAKE_CURRENT_BINARY_DIR}/pw91_x_functional.cpp
-    ${CMAKE_CURRENT_BINARY_DIR}/mpw91_x_functional.cpp
-    ${CMAKE_CURRENT_BINARY_DIR}/pbe_x_functional.cpp
-    ${CMAKE_CURRENT_BINARY_DIR}/revpbe_x_functional.cpp
-    ${CMAKE_CURRENT_BINARY_DIR}/vwn_c_functional.cpp
-    ${CMAKE_CURRENT_BINARY_DIR}/vwn3_c_functional.cpp
-    ${CMAKE_CURRENT_BINARY_DIR}/pw92_c_functional.cpp
-    ${CMAKE_CURRENT_BINARY_DIR}/lyp_c_functional.cpp
-    ${CMAKE_CURRENT_BINARY_DIR}/pbe_c_functional.cpp
-    ${CMAKE_CURRENT_BINARY_DIR}/pw91_c_functional.cpp)
+add_library(xc_kit ${SRCS} ${HDRS})
 
 target_include_directories (xc_kit PUBLIC include)

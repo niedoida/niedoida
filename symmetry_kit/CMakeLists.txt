@@ -2,7 +2,18 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-add_library (symmetry_kit
+set (HDRS
+    include/symmetry_kit/decomposition.hpp
+    include/symmetry_kit/find_symmetry_utils.hpp
+    include/symmetry_kit/misc.hpp
+    include/symmetry_kit/symmetry_group.hpp
+    include/symmetry_kit/symmetry_info.hpp
+    include/symmetry_kit/symmetry_kit.hpp
+    include/symmetry_kit/symmetry_operation_info.hpp
+    include/symmetry_kit/symmetry_utils.hpp
+    include/symmetry_kit/wigner_matrices.hpp)
+
+set (SRCS
     src/align.cpp
     src/canonic.cpp
     src/center_of_mass.cpp
@@ -45,6 +56,8 @@ add_library (symmetry_kit
     src/td_symmetry_group.cpp
     src/th_symmetry_group.cpp
     src/wigner_matrices.cpp)
+
+add_library (symmetry_kit ${SRCS} ${HDRS})
 
 target_include_directories (symmetry_kit PUBLIC include)
 target_link_libraries (symmetry_kit misc_kit io_kit)

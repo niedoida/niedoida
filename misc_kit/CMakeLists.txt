@@ -2,7 +2,17 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-set (MISC_SRCS
+set (HDRS
+	include/misc_kit/blackbox.hpp
+	include/misc_kit/dispatcher.hpp
+	include/misc_kit/misc_utils.hpp
+	include/misc_kit/phys_consts.hpp
+	include/misc_kit/quadratures.hpp
+	include/misc_kit/special_functions.hpp
+	include/misc_kit/tao_utils.hpp
+	include/misc_kit/threadpool.hpp)
+
+set (SRCS
 	src/davidson_diagonalize.cpp
 	src/boys.cpp
 	src/gauss_chebyshev_0_quadrature.cpp
@@ -15,12 +25,12 @@ set (MISC_SRCS
 	src/tao_utils.cpp)
 
 if (WIN32)
-	set (MISC_SRCS ${MISC_SRCS} src/dispatcher.cpp)
+	set (SRCS ${SRCS} src/dispatcher.cpp)
 else ()
-	set (MISC_SRCS ${MISC_SRCS} src/dispatcher.cpp src/dynamic_dispatcher.cpp src/dynamic_cache_dispatcher.cpp)
+	set (SRCS ${SRCS} src/dispatcher.cpp src/dynamic_dispatcher.cpp src/dynamic_cache_dispatcher.cpp)
 endif ()
 
-add_library (misc_kit ${MISC_SRCS})
+add_library (misc_kit ${SRCS} ${HDRS})
 
 target_include_directories (misc_kit PUBLIC include)
 target_link_libraries (misc_kit io_kit)

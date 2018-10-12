@@ -2,11 +2,20 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-add_custom_command (OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/gto_value_engine.cpp
-    COMMAND ${YACAS} -pc --patchload ${CMAKE_CURRENT_SOURCE_DIR}/src/gto_value_engine.ey > ${CMAKE_CURRENT_BINARY_DIR}/gto_value_engine.cpp
-    MAIN_DEPENDENCY src/gto_value_engine.ey)
+set (HDRS
+    include/gto_kit/gto_utils.hpp
+    include/gto_kit/gto_value_engine.hpp
+    include/gto_kit/hr.hpp
+    include/gto_kit/os1_constants.hpp
+    include/gto_kit/os1_efield.hpp
+    include/gto_kit/os1_integral_engine_factory.hpp
+    include/gto_kit/os1_integral_engine.hpp
+    include/gto_kit/transfer.hpp
+    include/gto_kit/vr.hpp
+    include/gto_kit/xc_integral_engine_factory.hpp
+    include/gto_kit/xc_integral_engine.hpp)
 
-add_library(gto_kit
+set (SRCS
     src/cartesian_to_spherical.cpp
     src/gto_shell_range.cpp
     src/hr1.cpp
@@ -70,6 +79,12 @@ add_library(gto_kit
     src/xc_integral_engine_ks_matrix_core_gradient.cpp
     src/xc_integral_engine_factory.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/gto_value_engine.cpp)
+
+add_custom_command (OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/gto_value_engine.cpp
+    COMMAND ${YACAS} -pc --patchload ${CMAKE_CURRENT_SOURCE_DIR}/src/gto_value_engine.ey > ${CMAKE_CURRENT_BINARY_DIR}/gto_value_engine.cpp
+    MAIN_DEPENDENCY src/gto_value_engine.ey)
+
+add_library(gto_kit ${SRCS} ${HDRS})
 
 target_include_directories (gto_kit PUBLIC include)
 target_link_libraries (gto_kit xc_kit core_kit misc_kit grid_kit)

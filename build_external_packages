@@ -228,7 +228,7 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
     cd $OPENBLAS
     mkdir build
     cd build
-    cmake -DCMAKE_INSTALL_PREFIX:PATH=$EP_PATH -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=Off -DTARGET=SANDYBRIDGE -DDYNAMIC_ARCH=Off -DUSE_THREAD=Off ..
+    cmake -DCMAKE_INSTALL_PREFIX:PATH=$EP_PATH -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=Off -DDYNAMIC_ARCH=On -DUSE_THREAD=Off ..
     make -j $jobs all
     make install
     cd $EP_PATH

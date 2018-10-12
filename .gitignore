@@ -131,3 +131,9 @@ $RECYCLE.BIN/
 
 
 # End of https://www.gitignore.io/api/c++,cmake,linux,macos,windows,netbeans,visualstudiocode
+
+# local modifications
+
+external_packages/
+tests/niedoida/__pycache__/
+tests/niedoida/*.log

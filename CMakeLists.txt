@@ -8,6 +8,7 @@ project (NIEDOIDA VERSION 18.10 DESCRIPTION "General-purpose quantum-chemical an
 
 option (NIEDOIDA_ENABLE_USER_DOCS "generate user documentation" OFF)
 option (NIEDOIDA_ENABLE_DEV_DOCS "generate developer documentation" OFF)
+option (NIEDOIDA_GENERATE_XC_FUNCTIONALS "re-generate xc functionals" OFF)
 
 set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 

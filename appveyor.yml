@@ -3,6 +3,7 @@ branches:
   only:
   - dev
 image: Ubuntu1804
+clone_folder: /home/appveyor/projects/niedoida
 install:
 - sh: >-
     sudo apt install -y python3-setuptools python3-numpy

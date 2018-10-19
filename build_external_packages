@@ -5,7 +5,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 export CMAKE_RELEASE=3.12
-export CMAKE_VERSION=$CMAKE_RELEASE.2
+export CMAKE_VERSION=$CMAKE_RELEASE.3
 export CMAKE=cmake-$CMAKE_VERSION
 export BOOST_VERSION=1.68.0
 export BOOST=boost_1_68_0
@@ -119,8 +119,12 @@ if [ ! -d include ]; then
     mkdir include
 fi
 
-if [ ! -f $CMAKE.tar.gz ]; then
-    wget -o- https://cmake.org/files/v$CMAKE_RELEASE/$CMAKE.tar.gz
+if [ ! -f $CMAKE-*.tar.gz ]; then
+    if [[ "$OSTYPE" == "linux-gnu" ]]; then
+        wget -o- https://cmake.org/files/v$CMAKE_RELEASE/$CMAKE-Linux-x86_64.tar.gz
+    elif [[ "$OSTYPE" == "darwin"* ]]; then
+        wget -o- https://cmake.org/files/v$CMAKE_RELEASE/$CMAKE-Darwin-x86_64.tar.gz
+    fi
 fi
 
 if [ ! -f $MPI.tar.gz ]; then
@@ -163,14 +167,12 @@ if [ ! -f $YACAS.tar.gz ]; then
     mv v$YACAS_VERSION.tar.gz $YACAS.tar.gz
 fi
 
-
-rm -rf $CMAKE
-tar xzf $CMAKE.tar.gz
-cd $CMAKE
-./bootstrap --prefix=$EP_PATH --parallel=$jobs -- -DCMAKE_BUILD_TYPE=Release
-make -j $jobs install
-cd $EP_PATH
-rm -rf $CMAKE
+# install pre-compiled cmake
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+    tar xzf $CMAKE-Linux-x86_64.tar.gz --strip-components=1
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    tar xzf $CMAKE-Darwin-x86_64.tar.gz --strip-components=3
+fi
 
 # build MPICH2
 rm -rf $MPI
@@ -272,7 +274,7 @@ mv yaml-cpp-$YAML_CPP $YAML_CPP
 cd $YAML_CPP
 mkdir build
 cd build
-cmake -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_PREFIX=$EP_PATH -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_BUILD_TYPE=Release ..
+cmake -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_PREFIX=$EP_PATH -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_BUILD_TYPE=Release -DYAML_CPP_BUILD_TESTS=Off -DYAML_CPP_BUILD_TOOLS=Off -DYAML_CPP_BUILD_CONTRIB=Off ..
 make -j $jobs
 make install
 cd $EP_PATH

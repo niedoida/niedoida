@@ -1,0 +1,34 @@
+version: 18.10.{build}
+branches:
+  only:
+  - dev
+image: Ubuntu1804
+install:
+- sh: >-
+    sudo apt install -y python3-setuptools python3-numpy
+
+    wget https://github.com/grzegorzmazur/cclib/archive/niedoida.zip
+
+    unzip niedoida.zip
+
+    cd cclib-niedoida
+
+    python3 ./setup.py install --user
+
+    cd ..
+build_script:
+- sh: >-
+    tar xf prebuilt_external_packages/appveyor-Ubuntu1804.tar.xz
+
+
+    mkdir build
+
+    cd build
+
+    ../external_packages/bin/cmake -DCMAKE_BUILD_TYPE=Release ..
+
+    make -j 2
+
+    cd ..
+test_script:
+- sh: ./run_all_niedoida_methods_tests build/niedoida/niedoida

@@ -2,6 +2,9 @@
 niedoida
 ========
 
+.. image:: https://ci.appveyor.com/api/projects/status/ps5s0mq5yhgmpqfn?svg=true
+    :target: https://ci.appveyor.com/project/grzegorzmazur/niedoida-p7j0m
+
 Niedoida is a general-purpose quantum-chemical and microelectrostatic package.
 See http://www.niedoida.org for details.
 

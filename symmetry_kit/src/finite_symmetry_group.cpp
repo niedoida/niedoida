@@ -512,8 +512,13 @@ namespace niedoida {
             boost::optional<unsigned> ppaidx;
             unsigned ppafold = 0; // principal proper axis fold
 
+            boost::optional<unsigned> cubic_c3idx;
+            boost::optional<unsigned> cubic_c5idx;
+
             for (unsigned i = 0; i < _elements.size(); ++i) {
                 const SymmetryOperationInfo e(_elements[i]);
+                if (e.fold().numerator() > 1)
+                    continue;
 
                 const arma::vec3 x = {1, 0, 0};
                 const arma::vec3 y = {0, 1, 0};
@@ -550,15 +555,31 @@ namespace niedoida {
                     ppaidx = i;
                     ppafold = e.fold().denominator();
                 }
+
+                if (e.label().front() == 'C' &&
+                    e.fold().denominator() == 3 &&
+                    std::abs(arma::dot(e.direction(), z)) < 0.6)
+                    cubic_c3idx = i;
+
+                if (e.label().front() == 'C' &&
+                    e.fold().denominator() == 5 &&
+                    std::abs(arma::dot(e.direction(), z)) < 0.6)
+                    cubic_c5idx = i;
             }
 
-            // If group contains: inversion, improper axis of fold
-            // 2n and proper axis of fold n, the proper axis is the
-            // principal one. If group does not contain inversion
-            // but contains improper axis of fold 2n and proper axis
-            // of fold n, improper axis is principal
-            const unsigned paidx =
-                (!iidx && piaidx && piafold == 2 * ppafold) ? *piaidx : *ppaidx;
+            unsigned paidx;
+            if (cubic_c5idx)
+                paidx = *cubic_c5idx;
+            else if (cubic_c3idx)
+                paidx = *cubic_c3idx;
+            else
+                // If an axial group contains: inversion, improper axis of fold
+                // 2n and proper axis of fold n, the proper axis is the
+                // principal one. If group does not contain inversion but
+                // contains improper axis of fold 2n and proper axis of fold n,
+                // improper axis is principal
+                paidx =
+                    (!iidx && piaidx && piafold == 2 * ppafold) ? *piaidx : *ppaidx;
 
             unsigned ecc;
             boost::optional<unsigned> icc;

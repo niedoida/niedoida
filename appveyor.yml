@@ -1,35 +1,63 @@
-version: 18.10.{build}
+version: 18.11.{build}
+
+image:
+- Ubuntu1804
+- Visual Studio 2017
+
 branches:
   only:
   - dev
-image: Ubuntu1804
-clone_folder: /home/appveyor/projects/niedoida
-install:
-- sh: >-
-    sudo apt install -y python3-setuptools python3-numpy
 
-    wget https://github.com/grzegorzmazur/cclib/archive/niedoida.zip
+for:
+-
+    matrix:
+        only:
+            - image: Ubuntu1804
+    clone_folder: /home/appveyor/projects/niedoida
+    install:
+    - sh: >-
+        sudo apt install -y python3-setuptools python3-numpy
 
-    unzip niedoida.zip
+        wget https://github.com/grzegorzmazur/cclib/archive/niedoida.zip
 
-    cd cclib-niedoida
+        unzip niedoida.zip
 
-    python3 ./setup.py install --user
+        cd cclib-niedoida
 
-    cd ..
-build_script:
-- sh: >-
-    tar xf prebuilt_external_packages/appveyor-Ubuntu1804.tar.xz
+        python3 ./setup.py install --user
+
+        cd ..
+    build_script:
+    - sh: >-
+        tar xf prebuilt_external_packages/appveyor-Ubuntu1804.tar.xz
 
 
-    mkdir build
+        mkdir build
 
-    cd build
+        cd build
 
-    ../external_packages/bin/cmake -DCMAKE_BUILD_TYPE=Release ..
+        ../external_packages/bin/cmake -DCMAKE_BUILD_TYPE=Release ..
 
-    make -j 2
+        make -j 2
 
-    cd ..
-test_script:
-- sh: ./run_all_niedoida_methods_tests build/niedoida/niedoida
+        cd ..
+    test_script:
+    - sh: ./run_all_niedoida_methods_tests build/niedoida/niedoida
+-
+    matrix:
+        only:
+            - image: Visual Studio 2017
+    clone_folder: C:/projects/niedoida
+    install:
+    - appveyor DownloadFile https://download.microsoft.com/download/4/A/6/4A6AAED8-200C-457C-AB86-37505DE4C90D/msmpisdk.msi
+    - msiexec /i msmpisdk.msi /qn /norestart
+    - set MSMPI_INC=C:\Program Files (x86)\Microsoft SDKs\MPI\Include\
+    - set MSMPI_LIB32=C:\Program Files (x86)\Microsoft SDKs\MPI\Lib\x86\
+    - set MSMPI_LIB64=C:\Program Files (x86)\Microsoft SDKs\MPI\Lib\x64\
+    build_script:
+    - 7z x prebuilt_external_packages/appveyor-VS2017.tar.xz
+    - 7z x appveyor-VS2017.tar
+    - mkdir build
+    - cd build
+    - cmake -DCMAKE_GENERATOR_PLATFORM=x64 ..
+    - cmake --build . --target niedoida --config Release

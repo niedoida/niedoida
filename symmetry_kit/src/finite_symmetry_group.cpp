@@ -524,21 +524,25 @@ namespace niedoida {
                 const arma::vec3 y = {0, 1, 0};
                 const arma::vec3 z = {0, 0, 1};
 
-                if (e.label().substr(0, 2) == "C1")
+                if (e.label().front() == 'C' && e.fold().denominator() == 1)
                     eidx = i;
                 else if (e.label() == "i")
                     iidx = i;
-                else if (e.label().substr(0, 2) == "C2" &&
+                else if (e.label().front() == 'C' &&
+                         e.fold().denominator() == 2 &&
                          std::abs(arma::dot(e.direction(), z)) < 1e-3)
                     c2hidx = i;
-                else if (e.label().substr(0, 2) == "S1" &&
+                else if (e.label().front() == 'S' &&
+                         e.fold().denominator() == 1 &&
                          arma::norm(arma::cross(e.direction(), z)) < 1e-3)
                     shidx = i;
-                else if (e.label().substr(0, 2) == "S1" &&
+                else if (e.label().front() == 'S' &&
+                         e.fold().denominator() == 1 &&
                          (arma::norm(arma::cross(e.direction(), x)) < 1e-3 ||
                           arma::norm(arma::cross(e.direction(), y)) < 1e-3))
                     svidx = i;
-                else if (e.label().substr(0, 2) == "S1" &&
+                else if (e.label().front() == 'S' &&
+                         e.fold().denominator() == 1 &&
                          std::abs(arma::dot(e.direction(), z)) < 1e-3)
                     sdidx = i;
 

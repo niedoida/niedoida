@@ -75,6 +75,28 @@ set (SRCS
     src/vr1_4.cpp
     src/vr5_8.cpp
     src/vr9_12.cpp
+    src/vr17.cpp
+    src/vr18.cpp
+    src/vr19.cpp
+    src/hvr1.cpp
+    src/hvr2.cpp
+    src/hvr3.cpp
+    src/hvr4.cpp
+    src/hvr5.cpp
+    src/hvr6.cpp
+    src/hvr7.cpp
+    src/hvr8.cpp
+    src/hvr9.cpp
+    src/hvr10.cpp
+    src/hvr11.cpp
+    src/hvr12.cpp
+    src/hvr13.cpp
+    src/hvr14.cpp
+    src/hvr15.cpp
+    src/hvr16.cpp
+    src/hvr17.cpp
+    src/hvr18.cpp
+    src/hvr19.cpp
     src/xc_integral_engine.cpp
     src/xc_integral_engine_ks_matrix_core_gradient.cpp
     src/xc_integral_engine_factory.cpp

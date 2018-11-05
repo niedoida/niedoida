@@ -32,6 +32,21 @@ namespace niedoida {
                      const double, const double, const double,
                      double* NIEDOIDA_RESTRICT);
 
+        void vr17(const double, const double, const unsigned,
+                  const double, const double, const double,
+                  const double, const double, const double,
+                  double* NIEDOIDA_RESTRICT);
+
+        void vr18(const double, const double, const unsigned,
+                  const double, const double, const double,
+                  const double, const double, const double,
+                  double* NIEDOIDA_RESTRICT);
+
+        void vr19(const double, const double, const unsigned,
+                  const double, const double, const double,
+                  const double, const double, const double,
+                  double* NIEDOIDA_RESTRICT);
+
         void svr1_4(const double, const double, const unsigned,
                     const double, const double, const double,
                     double* NIEDOIDA_RESTRICT);

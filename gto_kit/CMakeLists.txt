@@ -78,6 +78,7 @@ set (SRCS
     src/vr17.cpp
     src/vr18.cpp
     src/vr19.cpp
+    src/vr20.cpp
     src/hvr1.cpp
     src/hvr2.cpp
     src/hvr3.cpp
@@ -97,6 +98,7 @@ set (SRCS
     src/hvr17.cpp
     src/hvr18.cpp
     src/hvr19.cpp
+    src/hvr20.cpp
     src/xc_integral_engine.cpp
     src/xc_integral_engine_ks_matrix_core_gradient.cpp
     src/xc_integral_engine_factory.cpp

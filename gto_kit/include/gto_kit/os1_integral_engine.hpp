@@ -366,6 +366,28 @@ namespace niedoida {
 	      *(b_cur + 8) = (*(b_cur + 20) + *(b_cur + 30) - 6 * *(b_cur + 23)) / sqrt192 * sqrt105;
 	    }
 	  }
+	} else if(l_j == 5) {
+	  for(unsigned k = k_begin; k < k_end; ++k) {
+	    double* NIEDOIDA_RESTRICT b_cur = b + k * s_12 + i_begin * s;
+	    for(unsigned i = i_begin; i < i_end; ++i, b_cur += s) {	      
+	      *b_cur = (*(b_cur + 50) - 10 * *(b_cur + 41) + 5 * *(b_cur + 36)) / sqrt1920 * sqrt945;
+	      *(b_cur + 1) = (*(b_cur + 39) - *(b_cur + 46)) / sqrt12 * sqrt945;
+	      *(b_cur + 2) = (24 * *(b_cur + 43) - 3 * *(b_cur + 36) - 2 * *(b_cur + 41) +
+				  *(b_cur + 50) - 8 * *(b_cur + 52)) / sqrt3456 * sqrt945;
+	      *(b_cur + 3) = (2 * *(b_cur + 48) - *(b_cur + 39) - *(b_cur + 46)) / 6 * sqrt945;
+	      *(b_cur + 4) = (12 * *(b_cur + 43) + 8 * *(b_cur + 54) - *(b_cur + 36) + 12 * *(b_cur + 52) - 
+				  2 * *(b_cur + 41) - *(b_cur + 50)) / sqrt4032 * sqrt945;
+	      *(b_cur + 5) = (8 * *(b_cur + 55) + 15 * (*(b_cur + 37) + *(b_cur + 51)) -
+				  40 * (*(b_cur + 44) + *(b_cur + 53))) / sqrt60480 * sqrt945;
+	      *(b_cur + 6) =  (*(b_cur + 35) + 2 * *(b_cur + 38) - 12 * *(b_cur + 40) + *(b_cur + 45) + 
+				  8 * *(b_cur + 49) - 12 * *(b_cur + 47))/ sqrt4032 * sqrt945;
+	      *(b_cur + 7) = (2 * (*(b_cur + 44) - *(b_cur + 53)) - *(b_cur + 37) + *(b_cur + 51)) / 12 * sqrt945;
+	      *(b_cur + 8) = (8 * *(b_cur + 40) - *(b_cur + 35) + 2 * *(b_cur + 38) +
+				  3 * *(b_cur + 45) - 24 * *(b_cur + 47)) / sqrt3456 * sqrt945;     
+	      *(b_cur + 9) = (*(b_cur + 37) + *(b_cur + 51) - 6 * *(b_cur + 42)) / sqrt192 * sqrt945;
+	      *(b_cur + 10) = (*(b_cur + 35) - 10 * *(b_cur + 38) + 5 * *(b_cur + 45)) / sqrt1920 * sqrt945;  
+	    }
+	  }
 	}
       }
       inline
@@ -423,6 +445,33 @@ namespace niedoida {
 	      *(b_cur + 14) = *(b_cur + 34) / sqrt105 * sqrt105;
 	    }
 	  }
+	} else if(l_j == 5) {
+	  for(unsigned k = k_begin; k < k_end ; ++k) {
+	    double* NIEDOIDA_RESTRICT b_cur = b  + k * s_12 + i_begin * s;
+	    for(unsigned i = i_begin; i < i_end; ++i, b_cur += s) {
+	      *b_cur = *(b_cur + 35) / sqrt945 * sqrt945;
+	      *(b_cur + 1) = *(b_cur + 36) / sqrt105 * sqrt945;
+	      *(b_cur + 2) = *(b_cur + 37) / sqrt105 * sqrt945;
+	      *(b_cur + 3) = *(b_cur + 38) / sqrt45 * sqrt945;
+	      *(b_cur + 4) = *(b_cur + 39) / sqrt15 * sqrt945;
+	      *(b_cur + 5) = *(b_cur + 40) / sqrt45 * sqrt945;
+	      *(b_cur + 6) = *(b_cur + 41) / sqrt45 * sqrt945;
+	      *(b_cur + 7) = *(b_cur + 42) / 3 * sqrt945;
+	      *(b_cur + 8) = *(b_cur + 43) / 3 * sqrt945;
+	      *(b_cur + 9) = *(b_cur + 44) / sqrt45 * sqrt945;
+	      *(b_cur + 10) = *(b_cur + 45) / sqrt105 * sqrt945;
+	      *(b_cur + 11) = *(b_cur + 46) / sqrt15 * sqrt945;
+	      *(b_cur + 12) = *(b_cur + 47) / 3 * sqrt945;
+	      *(b_cur + 13) = *(b_cur + 48) / sqrt15 * sqrt945;
+	      *(b_cur + 14) = *(b_cur + 49) / sqrt105 * sqrt945;
+	      *(b_cur + 16) = *(b_cur + 50) / sqrt945 * sqrt945;
+	      *(b_cur + 17) = *(b_cur + 51) / sqrt105 * sqrt945;
+	      *(b_cur + 18) = *(b_cur + 52) / sqrt45 * sqrt945;
+	      *(b_cur + 19) = *(b_cur + 53) / sqrt45 * sqrt945;
+	      *(b_cur + 20) = *(b_cur + 54) / sqrt105 * sqrt945;
+	      *(b_cur + 21) = *(b_cur + 55) / sqrt945 * sqrt945;
+	    }
+	  }
 	}
       }
 
@@ -471,8 +520,30 @@ namespace niedoida {
 	      *(b_cur + 7 * s) = (*(b_cur + 22 * s) - *(b_cur + 27 * s)) / sqrt24 * sqrt105;
 	      *(b_cur + 8 * s) = (*(b_cur + 20 * s) + *(b_cur + 30 * s) - 6 * *(b_cur + 23 * s)) / sqrt192 * sqrt105;            
 	    }
-	  }
-	}
+	  } 
+	} else if(l_i == 5) {
+	  for(unsigned k = k_begin; k < k_end ; ++k) {
+	    double* NIEDOIDA_RESTRICT b_cur = b + k * s_12;
+	    for(unsigned j = 0; j < j_scope; ++j, ++b_cur) {
+	      *b_cur = (*(b_cur + 50 * s) - 10 * *(b_cur + 41 * s) + 5 * *(b_cur + 36 * s)) / sqrt1920 * sqrt945;
+	      *(b_cur + 1 * s) = (*(b_cur + 39 * s) - *(b_cur + 46 * s)) / sqrt12 * sqrt945;
+	      *(b_cur + 2 * s) = (24 * *(b_cur + 43 * s) - 3 * *(b_cur + 36 * s) - 2 * *(b_cur + 41 * s) +
+				  *(b_cur + 50 * s) - 8 * *(b_cur + 52 * s)) / sqrt3456 * sqrt945;
+	      *(b_cur + 3 * s) = (2 * *(b_cur + 48 * s) - *(b_cur + 39 * s) - *(b_cur + 46 * s)) / 6 * sqrt945;
+	      *(b_cur + 4 * s) = (12 * *(b_cur + 43 * s) + 8 * *(b_cur + 54 * s) - *(b_cur + 36 * s) + 12 * *(b_cur + 52 * s) - 
+				  2 * *(b_cur + 41 * s) - *(b_cur + 50 * s)) / sqrt4032 * sqrt945;
+	      *(b_cur + 5 * s) = (8 * *(b_cur + 55 * s) + 15 * (*(b_cur + 37 * s) + *(b_cur + 51 * s)) -
+				  40 * (*(b_cur + 44 * s) + *(b_cur + 53 * s))) / sqrt60480 * sqrt945;
+	      *(b_cur + 6 * s) =  (*(b_cur + 35 * s) + 2 * *(b_cur + 38 * s) - 12 * *(b_cur + 40 * s) + *(b_cur + 45 * s) + 
+				  8 * *(b_cur + 49 * s) - 12 * *(b_cur + 47 * s))/ sqrt4032 * sqrt945;
+	      *(b_cur + 7 * s) = (2 * (*(b_cur + 44 * s) - *(b_cur + 53 * s)) - *(b_cur + 37 * s) + *(b_cur + 51 * s)) / 12 * sqrt945;
+	      *(b_cur + 8 * s) = (8 * *(b_cur + 40 * s) - *(b_cur + 35 * s) + 2 * *(b_cur + 38 * s) +
+				  3 * *(b_cur + 45 * s) - 24 * *(b_cur + 47 * s)) / sqrt3456 * sqrt945;     
+	      *(b_cur + 9 * s) = (*(b_cur + 37 * s) + *(b_cur + 51 * s) - 6 * *(b_cur + 42 * s)) / sqrt192 * sqrt945;
+	      *(b_cur + 10 * s) = (*(b_cur + 35 * s) - 10 * *(b_cur + 38 * s) + 5 * *(b_cur + 45 * s)) / sqrt1920 * sqrt945;                   
+	    }
+	  } 
+	} 
       }
 
       inline 
@@ -528,6 +599,33 @@ namespace niedoida {
 	      *(b_cur + 12 * s) = *(b_cur + 32 * s) / 3 * sqrt105;
 	      *(b_cur + 13 * s) = *(b_cur + 33 * s) / sqrt15 * sqrt105;
 	      *(b_cur + 14 * s) = *(b_cur + 34 * s) / sqrt105 * sqrt105;
+	    }
+	  }
+	} else if(l_i == 5) {
+	  for(unsigned k = k_begin; k < k_end ; ++k) {
+	    double* NIEDOIDA_RESTRICT b_cur = b  + k * s_12;
+	    for(unsigned j = 0; j < j_scope; ++j, ++b_cur) {
+	      *b_cur = *(b_cur + 35 * s) / sqrt945 * sqrt945;
+	      *(b_cur + 1 * s) = *(b_cur + 36 * s) / sqrt105 * sqrt945;
+	      *(b_cur + 2 * s) = *(b_cur + 37 * s) / sqrt105 * sqrt945;
+	      *(b_cur + 3 * s) = *(b_cur + 38 * s) / sqrt45 * sqrt945;
+	      *(b_cur + 4 * s) = *(b_cur + 39 * s) / sqrt15 * sqrt945;
+	      *(b_cur + 5 * s) = *(b_cur + 40 * s) / sqrt45 * sqrt945;
+	      *(b_cur + 6 * s) = *(b_cur + 41 * s) / sqrt45 * sqrt945;
+	      *(b_cur + 7 * s) = *(b_cur + 42 * s) / 3 * sqrt945;
+	      *(b_cur + 8 * s) = *(b_cur + 43 * s) / 3 * sqrt945;
+	      *(b_cur + 9 * s) = *(b_cur + 44 * s) / sqrt45 * sqrt945;
+	      *(b_cur + 10 * s) = *(b_cur + 45 * s) / sqrt105 * sqrt945;
+	      *(b_cur + 11 * s) = *(b_cur + 46 * s) / sqrt15 * sqrt945;
+	      *(b_cur + 12 * s) = *(b_cur + 47 * s) / 3 * sqrt945;
+	      *(b_cur + 13 * s) = *(b_cur + 48 * s) / sqrt15 * sqrt945;
+	      *(b_cur + 14 * s) = *(b_cur + 49 * s) / sqrt105 * sqrt945;
+	      *(b_cur + 16 * s) = *(b_cur + 50 * s) / sqrt945 * sqrt945;
+	      *(b_cur + 17 * s) = *(b_cur + 51 * s) / sqrt105 * sqrt945;
+	      *(b_cur + 18 * s) = *(b_cur + 52 * s) / sqrt45 * sqrt945;
+	      *(b_cur + 19 * s) = *(b_cur + 53 * s) / sqrt45 * sqrt945;
+	      *(b_cur + 20 * s) = *(b_cur + 54 * s) / sqrt105 * sqrt945;
+	      *(b_cur + 21 * s) = *(b_cur + 55 * s) / sqrt945 * sqrt945;
 	    }
 	  }
 	}

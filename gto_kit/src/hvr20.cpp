@@ -18,7 +18,7 @@ namespace niedoida {
             const double alpha_Z = Z_PQ * one_over_two_p;
             const double wab_over_two_p = wab * one_over_two_p;
             const double minus_one_over_wab = -1 / wab;
-            vr19(minus_one_over_wab, wab_over_two_p, 20, X_PA, Y_PA, Z_PA,
+            vr20(minus_one_over_wab, wab_over_two_p, 20, X_PA, Y_PA, Z_PA,
                  alpha_X, alpha_Y, alpha_Z, A);
             return;
         }

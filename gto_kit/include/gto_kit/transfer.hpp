@@ -39,6 +39,14 @@ namespace niedoida {
                         const double, const double, const double, 
                         const double, const double, double* NIEDOIDA_RESTRICT);
 
+        void transfer_9(const unsigned, const unsigned,
+                        const double, const double, const double, 
+                        const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_10(const unsigned, const unsigned,
+                        const double, const double, const double, 
+                        const double, const double, double* NIEDOIDA_RESTRICT);
+
         void transfer_0_1(const double, const double, const double, 
                           const double, const double, double* NIEDOIDA_RESTRICT);
 
@@ -87,6 +95,18 @@ namespace niedoida {
         void transfer_15_1(const double, const double, const double, 
                           const double, const double, double* NIEDOIDA_RESTRICT);
 
+        void transfer_16_1(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_17_1(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_18_1(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT); 
+
+        void transfer_19_1(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
         void transfer_0_2(const double, const double, const double, 
                           const double, const double, double* NIEDOIDA_RESTRICT);
 
@@ -132,6 +152,18 @@ namespace niedoida {
         void transfer_14_2(const double, const double, const double, 
                           const double, const double, double* NIEDOIDA_RESTRICT); 
 
+        void transfer_15_2(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_16_2(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_17_2(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_18_2(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT); 
+
         void transfer_0_3(const double, const double, const double, 
                           const double, const double, double* NIEDOIDA_RESTRICT);
 
@@ -174,6 +206,18 @@ namespace niedoida {
         void transfer_13_3(const double, const double, const double, 
                           const double, const double, double* NIEDOIDA_RESTRICT); 
 
+        void transfer_14_3(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_15_3(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_16_3(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_17_3(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
         void transfer_0_4(const double, const double, const double, 
                           const double, const double, double* NIEDOIDA_RESTRICT);
 
@@ -213,6 +257,18 @@ namespace niedoida {
         void transfer_12_4(const double, const double, const double, 
                           const double, const double, double* NIEDOIDA_RESTRICT);
 
+        void transfer_13_4(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_14_4(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_15_4(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_16_4(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
         void transfer_0_5(const double, const double, const double, 
                           const double, const double, double* NIEDOIDA_RESTRICT);
 
@@ -249,6 +305,18 @@ namespace niedoida {
         void transfer_11_5(const double, const double, const double, 
                           const double, const double, double* NIEDOIDA_RESTRICT);
 
+        void transfer_12_5(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_13_5(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_14_5(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_15_5(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
         void transfer_0_6(const double, const double, const double, 
                           const double, const double, double* NIEDOIDA_RESTRICT);
 
@@ -282,6 +350,18 @@ namespace niedoida {
         void transfer_10_6(const double, const double, const double, 
                           const double, const double, double* NIEDOIDA_RESTRICT);
 
+        void transfer_11_6(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_12_6(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_13_6(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_14_6(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
         void transfer_0_7(const double, const double, const double, 
                           const double, const double, double* NIEDOIDA_RESTRICT);
 
@@ -312,6 +392,18 @@ namespace niedoida {
         void transfer_9_7(const double, const double, const double, 
                           const double, const double, double* NIEDOIDA_RESTRICT);
 
+        void transfer_10_7(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_11_7(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_12_7(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_13_7(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
         void transfer_0_8(const double, const double, const double, 
                           const double, const double, double* NIEDOIDA_RESTRICT);
 
@@ -338,7 +430,88 @@ namespace niedoida {
 
         void transfer_8_8(const double, const double, const double, 
                           const double, const double, double* NIEDOIDA_RESTRICT);
- 
+
+        void transfer_9_8(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_10_8(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_11_8(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_12_8(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_0_9(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_1_9(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_2_9(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_3_9(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_4_9(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_5_9(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_6_9(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_7_9(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_8_9(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_9_9(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_10_9(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_11_9(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_0_10(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_1_10(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_2_10(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_3_10(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_4_10(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_5_10(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_6_10(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_7_10(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_8_10(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_9_10(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
+        void transfer_10_10(const double, const double, const double, 
+                          const double, const double, double* NIEDOIDA_RESTRICT);
+
         void htransfer_1(const unsigned first_min, const unsigned first_max,
                          const double prefactor_x, const double prefactor_y, const double prefactor_z, 
                          const double p_over_q, const double one_over_two_q,
@@ -380,6 +553,11 @@ namespace niedoida {
                          const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
  
         void htransfer_9(const unsigned first_min, const unsigned first_max,
+                         const double prefactor_x, const double prefactor_y, const double prefactor_z, 
+                         const double p_over_q, const double one_over_two_q,
+                         const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
+ 
+        void htransfer_10(const unsigned first_min, const unsigned first_max,
                          const double prefactor_x, const double prefactor_y, const double prefactor_z, 
                          const double p_over_q, const double one_over_two_q,
                          const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
@@ -460,6 +638,10 @@ namespace niedoida {
                            const double p_over_q, const double one_over_two_q,
                            const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
 
+        void htransfer_19_1(const double prefactor_x, const double prefactor_y, const double prefactor_z, 
+                           const double p_over_q, const double one_over_two_q,
+                           const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
+
         void htransfer_0_2(const double prefactor_x, const double prefactor_y, const double prefactor_z, 
                            const double p_over_q, const double one_over_two_q,
                            const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
@@ -532,6 +714,10 @@ namespace niedoida {
                            const double p_over_q, const double one_over_two_q,
                            const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
 
+        void htransfer_18_2(const double prefactor_x, const double prefactor_y, const double prefactor_z, 
+                           const double p_over_q, const double one_over_two_q,
+                           const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
+
         void htransfer_0_3(const double prefactor_x, const double prefactor_y, const double prefactor_z, 
                            const double p_over_q, const double one_over_two_q,
                            const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
@@ -600,6 +786,10 @@ namespace niedoida {
                            const double p_over_q, const double one_over_two_q,
                            const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
 
+        void htransfer_17_3(const double prefactor_x, const double prefactor_y, const double prefactor_z, 
+                           const double p_over_q, const double one_over_two_q,
+                           const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
+
         void htransfer_0_4(const double prefactor_x, const double prefactor_y, const double prefactor_z, 
                            const double p_over_q, const double one_over_two_q,
                            const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
@@ -664,6 +854,10 @@ namespace niedoida {
                            const double p_over_q, const double one_over_two_q,
                            const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
 
+        void htransfer_16_4(const double prefactor_x, const double prefactor_y, const double prefactor_z, 
+                           const double p_over_q, const double one_over_two_q,
+                           const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
+
         void htransfer_0_5(const double prefactor_x, const double prefactor_y, const double prefactor_z, 
                            const double p_over_q, const double one_over_two_q,
                            const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
@@ -724,6 +918,10 @@ namespace niedoida {
                            const double p_over_q, const double one_over_two_q,
                            const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
 
+        void htransfer_15_5(const double prefactor_x, const double prefactor_y, const double prefactor_z, 
+                           const double p_over_q, const double one_over_two_q,
+                           const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
+
         void htransfer_0_6(const double prefactor_x, const double prefactor_y, const double prefactor_z, 
                            const double p_over_q, const double one_over_two_q,
                            const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
@@ -780,6 +978,10 @@ namespace niedoida {
                            const double p_over_q, const double one_over_two_q,
                            const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
 
+        void htransfer_14_6(const double prefactor_x, const double prefactor_y, const double prefactor_z, 
+                           const double p_over_q, const double one_over_two_q,
+                           const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
+
         void htransfer_0_7(const double prefactor_x, const double prefactor_y, const double prefactor_z, 
                            const double p_over_q, const double one_over_two_q,
                            const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
@@ -832,6 +1034,10 @@ namespace niedoida {
                            const double p_over_q, const double one_over_two_q,
                            const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
 
+        void htransfer_13_7(const double prefactor_x, const double prefactor_y, const double prefactor_z, 
+                           const double p_over_q, const double one_over_two_q,
+                           const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
+
         void htransfer_0_8(const double prefactor_x, const double prefactor_y, const double prefactor_z, 
                            const double p_over_q, const double one_over_two_q,
                            const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
@@ -880,6 +1086,10 @@ namespace niedoida {
                            const double p_over_q, const double one_over_two_q,
                            const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
 
+        void htransfer_12_8(const double prefactor_x, const double prefactor_y, const double prefactor_z, 
+                           const double p_over_q, const double one_over_two_q,
+                           const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
+
         void htransfer_0_9(const double prefactor_x, const double prefactor_y, const double prefactor_z, 
                            const double p_over_q, const double one_over_two_q,
                            const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
@@ -924,6 +1134,53 @@ namespace niedoida {
                             const double p_over_q, const double one_over_two_q,
                             const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
 
+        void htransfer_11_9(const double prefactor_x, const double prefactor_y, const double prefactor_z, 
+                            const double p_over_q, const double one_over_two_q,
+                            const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
+
+        void htransfer_0_10(const double prefactor_x, const double prefactor_y, const double prefactor_z, 
+                           const double p_over_q, const double one_over_two_q,
+                           const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
+
+        void htransfer_1_10(const double prefactor_x, const double prefactor_y, const double prefactor_z, 
+                           const double p_over_q, const double one_over_two_q,
+                           const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
+
+        void htransfer_2_10(const double prefactor_x, const double prefactor_y, const double prefactor_z, 
+                           const double p_over_q, const double one_over_two_q,
+                           const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
+
+        void htransfer_3_10(const double prefactor_x, const double prefactor_y, const double prefactor_z, 
+                           const double p_over_q, const double one_over_two_q,
+                           const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
+
+        void htransfer_4_10(const double prefactor_x, const double prefactor_y, const double prefactor_z, 
+                           const double p_over_q, const double one_over_two_q,
+                           const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
+
+        void htransfer_5_10(const double prefactor_x, const double prefactor_y, const double prefactor_z, 
+                           const double p_over_q, const double one_over_two_q,
+                           const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
+
+        void htransfer_6_10(const double prefactor_x, const double prefactor_y, const double prefactor_z, 
+                           const double p_over_q, const double one_over_two_q,
+                           const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
+
+        void htransfer_7_10(const double prefactor_x, const double prefactor_y, const double prefactor_z, 
+                           const double p_over_q, const double one_over_two_q,
+                           const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
+
+        void htransfer_8_10(const double prefactor_x, const double prefactor_y, const double prefactor_z, 
+                           const double p_over_q, const double one_over_two_q,
+                           const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
+
+        void htransfer_9_10(const double prefactor_x, const double prefactor_y, const double prefactor_z, 
+                           const double p_over_q, const double one_over_two_q,
+                           const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
+
+        void htransfer_10_10(const double prefactor_x, const double prefactor_y, const double prefactor_z, 
+                            const double p_over_q, const double one_over_two_q,
+                            const double wab, const double wcd, double* NIEDOIDA_RESTRICT A);
 
     }
 }

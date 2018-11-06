@@ -47,6 +47,11 @@ namespace niedoida {
                   const double, const double, const double,
                   double* NIEDOIDA_RESTRICT);
 
+        void vr20(const double, const double, const unsigned,
+                  const double, const double, const double,
+                  const double, const double, const double,
+                  double* NIEDOIDA_RESTRICT);
+    
         void svr1_4(const double, const double, const unsigned,
                     const double, const double, const double,
                     double* NIEDOIDA_RESTRICT);
@@ -66,6 +71,22 @@ namespace niedoida {
         void svr15_16(const double, const double, const unsigned,
                       const double, const double, const double,
                       double* NIEDOIDA_RESTRICT);
+
+        void svr17(const double, const double, const unsigned,
+                   const double, const double, const double,
+                   double* NIEDOIDA_RESTRICT);
+
+        void svr18(const double, const double, const unsigned,
+                   const double, const double, const double,
+                   double* NIEDOIDA_RESTRICT);
+
+        void svr19(const double, const double, const unsigned,
+                   const double, const double, const double,
+                   double* NIEDOIDA_RESTRICT);
+
+        void svr20(const double, const double, const unsigned,
+                   const double, const double, const double,
+                   double* NIEDOIDA_RESTRICT);
 
         void hvr1(const double X_PA, const double Y_PA, const unsigned Z_PA,
                   const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
@@ -253,6 +274,15 @@ namespace niedoida {
                   double* NIEDOIDA_RESTRICT A);
 
         void hsvr19(const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                   const double one_over_two_p, const double wab,
+                   double* NIEDOIDA_RESTRICT A);
+
+        void hvr20(const double X_PA, const double Y_PA, const unsigned Z_PA,
+                  const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                  const double one_over_two_p, const double wab,
+                  double* NIEDOIDA_RESTRICT A);
+
+        void hsvr20(const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
                    const double one_over_two_p, const double wab,
                    double* NIEDOIDA_RESTRICT A);
 

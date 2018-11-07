@@ -41,6 +41,10 @@ set (SRCS
     src/svr1_4.cpp
     src/svr5_8.cpp
     src/svr9_12.cpp
+    src/svr17.cpp
+    src/svr18.cpp
+    src/svr19.cpp
+    src/svr20.cpp
     src/transfer1.cpp
     src/transfer1_1.cpp
     src/transfer2.cpp
@@ -99,6 +103,26 @@ set (SRCS
     src/hvr18.cpp
     src/hvr19.cpp
     src/hvr20.cpp
+    src/hsvr1.cpp
+    src/hsvr2.cpp
+    src/hsvr3.cpp
+    src/hsvr4.cpp
+    src/hsvr5.cpp
+    src/hsvr6.cpp
+    src/hsvr7.cpp
+    src/hsvr8.cpp
+    src/hsvr9.cpp
+    src/hsvr10.cpp
+    src/hsvr11.cpp
+    src/hsvr12.cpp
+    src/hsvr13.cpp
+    src/hsvr14.cpp
+    src/hsvr15.cpp
+    src/hsvr16.cpp
+    src/hsvr17.cpp
+    src/hsvr18.cpp
+    src/hsvr19.cpp
+    src/hsvr20.cpp
     src/xc_integral_engine.cpp
     src/xc_integral_engine_ks_matrix_core_gradient.cpp
     src/xc_integral_engine_factory.cpp

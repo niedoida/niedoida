@@ -123,6 +123,45 @@ set (SRCS
     src/hsvr18.cpp
     src/hsvr19.cpp
     src/hsvr20.cpp
+    src/hhr01.cpp
+    src/hhr02.cpp
+    src/hhr03.cpp
+    src/hhr04.cpp
+    src/hhr05.cpp
+    src/hhr11.cpp
+    src/hhr12.cpp
+    src/hhr13.cpp
+    src/hhr14.cpp
+    src/hhr15.cpp
+    src/hhr21.cpp
+    src/hhr22.cpp
+    src/hhr23.cpp
+    src/hhr24.cpp
+    src/hhr25.cpp
+    src/hhr31.cpp
+    src/hhr32.cpp
+    src/hhr33.cpp
+    src/hhr34.cpp
+    src/hhr35.cpp
+    src/hhr41.cpp
+    src/hhr42.cpp
+    src/hhr43.cpp
+    src/hhr44.cpp
+    src/hhr45.cpp
+    src/hhr51.cpp
+    src/hhr52.cpp
+    src/hhr53.cpp
+    src/hhr54.cpp
+    src/hhr55.cpp
+    src/hhr61.cpp
+    src/hhr62.cpp
+    src/hhr63.cpp
+    src/hhr64.cpp
+    src/hhr65.cpp
+    src/hhr71.cpp
+    src/hhr72.cpp
+    src/hhr73.cpp
+    src/hhr74.cpp
     src/xc_integral_engine.cpp
     src/xc_integral_engine_ks_matrix_core_gradient.cpp
     src/xc_integral_engine_factory.cpp

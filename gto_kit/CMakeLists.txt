@@ -49,8 +49,10 @@ set (SRCS
     src/transfer1_1.cpp
     src/transfer2.cpp
     src/transfer2_1.cpp
+    src/transfer2_2.cpp
     src/transfer3.cpp
     src/transfer3_1.cpp
+    src/transfer3_2.cpp
     src/transfer4.cpp
     src/transfer4_1.cpp
     src/transfer4_2.cpp

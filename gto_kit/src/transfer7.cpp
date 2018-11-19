@@ -2521,11 +2521,47 @@ namespace niedoida {
                              prefactor_z,
                              p_over_q,
                              one_over_two_q,
-                             b);
+                             b);  
                 if (first_max == 8)
                     break;
             case 9:
                 transfer_9_7(prefactor_x,
+                             prefactor_y,
+                             prefactor_z,
+                             p_over_q,
+                             one_over_two_q,
+                             b);  
+                if (first_max == 9)
+                    break;
+            case 10:
+                transfer_10_7(prefactor_x,
+                             prefactor_y,
+                             prefactor_z,
+                             p_over_q,
+                             one_over_two_q,
+                             b);  
+                if (first_max == 10)
+                    break;
+            case 11:
+                transfer_11_7(prefactor_x,
+                             prefactor_y,
+                             prefactor_z,
+                             p_over_q,
+                             one_over_two_q,
+                             b);  
+                if (first_max == 11)
+                    break;
+            case 12:
+                transfer_12_7(prefactor_x,
+                             prefactor_y,
+                             prefactor_z,
+                             p_over_q,
+                             one_over_two_q,
+                             b);  
+                if (first_max == 12)
+                    break;
+            case 13:
+                transfer_13_7(prefactor_x,
                              prefactor_y,
                              prefactor_z,
                              p_over_q,

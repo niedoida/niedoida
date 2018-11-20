@@ -85,6 +85,16 @@ set (SRCS
     src/transfer9_1.cpp
     src/transfer10.cpp
     src/transfer10_1.cpp
+    src/htransfer1.cpp
+    src/htransfer2.cpp
+    src/htransfer3.cpp
+    src/htransfer4.cpp
+    src/htransfer5.cpp
+    src/htransfer6.cpp
+    src/htransfer7.cpp
+    src/htransfer8.cpp
+    src/htransfer9.cpp
+    src/htransfer10.cpp
     src/vr13_14.cpp
     src/vr15_16.cpp
     src/vr1_4.cpp

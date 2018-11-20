@@ -57,25 +57,34 @@ set (SRCS
     src/transfer4_1.cpp
     src/transfer4_2.cpp
     src/transfer4_3.cpp
+    src/transfer4_4.cpp
     src/transfer5.cpp
     src/transfer5_1.cpp
     src/transfer5_2.cpp
     src/transfer5_3.cpp
+    src/transfer5_4.cpp
     src/transfer6.cpp
     src/transfer6_1.cpp
     src/transfer6_2.cpp
     src/transfer6_3.cpp
     src/transfer6_4.cpp
+    src/transfer6_5.cpp
     src/transfer7.cpp
     src/transfer7_1.cpp
     src/transfer7_2.cpp
     src/transfer7_3.cpp
     src/transfer7_4.cpp
+    src/transfer7_5.cpp
     src/transfer8.cpp
     src/transfer8_1.cpp
     src/transfer8_2.cpp
     src/transfer8_3.cpp
     src/transfer8_4.cpp
+    src/transfer8_5.cpp
+    src/transfer9.cpp
+    src/transfer9_1.cpp
+    src/transfer10.cpp
+    src/transfer10_1.cpp
     src/vr13_14.cpp
     src/vr15_16.cpp
     src/vr1_4.cpp

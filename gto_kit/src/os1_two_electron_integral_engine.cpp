@@ -24,9 +24,9 @@ namespace niedoida {
                 new double[m_fbs.AAAA_max_size + m_fbs.BBBBBB_max_size +
                            2 * m_fbs.max_primitive_size * m_fbs.max_naive_size +
                            15 * m_fbs.max_primitive_size *
-                               m_fbs.max_primitive_size +
+                           m_fbs.max_primitive_size +
                            2000000])
-        // hope I can count, a little bit overestimated
+            // hope I can count, a little bit overestimated
         {
         }
 
@@ -57,7 +57,7 @@ namespace niedoida {
                 es3.primitive_exps.size() * es4.primitive_exps.size();
 
             const unsigned total_naive_size = es1.naive_size * es2.naive_size *
-                                              es3.naive_size * es4.naive_size;
+                es3.naive_size * es4.naive_size;
 
             const bool contracted = (total_prim_size > total_naive_size);
             const unsigned bra_l =
@@ -109,9 +109,9 @@ namespace niedoida {
         { // general types
             /* swapping may be needed to perform better*/
             const FlatBasisSet::Shell *shell_1_pointer = &es1,
-                                      *shell_2_pointer = &es2,
-                                      *shell_3_pointer = &es3,
-                                      *shell_4_pointer = &es4;
+                *shell_2_pointer = &es2,
+                *shell_3_pointer = &es3,
+                *shell_4_pointer = &es4;
             const FlatBasisSet::Shell* tmp_pointer;
 
             const bool swapped_1 =
@@ -144,9 +144,9 @@ namespace niedoida {
             }
             // references initializing
             const FlatBasisSet::Shell &ref_es1 = *shell_1_pointer,
-                                      &ref_es2 = *shell_2_pointer,
-                                      &ref_es3 = *shell_3_pointer,
-                                      &ref_es4 = *shell_4_pointer;
+                &ref_es2 = *shell_2_pointer,
+                &ref_es3 = *shell_3_pointer,
+                &ref_es4 = *shell_4_pointer;
             // end of swapping
 
             // preparing some constants
@@ -180,12 +180,12 @@ namespace niedoida {
 
             const unsigned i_index_begin =
                 (same_AB ? l_12_min * (l_12_min + 1) * (l_12_min + 2) / 6
-                         : l_1_min * (l_1_min + 1) * (l_1_min + 2) / 6);
+                 : l_1_min * (l_1_min + 1) * (l_1_min + 2) / 6);
             const unsigned i_index_end =
                 (l_12 + 1) * (l_12 + 2) * (l_12 + 3) / 6;
             const unsigned k_index_begin =
                 (same_CD ? l_34_min * (l_34_min + 1) * (l_34_min + 2) / 6
-                         : l_3_min * (l_3_min + 1) * (l_3_min + 2) / 6);
+                 : l_3_min * (l_3_min + 1) * (l_3_min + 2) / 6);
             const unsigned k_index_end =
                 (l_34 + 1) * (l_34 + 2) * (l_34 + 3) / 6;
             const unsigned i_range = i_index_end - i_index_begin;
@@ -229,12 +229,12 @@ namespace niedoida {
             memory_pointer += AA_s * (m + 1) * (m + 2) * (m + 3) / 6;
 
             /*
-                array_type_2 AA(memory_pointer, extents_2
-                [(m + 1) * (m + 2) * (m + 3) / 6]
-                [max(m + 1, k_index_end)]);
-                memory_pointer += AA.num_elements();
-                double* const AA_b = AA.data();
-                const unsigned AA_s = AA.shape()[1];
+              array_type_2 AA(memory_pointer, extents_2
+              [(m + 1) * (m + 2) * (m + 3) / 6]
+              [max(m + 1, k_index_end)]);
+              memory_pointer += AA.num_elements();
+              double* const AA_b = AA.data();
+              const unsigned AA_s = AA.shape()[1];
             */
             double* const B_b = memory_pointer;
             memory_pointer += angular_range;
@@ -280,7 +280,7 @@ namespace niedoida {
 
             double* const CCC_b = memory_pointer;
             const unsigned CCC_s = (ref_es2.l_max + 1) * (ref_es2.l_max + 2) *
-                                   (ref_es2.l_max + 3) / 6;
+                (ref_es2.l_max + 3) / 6;
             const unsigned CCC_s12 = i_index_end * CCC_s;
             memory_pointer += k_index_end * CCC_s12;
             /*
@@ -292,11 +292,11 @@ namespace niedoida {
             */
             double* const DDD_b = memory_pointer;
             const unsigned DDD_s = (ref_es4.l_max + 1) * (ref_es4.l_max + 2) *
-                                   (ref_es4.l_max + 3) / 6;
+                (ref_es4.l_max + 3) / 6;
             const unsigned DDD_s12 = DDD_s * k_index_end;
             memory_pointer += DDD_s12 * (ref_es1.l_max + 1) *
-                              (ref_es1.l_max + 2) * (ref_es2.l_max + 1) *
-                              (ref_es2.l_max + 2) / 4;
+                (ref_es1.l_max + 2) * (ref_es2.l_max + 1) *
+                (ref_es2.l_max + 2) / 4;
             /*
               array_type_3 DDD(memory_pointer, extents_3
               [(ref_es1.l_max + 1) * (ref_es1.l_max + 2) * (ref_es2.l_max + 1) *
@@ -380,20 +380,20 @@ namespace niedoida {
                         ref_es1.primitive_exps[i] + ref_es2.primitive_exps[j];
                     const double one_over_p = 1 / p;
                     const double mu = ref_es1.primitive_exps[i] *
-                                      ref_es2.primitive_exps[j] * one_over_p;
+                        ref_es2.primitive_exps[j] * one_over_p;
                     *(A_p_b + ij_index) = p;
                     const double est1 = two_pi_to_five_over_four *
-                                        exp(-(mu * R_AB_2)) * one_over_p;
+                        exp(-(mu * R_AB_2)) * one_over_p;
                     *(A_exp_p_b + ij_index) = est1;
                     *(A_p_coeff_b + ij_index) *=
                         est1 * std::max(global_bra_estimator,
                                         std::pow(one_over_p, bra_l));
                     for (unsigned kk = 0; kk < 3; ++kk) {
                         const double R_P = (ref_es1.primitive_exps[i] *
-                                                ref_es1.atom->coords[kk] +
+                                            ref_es1.atom->coords[kk] +
                                             ref_es2.primitive_exps[j] *
-                                                ref_es2.atom->coords[kk]) *
-                                           one_over_p;
+                                            ref_es2.atom->coords[kk]) *
+                            one_over_p;
                         *(A_R_P_b + 3 * ij_index + kk) = R_P;
                         *(A_R_PA_b + 3 * ij_index + kk) =
                             R_P - ref_es1.atom->coords[kk];
@@ -406,10 +406,10 @@ namespace niedoida {
                         ref_es3.primitive_exps[i] + ref_es4.primitive_exps[j];
                     const double one_over_q = 1 / q;
                     const double nu = ref_es3.primitive_exps[i] *
-                                      ref_es4.primitive_exps[j] * one_over_q;
+                        ref_es4.primitive_exps[j] * one_over_q;
                     *(A_q_b + ij_index) = q;
                     const double est1 = two_pi_to_five_over_four *
-                                        exp(-(nu * R_CD_2)) * one_over_q;
+                        exp(-(nu * R_CD_2)) * one_over_q;
                     *(A_exp_q_b + ij_index) = est1;
                     *(A_q_coeff_b + ij_index) *=
                         est1 * std::max(global_ket_estimator,
@@ -419,9 +419,9 @@ namespace niedoida {
                     for (unsigned kk = 0; kk < 3; ++kk) {
                         *(A_R_Q_b + 3 * ij_index + kk) =
                             (ref_es3.primitive_exps[i] *
-                                 ref_es3.atom->coords[kk] +
+                             ref_es3.atom->coords[kk] +
                              ref_es4.primitive_exps[j] *
-                                 ref_es4.atom->coords[kk]) *
+                             ref_es4.atom->coords[kk]) *
                             one_over_q;
                     }
                 }
@@ -452,17 +452,17 @@ namespace niedoida {
                             const double* CT_34_cur =
                                 CT_34_b + kl_index * ket_naive_size;
                             const double estimator = *(A_exp_p_b + ij_index) *
-                                                     *(A_exp_q_b + kl_index);
+                                *(A_exp_q_b + kl_index);
                             const double q = *(A_q_b + kl_index);
                             const double one_over_q = 1 / q;
                             const double alpha = 1 / (one_over_p + one_over_q);
                             const double alpha_over_p = alpha * one_over_p;
                             const double X_PQ = *(A_R_P_b + 3 * ij_index) -
-                                                *(A_R_Q_b + 3 * kl_index);
+                                *(A_R_Q_b + 3 * kl_index);
                             const double Y_PQ = *(A_R_P_b + 3 * ij_index + 1) -
-                                                *(A_R_Q_b + 3 * kl_index + 1);
+                                *(A_R_Q_b + 3 * kl_index + 1);
                             const double Z_PQ = *(A_R_P_b + 3 * ij_index + 2) -
-                                                *(A_R_Q_b + 3 * kl_index + 2);
+                                *(A_R_Q_b + 3 * kl_index + 2);
                             const double R_PQ_2 =
                                 X_PQ * X_PQ + Y_PQ * Y_PQ + Z_PQ * Z_PQ;
 
@@ -522,6 +522,42 @@ namespace niedoida {
                                                              alpha_Y,
                                                              alpha_Z,
                                                              AA_b);
+                                                    if (m > 16) {
+                                                        svr17(alpha_over_p,
+                                                              one_over_two_p,
+                                                              m,
+                                                              alpha_X,
+                                                              alpha_Y,
+                                                              alpha_Z,
+                                                              AA_b);
+                                                        if (m > 17) {
+                                                            svr18(alpha_over_p,
+                                                                  one_over_two_p,
+                                                                  m,
+                                                                  alpha_X,
+                                                                  alpha_Y,
+                                                                  alpha_Z,
+                                                                  AA_b);
+                                                            if (m > 18) {
+                                                                svr19(alpha_over_p,
+                                                                      one_over_two_p,
+                                                                      m,
+                                                                      alpha_X,
+                                                                      alpha_Y,
+                                                                      alpha_Z,
+                                                                      AA_b);
+                                                                if (m > 19) {
+                                                                    svr20(alpha_over_p,
+                                                                          one_over_two_p,
+                                                                          m,
+                                                                          alpha_X,
+                                                                          alpha_Y,
+                                                                          alpha_Z,
+                                                                          AA_b);
+                                                                }
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }
@@ -587,6 +623,54 @@ namespace niedoida {
                                                             alpha_Y,
                                                             alpha_Z,
                                                             AA_b);
+                                                    if (m > 16) {
+                                                        vr17(alpha_over_p,
+                                                             one_over_two_p,
+                                                             m,
+                                                             X_PA,
+                                                             Y_PA,
+                                                             Z_PA,
+                                                             alpha_X,
+                                                             alpha_Y,
+                                                             alpha_Z,
+                                                             AA_b);
+                                                        if (m > 17) {
+                                                            vr18(alpha_over_p,
+                                                                 one_over_two_p,
+                                                                 m,
+                                                                 X_PA,
+                                                                 Y_PA,
+                                                                 Z_PA,
+                                                                 alpha_X,
+                                                                 alpha_Y,
+                                                                 alpha_Z,
+                                                                 AA_b);
+                                                            if (m > 18) {
+                                                                vr19(alpha_over_p,
+                                                                     one_over_two_p,
+                                                                     m,
+                                                                     X_PA,
+                                                                     Y_PA,
+                                                                     Z_PA,
+                                                                     alpha_X,
+                                                                     alpha_Y,
+                                                                     alpha_Z,
+                                                                     AA_b);
+                                                                if (m > 19) {
+                                                                    vr20(alpha_over_p,
+                                                                         one_over_two_p,
+                                                                         m,
+                                                                         X_PA,
+                                                                         Y_PA,
+                                                                         Z_PA,
+                                                                         alpha_X,
+                                                                         alpha_Y,
+                                                                         alpha_Z,
+                                                                         AA_b);
+                                                                }
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }
@@ -615,8 +699,8 @@ namespace niedoida {
                                 unsigned underflow = l_34 - 1;
                                 unsigned first_min =
                                     (first_pair_min > underflow
-                                         ? first_pair_min - underflow
-                                         : 0);
+                                     ? first_pair_min - underflow
+                                     : 0);
                                 unsigned first_max = first_pair_max + underflow;
                                 transfer_1(first_min,
                                            first_max,
@@ -630,8 +714,8 @@ namespace niedoida {
                                     underflow--;
                                     first_min =
                                         (first_pair_min > underflow
-                                             ? first_pair_min - underflow
-                                             : 0);
+                                         ? first_pair_min - underflow
+                                         : 0);
                                     first_max--;
                                     transfer_2(first_min,
                                                first_max,
@@ -645,8 +729,8 @@ namespace niedoida {
                                         underflow--;
                                         first_min =
                                             (first_pair_min > underflow
-                                                 ? first_pair_min - underflow
-                                                 : 0);
+                                             ? first_pair_min - underflow
+                                             : 0);
                                         first_max--;
                                         transfer_3(first_min,
                                                    first_max,
@@ -660,9 +744,9 @@ namespace niedoida {
                                             underflow--;
                                             first_min =
                                                 (first_pair_min > underflow
-                                                     ? first_pair_min -
-                                                           underflow
-                                                     : 0);
+                                                 ? first_pair_min -
+                                                 underflow
+                                                 : 0);
                                             first_max--;
                                             transfer_4(first_min,
                                                        first_max,
@@ -676,9 +760,9 @@ namespace niedoida {
                                                 underflow--;
                                                 first_min =
                                                     (first_pair_min > underflow
-                                                         ? first_pair_min -
-                                                               underflow
-                                                         : 0);
+                                                     ? first_pair_min -
+                                                     underflow
+                                                     : 0);
                                                 first_max--;
                                                 transfer_5(first_min,
                                                            first_max,
@@ -692,10 +776,10 @@ namespace niedoida {
                                                     underflow--;
                                                     first_min =
                                                         (first_pair_min >
-                                                                 underflow
-                                                             ? first_pair_min -
-                                                                   underflow
-                                                             : 0);
+                                                         underflow
+                                                         ? first_pair_min -
+                                                         underflow
+                                                         : 0);
                                                     first_max--;
                                                     transfer_6(first_min,
                                                                first_max,
@@ -709,10 +793,10 @@ namespace niedoida {
                                                         underflow--;
                                                         first_min =
                                                             (first_pair_min >
-                                                                     underflow
-                                                                 ? first_pair_min -
-                                                                       underflow
-                                                                 : 0);
+                                                             underflow
+                                                             ? first_pair_min -
+                                                             underflow
+                                                             : 0);
                                                         first_max--;
                                                         transfer_7(
                                                             first_min,
@@ -727,10 +811,10 @@ namespace niedoida {
                                                             underflow--;
                                                             first_min =
                                                                 (first_pair_min >
-                                                                         underflow
-                                                                     ? first_pair_min -
-                                                                           underflow
-                                                                     : 0);
+                                                                 underflow
+                                                                 ? first_pair_min -
+                                                                 underflow
+                                                                 : 0);
                                                             first_max--;
                                                             transfer_8(
                                                                 first_min,
@@ -741,6 +825,44 @@ namespace niedoida {
                                                                 p_over_q,
                                                                 one_over_two_q,
                                                                 AA_b);
+                                                            if (l_34 > 8) {
+                                                                underflow--;
+                                                                first_min =
+                                                                    (first_pair_min >
+                                                                     underflow
+                                                                     ? first_pair_min -
+                                                                     underflow
+                                                                     : 0);
+                                                                first_max--;
+                                                                transfer_9(
+                                                                    first_min,
+                                                                    first_max,
+                                                                    prefactor_x,
+                                                                    prefactor_y,
+                                                                    prefactor_z,
+                                                                    p_over_q,
+                                                                    one_over_two_q,
+                                                                    AA_b);
+                                                                if (l_34 > 9) {
+                                                                    underflow--;
+                                                                    first_min =
+                                                                        (first_pair_min >
+                                                                         underflow
+                                                                         ? first_pair_min -
+                                                                         underflow
+                                                                         : 0);
+                                                                    first_max--;
+                                                                    transfer_10(
+                                                                        first_min,
+                                                                        first_max,
+                                                                        prefactor_x,
+                                                                        prefactor_y,
+                                                                        prefactor_z,
+                                                                        p_over_q,
+                                                                        one_over_two_q,
+                                                                        AA_b);
+                                                                }
+                                                            }
                                                         }
                                                     }
                                                 }
@@ -796,17 +918,17 @@ namespace niedoida {
                 const unsigned l_i = ref_es1.l[i];
                 const unsigned i_size =
                     (spherical_basis ? l_i + l_i + 1
-                                     : (l_i + 1) * (l_i + 2) / 2);
+                     : (l_i + 1) * (l_i + 2) / 2);
                 unsigned n_j = 0;
                 for (unsigned j = 0; j < naive_size_2; ++j) {
                     const unsigned l_j = ref_es2.l[j];
                     const unsigned j_size =
                         (spherical_basis ? l_j + l_j + 1
-                                         : (l_j + 1) * (l_j + 2) / 2);
+                         : (l_j + 1) * (l_j + 2) / 2);
                     const unsigned l_ij = l_i + l_j;
                     const unsigned ii_index_begin =
                         (same_AB ? l_ij * (l_ij + 1) * (l_ij + 2) / 6
-                                 : l_i * (l_i + 1) * (l_i + 2) / 6);
+                         : l_i * (l_i + 1) * (l_i + 2) / 6);
                     const unsigned ii_index_end =
                         (l_ij + 1) * (l_ij + 2) * (l_ij + 3) / 6;
                     unsigned n_k = 0;
@@ -814,18 +936,18 @@ namespace niedoida {
                         const unsigned l_k = ref_es3.l[k];
                         const unsigned k_size =
                             (spherical_basis ? l_k + l_k + 1
-                                             : (l_k + 1) * (l_k + 2) / 2);
+                             : (l_k + 1) * (l_k + 2) / 2);
                         unsigned n_l = 0;
                         for (unsigned l = 0; l < naive_size_4;
                              ++l, BBBBBB_cur += angular_range) {
                             const unsigned l_l = ref_es4.l[l];
                             const unsigned l_size =
                                 (spherical_basis ? l_l + l_l + 1
-                                                 : (l_l + 1) * (l_l + 2) / 2);
+                                 : (l_l + 1) * (l_l + 2) / 2);
                             const unsigned l_kl = l_k + l_l;
                             const unsigned kk_index_begin =
                                 (same_CD ? l_kl * (l_kl + 1) * (l_kl + 2) / 6
-                                         : l_k * (l_k + 1) * (l_k + 2) / 6);
+                                 : l_k * (l_k + 1) * (l_k + 2) / 6);
                             const unsigned kk_index_end =
                                 (l_kl + 1) * (l_kl + 2) * (l_kl + 3) / 6;
 
@@ -911,9 +1033,25 @@ namespace niedoida {
                                                         CCC_s12,
                                                         CCC_s);
                                         break;
+                                    case 9:
+                                        pseudo_hr_tot_9(l_j,
+                                                        kk_index_begin,
+                                                        kk_index_end,
+                                                        CCC_b,
+                                                        CCC_s12,
+                                                        CCC_s);
+                                        break;
+                                    case 10:
+                                        pseudo_hr_tot_10(l_j,
+                                                         kk_index_begin,
+                                                         kk_index_end,
+                                                         CCC_b,
+                                                         CCC_s12,
+                                                         CCC_s);
+                                        break;
                                     }
                                 } else {
-                                    const unsigned funny = l_i * 4 + l_j;
+                                    const unsigned funny = l_i * 5 + l_j;
                                     switch (funny) {
                                     case 1:
                                         hr_01(X_AB,
@@ -956,7 +1094,7 @@ namespace niedoida {
                                               CCC_s);
                                         break;
                                     case 5:
-                                        hr_11(X_AB,
+                                        hr_05(X_AB,
                                               Y_AB,
                                               Z_AB,
                                               kk_index_begin,
@@ -966,7 +1104,7 @@ namespace niedoida {
                                               CCC_s);
                                         break;
                                     case 6:
-                                        hr_12(X_AB,
+                                        hr_11(X_AB,
                                               Y_AB,
                                               Z_AB,
                                               kk_index_begin,
@@ -976,7 +1114,7 @@ namespace niedoida {
                                               CCC_s);
                                         break;
                                     case 7:
-                                        hr_13(X_AB,
+                                        hr_12(X_AB,
                                               Y_AB,
                                               Z_AB,
                                               kk_index_begin,
@@ -986,7 +1124,7 @@ namespace niedoida {
                                               CCC_s);
                                         break;
                                     case 8:
-                                        hr_14(X_AB,
+                                        hr_13(X_AB,
                                               Y_AB,
                                               Z_AB,
                                               kk_index_begin,
@@ -996,7 +1134,7 @@ namespace niedoida {
                                               CCC_s);
                                         break;
                                     case 9:
-                                        hr_21(X_AB,
+                                        hr_14(X_AB,
                                               Y_AB,
                                               Z_AB,
                                               kk_index_begin,
@@ -1006,7 +1144,7 @@ namespace niedoida {
                                               CCC_s);
                                         break;
                                     case 10:
-                                        hr_22(X_AB,
+                                        hr_15(X_AB,
                                               Y_AB,
                                               Z_AB,
                                               kk_index_begin,
@@ -1016,7 +1154,7 @@ namespace niedoida {
                                               CCC_s);
                                         break;
                                     case 11:
-                                        hr_23(X_AB,
+                                        hr_21(X_AB,
                                               Y_AB,
                                               Z_AB,
                                               kk_index_begin,
@@ -1026,7 +1164,7 @@ namespace niedoida {
                                               CCC_s);
                                         break;
                                     case 12:
-                                        hr_24(X_AB,
+                                        hr_22(X_AB,
                                               Y_AB,
                                               Z_AB,
                                               kk_index_begin,
@@ -1036,7 +1174,7 @@ namespace niedoida {
                                               CCC_s);
                                         break;
                                     case 13:
-                                        hr_31(X_AB,
+                                        hr_23(X_AB,
                                               Y_AB,
                                               Z_AB,
                                               kk_index_begin,
@@ -1046,7 +1184,7 @@ namespace niedoida {
                                               CCC_s);
                                         break;
                                     case 14:
-                                        hr_32(X_AB,
+                                        hr_24(X_AB,
                                               Y_AB,
                                               Z_AB,
                                               kk_index_begin,
@@ -1056,7 +1194,7 @@ namespace niedoida {
                                               CCC_s);
                                         break;
                                     case 15:
-                                        hr_33(X_AB,
+                                        hr_25(X_AB,
                                               Y_AB,
                                               Z_AB,
                                               kk_index_begin,
@@ -1066,7 +1204,7 @@ namespace niedoida {
                                               CCC_s);
                                         break;
                                     case 16:
-                                        hr_34(X_AB,
+                                        hr_31(X_AB,
                                               Y_AB,
                                               Z_AB,
                                               kk_index_begin,
@@ -1076,7 +1214,7 @@ namespace niedoida {
                                               CCC_s);
                                         break;
                                     case 17:
-                                        hr_41(X_AB,
+                                        hr_32(X_AB,
                                               Y_AB,
                                               Z_AB,
                                               kk_index_begin,
@@ -1086,7 +1224,7 @@ namespace niedoida {
                                               CCC_s);
                                         break;
                                     case 18:
-                                        hr_42(X_AB,
+                                        hr_33(X_AB,
                                               Y_AB,
                                               Z_AB,
                                               kk_index_begin,
@@ -1096,7 +1234,7 @@ namespace niedoida {
                                               CCC_s);
                                         break;
                                     case 19:
-                                        hr_43(X_AB,
+                                        hr_34(X_AB,
                                               Y_AB,
                                               Z_AB,
                                               kk_index_begin,
@@ -1106,7 +1244,107 @@ namespace niedoida {
                                               CCC_s);
                                         break;
                                     case 20:
+                                        hr_35(X_AB,
+                                              Y_AB,
+                                              Z_AB,
+                                              kk_index_begin,
+                                              kk_index_end,
+                                              CCC_b,
+                                              CCC_s12,
+                                              CCC_s);
+                                        break;
+                                    case 21:
+                                        hr_41(X_AB,
+                                              Y_AB,
+                                              Z_AB,
+                                              kk_index_begin,
+                                              kk_index_end,
+                                              CCC_b,
+                                              CCC_s12,
+                                              CCC_s);
+                                        break;
+                                    case 22:
+                                        hr_42(X_AB,
+                                              Y_AB,
+                                              Z_AB,
+                                              kk_index_begin,
+                                              kk_index_end,
+                                              CCC_b,
+                                              CCC_s12,
+                                              CCC_s);
+                                        break;
+                                    case 23:
+                                        hr_43(X_AB,
+                                              Y_AB,
+                                              Z_AB,
+                                              kk_index_begin,
+                                              kk_index_end,
+                                              CCC_b,
+                                              CCC_s12,
+                                              CCC_s);
+                                        break;
+                                    case 24:
                                         hr_44(X_AB,
+                                              Y_AB,
+                                              Z_AB,
+                                              kk_index_begin,
+                                              kk_index_end,
+                                              CCC_b,
+                                              CCC_s12,
+                                              CCC_s);
+                                        break;
+                                    case 25:
+                                        hr_45(X_AB,
+                                              Y_AB,
+                                              Z_AB,
+                                              kk_index_begin,
+                                              kk_index_end,
+                                              CCC_b,
+                                              CCC_s12,
+                                              CCC_s);
+                                        break;
+                                    case 26:
+                                        hr_51(X_AB,
+                                              Y_AB,
+                                              Z_AB,
+                                              kk_index_begin,
+                                              kk_index_end,
+                                              CCC_b,
+                                              CCC_s12,
+                                              CCC_s);
+                                        break;
+                                    case 27:
+                                        hr_52(X_AB,
+                                              Y_AB,
+                                              Z_AB,
+                                              kk_index_begin,
+                                              kk_index_end,
+                                              CCC_b,
+                                              CCC_s12,
+                                              CCC_s);
+                                        break;
+                                    case 28:
+                                        hr_53(X_AB,
+                                              Y_AB,
+                                              Z_AB,
+                                              kk_index_begin,
+                                              kk_index_end,
+                                              CCC_b,
+                                              CCC_s12,
+                                              CCC_s);
+                                        break;
+                                    case 29:
+                                        hr_54(X_AB,
+                                              Y_AB,
+                                              Z_AB,
+                                              kk_index_begin,
+                                              kk_index_end,
+                                              CCC_b,
+                                              CCC_s12,
+                                              CCC_s);
+                                        break;
+                                    case 30:
+                                        hr_55(X_AB,
                                               Y_AB,
                                               Z_AB,
                                               kk_index_begin,
@@ -1298,9 +1536,25 @@ namespace niedoida {
                                                         DDD_s12,
                                                         DDD_s);
                                         break;
+                                    case 9:
+                                        pseudo_hr_tot_9(l_l,
+                                                        0,
+                                                        ij_index_end,
+                                                        DDD_b,
+                                                        DDD_s12,
+                                                        DDD_s);
+                                        break;
+                                    case 10:
+                                        pseudo_hr_tot_10(l_l,
+                                                         0,
+                                                         ij_index_end,
+                                                         DDD_b,
+                                                         DDD_s12,
+                                                         DDD_s);
+                                        break;
                                     }
                                 } else {
-                                    const unsigned funny = l_k * 4 + l_l;
+                                    const unsigned funny = l_k * 5 + l_l;
                                     switch (funny) {
                                     case 1:
                                         hr_01(X_CD,
@@ -1343,7 +1597,7 @@ namespace niedoida {
                                               DDD_s);
                                         break;
                                     case 5:
-                                        hr_11(X_CD,
+                                        hr_05(X_CD,
                                               Y_CD,
                                               Z_CD,
                                               0,
@@ -1353,7 +1607,7 @@ namespace niedoida {
                                               DDD_s);
                                         break;
                                     case 6:
-                                        hr_12(X_CD,
+                                        hr_11(X_CD,
                                               Y_CD,
                                               Z_CD,
                                               0,
@@ -1363,7 +1617,7 @@ namespace niedoida {
                                               DDD_s);
                                         break;
                                     case 7:
-                                        hr_13(X_CD,
+                                        hr_12(X_CD,
                                               Y_CD,
                                               Z_CD,
                                               0,
@@ -1373,7 +1627,7 @@ namespace niedoida {
                                               DDD_s);
                                         break;
                                     case 8:
-                                        hr_14(X_CD,
+                                        hr_13(X_CD,
                                               Y_CD,
                                               Z_CD,
                                               0,
@@ -1383,7 +1637,7 @@ namespace niedoida {
                                               DDD_s);
                                         break;
                                     case 9:
-                                        hr_21(X_CD,
+                                        hr_14(X_CD,
                                               Y_CD,
                                               Z_CD,
                                               0,
@@ -1393,7 +1647,7 @@ namespace niedoida {
                                               DDD_s);
                                         break;
                                     case 10:
-                                        hr_22(X_CD,
+                                        hr_15(X_CD,
                                               Y_CD,
                                               Z_CD,
                                               0,
@@ -1403,7 +1657,7 @@ namespace niedoida {
                                               DDD_s);
                                         break;
                                     case 11:
-                                        hr_23(X_CD,
+                                        hr_21(X_CD,
                                               Y_CD,
                                               Z_CD,
                                               0,
@@ -1413,7 +1667,7 @@ namespace niedoida {
                                               DDD_s);
                                         break;
                                     case 12:
-                                        hr_24(X_CD,
+                                        hr_22(X_CD,
                                               Y_CD,
                                               Z_CD,
                                               0,
@@ -1423,7 +1677,7 @@ namespace niedoida {
                                               DDD_s);
                                         break;
                                     case 13:
-                                        hr_31(X_CD,
+                                        hr_23(X_CD,
                                               Y_CD,
                                               Z_CD,
                                               0,
@@ -1433,7 +1687,7 @@ namespace niedoida {
                                               DDD_s);
                                         break;
                                     case 14:
-                                        hr_32(X_CD,
+                                        hr_24(X_CD,
                                               Y_CD,
                                               Z_CD,
                                               0,
@@ -1443,7 +1697,7 @@ namespace niedoida {
                                               DDD_s);
                                         break;
                                     case 15:
-                                        hr_33(X_CD,
+                                        hr_25(X_CD,
                                               Y_CD,
                                               Z_CD,
                                               0,
@@ -1453,7 +1707,7 @@ namespace niedoida {
                                               DDD_s);
                                         break;
                                     case 16:
-                                        hr_34(X_CD,
+                                        hr_31(X_CD,
                                               Y_CD,
                                               Z_CD,
                                               0,
@@ -1463,7 +1717,7 @@ namespace niedoida {
                                               DDD_s);
                                         break;
                                     case 17:
-                                        hr_41(X_CD,
+                                        hr_32(X_CD,
                                               Y_CD,
                                               Z_CD,
                                               0,
@@ -1473,7 +1727,7 @@ namespace niedoida {
                                               DDD_s);
                                         break;
                                     case 18:
-                                        hr_42(X_CD,
+                                        hr_33(X_CD,
                                               Y_CD,
                                               Z_CD,
                                               0,
@@ -1483,7 +1737,7 @@ namespace niedoida {
                                               DDD_s);
                                         break;
                                     case 19:
-                                        hr_43(X_CD,
+                                        hr_34(X_CD,
                                               Y_CD,
                                               Z_CD,
                                               0,
@@ -1493,7 +1747,107 @@ namespace niedoida {
                                               DDD_s);
                                         break;
                                     case 20:
+                                        hr_35(X_CD,
+                                              Y_CD,
+                                              Z_CD,
+                                              0,
+                                              ij_index_end,
+                                              DDD_b,
+                                              DDD_s12,
+                                              DDD_s);
+                                        break;
+                                    case 21:
+                                        hr_41(X_CD,
+                                              Y_CD,
+                                              Z_CD,
+                                              0,
+                                              ij_index_end,
+                                              DDD_b,
+                                              DDD_s12,
+                                              DDD_s);
+                                        break;
+                                    case 22:
+                                        hr_42(X_CD,
+                                              Y_CD,
+                                              Z_CD,
+                                              0,
+                                              ij_index_end,
+                                              DDD_b,
+                                              DDD_s12,
+                                              DDD_s);
+                                        break;
+                                    case 23:
+                                        hr_43(X_CD,
+                                              Y_CD,
+                                              Z_CD,
+                                              0,
+                                              ij_index_end,
+                                              DDD_b,
+                                              DDD_s12,
+                                              DDD_s);
+                                        break;
+                                    case 24:
                                         hr_44(X_CD,
+                                              Y_CD,
+                                              Z_CD,
+                                              0,
+                                              ij_index_end,
+                                              DDD_b,
+                                              DDD_s12,
+                                              DDD_s);
+                                        break;
+                                    case 25:
+                                        hr_45(X_CD,
+                                              Y_CD,
+                                              Z_CD,
+                                              0,
+                                              ij_index_end,
+                                              DDD_b,
+                                              DDD_s12,
+                                              DDD_s);
+                                        break;
+                                    case 26:
+                                        hr_51(X_CD,
+                                              Y_CD,
+                                              Z_CD,
+                                              0,
+                                              ij_index_end,
+                                              DDD_b,
+                                              DDD_s12,
+                                              DDD_s);
+                                        break;
+                                    case 27:
+                                        hr_52(X_CD,
+                                              Y_CD,
+                                              Z_CD,
+                                              0,
+                                              ij_index_end,
+                                              DDD_b,
+                                              DDD_s12,
+                                              DDD_s);
+                                        break;
+                                    case 28:
+                                        hr_53(X_CD,
+                                              Y_CD,
+                                              Z_CD,
+                                              0,
+                                              ij_index_end,
+                                              DDD_b,
+                                              DDD_s12,
+                                              DDD_s);
+                                        break;
+                                    case 29:
+                                        hr_54(X_CD,
+                                              Y_CD,
+                                              Z_CD,
+                                              0,
+                                              ij_index_end,
+                                              DDD_b,
+                                              DDD_s12,
+                                              DDD_s);
+                                        break;
+                                    case 30:
+                                        hr_55(X_CD,
                                               Y_CD,
                                               Z_CD,
                                               0,
@@ -1812,7 +2166,7 @@ namespace niedoida {
                         const double alpha =
                             p * q * reverse_sqr_pq * reverse_sqr_pq;
                         const double R_PQ_2 = R_p + *(A_R_q_b + kl_index) +
-                                              es4.primitive_exps[l] * R_pq / q;
+                            es4.primitive_exps[l] * R_pq / q;
                         misc::fast_boys.generalized_boys(
                             0, alpha * R_PQ_2, prefactor, A_b);
                         const double* NIEDOIDA_RESTRICT CT_34_cur =
@@ -1848,9 +2202,9 @@ namespace niedoida {
         {
             // swapping needed to assure proper order
             const FlatBasisSet::Shell *shell_1_pointer = &es1,
-                                      *shell_2_pointer = &es2,
-                                      *shell_3_pointer = &es3,
-                                      *shell_4_pointer = &es4;
+                *shell_2_pointer = &es2,
+                *shell_3_pointer = &es3,
+                *shell_4_pointer = &es4;
             const FlatBasisSet::Shell* tmp_pointer;
 
             const bool swapped_1 = (es1.l_max < es2.l_max);
@@ -1881,9 +2235,9 @@ namespace niedoida {
             }
             // references initializing
             const FlatBasisSet::Shell &ref_es1 = *shell_1_pointer,
-                                      &ref_es2 = *shell_2_pointer,
-                                      &ref_es3 = *shell_3_pointer,
-                                      &ref_es4 = *shell_4_pointer;
+                &ref_es2 = *shell_2_pointer,
+                &ref_es3 = *shell_3_pointer,
+                &ref_es4 = *shell_4_pointer;
             // end of swapping
 
             // preparing some constants
@@ -2086,8 +2440,8 @@ namespace niedoida {
                             const double reverse_pr = 1 / (p + q);
                             const double reverse_sqr_pr = sqrt(reverse_pr);
                             double prefactor = exp_ij *
-                                               *(A_exp_q_b + kl_index) *
-                                               reverse_sqr_pr;
+                                *(A_exp_q_b + kl_index) *
+                                reverse_sqr_pr;
                             const double d_over_q = *(A_d_over_q_b + kl_index);
                             const double alpha_over_p = q * reverse_pr;
                             const double arg =
@@ -2152,14 +2506,14 @@ namespace niedoida {
                              ++l, BBB_cur += 4) {
                             if (l_i) {
                                 *C_b = X_AB * *(BBB_cur + 3) +
-                                       X_AC * *(BBB_cur + 1) +
-                                       X_CD * *(BBB_cur + 2);
+                                    X_AC * *(BBB_cur + 1) +
+                                    X_CD * *(BBB_cur + 2);
                                 *(C_b + 1) = Y_AB * *(BBB_cur + 3) +
-                                             Y_AC * *(BBB_cur + 1) +
-                                             Y_CD * *(BBB_cur + 2);
+                                    Y_AC * *(BBB_cur + 1) +
+                                    Y_CD * *(BBB_cur + 2);
                                 *(C_b + 2) = Z_AB * *(BBB_cur + 3) +
-                                             Z_AC * *(BBB_cur + 1) +
-                                             Z_CD * *(BBB_cur + 2);
+                                    Z_AC * *(BBB_cur + 1) +
+                                    Z_CD * *(BBB_cur + 2);
                                 unswap(C_b,
                                        1,
                                        1,
@@ -2220,9 +2574,9 @@ namespace niedoida {
         {
             // swapping needed to assure proper order
             const FlatBasisSet::Shell *shell_1_pointer = &es1,
-                                      *shell_2_pointer = &es2,
-                                      *shell_3_pointer = &es3,
-                                      *shell_4_pointer = &es4;
+                *shell_2_pointer = &es2,
+                *shell_3_pointer = &es3,
+                *shell_4_pointer = &es4;
             const FlatBasisSet::Shell* tmp_pointer;
 
             const bool swapped_1 = (es1.l_max < es2.l_max);
@@ -2253,9 +2607,9 @@ namespace niedoida {
             }
             // references initializing
             const FlatBasisSet::Shell &ref_es1 = *shell_1_pointer,
-                                      &ref_es2 = *shell_2_pointer,
-                                      &ref_es3 = *shell_3_pointer,
-                                      &ref_es4 = *shell_4_pointer;
+                &ref_es2 = *shell_2_pointer,
+                &ref_es3 = *shell_3_pointer,
+                &ref_es4 = *shell_4_pointer;
             // end of swapping
 
             // preparing some constants
@@ -2459,8 +2813,8 @@ namespace niedoida {
                             const double reverse_pr = 1 / (p + q);
                             const double reverse_sqr_pr = sqrt(reverse_pr);
                             double prefactor = exp_ij *
-                                               *(A_exp_q_b + kl_index) *
-                                               reverse_sqr_pr;
+                                *(A_exp_q_b + kl_index) *
+                                reverse_sqr_pr;
                             const double d_over_q = *(A_d_over_q_b + kl_index);
                             const double alpha_over_p = q * reverse_pr;
                             const double arg =
@@ -2535,7 +2889,7 @@ namespace niedoida {
                 const unsigned l_i = ref_es1.l[i];
                 const unsigned i_size =
                     (spherical_basis ? l_i + l_i + 1
-                                     : (l_i + 1) * (l_i + 2) / 2);
+                     : (l_i + 1) * (l_i + 2) / 2);
                 unsigned n_j = 0;
                 for (unsigned j = 0; j < naive_size_2; ++j) {
                     const unsigned l_j = ref_es2.l[j];
@@ -2574,8 +2928,8 @@ namespace niedoida {
                                 break;
                             case 1:
                                 *C_b = X_AB * (*BBB_cur + *(BBB_cur + 7)) +
-                                       X_AC * *(BBB_cur + 1) +
-                                       X_CD * *(BBB_cur + 3);
+                                    X_AC * *(BBB_cur + 1) +
+                                    X_CD * *(BBB_cur + 3);
                                 *(C_b + 1) =
                                     Y_AB * (*BBB_cur + *(BBB_cur + 7)) +
                                     Y_AC * *(BBB_cur + 1) +
@@ -2606,14 +2960,14 @@ namespace niedoida {
                                 break;
                             case 2:
                                 *C_b = X_AB * *(BBB_cur + 7) +
-                                       X_AC * *(BBB_cur + 1) +
-                                       X_CD * *(BBB_cur + 3);
+                                    X_AC * *(BBB_cur + 1) +
+                                    X_CD * *(BBB_cur + 3);
                                 *(C_b + 1) = Y_AB * *(BBB_cur + 7) +
-                                             Y_AC * *(BBB_cur + 1) +
-                                             Y_CD * *(BBB_cur + 3);
+                                    Y_AC * *(BBB_cur + 1) +
+                                    Y_CD * *(BBB_cur + 3);
                                 *(C_b + 2) = Z_AB * *(BBB_cur + 7) +
-                                             Z_AC * *(BBB_cur + 1) +
-                                             Z_CD * *(BBB_cur + 3);
+                                    Z_AC * *(BBB_cur + 1) +
+                                    Z_CD * *(BBB_cur + 3);
                                 unswap(C_b,
                                        1,
                                        1,
@@ -2636,50 +2990,50 @@ namespace niedoida {
                                 break;
                             case 3:
                                 D1 = X_AB * *(BBB_cur + 7) +
-                                     X_AC * *(BBB_cur + 1) +
-                                     X_CD * *(BBB_cur + 3);
+                                    X_AC * *(BBB_cur + 1) +
+                                    X_CD * *(BBB_cur + 3);
                                 D2 = Y_AB * *(BBB_cur + 7) +
-                                     Y_AC * *(BBB_cur + 1) +
-                                     Y_CD * *(BBB_cur + 3);
+                                    Y_AC * *(BBB_cur + 1) +
+                                    Y_CD * *(BBB_cur + 3);
                                 D3 = Z_AB * *(BBB_cur + 7) +
-                                     Z_AC * *(BBB_cur + 1) +
-                                     Z_CD * *(BBB_cur + 3);
+                                    Z_AC * *(BBB_cur + 1) +
+                                    Z_CD * *(BBB_cur + 3);
                                 C1 = X_AB * *(BBB_cur + 8) +
-                                     X_AC * *(BBB_cur + 9) +
-                                     X_CD * *(BBB_cur + 10);
+                                    X_AC * *(BBB_cur + 9) +
+                                    X_CD * *(BBB_cur + 10);
                                 C2 = Y_AB * *(BBB_cur + 8) +
-                                     Y_AC * *(BBB_cur + 9) +
-                                     Y_CD * *(BBB_cur + 10);
+                                    Y_AC * *(BBB_cur + 9) +
+                                    Y_CD * *(BBB_cur + 10);
                                 C3 = Z_AB * *(BBB_cur + 8) +
-                                     Z_AC * *(BBB_cur + 9) +
-                                     Z_CD * *(BBB_cur + 10);
+                                    Z_AC * *(BBB_cur + 9) +
+                                    Z_CD * *(BBB_cur + 10);
                                 C4 = X_AB * *(BBB_cur + 9) +
-                                     X_AC * *(BBB_cur + 2) +
-                                     X_CD * *(BBB_cur + 4);
+                                    X_AC * *(BBB_cur + 2) +
+                                    X_CD * *(BBB_cur + 4);
                                 C5 = Y_AB * *(BBB_cur + 9) +
-                                     Y_AC * *(BBB_cur + 2) +
-                                     Y_CD * *(BBB_cur + 4);
+                                    Y_AC * *(BBB_cur + 2) +
+                                    Y_CD * *(BBB_cur + 4);
                                 C6 = Z_AB * *(BBB_cur + 9) +
-                                     Z_AC * *(BBB_cur + 2) +
-                                     Z_CD * *(BBB_cur + 4);
+                                    Z_AC * *(BBB_cur + 2) +
+                                    Z_CD * *(BBB_cur + 4);
                                 C7 = X_AB * *(BBB_cur + 10) +
-                                     X_AC * *(BBB_cur + 4) +
-                                     X_CD * *(BBB_cur + 5);
+                                    X_AC * *(BBB_cur + 4) +
+                                    X_CD * *(BBB_cur + 5);
                                 C8 = Y_AB * *(BBB_cur + 10) +
-                                     Y_AC * *(BBB_cur + 4) +
-                                     Y_CD * *(BBB_cur + 5);
+                                    Y_AC * *(BBB_cur + 4) +
+                                    Y_CD * *(BBB_cur + 5);
                                 C9 = Z_AB * *(BBB_cur + 10) +
-                                     Z_AC * *(BBB_cur + 4) +
-                                     Z_CD * *(BBB_cur + 5);
+                                    Z_AC * *(BBB_cur + 4) +
+                                    Z_CD * *(BBB_cur + 5);
                                 D4 = X_AB * C1 + X_AC * C4 + X_CD * C7 +
-                                     *(BBB_cur + 6);
+                                    *(BBB_cur + 6);
                                 D5 = Y_AB * C1 + Y_AC * C4 + Y_CD * C7;
                                 D6 = Z_AB * C1 + Z_AC * C4 + Z_CD * C7;
                                 D7 = Y_AB * C2 + Y_AC * C5 + Y_CD * C8 +
-                                     *(BBB_cur + 6);
+                                    *(BBB_cur + 6);
                                 D8 = Z_AB * C2 + Z_AC * C5 + Z_CD * C8;
                                 D9 = Z_AB * C3 + Z_AC * C6 + Z_CD * C9 +
-                                     *(BBB_cur + 6);
+                                    *(BBB_cur + 6);
 
                                 *C_b = D4 + X_AB * D1;
                                 *(C_b + 1) = D5 + Y_AB * D1;
@@ -2712,41 +3066,41 @@ namespace niedoida {
                                 break;
                             case 4:
                                 C1 = X_AB * *(BBB_cur + 8) +
-                                     X_AC * *(BBB_cur + 9) +
-                                     X_CD * *(BBB_cur + 10);
+                                    X_AC * *(BBB_cur + 9) +
+                                    X_CD * *(BBB_cur + 10);
                                 C2 = Y_AB * *(BBB_cur + 8) +
-                                     Y_AC * *(BBB_cur + 9) +
-                                     Y_CD * *(BBB_cur + 10);
+                                    Y_AC * *(BBB_cur + 9) +
+                                    Y_CD * *(BBB_cur + 10);
                                 C3 = Z_AB * *(BBB_cur + 8) +
-                                     Z_AC * *(BBB_cur + 9) +
-                                     Z_CD * *(BBB_cur + 10);
+                                    Z_AC * *(BBB_cur + 9) +
+                                    Z_CD * *(BBB_cur + 10);
                                 C4 = X_AB * *(BBB_cur + 9) +
-                                     X_AC * *(BBB_cur + 2) +
-                                     X_CD * *(BBB_cur + 4);
+                                    X_AC * *(BBB_cur + 2) +
+                                    X_CD * *(BBB_cur + 4);
                                 C5 = Y_AB * *(BBB_cur + 9) +
-                                     Y_AC * *(BBB_cur + 2) +
-                                     Y_CD * *(BBB_cur + 4);
+                                    Y_AC * *(BBB_cur + 2) +
+                                    Y_CD * *(BBB_cur + 4);
                                 C6 = Z_AB * *(BBB_cur + 9) +
-                                     Z_AC * *(BBB_cur + 2) +
-                                     Z_CD * *(BBB_cur + 4);
+                                    Z_AC * *(BBB_cur + 2) +
+                                    Z_CD * *(BBB_cur + 4);
                                 C7 = X_AB * *(BBB_cur + 10) +
-                                     X_AC * *(BBB_cur + 4) +
-                                     X_CD * *(BBB_cur + 5);
+                                    X_AC * *(BBB_cur + 4) +
+                                    X_CD * *(BBB_cur + 5);
                                 C8 = Y_AB * *(BBB_cur + 10) +
-                                     Y_AC * *(BBB_cur + 4) +
-                                     Y_CD * *(BBB_cur + 5);
+                                    Y_AC * *(BBB_cur + 4) +
+                                    Y_CD * *(BBB_cur + 5);
                                 C9 = Z_AB * *(BBB_cur + 10) +
-                                     Z_AC * *(BBB_cur + 4) +
-                                     Z_CD * *(BBB_cur + 5);
+                                    Z_AC * *(BBB_cur + 4) +
+                                    Z_CD * *(BBB_cur + 5);
                                 *(C_b + 4) = X_AB * C1 + X_AC * C4 + X_CD * C7 +
-                                             *(BBB_cur + 6);
+                                    *(BBB_cur + 6);
                                 *(C_b + 5) = Y_AB * C1 + Y_AC * C4 + Y_CD * C7;
                                 *(C_b + 6) = Z_AB * C1 + Z_AC * C4 + Z_CD * C7;
                                 *(C_b + 7) = Y_AB * C2 + Y_AC * C5 + Y_CD * C8 +
-                                             *(BBB_cur + 6);
+                                    *(BBB_cur + 6);
                                 *(C_b + 8) = Z_AB * C2 + Z_AC * C5 + Z_CD * C8;
                                 *(C_b + 9) = Z_AB * C3 + Z_AC * C6 + Z_CD * C9 +
-                                             *(BBB_cur + 6);
+                                    *(BBB_cur + 6);
                                 if (spherical_basis) {
                                     cart_to_spher_1(2, 1, 0, 1, C_b, 1, 1);
                                 } else {
@@ -2792,9 +3146,9 @@ namespace niedoida {
         {
             // swapping needed to assure proper order
             const FlatBasisSet::Shell *shell_1_pointer = &es1,
-                                      *shell_2_pointer = &es2,
-                                      *shell_3_pointer = &es3,
-                                      *shell_4_pointer = &es4;
+                *shell_2_pointer = &es2,
+                *shell_3_pointer = &es3,
+                *shell_4_pointer = &es4;
             const FlatBasisSet::Shell* tmp_pointer;
 
             const bool swapped_1 = (es1.l_max < es2.l_max);
@@ -2825,9 +3179,9 @@ namespace niedoida {
             }
             // references initializing
             const FlatBasisSet::Shell &ref_es1 = *shell_1_pointer,
-                                      &ref_es2 = *shell_2_pointer,
-                                      &ref_es3 = *shell_3_pointer,
-                                      &ref_es4 = *shell_4_pointer;
+                &ref_es2 = *shell_2_pointer,
+                &ref_es3 = *shell_3_pointer,
+                &ref_es4 = *shell_4_pointer;
             // end of swapping
 
             // preparing some constants
@@ -3029,7 +3383,7 @@ namespace niedoida {
                             const double* CT_34_cur =
                                 CT_34_b + kl_index * ket_naive_size;
                             const double estimator = *(A_exp_p_b + ij_index) *
-                                                     *(A_exp_q_b + kl_index);
+                                *(A_exp_q_b + kl_index);
                             const double q = *(A_q_b + kl_index);
                             const double d_over_q = *(A_d_over_q_b + kl_index);
                             const double p_over_q = p / q;
@@ -3157,14 +3511,14 @@ namespace niedoida {
                                 break;
                             case 1:
                                 *C_b = X_AB * *(BBB_cur + 9) +
-                                       X_AC * *(BBB_cur + 4) +
-                                       X_CD * *(BBB_cur + 6);
+                                    X_AC * *(BBB_cur + 4) +
+                                    X_CD * *(BBB_cur + 6);
                                 *(C_b + 1) = Y_AB * *(BBB_cur + 9) +
-                                             Y_AC * *(BBB_cur + 4) +
-                                             Y_CD * *(BBB_cur + 6);
+                                    Y_AC * *(BBB_cur + 4) +
+                                    Y_CD * *(BBB_cur + 6);
                                 *(C_b + 2) = Z_AB * *(BBB_cur + 9) +
-                                             Z_AC * *(BBB_cur + 4) +
-                                             Z_CD * *(BBB_cur + 6);
+                                    Z_AC * *(BBB_cur + 4) +
+                                    Z_CD * *(BBB_cur + 6);
                                 unswap(C_b,
                                        3,
                                        1,
@@ -3187,14 +3541,14 @@ namespace niedoida {
                                 break;
                             case 2:
                                 *C_b = X_AB * *(BBB_cur + 8) +
-                                       X_AC * *(BBB_cur + 1) +
-                                       X_CD * *(BBB_cur + 3);
+                                    X_AC * *(BBB_cur + 1) +
+                                    X_CD * *(BBB_cur + 3);
                                 *(C_b + 1) = Y_AB * *(BBB_cur + 8) +
-                                             Y_AC * *(BBB_cur + 1) +
-                                             Y_CD * *(BBB_cur + 3);
+                                    Y_AC * *(BBB_cur + 1) +
+                                    Y_CD * *(BBB_cur + 3);
                                 *(C_b + 2) = Z_AB * *(BBB_cur + 8) +
-                                             Z_AC * *(BBB_cur + 1) +
-                                             Z_CD * *(BBB_cur + 3);
+                                    Z_AC * *(BBB_cur + 1) +
+                                    Z_CD * *(BBB_cur + 3);
                                 unswap(C_b,
                                        1,
                                        1,
@@ -3217,23 +3571,23 @@ namespace niedoida {
                                 break;
                             case 3:
                                 C1 = X_AB * *(BBB_cur + 13) +
-                                     X_AC * *(BBB_cur + 10) +
-                                     X_CD * *(BBB_cur + 11);
+                                    X_AC * *(BBB_cur + 10) +
+                                    X_CD * *(BBB_cur + 11);
                                 C2 = Y_AB * *(BBB_cur + 13) +
-                                     Y_AC * *(BBB_cur + 10) +
-                                     Y_CD * *(BBB_cur + 11);
+                                    Y_AC * *(BBB_cur + 10) +
+                                    Y_CD * *(BBB_cur + 11);
                                 C3 = Z_AB * *(BBB_cur + 13) +
-                                     Z_AC * *(BBB_cur + 10) +
-                                     Z_CD * *(BBB_cur + 11);
+                                    Z_AC * *(BBB_cur + 10) +
+                                    Z_CD * *(BBB_cur + 11);
                                 C4 = X_AB * (*(BBB_cur + 9) + *(BBB_cur + 10)) +
-                                     X_AC * *(BBB_cur + 2) +
-                                     X_CD * *(BBB_cur + 5);
+                                    X_AC * *(BBB_cur + 2) +
+                                    X_CD * *(BBB_cur + 5);
                                 C5 = Y_AB * (*(BBB_cur + 9) + *(BBB_cur + 10)) +
-                                     Y_AC * *(BBB_cur + 2) +
-                                     Y_CD * *(BBB_cur + 5);
+                                    Y_AC * *(BBB_cur + 2) +
+                                    Y_CD * *(BBB_cur + 5);
                                 C6 = Z_AB * (*(BBB_cur + 9) + *(BBB_cur + 10)) +
-                                     Z_AC * *(BBB_cur + 2) +
-                                     Z_CD * *(BBB_cur + 5);
+                                    Z_AC * *(BBB_cur + 2) +
+                                    Z_CD * *(BBB_cur + 5);
                                 C7 =
                                     X_AB * (*(BBB_cur + 12) + *(BBB_cur + 11)) +
                                     X_AC * (-*(BBB_cur + 3) + *(BBB_cur + 5)) +
@@ -3248,17 +3602,17 @@ namespace niedoida {
                                     Z_CD * *(BBB_cur + 7);
 
                                 *C_b = X_AB * C1 + X_AC * C4 + X_CD * C7 +
-                                       *(BBB_cur + 14) / 2;
+                                    *(BBB_cur + 14) / 2;
                                 *(C_b + 1) = Y_AB * C1 + Y_AC * C4 + Y_CD * C7;
                                 *(C_b + 2) = Z_AB * C1 + Z_AC * C4 + Z_CD * C7;
                                 *(C_b + 3) = X_AB * C2 + X_AC * C5 + X_CD * C8;
                                 *(C_b + 4) = Y_AB * C2 + Y_AC * C5 + Y_CD * C8 +
-                                             *(BBB_cur + 14) / 2;
+                                    *(BBB_cur + 14) / 2;
                                 *(C_b + 5) = Z_AB * C2 + Z_AC * C5 + Z_CD * C8;
                                 *(C_b + 6) = X_AB * C3 + X_AC * C6 + X_CD * C9;
                                 *(C_b + 7) = Y_AB * C3 + Y_AC * C6 + Y_CD * C9;
                                 *(C_b + 8) = Z_AB * C3 + Z_AC * C6 + Z_CD * C9 +
-                                             *(BBB_cur + 14) / 2;
+                                    *(BBB_cur + 14) / 2;
                                 unswap(C_b,
                                        3,
                                        1,
@@ -3299,9 +3653,9 @@ namespace niedoida {
         { // general types
             /* swapping may be needed to perform better*/
             const FlatBasisSet::Shell *shell_1_pointer = &es1,
-                                      *shell_2_pointer = &es2,
-                                      *shell_3_pointer = &es3,
-                                      *shell_4_pointer = &es4;
+                *shell_2_pointer = &es2,
+                *shell_3_pointer = &es3,
+                *shell_4_pointer = &es4;
             const FlatBasisSet::Shell* tmp_pointer;
 
             const bool swapped_1 = (es1.l_max < es2.l_max);
@@ -3332,9 +3686,9 @@ namespace niedoida {
             }
             // references initializing
             const FlatBasisSet::Shell &ref_es1 = *shell_1_pointer,
-                                      &ref_es2 = *shell_2_pointer,
-                                      &ref_es3 = *shell_3_pointer,
-                                      &ref_es4 = *shell_4_pointer;
+                &ref_es2 = *shell_2_pointer,
+                &ref_es3 = *shell_3_pointer,
+                &ref_es4 = *shell_4_pointer;
             // end of swapping
 
             // preparing some constants
@@ -3367,12 +3721,12 @@ namespace niedoida {
 
             const unsigned i_index_begin =
                 (same_AB ? l_12_min * (l_12_min + 1) * (l_12_min + 2) / 6
-                         : l_1_min * (l_1_min + 1) * (l_1_min + 2) / 6);
+                 : l_1_min * (l_1_min + 1) * (l_1_min + 2) / 6);
             const unsigned i_index_end =
                 (l_12 + 1) * (l_12 + 2) * (l_12 + 3) / 6;
             const unsigned k_index_begin =
                 (same_CD ? l_34_min * (l_34_min + 1) * (l_34_min + 2) / 6
-                         : l_3_min * (l_3_min + 1) * (l_3_min + 2) / 6);
+                 : l_3_min * (l_3_min + 1) * (l_3_min + 2) / 6);
             const unsigned k_index_end =
                 (l_34 + 1) * (l_34 + 2) * (l_34 + 3) / 6;
             const unsigned i_range = i_index_end - i_index_begin;
@@ -3416,12 +3770,12 @@ namespace niedoida {
             memory_pointer += AA_s * (m + 1) * (m + 2) * (m + 3) / 6;
 
             /*
-                array_type_2 AA(memory_pointer, extents_2
-                [(m + 1) * (m + 2) * (m + 3) / 6]
-                [max(m + 1, k_index_end)]);
-                memory_pointer += AA.num_elements();
-                double* const AA_b = AA.data();
-                const unsigned AA_s = AA.shape()[1];
+              array_type_2 AA(memory_pointer, extents_2
+              [(m + 1) * (m + 2) * (m + 3) / 6]
+              [max(m + 1, k_index_end)]);
+              memory_pointer += AA.num_elements();
+              double* const AA_b = AA.data();
+              const unsigned AA_s = AA.shape()[1];
             */
             double* const B_b = memory_pointer;
             memory_pointer += angular_range;
@@ -3467,7 +3821,7 @@ namespace niedoida {
 
             double* const CCC_b = memory_pointer;
             const unsigned CCC_s = (ref_es2.l_max + 1) * (ref_es2.l_max + 2) *
-                                   (ref_es2.l_max + 3) / 6;
+                (ref_es2.l_max + 3) / 6;
             const unsigned CCC_s12 = i_index_end * CCC_s;
             memory_pointer += k_index_end * CCC_s12;
             /*
@@ -3479,11 +3833,11 @@ namespace niedoida {
             */
             double* const DDD_b = memory_pointer;
             const unsigned DDD_s = (ref_es4.l_max + 1) * (ref_es4.l_max + 2) *
-                                   (ref_es4.l_max + 3) / 6;
+                (ref_es4.l_max + 3) / 6;
             const unsigned DDD_s12 = DDD_s * k_index_end;
             memory_pointer += DDD_s12 * (ref_es1.l_max + 1) *
-                              (ref_es1.l_max + 2) * (ref_es2.l_max + 1) *
-                              (ref_es2.l_max + 2) / 4;
+                (ref_es1.l_max + 2) * (ref_es2.l_max + 1) *
+                (ref_es2.l_max + 2) / 4;
             /*
               array_type_3 DDD(memory_pointer, extents_3
               [(ref_es1.l_max + 1) * (ref_es1.l_max + 2) * (ref_es2.l_max + 1) *
@@ -3567,20 +3921,20 @@ namespace niedoida {
                         ref_es1.primitive_exps[i] + ref_es2.primitive_exps[j];
                     const double one_over_p = 1 / p;
                     const double mu = ref_es1.primitive_exps[i] *
-                                      ref_es2.primitive_exps[j] * one_over_p;
+                        ref_es2.primitive_exps[j] * one_over_p;
                     *(A_p_b + ij_index) = p;
                     const double est1 = two_pi_to_five_over_four *
-                                        exp(-(mu * R_AB_2)) * one_over_p;
+                        exp(-(mu * R_AB_2)) * one_over_p;
                     *(A_exp_p_b + ij_index) = est1;
                     *(A_p_coeff_b + ij_index) *=
                         est1 * std::max(global_bra_estimator,
                                         std::pow(one_over_p, bra_l));
                     for (unsigned kk = 0; kk < 3; ++kk) {
                         const double R_P = (ref_es1.primitive_exps[i] *
-                                                ref_es1.atom->coords[kk] +
+                                            ref_es1.atom->coords[kk] +
                                             ref_es2.primitive_exps[j] *
-                                                ref_es2.atom->coords[kk]) *
-                                           one_over_p;
+                                            ref_es2.atom->coords[kk]) *
+                            one_over_p;
                         *(A_R_P_b + 3 * ij_index + kk) = R_P;
                         *(A_R_PA_b + 3 * ij_index + kk) =
                             R_P - ref_es1.atom->coords[kk];
@@ -3593,10 +3947,10 @@ namespace niedoida {
                         ref_es3.primitive_exps[i] + ref_es4.primitive_exps[j];
                     const double one_over_q = 1 / q;
                     const double nu = ref_es3.primitive_exps[i] *
-                                      ref_es4.primitive_exps[j] * one_over_q;
+                        ref_es4.primitive_exps[j] * one_over_q;
                     *(A_q_b + ij_index) = q;
                     const double est1 = two_pi_to_five_over_four *
-                                        exp(-(nu * R_CD_2)) * one_over_q;
+                        exp(-(nu * R_CD_2)) * one_over_q;
                     *(A_exp_q_b + ij_index) = est1;
                     *(A_q_coeff_b + ij_index) *=
                         est1 * std::max(global_ket_estimator,
@@ -3606,9 +3960,9 @@ namespace niedoida {
                     for (unsigned kk = 0; kk < 3; ++kk) {
                         *(A_R_Q_b + 3 * ij_index + kk) =
                             (ref_es3.primitive_exps[i] *
-                                 ref_es3.atom->coords[kk] +
+                             ref_es3.atom->coords[kk] +
                              ref_es4.primitive_exps[j] *
-                                 ref_es4.atom->coords[kk]) *
+                             ref_es4.atom->coords[kk]) *
                             one_over_q;
                     }
                 }
@@ -3639,17 +3993,17 @@ namespace niedoida {
                             const double* CT_34_cur =
                                 CT_34_b + kl_index * ket_naive_size;
                             const double estimator = *(A_exp_p_b + ij_index) *
-                                                     *(A_exp_q_b + kl_index);
+                                *(A_exp_q_b + kl_index);
                             const double q = *(A_q_b + kl_index);
                             const double one_over_q = 1 / q;
                             const double alpha = 1 / (one_over_p + one_over_q);
                             const double alpha_over_p = alpha * one_over_p;
                             const double X_PQ = *(A_R_P_b + 3 * ij_index) -
-                                                *(A_R_Q_b + 3 * kl_index);
+                                *(A_R_Q_b + 3 * kl_index);
                             const double Y_PQ = *(A_R_P_b + 3 * ij_index + 1) -
-                                                *(A_R_Q_b + 3 * kl_index + 1);
+                                *(A_R_Q_b + 3 * kl_index + 1);
                             const double Z_PQ = *(A_R_P_b + 3 * ij_index + 2) -
-                                                *(A_R_Q_b + 3 * kl_index + 2);
+                                *(A_R_Q_b + 3 * kl_index + 2);
                             const double R_PQ_2 =
                                 X_PQ * X_PQ + Y_PQ * Y_PQ + Z_PQ * Z_PQ;
 
@@ -3681,42 +4035,42 @@ namespace niedoida {
                                 *(b + 4 * 4 + 0) =
                                     alpha_X * *(b + 1 * 4 + 1) +
                                     one_over_two_p *
-                                        (*(b + 0 * 4 + 0) -
-                                         alpha_over_p * *(b + 0 * 4 + 1));
+                                    (*(b + 0 * 4 + 0) -
+                                     alpha_over_p * *(b + 0 * 4 + 1));
                                 *(b + 5 * 4 + 0) = alpha_Y * *(b + 1 * 4 + 1);
                                 *(b + 6 * 4 + 0) = alpha_Z * *(b + 1 * 4 + 1);
                                 *(b + 7 * 4 + 0) =
                                     alpha_Y * *(b + 2 * 4 + 1) +
                                     one_over_two_p *
-                                        (*(b + 0 * 4 + 0) -
-                                         alpha_over_p * *(b + 0 * 4 + 1));
+                                    (*(b + 0 * 4 + 0) -
+                                     alpha_over_p * *(b + 0 * 4 + 1));
                                 *(b + 8 * 4 + 0) = alpha_Z * *(b + 2 * 4 + 1);
                                 *(b + 9 * 4 + 0) =
                                     alpha_Z * *(b + 3 * 4 + 1) +
                                     one_over_two_p *
-                                        (*(b + 0 * 4 + 0) -
-                                         alpha_over_p * *(b + 0 * 4 + 1));
+                                    (*(b + 0 * 4 + 0) -
+                                     alpha_over_p * *(b + 0 * 4 + 1));
                                 *(b + 4 * 4 + 1) =
                                     alpha_X * *(b + 1 * 4 + 2) +
                                     one_over_two_p *
-                                        (*(b + 0 * 4 + 1) -
-                                         alpha_over_p * *(b + 0 * 4 + 2));
+                                    (*(b + 0 * 4 + 1) -
+                                     alpha_over_p * *(b + 0 * 4 + 2));
                                 *(b + 5 * 4 + 1) = alpha_Y * *(b + 1 * 4 + 2);
                                 *(b + 7 * 4 + 1) =
                                     alpha_Y * *(b + 2 * 4 + 2) +
                                     one_over_two_p *
-                                        (*(b + 0 * 4 + 1) -
-                                         alpha_over_p * *(b + 0 * 4 + 2));
+                                    (*(b + 0 * 4 + 1) -
+                                     alpha_over_p * *(b + 0 * 4 + 2));
                                 *(b + 9 * 4 + 1) =
                                     alpha_Z * *(b + 3 * 4 + 2) +
                                     one_over_two_p *
-                                        (*(b + 0 * 4 + 1) -
-                                         alpha_over_p * *(b + 0 * 4 + 2));
+                                    (*(b + 0 * 4 + 1) -
+                                     alpha_over_p * *(b + 0 * 4 + 2));
                                 *(b + 10 * 4 + 0) =
                                     alpha_X * *(b + 4 * 4 + 1) +
                                     2 * one_over_two_p *
-                                        (*(b + 1 * 4 + 0) -
-                                         alpha_over_p * *(b + 1 * 4 + 1));
+                                    (*(b + 1 * 4 + 0) -
+                                     alpha_over_p * *(b + 1 * 4 + 1));
                                 *(b + 11 * 4 + 0) = alpha_Y * *(b + 4 * 4 + 1);
                                 *(b + 12 * 4 + 0) = alpha_Z * *(b + 4 * 4 + 1);
                                 *(b + 13 * 4 + 0) = alpha_X * *(b + 7 * 4 + 1);
@@ -3725,15 +4079,15 @@ namespace niedoida {
                                 *(b + 16 * 4 + 0) =
                                     alpha_Y * *(b + 7 * 4 + 1) +
                                     2 * one_over_two_p *
-                                        (*(b + 2 * 4 + 0) -
-                                         alpha_over_p * *(b + 2 * 4 + 1));
+                                    (*(b + 2 * 4 + 0) -
+                                     alpha_over_p * *(b + 2 * 4 + 1));
                                 *(b + 17 * 4 + 0) = alpha_Z * *(b + 7 * 4 + 1);
                                 *(b + 18 * 4 + 0) = alpha_Y * *(b + 9 * 4 + 1);
                                 *(b + 19 * 4 + 0) =
                                     alpha_Z * *(b + 9 * 4 + 1) +
                                     2 * one_over_two_p *
-                                        (*(b + 3 * 4 + 0) -
-                                         alpha_over_p * *(b + 3 * 4 + 1));
+                                    (*(b + 3 * 4 + 0) -
+                                     alpha_over_p * *(b + 3 * 4 + 1));
                             } else {
                                 const double X_PA = *(A_R_PA_b + 3 * ij_index);
                                 const double Y_PA =
@@ -3741,99 +4095,99 @@ namespace niedoida {
                                 const double Z_PA =
                                     *(A_R_PA_b + 3 * ij_index + 2);
                                 *(b + 1 * 4 + 0) = X_PA * *(b + 0 * 4 + 0) +
-                                                   alpha_X * *(b + 0 * 4 + 1);
+                                    alpha_X * *(b + 0 * 4 + 1);
                                 *(b + 2 * 4 + 0) = Y_PA * *(b + 0 * 4 + 0) +
-                                                   alpha_Y * *(b + 0 * 4 + 1);
+                                    alpha_Y * *(b + 0 * 4 + 1);
                                 *(b + 3 * 4 + 0) = Z_PA * *(b + 0 * 4 + 0) +
-                                                   alpha_Z * *(b + 0 * 4 + 1);
+                                    alpha_Z * *(b + 0 * 4 + 1);
                                 *(b + 1 * 4 + 1) = X_PA * *(b + 0 * 4 + 1) +
-                                                   alpha_X * *(b + 0 * 4 + 2);
+                                    alpha_X * *(b + 0 * 4 + 2);
                                 *(b + 2 * 4 + 1) = Y_PA * *(b + 0 * 4 + 1) +
-                                                   alpha_Y * *(b + 0 * 4 + 2);
+                                    alpha_Y * *(b + 0 * 4 + 2);
                                 *(b + 3 * 4 + 1) = Z_PA * *(b + 0 * 4 + 1) +
-                                                   alpha_Z * *(b + 0 * 4 + 2);
+                                    alpha_Z * *(b + 0 * 4 + 2);
                                 *(b + 1 * 4 + 2) = X_PA * *(b + 0 * 4 + 2) +
-                                                   alpha_X * *(b + 0 * 4 + 3);
+                                    alpha_X * *(b + 0 * 4 + 3);
                                 *(b + 2 * 4 + 2) = Y_PA * *(b + 0 * 4 + 2) +
-                                                   alpha_Y * *(b + 0 * 4 + 3);
+                                    alpha_Y * *(b + 0 * 4 + 3);
                                 *(b + 3 * 4 + 2) = Z_PA * *(b + 0 * 4 + 2) +
-                                                   alpha_Z * *(b + 0 * 4 + 3);
+                                    alpha_Z * *(b + 0 * 4 + 3);
                                 *(b + 4 * 4 + 0) =
                                     X_PA * *(b + 1 * 4 + 0) +
                                     alpha_X * *(b + 1 * 4 + 1) +
                                     one_over_two_p *
-                                        (*(b + 0 * 4 + 0) -
-                                         alpha_over_p * *(b + 0 * 4 + 1));
+                                    (*(b + 0 * 4 + 0) -
+                                     alpha_over_p * *(b + 0 * 4 + 1));
                                 *(b + 5 * 4 + 0) = Y_PA * *(b + 1 * 4 + 0) +
-                                                   alpha_Y * *(b + 1 * 4 + 1);
+                                    alpha_Y * *(b + 1 * 4 + 1);
                                 *(b + 6 * 4 + 0) = Z_PA * *(b + 1 * 4 + 0) +
-                                                   alpha_Z * *(b + 1 * 4 + 1);
+                                    alpha_Z * *(b + 1 * 4 + 1);
                                 *(b + 7 * 4 + 0) =
                                     Y_PA * *(b + 2 * 4 + 0) +
                                     alpha_Y * *(b + 2 * 4 + 1) +
                                     one_over_two_p *
-                                        (*(b + 0 * 4 + 0) -
-                                         alpha_over_p * *(b + 0 * 4 + 1));
+                                    (*(b + 0 * 4 + 0) -
+                                     alpha_over_p * *(b + 0 * 4 + 1));
                                 *(b + 8 * 4 + 0) = Z_PA * *(b + 2 * 4 + 0) +
-                                                   alpha_Z * *(b + 2 * 4 + 1);
+                                    alpha_Z * *(b + 2 * 4 + 1);
                                 *(b + 9 * 4 + 0) =
                                     Z_PA * *(b + 3 * 4 + 0) +
                                     alpha_Z * *(b + 3 * 4 + 1) +
                                     one_over_two_p *
-                                        (*(b + 0 * 4 + 0) -
-                                         alpha_over_p * *(b + 0 * 4 + 1));
+                                    (*(b + 0 * 4 + 0) -
+                                     alpha_over_p * *(b + 0 * 4 + 1));
                                 *(b + 4 * 4 + 1) =
                                     X_PA * *(b + 1 * 4 + 1) +
                                     alpha_X * *(b + 1 * 4 + 2) +
                                     one_over_two_p *
-                                        (*(b + 0 * 4 + 1) -
-                                         alpha_over_p * *(b + 0 * 4 + 2));
+                                    (*(b + 0 * 4 + 1) -
+                                     alpha_over_p * *(b + 0 * 4 + 2));
                                 *(b + 5 * 4 + 1) = Y_PA * *(b + 1 * 4 + 1) +
-                                                   alpha_Y * *(b + 1 * 4 + 2);
+                                    alpha_Y * *(b + 1 * 4 + 2);
                                 *(b + 7 * 4 + 1) =
                                     Y_PA * *(b + 2 * 4 + 1) +
                                     alpha_Y * *(b + 2 * 4 + 2) +
                                     one_over_two_p *
-                                        (*(b + 0 * 4 + 1) -
-                                         alpha_over_p * *(b + 0 * 4 + 2));
+                                    (*(b + 0 * 4 + 1) -
+                                     alpha_over_p * *(b + 0 * 4 + 2));
                                 *(b + 9 * 4 + 1) =
                                     Z_PA * *(b + 3 * 4 + 1) +
                                     alpha_Z * *(b + 3 * 4 + 2) +
                                     one_over_two_p *
-                                        (*(b + 0 * 4 + 1) -
-                                         alpha_over_p * *(b + 0 * 4 + 2));
+                                    (*(b + 0 * 4 + 1) -
+                                     alpha_over_p * *(b + 0 * 4 + 2));
                                 *(b + 10 * 4 + 0) =
                                     X_PA * *(b + 4 * 4 + 0) +
                                     alpha_X * *(b + 4 * 4 + 1) +
                                     2 * one_over_two_p *
-                                        (*(b + 1 * 4 + 0) -
-                                         alpha_over_p * *(b + 1 * 4 + 1));
+                                    (*(b + 1 * 4 + 0) -
+                                     alpha_over_p * *(b + 1 * 4 + 1));
                                 *(b + 11 * 4 + 0) = Y_PA * *(b + 4 * 4 + 0) +
-                                                    alpha_Y * *(b + 4 * 4 + 1);
+                                    alpha_Y * *(b + 4 * 4 + 1);
                                 *(b + 12 * 4 + 0) = Z_PA * *(b + 4 * 4 + 0) +
-                                                    alpha_Z * *(b + 4 * 4 + 1);
+                                    alpha_Z * *(b + 4 * 4 + 1);
                                 *(b + 13 * 4 + 0) = X_PA * *(b + 7 * 4 + 0) +
-                                                    alpha_X * *(b + 7 * 4 + 1);
+                                    alpha_X * *(b + 7 * 4 + 1);
                                 *(b + 14 * 4 + 0) = Z_PA * *(b + 5 * 4 + 0) +
-                                                    alpha_Z * *(b + 5 * 4 + 1);
+                                    alpha_Z * *(b + 5 * 4 + 1);
                                 *(b + 15 * 4 + 0) = X_PA * *(b + 9 * 4 + 0) +
-                                                    alpha_X * *(b + 9 * 4 + 1);
+                                    alpha_X * *(b + 9 * 4 + 1);
                                 *(b + 16 * 4 + 0) =
                                     Y_PA * *(b + 7 * 4 + 0) +
                                     alpha_Y * *(b + 7 * 4 + 1) +
                                     2 * one_over_two_p *
-                                        (*(b + 2 * 4 + 0) -
-                                         alpha_over_p * *(b + 2 * 4 + 1));
+                                    (*(b + 2 * 4 + 0) -
+                                     alpha_over_p * *(b + 2 * 4 + 1));
                                 *(b + 17 * 4 + 0) = Z_PA * *(b + 7 * 4 + 0) +
-                                                    alpha_Z * *(b + 7 * 4 + 1);
+                                    alpha_Z * *(b + 7 * 4 + 1);
                                 *(b + 18 * 4 + 0) = Y_PA * *(b + 9 * 4 + 0) +
-                                                    alpha_Y * *(b + 9 * 4 + 1);
+                                    alpha_Y * *(b + 9 * 4 + 1);
                                 *(b + 19 * 4 + 0) =
                                     Z_PA * *(b + 9 * 4 + 0) +
                                     alpha_Z * *(b + 9 * 4 + 1) +
                                     2 * one_over_two_p *
-                                        (*(b + 3 * 4 + 0) -
-                                         alpha_over_p * *(b + 3 * 4 + 1));
+                                    (*(b + 3 * 4 + 0) -
+                                     alpha_over_p * *(b + 3 * 4 + 1));
                             }
                             // electron transfer
                             //... preparation
@@ -4022,17 +4376,17 @@ namespace niedoida {
                 const unsigned l_i = ref_es1.l[i];
                 const unsigned i_size =
                     (spherical_basis ? l_i + l_i + 1
-                                     : (l_i + 1) * (l_i + 2) / 2);
+                     : (l_i + 1) * (l_i + 2) / 2);
                 unsigned n_j = 0;
                 for (unsigned j = 0; j < naive_size_2; ++j) {
                     const unsigned l_j = ref_es2.l[j];
                     const unsigned j_size =
                         (spherical_basis ? l_j + l_j + 1
-                                         : (l_j + 1) * (l_j + 2) / 2);
+                         : (l_j + 1) * (l_j + 2) / 2);
                     const unsigned l_ij = l_i + l_j;
                     const unsigned ii_index_begin =
                         (same_AB ? l_ij * (l_ij + 1) * (l_ij + 2) / 6
-                                 : l_i * (l_i + 1) * (l_i + 2) / 6);
+                         : l_i * (l_i + 1) * (l_i + 2) / 6);
                     const unsigned ii_index_end =
                         (l_ij + 1) * (l_ij + 2) * (l_ij + 3) / 6;
                     unsigned n_k = 0;
@@ -4040,18 +4394,18 @@ namespace niedoida {
                         const unsigned l_k = ref_es3.l[k];
                         const unsigned k_size =
                             (spherical_basis ? l_k + l_k + 1
-                                             : (l_k + 1) * (l_k + 2) / 2);
+                             : (l_k + 1) * (l_k + 2) / 2);
                         unsigned n_l = 0;
                         for (unsigned l = 0; l < naive_size_4;
                              ++l, BBBBBB_cur += angular_range) {
                             const unsigned l_l = ref_es4.l[l];
                             const unsigned l_size =
                                 (spherical_basis ? l_l + l_l + 1
-                                                 : (l_l + 1) * (l_l + 2) / 2);
+                                 : (l_l + 1) * (l_l + 2) / 2);
                             const unsigned l_kl = l_k + l_l;
                             const unsigned kk_index_begin =
                                 (same_CD ? l_kl * (l_kl + 1) * (l_kl + 2) / 6
-                                         : l_k * (l_k + 1) * (l_k + 2) / 6);
+                                 : l_k * (l_k + 1) * (l_k + 2) / 6);
                             const unsigned kk_index_end =
                                 (l_kl + 1) * (l_kl + 2) * (l_kl + 3) / 6;
 
@@ -4091,7 +4445,7 @@ namespace niedoida {
                                         break;
                                     }
                                 } else {
-                                    const unsigned funny = l_i * 4 + l_j;
+                                    const unsigned funny = l_i * 5 + l_j;
                                     switch (funny) {
                                     case 1:
                                         hr_01(X_AB,
@@ -4103,7 +4457,7 @@ namespace niedoida {
                                               CCC_s12,
                                               CCC_s);
                                         break;
-                                    case 5:
+                                    case 6:
                                         hr_11(X_AB,
                                               Y_AB,
                                               Z_AB,
@@ -4222,7 +4576,7 @@ namespace niedoida {
                                         break;
                                     }
                                 } else {
-                                    const unsigned funny = l_k * 4 + l_l;
+                                    const unsigned funny = l_k * 5 + l_l;
                                     switch (funny) {
                                     case 1:
                                         hr_01(X_CD,
@@ -4335,9 +4689,9 @@ namespace niedoida {
         { // general types
             /* swapping may be needed to perform better*/
             const FlatBasisSet::Shell *shell_1_pointer = &es1,
-                                      *shell_2_pointer = &es2,
-                                      *shell_3_pointer = &es3,
-                                      *shell_4_pointer = &es4;
+                *shell_2_pointer = &es2,
+                *shell_3_pointer = &es3,
+                *shell_4_pointer = &es4;
             const FlatBasisSet::Shell* tmp_pointer;
 
             const bool swapped_1 = (es1.l_max < es2.l_max);
@@ -4368,9 +4722,9 @@ namespace niedoida {
             }
             // references initializing
             const FlatBasisSet::Shell &ref_es1 = *shell_1_pointer,
-                                      &ref_es2 = *shell_2_pointer,
-                                      &ref_es3 = *shell_3_pointer,
-                                      &ref_es4 = *shell_4_pointer;
+                &ref_es2 = *shell_2_pointer,
+                &ref_es3 = *shell_3_pointer,
+                &ref_es4 = *shell_4_pointer;
             // end of swapping
 
             // preparing some constants
@@ -4403,12 +4757,12 @@ namespace niedoida {
 
             const unsigned i_index_begin =
                 (same_AB ? l_12_min * (l_12_min + 1) * (l_12_min + 2) / 6
-                         : l_1_min * (l_1_min + 1) * (l_1_min + 2) / 6);
+                 : l_1_min * (l_1_min + 1) * (l_1_min + 2) / 6);
             const unsigned i_index_end =
                 (l_12 + 1) * (l_12 + 2) * (l_12 + 3) / 6;
             const unsigned k_index_begin =
                 (same_CD ? l_34_min * (l_34_min + 1) * (l_34_min + 2) / 6
-                         : l_3_min * (l_3_min + 1) * (l_3_min + 2) / 6);
+                 : l_3_min * (l_3_min + 1) * (l_3_min + 2) / 6);
             const unsigned k_index_end =
                 (l_34 + 1) * (l_34 + 2) * (l_34 + 3) / 6;
             const unsigned i_range = i_index_end - i_index_begin;
@@ -4452,12 +4806,12 @@ namespace niedoida {
             memory_pointer += AA_s * (m + 1) * (m + 2) * (m + 3) / 6;
 
             /*
-                array_type_2 AA(memory_pointer, extents_2
-                [(m + 1) * (m + 2) * (m + 3) / 6]
-                [max(m + 1, k_index_end)]);
-                memory_pointer += AA.num_elements();
-                double* const AA_b = AA.data();
-                const unsigned AA_s = AA.shape()[1];
+              array_type_2 AA(memory_pointer, extents_2
+              [(m + 1) * (m + 2) * (m + 3) / 6]
+              [max(m + 1, k_index_end)]);
+              memory_pointer += AA.num_elements();
+              double* const AA_b = AA.data();
+              const unsigned AA_s = AA.shape()[1];
             */
             double* const B_b = memory_pointer;
             memory_pointer += angular_range;
@@ -4503,7 +4857,7 @@ namespace niedoida {
 
             double* const CCC_b = memory_pointer;
             const unsigned CCC_s = (ref_es2.l_max + 1) * (ref_es2.l_max + 2) *
-                                   (ref_es2.l_max + 3) / 6;
+                (ref_es2.l_max + 3) / 6;
             const unsigned CCC_s12 = i_index_end * CCC_s;
             memory_pointer += k_index_end * CCC_s12;
             /*
@@ -4515,11 +4869,11 @@ namespace niedoida {
             */
             double* const DDD_b = memory_pointer;
             const unsigned DDD_s = (ref_es4.l_max + 1) * (ref_es4.l_max + 2) *
-                                   (ref_es4.l_max + 3) / 6;
+                (ref_es4.l_max + 3) / 6;
             const unsigned DDD_s12 = DDD_s * k_index_end;
             memory_pointer += DDD_s12 * (ref_es1.l_max + 1) *
-                              (ref_es1.l_max + 2) * (ref_es2.l_max + 1) *
-                              (ref_es2.l_max + 2) / 4;
+                (ref_es1.l_max + 2) * (ref_es2.l_max + 1) *
+                (ref_es2.l_max + 2) / 4;
             /*
               array_type_3 DDD(memory_pointer, extents_3
               [(ref_es1.l_max + 1) * (ref_es1.l_max + 2) * (ref_es2.l_max + 1) *
@@ -4603,20 +4957,20 @@ namespace niedoida {
                         ref_es1.primitive_exps[i] + ref_es2.primitive_exps[j];
                     const double one_over_p = 1 / p;
                     const double mu = ref_es1.primitive_exps[i] *
-                                      ref_es2.primitive_exps[j] * one_over_p;
+                        ref_es2.primitive_exps[j] * one_over_p;
                     *(A_p_b + ij_index) = p;
                     const double est1 = two_pi_to_five_over_four *
-                                        exp(-(mu * R_AB_2)) * one_over_p;
+                        exp(-(mu * R_AB_2)) * one_over_p;
                     *(A_exp_p_b + ij_index) = est1;
                     *(A_p_coeff_b + ij_index) *=
                         est1 * std::max(global_bra_estimator,
                                         std::pow(one_over_p, bra_l));
                     for (unsigned kk = 0; kk < 3; ++kk) {
                         const double R_P = (ref_es1.primitive_exps[i] *
-                                                ref_es1.atom->coords[kk] +
+                                            ref_es1.atom->coords[kk] +
                                             ref_es2.primitive_exps[j] *
-                                                ref_es2.atom->coords[kk]) *
-                                           one_over_p;
+                                            ref_es2.atom->coords[kk]) *
+                            one_over_p;
                         *(A_R_P_b + 3 * ij_index + kk) = R_P;
                         *(A_R_PA_b + 3 * ij_index + kk) =
                             R_P - ref_es1.atom->coords[kk];
@@ -4629,10 +4983,10 @@ namespace niedoida {
                         ref_es3.primitive_exps[i] + ref_es4.primitive_exps[j];
                     const double one_over_q = 1 / q;
                     const double nu = ref_es3.primitive_exps[i] *
-                                      ref_es4.primitive_exps[j] * one_over_q;
+                        ref_es4.primitive_exps[j] * one_over_q;
                     *(A_q_b + ij_index) = q;
                     const double est1 = two_pi_to_five_over_four *
-                                        exp(-(nu * R_CD_2)) * one_over_q;
+                        exp(-(nu * R_CD_2)) * one_over_q;
                     *(A_exp_q_b + ij_index) = est1;
                     *(A_q_coeff_b + ij_index) *=
                         est1 * std::max(global_ket_estimator,
@@ -4642,9 +4996,9 @@ namespace niedoida {
                     for (unsigned kk = 0; kk < 3; ++kk) {
                         *(A_R_Q_b + 3 * ij_index + kk) =
                             (ref_es3.primitive_exps[i] *
-                                 ref_es3.atom->coords[kk] +
+                             ref_es3.atom->coords[kk] +
                              ref_es4.primitive_exps[j] *
-                                 ref_es4.atom->coords[kk]) *
+                             ref_es4.atom->coords[kk]) *
                             one_over_q;
                     }
                 }
@@ -4675,17 +5029,17 @@ namespace niedoida {
                             const double* CT_34_cur =
                                 CT_34_b + kl_index * ket_naive_size;
                             const double estimator = *(A_exp_p_b + ij_index) *
-                                                     *(A_exp_q_b + kl_index);
+                                *(A_exp_q_b + kl_index);
                             const double q = *(A_q_b + kl_index);
                             const double one_over_q = 1 / q;
                             const double alpha = 1 / (one_over_p + one_over_q);
                             const double alpha_over_p = alpha * one_over_p;
                             const double X_PQ = *(A_R_P_b + 3 * ij_index) -
-                                                *(A_R_Q_b + 3 * kl_index);
+                                *(A_R_Q_b + 3 * kl_index);
                             const double Y_PQ = *(A_R_P_b + 3 * ij_index + 1) -
-                                                *(A_R_Q_b + 3 * kl_index + 1);
+                                *(A_R_Q_b + 3 * kl_index + 1);
                             const double Z_PQ = *(A_R_P_b + 3 * ij_index + 2) -
-                                                *(A_R_Q_b + 3 * kl_index + 2);
+                                *(A_R_Q_b + 3 * kl_index + 2);
                             const double R_PQ_2 =
                                 X_PQ * X_PQ + Y_PQ * Y_PQ + Z_PQ * Z_PQ;
 
@@ -4717,42 +5071,42 @@ namespace niedoida {
                                 *(b + 4 * 10 + 0) =
                                     alpha_X * *(b + 1 * 10 + 1) +
                                     one_over_two_p *
-                                        (*(b + 0 * 10 + 0) -
-                                         alpha_over_p * *(b + 0 * 10 + 1));
+                                    (*(b + 0 * 10 + 0) -
+                                     alpha_over_p * *(b + 0 * 10 + 1));
                                 *(b + 5 * 10 + 0) = alpha_Y * *(b + 1 * 10 + 1);
                                 *(b + 6 * 10 + 0) = alpha_Z * *(b + 1 * 10 + 1);
                                 *(b + 7 * 10 + 0) =
                                     alpha_Y * *(b + 2 * 10 + 1) +
                                     one_over_two_p *
-                                        (*(b + 0 * 10 + 0) -
-                                         alpha_over_p * *(b + 0 * 10 + 1));
+                                    (*(b + 0 * 10 + 0) -
+                                     alpha_over_p * *(b + 0 * 10 + 1));
                                 *(b + 8 * 10 + 0) = alpha_Z * *(b + 2 * 10 + 1);
                                 *(b + 9 * 10 + 0) =
                                     alpha_Z * *(b + 3 * 10 + 1) +
                                     one_over_two_p *
-                                        (*(b + 0 * 10 + 0) -
-                                         alpha_over_p * *(b + 0 * 10 + 1));
+                                    (*(b + 0 * 10 + 0) -
+                                     alpha_over_p * *(b + 0 * 10 + 1));
                                 *(b + 4 * 10 + 1) =
                                     alpha_X * *(b + 1 * 10 + 2) +
                                     one_over_two_p *
-                                        (*(b + 0 * 10 + 1) -
-                                         alpha_over_p * *(b + 0 * 10 + 2));
+                                    (*(b + 0 * 10 + 1) -
+                                     alpha_over_p * *(b + 0 * 10 + 2));
                                 *(b + 5 * 10 + 1) = alpha_Y * *(b + 1 * 10 + 2);
                                 *(b + 7 * 10 + 1) =
                                     alpha_Y * *(b + 2 * 10 + 2) +
                                     one_over_two_p *
-                                        (*(b + 0 * 10 + 1) -
-                                         alpha_over_p * *(b + 0 * 10 + 2));
+                                    (*(b + 0 * 10 + 1) -
+                                     alpha_over_p * *(b + 0 * 10 + 2));
                                 *(b + 9 * 10 + 1) =
                                     alpha_Z * *(b + 3 * 10 + 2) +
                                     one_over_two_p *
-                                        (*(b + 0 * 10 + 1) -
-                                         alpha_over_p * *(b + 0 * 10 + 2));
+                                    (*(b + 0 * 10 + 1) -
+                                     alpha_over_p * *(b + 0 * 10 + 2));
                                 *(b + 10 * 10 + 0) =
                                     alpha_X * *(b + 4 * 10 + 1) +
                                     2 * one_over_two_p *
-                                        (*(b + 1 * 10 + 0) -
-                                         alpha_over_p * *(b + 1 * 10 + 1));
+                                    (*(b + 1 * 10 + 0) -
+                                     alpha_over_p * *(b + 1 * 10 + 1));
                                 *(b + 11 * 10 + 0) =
                                     alpha_Y * *(b + 4 * 10 + 1);
                                 *(b + 12 * 10 + 0) =
@@ -4766,8 +5120,8 @@ namespace niedoida {
                                 *(b + 16 * 10 + 0) =
                                     alpha_Y * *(b + 7 * 10 + 1) +
                                     2 * one_over_two_p *
-                                        (*(b + 2 * 10 + 0) -
-                                         alpha_over_p * *(b + 2 * 10 + 1));
+                                    (*(b + 2 * 10 + 0) -
+                                     alpha_over_p * *(b + 2 * 10 + 1));
                                 *(b + 17 * 10 + 0) =
                                     alpha_Z * *(b + 7 * 10 + 1);
                                 *(b + 18 * 10 + 0) =
@@ -4775,31 +5129,31 @@ namespace niedoida {
                                 *(b + 19 * 10 + 0) =
                                     alpha_Z * *(b + 9 * 10 + 1) +
                                     2 * one_over_two_p *
-                                        (*(b + 3 * 10 + 0) -
-                                         alpha_over_p * *(b + 3 * 10 + 1));
+                                    (*(b + 3 * 10 + 0) -
+                                     alpha_over_p * *(b + 3 * 10 + 1));
                                 *(b + 1 * 10 + 3) = alpha_X * *(b + 0 * 10 + 4);
                                 *(b + 2 * 10 + 3) = alpha_Y * *(b + 0 * 10 + 4);
                                 *(b + 3 * 10 + 3) = alpha_Z * *(b + 0 * 10 + 4);
                                 *(b + 4 * 10 + 2) =
                                     alpha_X * *(b + 1 * 10 + 3) +
                                     one_over_two_p *
-                                        (*(b + 0 * 10 + 2) -
-                                         alpha_over_p * *(b + 0 * 10 + 3));
+                                    (*(b + 0 * 10 + 2) -
+                                     alpha_over_p * *(b + 0 * 10 + 3));
                                 *(b + 7 * 10 + 2) =
                                     alpha_Y * *(b + 2 * 10 + 3) +
                                     one_over_two_p *
-                                        (*(b + 0 * 10 + 2) -
-                                         alpha_over_p * *(b + 0 * 10 + 3));
+                                    (*(b + 0 * 10 + 2) -
+                                     alpha_over_p * *(b + 0 * 10 + 3));
                                 *(b + 9 * 10 + 2) =
                                     alpha_Z * *(b + 3 * 10 + 3) +
                                     one_over_two_p *
-                                        (*(b + 0 * 10 + 2) -
-                                         alpha_over_p * *(b + 0 * 10 + 3));
+                                    (*(b + 0 * 10 + 2) -
+                                     alpha_over_p * *(b + 0 * 10 + 3));
                                 *(b + 10 * 10 + 1) =
                                     alpha_X * *(b + 4 * 10 + 2) +
                                     2 * one_over_two_p *
-                                        (*(b + 1 * 10 + 1) -
-                                         alpha_over_p * *(b + 1 * 10 + 2));
+                                    (*(b + 1 * 10 + 1) -
+                                     alpha_over_p * *(b + 1 * 10 + 2));
                                 *(b + 11 * 10 + 1) =
                                     alpha_Y * *(b + 4 * 10 + 2);
                                 *(b + 12 * 10 + 1) =
@@ -4811,20 +5165,20 @@ namespace niedoida {
                                 *(b + 16 * 10 + 1) =
                                     alpha_Y * *(b + 7 * 10 + 2) +
                                     2 * one_over_two_p *
-                                        (*(b + 2 * 10 + 1) -
-                                         alpha_over_p * *(b + 2 * 10 + 2));
+                                    (*(b + 2 * 10 + 1) -
+                                     alpha_over_p * *(b + 2 * 10 + 2));
                                 *(b + 17 * 10 + 1) =
                                     alpha_Z * *(b + 7 * 10 + 2);
                                 *(b + 19 * 10 + 1) =
                                     alpha_Z * *(b + 9 * 10 + 2) +
                                     2 * one_over_two_p *
-                                        (*(b + 3 * 10 + 1) -
-                                         alpha_over_p * *(b + 3 * 10 + 2));
+                                    (*(b + 3 * 10 + 1) -
+                                     alpha_over_p * *(b + 3 * 10 + 2));
                                 *(b + 20 * 10 + 0) =
                                     alpha_X * *(b + 10 * 10 + 1) +
                                     3 * one_over_two_p *
-                                        (*(b + 4 * 10 + 0) -
-                                         alpha_over_p * *(b + 4 * 10 + 1));
+                                    (*(b + 4 * 10 + 0) -
+                                     alpha_over_p * *(b + 4 * 10 + 1));
                                 *(b + 21 * 10 + 0) =
                                     alpha_Y * *(b + 10 * 10 + 1);
                                 *(b + 22 * 10 + 0) =
@@ -4832,15 +5186,15 @@ namespace niedoida {
                                 *(b + 23 * 10 + 0) =
                                     alpha_Y * *(b + 11 * 10 + 1) +
                                     one_over_two_p *
-                                        (*(b + 4 * 10 + 0) -
-                                         alpha_over_p * *(b + 4 * 10 + 1));
+                                    (*(b + 4 * 10 + 0) -
+                                     alpha_over_p * *(b + 4 * 10 + 1));
                                 *(b + 24 * 10 + 0) =
                                     alpha_Z * *(b + 11 * 10 + 1);
                                 *(b + 25 * 10 + 0) =
                                     alpha_Z * *(b + 12 * 10 + 1) +
                                     one_over_two_p *
-                                        (*(b + 4 * 10 + 0) -
-                                         alpha_over_p * *(b + 4 * 10 + 1));
+                                    (*(b + 4 * 10 + 0) -
+                                     alpha_over_p * *(b + 4 * 10 + 1));
                                 *(b + 26 * 10 + 0) =
                                     alpha_X * *(b + 16 * 10 + 1);
                                 *(b + 27 * 10 + 0) =
@@ -4852,22 +5206,22 @@ namespace niedoida {
                                 *(b + 30 * 10 + 0) =
                                     alpha_Y * *(b + 16 * 10 + 1) +
                                     3 * one_over_two_p *
-                                        (*(b + 7 * 10 + 0) -
-                                         alpha_over_p * *(b + 7 * 10 + 1));
+                                    (*(b + 7 * 10 + 0) -
+                                     alpha_over_p * *(b + 7 * 10 + 1));
                                 *(b + 31 * 10 + 0) =
                                     alpha_Z * *(b + 16 * 10 + 1);
                                 *(b + 32 * 10 + 0) =
                                     alpha_Z * *(b + 17 * 10 + 1) +
                                     one_over_two_p *
-                                        (*(b + 7 * 10 + 0) -
-                                         alpha_over_p * *(b + 7 * 10 + 1));
+                                    (*(b + 7 * 10 + 0) -
+                                     alpha_over_p * *(b + 7 * 10 + 1));
                                 *(b + 33 * 10 + 0) =
                                     alpha_Y * *(b + 19 * 10 + 1);
                                 *(b + 34 * 10 + 0) =
                                     alpha_Z * *(b + 19 * 10 + 1) +
                                     3 * one_over_two_p *
-                                        (*(b + 9 * 10 + 0) -
-                                         alpha_over_p * *(b + 9 * 10 + 1));
+                                    (*(b + 9 * 10 + 0) -
+                                     alpha_over_p * *(b + 9 * 10 + 1));
                             } else {
                                 const double X_PA = *(A_R_PA_b + 3 * ij_index);
                                 const double Y_PA =
@@ -4875,73 +5229,73 @@ namespace niedoida {
                                 const double Z_PA =
                                     *(A_R_PA_b + 3 * ij_index + 2);
                                 *(b + 1 * 10 + 0) = X_PA * *(b + 0 * 10 + 0) +
-                                                    alpha_X * *(b + 0 * 10 + 1);
+                                    alpha_X * *(b + 0 * 10 + 1);
                                 *(b + 2 * 10 + 0) = Y_PA * *(b + 0 * 10 + 0) +
-                                                    alpha_Y * *(b + 0 * 10 + 1);
+                                    alpha_Y * *(b + 0 * 10 + 1);
                                 *(b + 3 * 10 + 0) = Z_PA * *(b + 0 * 10 + 0) +
-                                                    alpha_Z * *(b + 0 * 10 + 1);
+                                    alpha_Z * *(b + 0 * 10 + 1);
                                 *(b + 1 * 10 + 1) = X_PA * *(b + 0 * 10 + 1) +
-                                                    alpha_X * *(b + 0 * 10 + 2);
+                                    alpha_X * *(b + 0 * 10 + 2);
                                 *(b + 2 * 10 + 1) = Y_PA * *(b + 0 * 10 + 1) +
-                                                    alpha_Y * *(b + 0 * 10 + 2);
+                                    alpha_Y * *(b + 0 * 10 + 2);
                                 *(b + 3 * 10 + 1) = Z_PA * *(b + 0 * 10 + 1) +
-                                                    alpha_Z * *(b + 0 * 10 + 2);
+                                    alpha_Z * *(b + 0 * 10 + 2);
                                 *(b + 1 * 10 + 2) = X_PA * *(b + 0 * 10 + 2) +
-                                                    alpha_X * *(b + 0 * 10 + 3);
+                                    alpha_X * *(b + 0 * 10 + 3);
                                 *(b + 2 * 10 + 2) = Y_PA * *(b + 0 * 10 + 2) +
-                                                    alpha_Y * *(b + 0 * 10 + 3);
+                                    alpha_Y * *(b + 0 * 10 + 3);
                                 *(b + 3 * 10 + 2) = Z_PA * *(b + 0 * 10 + 2) +
-                                                    alpha_Z * *(b + 0 * 10 + 3);
+                                    alpha_Z * *(b + 0 * 10 + 3);
                                 *(b + 4 * 10 + 0) =
                                     X_PA * *(b + 1 * 10 + 0) +
                                     alpha_X * *(b + 1 * 10 + 1) +
                                     one_over_two_p *
-                                        (*(b + 0 * 10 + 0) -
-                                         alpha_over_p * *(b + 0 * 10 + 1));
+                                    (*(b + 0 * 10 + 0) -
+                                     alpha_over_p * *(b + 0 * 10 + 1));
                                 *(b + 5 * 10 + 0) = Y_PA * *(b + 1 * 10 + 0) +
-                                                    alpha_Y * *(b + 1 * 10 + 1);
+                                    alpha_Y * *(b + 1 * 10 + 1);
                                 *(b + 6 * 10 + 0) = Z_PA * *(b + 1 * 10 + 0) +
-                                                    alpha_Z * *(b + 1 * 10 + 1);
+                                    alpha_Z * *(b + 1 * 10 + 1);
                                 *(b + 7 * 10 + 0) =
                                     Y_PA * *(b + 2 * 10 + 0) +
                                     alpha_Y * *(b + 2 * 10 + 1) +
                                     one_over_two_p *
-                                        (*(b + 0 * 10 + 0) -
-                                         alpha_over_p * *(b + 0 * 10 + 1));
+                                    (*(b + 0 * 10 + 0) -
+                                     alpha_over_p * *(b + 0 * 10 + 1));
                                 *(b + 8 * 10 + 0) = Z_PA * *(b + 2 * 10 + 0) +
-                                                    alpha_Z * *(b + 2 * 10 + 1);
+                                    alpha_Z * *(b + 2 * 10 + 1);
                                 *(b + 9 * 10 + 0) =
                                     Z_PA * *(b + 3 * 10 + 0) +
                                     alpha_Z * *(b + 3 * 10 + 1) +
                                     one_over_two_p *
-                                        (*(b + 0 * 10 + 0) -
-                                         alpha_over_p * *(b + 0 * 10 + 1));
+                                    (*(b + 0 * 10 + 0) -
+                                     alpha_over_p * *(b + 0 * 10 + 1));
                                 *(b + 4 * 10 + 1) =
                                     X_PA * *(b + 1 * 10 + 1) +
                                     alpha_X * *(b + 1 * 10 + 2) +
                                     one_over_two_p *
-                                        (*(b + 0 * 10 + 1) -
-                                         alpha_over_p * *(b + 0 * 10 + 2));
+                                    (*(b + 0 * 10 + 1) -
+                                     alpha_over_p * *(b + 0 * 10 + 2));
                                 *(b + 5 * 10 + 1) = Y_PA * *(b + 1 * 10 + 1) +
-                                                    alpha_Y * *(b + 1 * 10 + 2);
+                                    alpha_Y * *(b + 1 * 10 + 2);
                                 *(b + 7 * 10 + 1) =
                                     Y_PA * *(b + 2 * 10 + 1) +
                                     alpha_Y * *(b + 2 * 10 + 2) +
                                     one_over_two_p *
-                                        (*(b + 0 * 10 + 1) -
-                                         alpha_over_p * *(b + 0 * 10 + 2));
+                                    (*(b + 0 * 10 + 1) -
+                                     alpha_over_p * *(b + 0 * 10 + 2));
                                 *(b + 9 * 10 + 1) =
                                     Z_PA * *(b + 3 * 10 + 1) +
                                     alpha_Z * *(b + 3 * 10 + 2) +
                                     one_over_two_p *
-                                        (*(b + 0 * 10 + 1) -
-                                         alpha_over_p * *(b + 0 * 10 + 2));
+                                    (*(b + 0 * 10 + 1) -
+                                     alpha_over_p * *(b + 0 * 10 + 2));
                                 *(b + 10 * 10 + 0) =
                                     X_PA * *(b + 4 * 10 + 0) +
                                     alpha_X * *(b + 4 * 10 + 1) +
                                     2 * one_over_two_p *
-                                        (*(b + 1 * 10 + 0) -
-                                         alpha_over_p * *(b + 1 * 10 + 1));
+                                    (*(b + 1 * 10 + 0) -
+                                     alpha_over_p * *(b + 1 * 10 + 1));
                                 *(b + 11 * 10 + 0) =
                                     Y_PA * *(b + 4 * 10 + 0) +
                                     alpha_Y * *(b + 4 * 10 + 1);
@@ -4961,8 +5315,8 @@ namespace niedoida {
                                     Y_PA * *(b + 7 * 10 + 0) +
                                     alpha_Y * *(b + 7 * 10 + 1) +
                                     2 * one_over_two_p *
-                                        (*(b + 2 * 10 + 0) -
-                                         alpha_over_p * *(b + 2 * 10 + 1));
+                                    (*(b + 2 * 10 + 0) -
+                                     alpha_over_p * *(b + 2 * 10 + 1));
                                 *(b + 17 * 10 + 0) =
                                     Z_PA * *(b + 7 * 10 + 0) +
                                     alpha_Z * *(b + 7 * 10 + 1);
@@ -4973,38 +5327,38 @@ namespace niedoida {
                                     Z_PA * *(b + 9 * 10 + 0) +
                                     alpha_Z * *(b + 9 * 10 + 1) +
                                     2 * one_over_two_p *
-                                        (*(b + 3 * 10 + 0) -
-                                         alpha_over_p * *(b + 3 * 10 + 1));
+                                    (*(b + 3 * 10 + 0) -
+                                     alpha_over_p * *(b + 3 * 10 + 1));
                                 *(b + 1 * 10 + 3) = X_PA * *(b + 0 * 10 + 3) +
-                                                    alpha_X * *(b + 0 * 10 + 4);
+                                    alpha_X * *(b + 0 * 10 + 4);
                                 *(b + 2 * 10 + 3) = Y_PA * *(b + 0 * 10 + 3) +
-                                                    alpha_Y * *(b + 0 * 10 + 4);
+                                    alpha_Y * *(b + 0 * 10 + 4);
                                 *(b + 3 * 10 + 3) = Z_PA * *(b + 0 * 10 + 3) +
-                                                    alpha_Z * *(b + 0 * 10 + 4);
+                                    alpha_Z * *(b + 0 * 10 + 4);
                                 *(b + 4 * 10 + 2) =
                                     X_PA * *(b + 1 * 10 + 2) +
                                     alpha_X * *(b + 1 * 10 + 3) +
                                     one_over_two_p *
-                                        (*(b + 0 * 10 + 2) -
-                                         alpha_over_p * *(b + 0 * 10 + 3));
+                                    (*(b + 0 * 10 + 2) -
+                                     alpha_over_p * *(b + 0 * 10 + 3));
                                 *(b + 7 * 10 + 2) =
                                     Y_PA * *(b + 2 * 10 + 2) +
                                     alpha_Y * *(b + 2 * 10 + 3) +
                                     one_over_two_p *
-                                        (*(b + 0 * 10 + 2) -
-                                         alpha_over_p * *(b + 0 * 10 + 3));
+                                    (*(b + 0 * 10 + 2) -
+                                     alpha_over_p * *(b + 0 * 10 + 3));
                                 *(b + 9 * 10 + 2) =
                                     Z_PA * *(b + 3 * 10 + 2) +
                                     alpha_Z * *(b + 3 * 10 + 3) +
                                     one_over_two_p *
-                                        (*(b + 0 * 10 + 2) -
-                                         alpha_over_p * *(b + 0 * 10 + 3));
+                                    (*(b + 0 * 10 + 2) -
+                                     alpha_over_p * *(b + 0 * 10 + 3));
                                 *(b + 10 * 10 + 1) =
                                     X_PA * *(b + 4 * 10 + 1) +
                                     alpha_X * *(b + 4 * 10 + 2) +
                                     2 * one_over_two_p *
-                                        (*(b + 1 * 10 + 1) -
-                                         alpha_over_p * *(b + 1 * 10 + 2));
+                                    (*(b + 1 * 10 + 1) -
+                                     alpha_over_p * *(b + 1 * 10 + 2));
                                 *(b + 11 * 10 + 1) =
                                     Y_PA * *(b + 4 * 10 + 1) +
                                     alpha_Y * *(b + 4 * 10 + 2);
@@ -5021,8 +5375,8 @@ namespace niedoida {
                                     Y_PA * *(b + 7 * 10 + 1) +
                                     alpha_Y * *(b + 7 * 10 + 2) +
                                     2 * one_over_two_p *
-                                        (*(b + 2 * 10 + 1) -
-                                         alpha_over_p * *(b + 2 * 10 + 2));
+                                    (*(b + 2 * 10 + 1) -
+                                     alpha_over_p * *(b + 2 * 10 + 2));
                                 *(b + 17 * 10 + 1) =
                                     Z_PA * *(b + 7 * 10 + 1) +
                                     alpha_Z * *(b + 7 * 10 + 2);
@@ -5030,14 +5384,14 @@ namespace niedoida {
                                     Z_PA * *(b + 9 * 10 + 1) +
                                     alpha_Z * *(b + 9 * 10 + 2) +
                                     2 * one_over_two_p *
-                                        (*(b + 3 * 10 + 1) -
-                                         alpha_over_p * *(b + 3 * 10 + 2));
+                                    (*(b + 3 * 10 + 1) -
+                                     alpha_over_p * *(b + 3 * 10 + 2));
                                 *(b + 20 * 10 + 0) =
                                     X_PA * *(b + 10 * 10 + 0) +
                                     alpha_X * *(b + 10 * 10 + 1) +
                                     3 * one_over_two_p *
-                                        (*(b + 4 * 10 + 0) -
-                                         alpha_over_p * *(b + 4 * 10 + 1));
+                                    (*(b + 4 * 10 + 0) -
+                                     alpha_over_p * *(b + 4 * 10 + 1));
                                 *(b + 21 * 10 + 0) =
                                     Y_PA * *(b + 10 * 10 + 0) +
                                     alpha_Y * *(b + 10 * 10 + 1);
@@ -5048,8 +5402,8 @@ namespace niedoida {
                                     Y_PA * *(b + 11 * 10 + 0) +
                                     alpha_Y * *(b + 11 * 10 + 1) +
                                     one_over_two_p *
-                                        (*(b + 4 * 10 + 0) -
-                                         alpha_over_p * *(b + 4 * 10 + 1));
+                                    (*(b + 4 * 10 + 0) -
+                                     alpha_over_p * *(b + 4 * 10 + 1));
                                 *(b + 24 * 10 + 0) =
                                     Z_PA * *(b + 11 * 10 + 0) +
                                     alpha_Z * *(b + 11 * 10 + 1);
@@ -5057,8 +5411,8 @@ namespace niedoida {
                                     Z_PA * *(b + 12 * 10 + 0) +
                                     alpha_Z * *(b + 12 * 10 + 1) +
                                     one_over_two_p *
-                                        (*(b + 4 * 10 + 0) -
-                                         alpha_over_p * *(b + 4 * 10 + 1));
+                                    (*(b + 4 * 10 + 0) -
+                                     alpha_over_p * *(b + 4 * 10 + 1));
                                 *(b + 26 * 10 + 0) =
                                     X_PA * *(b + 16 * 10 + 0) +
                                     alpha_X * *(b + 16 * 10 + 1);
@@ -5075,8 +5429,8 @@ namespace niedoida {
                                     Y_PA * *(b + 16 * 10 + 0) +
                                     alpha_Y * *(b + 16 * 10 + 1) +
                                     3 * one_over_two_p *
-                                        (*(b + 7 * 10 + 0) -
-                                         alpha_over_p * *(b + 7 * 10 + 1));
+                                    (*(b + 7 * 10 + 0) -
+                                     alpha_over_p * *(b + 7 * 10 + 1));
                                 *(b + 31 * 10 + 0) =
                                     Z_PA * *(b + 16 * 10 + 0) +
                                     alpha_Z * *(b + 16 * 10 + 1);
@@ -5084,8 +5438,8 @@ namespace niedoida {
                                     Z_PA * *(b + 17 * 10 + 0) +
                                     alpha_Z * *(b + 17 * 10 + 1) +
                                     one_over_two_p *
-                                        (*(b + 7 * 10 + 0) -
-                                         alpha_over_p * *(b + 7 * 10 + 1));
+                                    (*(b + 7 * 10 + 0) -
+                                     alpha_over_p * *(b + 7 * 10 + 1));
                                 *(b + 33 * 10 + 0) =
                                     Y_PA * *(b + 19 * 10 + 0) +
                                     alpha_Y * *(b + 19 * 10 + 1);
@@ -5093,8 +5447,8 @@ namespace niedoida {
                                     Z_PA * *(b + 19 * 10 + 0) +
                                     alpha_Z * *(b + 19 * 10 + 1) +
                                     3 * one_over_two_p *
-                                        (*(b + 9 * 10 + 0) -
-                                         alpha_over_p * *(b + 9 * 10 + 1));
+                                    (*(b + 9 * 10 + 0) -
+                                     alpha_over_p * *(b + 9 * 10 + 1));
                             }
                             // electron transfer
                             //... preparation
@@ -6380,17 +6734,17 @@ namespace niedoida {
                 const unsigned l_i = ref_es1.l[i];
                 const unsigned i_size =
                     (spherical_basis ? l_i + l_i + 1
-                                     : (l_i + 1) * (l_i + 2) / 2);
+                     : (l_i + 1) * (l_i + 2) / 2);
                 unsigned n_j = 0;
                 for (unsigned j = 0; j < naive_size_2; ++j) {
                     const unsigned l_j = ref_es2.l[j];
                     const unsigned j_size =
                         (spherical_basis ? l_j + l_j + 1
-                                         : (l_j + 1) * (l_j + 2) / 2);
+                         : (l_j + 1) * (l_j + 2) / 2);
                     const unsigned l_ij = l_i + l_j;
                     const unsigned ii_index_begin =
                         (same_AB ? l_ij * (l_ij + 1) * (l_ij + 2) / 6
-                                 : l_i * (l_i + 1) * (l_i + 2) / 6);
+                         : l_i * (l_i + 1) * (l_i + 2) / 6);
                     const unsigned ii_index_end =
                         (l_ij + 1) * (l_ij + 2) * (l_ij + 3) / 6;
                     unsigned n_k = 0;
@@ -6398,18 +6752,18 @@ namespace niedoida {
                         const unsigned l_k = ref_es3.l[k];
                         const unsigned k_size =
                             (spherical_basis ? l_k + l_k + 1
-                                             : (l_k + 1) * (l_k + 2) / 2);
+                             : (l_k + 1) * (l_k + 2) / 2);
                         unsigned n_l = 0;
                         for (unsigned l = 0; l < naive_size_4;
                              ++l, BBBBBB_cur += angular_range) {
                             const unsigned l_l = ref_es4.l[l];
                             const unsigned l_size =
                                 (spherical_basis ? l_l + l_l + 1
-                                                 : (l_l + 1) * (l_l + 2) / 2);
+                                 : (l_l + 1) * (l_l + 2) / 2);
                             const unsigned l_kl = l_k + l_l;
                             const unsigned kk_index_begin =
                                 (same_CD ? l_kl * (l_kl + 1) * (l_kl + 2) / 6
-                                         : l_k * (l_k + 1) * (l_k + 2) / 6);
+                                 : l_k * (l_k + 1) * (l_k + 2) / 6);
                             const unsigned kk_index_end =
                                 (l_kl + 1) * (l_kl + 2) * (l_kl + 3) / 6;
 
@@ -6447,57 +6801,9 @@ namespace niedoida {
                                                         CCC_s12,
                                                         CCC_s);
                                         break;
-                                    case 3:
-                                        pseudo_hr_tot_3(l_j,
-                                                        kk_index_begin,
-                                                        kk_index_end,
-                                                        CCC_b,
-                                                        CCC_s12,
-                                                        CCC_s);
-                                        break;
-                                    case 4:
-                                        pseudo_hr_tot_4(l_j,
-                                                        kk_index_begin,
-                                                        kk_index_end,
-                                                        CCC_b,
-                                                        CCC_s12,
-                                                        CCC_s);
-                                        break;
-                                    case 5:
-                                        pseudo_hr_tot_5(l_j,
-                                                        kk_index_begin,
-                                                        kk_index_end,
-                                                        CCC_b,
-                                                        CCC_s12,
-                                                        CCC_s);
-                                        break;
-                                    case 6:
-                                        pseudo_hr_tot_6(l_j,
-                                                        kk_index_begin,
-                                                        kk_index_end,
-                                                        CCC_b,
-                                                        CCC_s12,
-                                                        CCC_s);
-                                        break;
-                                    case 7:
-                                        pseudo_hr_tot_7(l_j,
-                                                        kk_index_begin,
-                                                        kk_index_end,
-                                                        CCC_b,
-                                                        CCC_s12,
-                                                        CCC_s);
-                                        break;
-                                    case 8:
-                                        pseudo_hr_tot_8(l_j,
-                                                        kk_index_begin,
-                                                        kk_index_end,
-                                                        CCC_b,
-                                                        CCC_s12,
-                                                        CCC_s);
-                                        break;
                                     }
                                 } else {
-                                    const unsigned funny = l_i * 4 + l_j;
+                                    const unsigned funny = l_i * 2 + l_j;
                                     switch (funny) {
                                     case 1:
                                         hr_01(X_AB,
@@ -6520,177 +6826,7 @@ namespace niedoida {
                                               CCC_s);
                                         break;
                                     case 3:
-                                        hr_03(X_AB,
-                                              Y_AB,
-                                              Z_AB,
-                                              kk_index_begin,
-                                              kk_index_end,
-                                              CCC_b,
-                                              CCC_s12,
-                                              CCC_s);
-                                        break;
-                                    case 4:
-                                        hr_04(X_AB,
-                                              Y_AB,
-                                              Z_AB,
-                                              kk_index_begin,
-                                              kk_index_end,
-                                              CCC_b,
-                                              CCC_s12,
-                                              CCC_s);
-                                        break;
-                                    case 5:
                                         hr_11(X_AB,
-                                              Y_AB,
-                                              Z_AB,
-                                              kk_index_begin,
-                                              kk_index_end,
-                                              CCC_b,
-                                              CCC_s12,
-                                              CCC_s);
-                                        break;
-                                    case 6:
-                                        hr_12(X_AB,
-                                              Y_AB,
-                                              Z_AB,
-                                              kk_index_begin,
-                                              kk_index_end,
-                                              CCC_b,
-                                              CCC_s12,
-                                              CCC_s);
-                                        break;
-                                    case 7:
-                                        hr_13(X_AB,
-                                              Y_AB,
-                                              Z_AB,
-                                              kk_index_begin,
-                                              kk_index_end,
-                                              CCC_b,
-                                              CCC_s12,
-                                              CCC_s);
-                                        break;
-                                    case 8:
-                                        hr_14(X_AB,
-                                              Y_AB,
-                                              Z_AB,
-                                              kk_index_begin,
-                                              kk_index_end,
-                                              CCC_b,
-                                              CCC_s12,
-                                              CCC_s);
-                                        break;
-                                    case 9:
-                                        hr_21(X_AB,
-                                              Y_AB,
-                                              Z_AB,
-                                              kk_index_begin,
-                                              kk_index_end,
-                                              CCC_b,
-                                              CCC_s12,
-                                              CCC_s);
-                                        break;
-                                    case 10:
-                                        hr_22(X_AB,
-                                              Y_AB,
-                                              Z_AB,
-                                              kk_index_begin,
-                                              kk_index_end,
-                                              CCC_b,
-                                              CCC_s12,
-                                              CCC_s);
-                                        break;
-                                    case 11:
-                                        hr_23(X_AB,
-                                              Y_AB,
-                                              Z_AB,
-                                              kk_index_begin,
-                                              kk_index_end,
-                                              CCC_b,
-                                              CCC_s12,
-                                              CCC_s);
-                                        break;
-                                    case 12:
-                                        hr_24(X_AB,
-                                              Y_AB,
-                                              Z_AB,
-                                              kk_index_begin,
-                                              kk_index_end,
-                                              CCC_b,
-                                              CCC_s12,
-                                              CCC_s);
-                                        break;
-                                    case 13:
-                                        hr_31(X_AB,
-                                              Y_AB,
-                                              Z_AB,
-                                              kk_index_begin,
-                                              kk_index_end,
-                                              CCC_b,
-                                              CCC_s12,
-                                              CCC_s);
-                                        break;
-                                    case 14:
-                                        hr_32(X_AB,
-                                              Y_AB,
-                                              Z_AB,
-                                              kk_index_begin,
-                                              kk_index_end,
-                                              CCC_b,
-                                              CCC_s12,
-                                              CCC_s);
-                                        break;
-                                    case 15:
-                                        hr_33(X_AB,
-                                              Y_AB,
-                                              Z_AB,
-                                              kk_index_begin,
-                                              kk_index_end,
-                                              CCC_b,
-                                              CCC_s12,
-                                              CCC_s);
-                                        break;
-                                    case 16:
-                                        hr_34(X_AB,
-                                              Y_AB,
-                                              Z_AB,
-                                              kk_index_begin,
-                                              kk_index_end,
-                                              CCC_b,
-                                              CCC_s12,
-                                              CCC_s);
-                                        break;
-                                    case 17:
-                                        hr_41(X_AB,
-                                              Y_AB,
-                                              Z_AB,
-                                              kk_index_begin,
-                                              kk_index_end,
-                                              CCC_b,
-                                              CCC_s12,
-                                              CCC_s);
-                                        break;
-                                    case 18:
-                                        hr_42(X_AB,
-                                              Y_AB,
-                                              Z_AB,
-                                              kk_index_begin,
-                                              kk_index_end,
-                                              CCC_b,
-                                              CCC_s12,
-                                              CCC_s);
-                                        break;
-                                    case 19:
-                                        hr_43(X_AB,
-                                              Y_AB,
-                                              Z_AB,
-                                              kk_index_begin,
-                                              kk_index_end,
-                                              CCC_b,
-                                              CCC_s12,
-                                              CCC_s);
-                                        break;
-                                    case 20:
-                                        hr_44(X_AB,
                                               Y_AB,
                                               Z_AB,
                                               kk_index_begin,
@@ -6834,57 +6970,9 @@ namespace niedoida {
                                                         DDD_s12,
                                                         DDD_s);
                                         break;
-                                    case 3:
-                                        pseudo_hr_tot_3(l_l,
-                                                        0,
-                                                        ij_index_end,
-                                                        DDD_b,
-                                                        DDD_s12,
-                                                        DDD_s);
-                                        break;
-                                    case 4:
-                                        pseudo_hr_tot_4(l_l,
-                                                        0,
-                                                        ij_index_end,
-                                                        DDD_b,
-                                                        DDD_s12,
-                                                        DDD_s);
-                                        break;
-                                    case 5:
-                                        pseudo_hr_tot_5(l_l,
-                                                        0,
-                                                        ij_index_end,
-                                                        DDD_b,
-                                                        DDD_s12,
-                                                        DDD_s);
-                                        break;
-                                    case 6:
-                                        pseudo_hr_tot_6(l_l,
-                                                        0,
-                                                        ij_index_end,
-                                                        DDD_b,
-                                                        DDD_s12,
-                                                        DDD_s);
-                                        break;
-                                    case 7:
-                                        pseudo_hr_tot_7(l_l,
-                                                        0,
-                                                        ij_index_end,
-                                                        DDD_b,
-                                                        DDD_s12,
-                                                        DDD_s);
-                                        break;
-                                    case 8:
-                                        pseudo_hr_tot_8(l_l,
-                                                        0,
-                                                        ij_index_end,
-                                                        DDD_b,
-                                                        DDD_s12,
-                                                        DDD_s);
-                                        break;
                                     }
                                 } else {
-                                    const unsigned funny = l_k * 4 + l_l;
+                                    const unsigned funny = l_k * 2 + l_l;
                                     switch (funny) {
                                     case 1:
                                         hr_01(X_CD,
@@ -6907,177 +6995,7 @@ namespace niedoida {
                                               DDD_s);
                                         break;
                                     case 3:
-                                        hr_03(X_CD,
-                                              Y_CD,
-                                              Z_CD,
-                                              0,
-                                              ij_index_end,
-                                              DDD_b,
-                                              DDD_s12,
-                                              DDD_s);
-                                        break;
-                                    case 4:
-                                        hr_04(X_CD,
-                                              Y_CD,
-                                              Z_CD,
-                                              0,
-                                              ij_index_end,
-                                              DDD_b,
-                                              DDD_s12,
-                                              DDD_s);
-                                        break;
-                                    case 5:
                                         hr_11(X_CD,
-                                              Y_CD,
-                                              Z_CD,
-                                              0,
-                                              ij_index_end,
-                                              DDD_b,
-                                              DDD_s12,
-                                              DDD_s);
-                                        break;
-                                    case 6:
-                                        hr_12(X_CD,
-                                              Y_CD,
-                                              Z_CD,
-                                              0,
-                                              ij_index_end,
-                                              DDD_b,
-                                              DDD_s12,
-                                              DDD_s);
-                                        break;
-                                    case 7:
-                                        hr_13(X_CD,
-                                              Y_CD,
-                                              Z_CD,
-                                              0,
-                                              ij_index_end,
-                                              DDD_b,
-                                              DDD_s12,
-                                              DDD_s);
-                                        break;
-                                    case 8:
-                                        hr_14(X_CD,
-                                              Y_CD,
-                                              Z_CD,
-                                              0,
-                                              ij_index_end,
-                                              DDD_b,
-                                              DDD_s12,
-                                              DDD_s);
-                                        break;
-                                    case 9:
-                                        hr_21(X_CD,
-                                              Y_CD,
-                                              Z_CD,
-                                              0,
-                                              ij_index_end,
-                                              DDD_b,
-                                              DDD_s12,
-                                              DDD_s);
-                                        break;
-                                    case 10:
-                                        hr_22(X_CD,
-                                              Y_CD,
-                                              Z_CD,
-                                              0,
-                                              ij_index_end,
-                                              DDD_b,
-                                              DDD_s12,
-                                              DDD_s);
-                                        break;
-                                    case 11:
-                                        hr_23(X_CD,
-                                              Y_CD,
-                                              Z_CD,
-                                              0,
-                                              ij_index_end,
-                                              DDD_b,
-                                              DDD_s12,
-                                              DDD_s);
-                                        break;
-                                    case 12:
-                                        hr_24(X_CD,
-                                              Y_CD,
-                                              Z_CD,
-                                              0,
-                                              ij_index_end,
-                                              DDD_b,
-                                              DDD_s12,
-                                              DDD_s);
-                                        break;
-                                    case 13:
-                                        hr_31(X_CD,
-                                              Y_CD,
-                                              Z_CD,
-                                              0,
-                                              ij_index_end,
-                                              DDD_b,
-                                              DDD_s12,
-                                              DDD_s);
-                                        break;
-                                    case 14:
-                                        hr_32(X_CD,
-                                              Y_CD,
-                                              Z_CD,
-                                              0,
-                                              ij_index_end,
-                                              DDD_b,
-                                              DDD_s12,
-                                              DDD_s);
-                                        break;
-                                    case 15:
-                                        hr_33(X_CD,
-                                              Y_CD,
-                                              Z_CD,
-                                              0,
-                                              ij_index_end,
-                                              DDD_b,
-                                              DDD_s12,
-                                              DDD_s);
-                                        break;
-                                    case 16:
-                                        hr_34(X_CD,
-                                              Y_CD,
-                                              Z_CD,
-                                              0,
-                                              ij_index_end,
-                                              DDD_b,
-                                              DDD_s12,
-                                              DDD_s);
-                                        break;
-                                    case 17:
-                                        hr_41(X_CD,
-                                              Y_CD,
-                                              Z_CD,
-                                              0,
-                                              ij_index_end,
-                                              DDD_b,
-                                              DDD_s12,
-                                              DDD_s);
-                                        break;
-                                    case 18:
-                                        hr_42(X_CD,
-                                              Y_CD,
-                                              Z_CD,
-                                              0,
-                                              ij_index_end,
-                                              DDD_b,
-                                              DDD_s12,
-                                              DDD_s);
-                                        break;
-                                    case 19:
-                                        hr_43(X_CD,
-                                              Y_CD,
-                                              Z_CD,
-                                              0,
-                                              ij_index_end,
-                                              DDD_b,
-                                              DDD_s12,
-                                              DDD_s);
-                                        break;
-                                    case 20:
-                                        hr_44(X_CD,
                                               Y_CD,
                                               Z_CD,
                                               0,

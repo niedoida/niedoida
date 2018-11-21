@@ -228,7 +228,7 @@ namespace niedoida {
                                   -R_PC[1],
                                   -R_PC[2],
                                   X_b);
-                            if (m > 4)
+                            if (m > 4) {
                                 vr5_8(1,
                                       one_over_two_p,
                                       m,
@@ -239,6 +239,18 @@ namespace niedoida {
                                       -R_PC[1],
                                       -R_PC[2],
                                       X_b);
+                                if (m > 8)
+                                    vr9_12(1,
+                                           one_over_two_p,
+                                           m,
+                                           R_PA[0],
+                                           R_PA[1],
+                                           R_PA[2],
+                                           -R_PC[0],
+                                           -R_PC[1],
+                                           -R_PC[2],
+                                           X_b);
+                            }
                         }
 
                         const double* Xij = X_b;
@@ -282,7 +294,7 @@ namespace niedoida {
 
                     // horizontal
                     if (l_j > 0) {
-                        const unsigned funny = l_i * 4 + l_j;
+                        const unsigned funny = l_i * 5 + l_j;
                         switch (funny) {
                         case 1:
                             hr_01(
@@ -301,67 +313,107 @@ namespace niedoida {
                                 R_AB[0], R_AB[1], R_AB[2], 0, 1, YY_b, 1, YY_s);
                             break;
                         case 5:
-                            hr_11(
+                            hr_05(
                                 R_AB[0], R_AB[1], R_AB[2], 0, 1, YY_b, 1, YY_s);
                             break;
                         case 6:
-                            hr_12(
+                            hr_11(
                                 R_AB[0], R_AB[1], R_AB[2], 0, 1, YY_b, 1, YY_s);
                             break;
                         case 7:
-                            hr_13(
+                            hr_12(
                                 R_AB[0], R_AB[1], R_AB[2], 0, 1, YY_b, 1, YY_s);
                             break;
                         case 8:
-                            hr_14(
+                            hr_13(
                                 R_AB[0], R_AB[1], R_AB[2], 0, 1, YY_b, 1, YY_s);
                             break;
                         case 9:
-                            hr_21(
+                            hr_14(
                                 R_AB[0], R_AB[1], R_AB[2], 0, 1, YY_b, 1, YY_s);
                             break;
                         case 10:
-                            hr_22(
+                            hr_15(
                                 R_AB[0], R_AB[1], R_AB[2], 0, 1, YY_b, 1, YY_s);
                             break;
                         case 11:
-                            hr_23(
+                            hr_21(
                                 R_AB[0], R_AB[1], R_AB[2], 0, 1, YY_b, 1, YY_s);
                             break;
                         case 12:
-                            hr_24(
+                            hr_22(
                                 R_AB[0], R_AB[1], R_AB[2], 0, 1, YY_b, 1, YY_s);
                             break;
                         case 13:
-                            hr_31(
+                            hr_23(
                                 R_AB[0], R_AB[1], R_AB[2], 0, 1, YY_b, 1, YY_s);
                             break;
                         case 14:
-                            hr_32(
+                            hr_24(
                                 R_AB[0], R_AB[1], R_AB[2], 0, 1, YY_b, 1, YY_s);
                             break;
                         case 15:
-                            hr_33(
+                            hr_25(
                                 R_AB[0], R_AB[1], R_AB[2], 0, 1, YY_b, 1, YY_s);
                             break;
                         case 16:
-                            hr_34(
+                            hr_31(
                                 R_AB[0], R_AB[1], R_AB[2], 0, 1, YY_b, 1, YY_s);
                             break;
                         case 17:
-                            hr_41(
+                            hr_32(
                                 R_AB[0], R_AB[1], R_AB[2], 0, 1, YY_b, 1, YY_s);
                             break;
                         case 18:
-                            hr_42(
+                            hr_33(
                                 R_AB[0], R_AB[1], R_AB[2], 0, 1, YY_b, 1, YY_s);
                             break;
                         case 19:
-                            hr_43(
+                            hr_34(
                                 R_AB[0], R_AB[1], R_AB[2], 0, 1, YY_b, 1, YY_s);
                             break;
                         case 20:
+                            hr_35(
+                                R_AB[0], R_AB[1], R_AB[2], 0, 1, YY_b, 1, YY_s);
+                            break;
+                        case 21:
+                            hr_41(
+                                R_AB[0], R_AB[1], R_AB[2], 0, 1, YY_b, 1, YY_s);
+                            break;
+                        case 22:
+                            hr_42(
+                                R_AB[0], R_AB[1], R_AB[2], 0, 1, YY_b, 1, YY_s);
+                            break;
+                        case 23:
+                            hr_43(
+                                R_AB[0], R_AB[1], R_AB[2], 0, 1, YY_b, 1, YY_s);
+                            break;
+                        case 24:
                             hr_44(
+                                R_AB[0], R_AB[1], R_AB[2], 0, 1, YY_b, 1, YY_s);
+                            break;
+                        case 25:
+                            hr_45(
+                                R_AB[0], R_AB[1], R_AB[2], 0, 1, YY_b, 1, YY_s);
+                            break;
+                        case 26:
+                            hr_51(
+                                R_AB[0], R_AB[1], R_AB[2], 0, 1, YY_b, 1, YY_s);
+                            break;
+                        case 27:
+                            hr_52(
+                                R_AB[0], R_AB[1], R_AB[2], 0, 1, YY_b, 1, YY_s);
+                            break;
+                        case 28:
+                            hr_53(
+                                R_AB[0], R_AB[1], R_AB[2], 0, 1, YY_b, 1, YY_s);
+                            break;
+                        case 29:
+                            hr_54(
+                                R_AB[0], R_AB[1], R_AB[2], 0, 1, YY_b, 1, YY_s);
+                            break;
+                        case 30:
+                            hr_55(
                                 R_AB[0], R_AB[1], R_AB[2], 0, 1, YY_b, 1, YY_s);
                             break;
                         }

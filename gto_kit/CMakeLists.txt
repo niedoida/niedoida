@@ -23,10 +23,13 @@ set (SRCS
     src/hr3_1.cpp
     src/hr3_2.cpp
     src/hr3_3.cpp
+    src/hr3_4.cpp
     src/hr4_1.cpp
     src/hr4_2.cpp
     src/hr4_3.cpp
     src/hr4_4.cpp
+    src/hr4_5.cpp
+    src/hr5.cpp
     src/os1_efield.cpp
     src/os1_implementation.cpp
     src/os1_integral_engine_factory.cpp

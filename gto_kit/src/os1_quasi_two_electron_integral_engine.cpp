@@ -334,6 +334,42 @@ namespace niedoida {
                                                      alpha_Y,
                                                      alpha_Z,
                                                      AA_b);
+                                            if (m > 16) {
+                                                svr17(alpha_over_a,
+                                                      one_over_two_a,
+                                                      m,
+                                                      alpha_X,
+                                                      alpha_Y,
+                                                      alpha_Z,
+                                                      AA_b);
+                                                if (m > 17) {
+                                                    svr18(alpha_over_a,
+                                                          one_over_two_a,
+                                                          m,
+                                                          alpha_X,
+                                                          alpha_Y,
+                                                          alpha_Z,
+                                                          AA_b);
+                                                    if (m > 18) {
+                                                        svr19(alpha_over_a,
+                                                              one_over_two_a,
+                                                              m,
+                                                              alpha_X,
+                                                              alpha_Y,
+                                                              alpha_Z,
+                                                              AA_b);
+                                                        if (m > 19) {
+                                                            svr20(alpha_over_a,
+                                                                  one_over_two_a,
+                                                                  m,
+                                                                  alpha_X,
+                                                                  alpha_Y,
+                                                                  alpha_Z,
+                                                                  AA_b);
+                                                        }
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -451,7 +487,7 @@ namespace niedoida {
                                                                prefactor_z,
                                                                a_over_q,
                                                                one_over_two_q,
-                                                               AA_b);
+                                                               AA_b);  
                                                     if (l_34 > 7) {
                                                         underflow--;
                                                         first_min =
@@ -468,7 +504,43 @@ namespace niedoida {
                                                             prefactor_z,
                                                             a_over_q,
                                                             one_over_two_q,
-                                                            AA_b);
+                                                            AA_b);  
+                                                        if (l_34 > 8) {
+                                                            underflow--;
+                                                            first_min =
+                                                                (l_1_min > underflow
+                                                                 ? l_1_min -
+                                                                 underflow
+                                                                 : 0);
+                                                            first_max--;
+                                                            transfer_9(
+                                                                first_min,
+                                                                first_max,
+                                                                prefactor_x,
+                                                                prefactor_y,
+                                                                prefactor_z,
+                                                                a_over_q,
+                                                                one_over_two_q,
+                                                                AA_b);  
+                                                            if (l_34 > 9) {
+                                                                underflow--;
+                                                                first_min =
+                                                                    (l_1_min > underflow
+                                                                     ? l_1_min -
+                                                                     underflow
+                                                                     : 0);
+                                                                first_max--;
+                                                                transfer_10(
+                                                                    first_min,
+                                                                    first_max,
+                                                                    prefactor_x,
+                                                                    prefactor_y,
+                                                                    prefactor_z,
+                                                                    a_over_q,
+                                                                    one_over_two_q,
+                                                                    AA_b);
+                                                            }
+                                                        }
                                                     }
                                                 }
                                             }
@@ -634,9 +706,17 @@ namespace niedoida {
                                     pseudo_hr_tot_8(
                                         l_l, 0, i_size, DDD_b, DDD_s12, DDD_s);
                                     break;
+                                case 9:
+                                    pseudo_hr_tot_9(
+                                        l_l, 0, i_size, DDD_b, DDD_s12, DDD_s);
+                                    break;
+                                case 10:
+                                    pseudo_hr_tot_10(
+                                        l_l, 0, i_size, DDD_b, DDD_s12, DDD_s);
+                                    break;
                                 }
                             } else {
-                                const unsigned funny = l_k * 4 + l_l;
+                                const unsigned funny = l_k * 5 + l_l;
                                 switch (funny) {
                                 case 1:
                                     hr_01(X_CD,
@@ -679,7 +759,7 @@ namespace niedoida {
                                           DDD_s);
                                     break;
                                 case 5:
-                                    hr_11(X_CD,
+                                    hr_05(X_CD,
                                           Y_CD,
                                           Z_CD,
                                           0,
@@ -689,7 +769,7 @@ namespace niedoida {
                                           DDD_s);
                                     break;
                                 case 6:
-                                    hr_12(X_CD,
+                                    hr_11(X_CD,
                                           Y_CD,
                                           Z_CD,
                                           0,
@@ -699,7 +779,7 @@ namespace niedoida {
                                           DDD_s);
                                     break;
                                 case 7:
-                                    hr_13(X_CD,
+                                    hr_12(X_CD,
                                           Y_CD,
                                           Z_CD,
                                           0,
@@ -709,7 +789,7 @@ namespace niedoida {
                                           DDD_s);
                                     break;
                                 case 8:
-                                    hr_14(X_CD,
+                                    hr_13(X_CD,
                                           Y_CD,
                                           Z_CD,
                                           0,
@@ -719,7 +799,7 @@ namespace niedoida {
                                           DDD_s);
                                     break;
                                 case 9:
-                                    hr_21(X_CD,
+                                    hr_14(X_CD,
                                           Y_CD,
                                           Z_CD,
                                           0,
@@ -729,7 +809,7 @@ namespace niedoida {
                                           DDD_s);
                                     break;
                                 case 10:
-                                    hr_22(X_CD,
+                                    hr_15(X_CD,
                                           Y_CD,
                                           Z_CD,
                                           0,
@@ -739,7 +819,7 @@ namespace niedoida {
                                           DDD_s);
                                     break;
                                 case 11:
-                                    hr_23(X_CD,
+                                    hr_21(X_CD,
                                           Y_CD,
                                           Z_CD,
                                           0,
@@ -749,7 +829,7 @@ namespace niedoida {
                                           DDD_s);
                                     break;
                                 case 12:
-                                    hr_24(X_CD,
+                                    hr_22(X_CD,
                                           Y_CD,
                                           Z_CD,
                                           0,
@@ -759,7 +839,7 @@ namespace niedoida {
                                           DDD_s);
                                     break;
                                 case 13:
-                                    hr_31(X_CD,
+                                    hr_23(X_CD,
                                           Y_CD,
                                           Z_CD,
                                           0,
@@ -769,7 +849,7 @@ namespace niedoida {
                                           DDD_s);
                                     break;
                                 case 14:
-                                    hr_32(X_CD,
+                                    hr_24(X_CD,
                                           Y_CD,
                                           Z_CD,
                                           0,
@@ -779,7 +859,7 @@ namespace niedoida {
                                           DDD_s);
                                     break;
                                 case 15:
-                                    hr_33(X_CD,
+                                    hr_25(X_CD,
                                           Y_CD,
                                           Z_CD,
                                           0,
@@ -789,7 +869,7 @@ namespace niedoida {
                                           DDD_s);
                                     break;
                                 case 16:
-                                    hr_34(X_CD,
+                                    hr_31(X_CD,
                                           Y_CD,
                                           Z_CD,
                                           0,
@@ -799,7 +879,7 @@ namespace niedoida {
                                           DDD_s);
                                     break;
                                 case 17:
-                                    hr_41(X_CD,
+                                    hr_32(X_CD,
                                           Y_CD,
                                           Z_CD,
                                           0,
@@ -809,7 +889,7 @@ namespace niedoida {
                                           DDD_s);
                                     break;
                                 case 18:
-                                    hr_42(X_CD,
+                                    hr_33(X_CD,
                                           Y_CD,
                                           Z_CD,
                                           0,
@@ -819,7 +899,7 @@ namespace niedoida {
                                           DDD_s);
                                     break;
                                 case 19:
-                                    hr_43(X_CD,
+                                    hr_34(X_CD,
                                           Y_CD,
                                           Z_CD,
                                           0,
@@ -829,7 +909,107 @@ namespace niedoida {
                                           DDD_s);
                                     break;
                                 case 20:
+                                    hr_35(X_CD,
+                                          Y_CD,
+                                          Z_CD,
+                                          0,
+                                          i_size,
+                                          DDD_b,
+                                          DDD_s12,
+                                          DDD_s);
+                                    break;
+                                case 21:
+                                    hr_41(X_CD,
+                                          Y_CD,
+                                          Z_CD,
+                                          0,
+                                          i_size,
+                                          DDD_b,
+                                          DDD_s12,
+                                          DDD_s);
+                                    break;
+                                case 22:
+                                    hr_42(X_CD,
+                                          Y_CD,
+                                          Z_CD,
+                                          0,
+                                          i_size,
+                                          DDD_b,
+                                          DDD_s12,
+                                          DDD_s);
+                                    break;
+                                case 23:
+                                    hr_43(X_CD,
+                                          Y_CD,
+                                          Z_CD,
+                                          0,
+                                          i_size,
+                                          DDD_b,
+                                          DDD_s12,
+                                          DDD_s);
+                                    break;
+                                case 24:
                                     hr_44(X_CD,
+                                          Y_CD,
+                                          Z_CD,
+                                          0,
+                                          i_size,
+                                          DDD_b,
+                                          DDD_s12,
+                                          DDD_s);
+                                    break;
+                                case 25:
+                                    hr_45(X_CD,
+                                          Y_CD,
+                                          Z_CD,
+                                          0,
+                                          i_size,
+                                          DDD_b,
+                                          DDD_s12,
+                                          DDD_s);
+                                    break;
+                                case 26:
+                                    hr_51(X_CD,
+                                          Y_CD,
+                                          Z_CD,
+                                          0,
+                                          i_size,
+                                          DDD_b,
+                                          DDD_s12,
+                                          DDD_s);
+                                    break;
+                                case 27:
+                                    hr_52(X_CD,
+                                          Y_CD,
+                                          Z_CD,
+                                          0,
+                                          i_size,
+                                          DDD_b,
+                                          DDD_s12,
+                                          DDD_s);
+                                    break;
+                                case 28:
+                                    hr_53(X_CD,
+                                          Y_CD,
+                                          Z_CD,
+                                          0,
+                                          i_size,
+                                          DDD_b,
+                                          DDD_s12,
+                                          DDD_s);
+                                    break;
+                                case 29:
+                                    hr_54(X_CD,
+                                          Y_CD,
+                                          Z_CD,
+                                          0,
+                                          i_size,
+                                          DDD_b,
+                                          DDD_s12,
+                                          DDD_s);
+                                    break;
+                                case 30:
+                                    hr_55(X_CD,
                                           Y_CD,
                                           Z_CD,
                                           0,
@@ -1132,6 +1312,42 @@ namespace niedoida {
                                                  alpha_Y,
                                                  alpha_Z,
                                                  AA_b);
+                                        if (m > 16) {
+                                            svr17(alpha_over_a,
+                                                  one_over_two_a,
+                                                  m,
+                                                  alpha_X,
+                                                  alpha_Y,
+                                                  alpha_Z,
+                                                  AA_b);
+                                            if (m > 17) {
+                                                svr18(alpha_over_a,
+                                                      one_over_two_a,
+                                                      m,
+                                                      alpha_X,
+                                                      alpha_Y,
+                                                      alpha_Z,
+                                                      AA_b);
+                                                if (m > 18) {
+                                                    svr19(alpha_over_a,
+                                                          one_over_two_a,
+                                                          m,
+                                                          alpha_X,
+                                                          alpha_Y,
+                                                          alpha_Z,
+                                                          AA_b);
+                                                    if (m > 19) {
+                                                        svr20(alpha_over_a,
+                                                              one_over_two_a,
+                                                              m,
+                                                              alpha_X,
+                                                              alpha_Y,
+                                                              alpha_Z,
+                                                              AA_b);
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -1255,7 +1471,43 @@ namespace niedoida {
                                                                0,
                                                                a_over_c,
                                                                one_over_two_c,
-                                                               AA_b);
+                                                               AA_b);  
+                                                    if (l_3 > 8) {
+                                                        underflow--;
+                                                        first_min =
+                                                            (l_1_min > underflow
+                                                             ? l_1_min -
+                                                             underflow
+                                                             : 0);
+                                                        first_max--;
+                                                        transfer_9(
+                                                            first_min,
+                                                            first_max,
+                                                            0,
+                                                            0,
+                                                            0,
+                                                            a_over_c,
+                                                            one_over_two_c,
+                                                            AA_b);  
+                                                        if (l_34 > 9) {
+                                                            underflow--;
+                                                            first_min =
+                                                                (l_1_min > underflow
+                                                                 ? l_1_min -
+                                                                 underflow
+                                                                 : 0);
+                                                            first_max--;
+                                                            transfer_10(
+                                                                first_min,
+                                                                first_max,
+                                                                0,
+                                                                0,
+                                                                0,
+                                                                a_over_c,
+                                                                one_over_two_c,
+                                                                AA_b);
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }

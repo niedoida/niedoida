@@ -1435,5 +1435,17 @@ namespace niedoida {
                     Z_AB * *(b + k * s_12 + 34 * s + 3);
             }
         }
+        
+        void hr_52(const double X_AB,
+                   const double Y_AB,
+                   const double Z_AB,
+                   const unsigned k_begin,
+                   const unsigned k_end,
+                   double* const b,
+                   const unsigned s_12,
+                   const unsigned s)
+        {
+            return;
+        }
     }
 }

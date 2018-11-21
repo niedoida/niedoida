@@ -1731,5 +1731,25 @@ namespace niedoida {
                 *(b + k * s_12 + 34 * s + 34) = *(b + k * s_12 + 164 * s + 0);
             }
         }
+
+        void pseudo_hr_tot_9(const unsigned l_2,
+                             const unsigned k_begin,
+                             const unsigned k_end,
+                             double* const b,
+                             const unsigned s_12,
+                             const unsigned s)
+        {
+            return;
+        }
+
+        void pseudo_hr_tot_10(const unsigned l_2,
+                             const unsigned k_begin,
+                             const unsigned k_end,
+                             double* const b,
+                             const unsigned s_12,
+                             const unsigned s)
+        {
+            return;
+        }
     }
 }

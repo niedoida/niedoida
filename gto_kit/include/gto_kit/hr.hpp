@@ -22,6 +22,9 @@ namespace niedoida {
         void hr_41(const double, const double, const double,
                    const unsigned, const unsigned, double* const, const unsigned, const unsigned);
 
+        void hr_51(const double, const double, const double,
+                   const unsigned, const unsigned, double* const, const unsigned, const unsigned);
+
         void hr_02(const double, const double, const double,
                    const unsigned, const unsigned, double* const, const unsigned, const unsigned);
 
@@ -35,6 +38,9 @@ namespace niedoida {
                    const unsigned, const unsigned, double* const, const unsigned, const unsigned);
 
         void hr_42(const double, const double, const double,
+                   const unsigned, const unsigned, double* const, const unsigned, const unsigned);
+
+        void hr_52(const double, const double, const double,
                    const unsigned, const unsigned, double* const, const unsigned, const unsigned);
 
         void hr_03(const double, const double, const double,
@@ -52,6 +58,9 @@ namespace niedoida {
         void hr_43(const double, const double, const double,
                    const unsigned, const unsigned, double* const, const unsigned, const unsigned);
 
+        void hr_53(const double, const double, const double,
+                   const unsigned, const unsigned, double* const, const unsigned, const unsigned);
+
         void hr_04(const double, const double, const double,
                    const unsigned, const unsigned, double* const, const unsigned, const unsigned);
 
@@ -66,6 +75,27 @@ namespace niedoida {
 
         void hr_44(const double, const double, const double,
                      const unsigned, const unsigned, double* const, const unsigned, const unsigned);
+
+        void hr_54(const double, const double, const double,
+                   const unsigned, const unsigned, double* const, const unsigned, const unsigned);
+
+        void hr_05(const double, const double, const double,
+                   const unsigned, const unsigned, double* const, const unsigned, const unsigned);
+
+        void hr_15(const double, const double, const double,
+                   const unsigned, const unsigned, double* const, const unsigned, const unsigned);
+
+        void hr_25(const double, const double, const double,
+                   const unsigned, const unsigned, double* const, const unsigned, const unsigned);
+
+        void hr_35(const double, const double, const double,
+                     const unsigned, const unsigned, double* const, const unsigned, const unsigned);
+
+        void hr_45(const double, const double, const double,
+                     const unsigned, const unsigned, double* const, const unsigned, const unsigned);
+
+        void hr_55(const double, const double, const double,
+                   const unsigned, const unsigned, double* const, const unsigned, const unsigned);
 
         void pseudo_hr_tot_1(const unsigned,
                              const unsigned, const unsigned, double* const, const unsigned, const unsigned);
@@ -89,6 +119,12 @@ namespace niedoida {
                              const unsigned, const unsigned, double* const, const unsigned, const unsigned);
 
         void pseudo_hr_tot_8(const unsigned,
+                             const unsigned, const unsigned, double* const, const unsigned, const unsigned);
+
+        void pseudo_hr_tot_9(const unsigned,
+                             const unsigned, const unsigned, double* const, const unsigned, const unsigned);
+
+        void pseudo_hr_tot_10(const unsigned,
                              const unsigned, const unsigned, double* const, const unsigned, const unsigned);
 
         void hhr_01(const double X_AB, const double Y_AB, const double Z_AB,

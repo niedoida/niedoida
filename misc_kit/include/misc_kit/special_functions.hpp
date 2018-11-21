@@ -35,7 +35,7 @@ namespace niedoida {
          */
         class FastBoys {
         public:
-            FastBoys(unsigned maxn = 16, double step = 0.01, double limit = 50); //up to g quartets
+            FastBoys(unsigned maxn = 20, double step = 0.01, double limit = 50); //up to h quartets
 
             double operator ()(const unsigned n, const double x) const;
             void generalized_boys(const unsigned n, const double x, 
@@ -114,6 +114,14 @@ namespace niedoida {
                     const double prf_exp_x = prefactor * (d0 - x * d1 + x2 * d2 - x3 * d3 + x4 * d4 - x5 * d5);
                     const double _2x = x + x;
                     switch(n) {
+                    case 20:
+                        *(A + 19) = (_2x * *(A + 20) + prf_exp_x) * (1.0 / 39.0);
+                    case 19:
+                        *(A + 18) = (_2x * *(A + 19) + prf_exp_x) * (1.0 / 37.0);
+                    case 18:
+                        *(A + 17) = (_2x * *(A + 18) + prf_exp_x) * (1.0 / 35.0);
+                    case 17:
+                        *(A + 16) = (_2x * *(A + 17) + prf_exp_x) * (1.0 / 33.0);
                     case 16:
                         *(A + 15) = (_2x * *(A + 16) + prf_exp_x) * (1.0 / 31.0);
                     case 15:

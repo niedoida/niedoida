@@ -628,16 +628,14 @@ namespace niedoida {
             _finite_symmetry_group = &find_finite_group(sf_elems);
             _symmetry_group = _finite_symmetry_group;
 
-            // fill in the remaining symmetry information
-            arma::mat sf_coords = _rotation_to_std_frame * coords;
             for (std::size_t i = 0; i < _finite_symmetry_group->rank(); ++i) {
                 _perm_rep.push_back(
                     create_perm_rep(_finite_symmetry_group->elements()[i],
-                                    sf_coords,
+                                    coords,
                                     tol_dist));
             }
 
-            symmetrize_coords(sf_coords);
+            symmetrize_coords(coords);
         }
 
         SymmetryInfo::SymmetryType SymmetryInfo::symmetry_type() const

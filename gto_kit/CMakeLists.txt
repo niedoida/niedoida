@@ -50,6 +50,7 @@ set (SRCS
     src/svr20.cpp
     src/transfer1.cpp
     src/transfer1_1.cpp
+    src/transfer1_2.cpp
     src/transfer2.cpp
     src/transfer2_1.cpp
     src/transfer2_2.cpp

@@ -7091,41 +7091,5 @@ namespace niedoida {
                 15 * one_over_two_q * *(b + 679 * OS1_S1 + 0);
             return;
         }
-        void transfer_16_1(const double prefactor_x,
-                          const double prefactor_y,
-                          const double prefactor_z,
-                          const double p_over_q,
-                          const double one_over_two_q,
-                        double* NIEDOIDA_RESTRICT b)
-        {
-            return;
-        }
-        void transfer_17_1(const double prefactor_x,
-                          const double prefactor_y,
-                          const double prefactor_z,
-                          const double p_over_q,
-                          const double one_over_two_q,
-                          double* NIEDOIDA_RESTRICT b)
-        {
-            return;
-        }
-        void transfer_18_1(const double prefactor_x,
-                          const double prefactor_y,
-                          const double prefactor_z,
-                          const double p_over_q,
-                          const double one_over_two_q,
-                          double* NIEDOIDA_RESTRICT b)
-        {
-            return;
-        }
-        void transfer_19_1(const double prefactor_x,
-                          const double prefactor_y,
-                          const double prefactor_z,
-                          const double p_over_q,
-                          const double one_over_two_q,
-                          double* NIEDOIDA_RESTRICT b)
-        {
-            return;
-        }
     }
 }

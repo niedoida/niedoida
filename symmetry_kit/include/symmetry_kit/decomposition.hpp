@@ -2,8 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef NIEDOIDA_SYMMETRY_KIT_CL_DECOMPOSITION_HPP
-#define NIEDOIDA_SYMMETRY_KIT_CL_DECOMPOSITION_HPP
+#ifndef NIEDOIDA_SYMMETRY_KIT_DECOMPOSITION_HPP
+#define NIEDOIDA_SYMMETRY_KIT_DECOMPOSITION_HPP
 
 #include <armadillo>
 #include <exception>
@@ -35,9 +35,6 @@ namespace niedoida {
             const char* what() const noexcept;
         };
 
-        // -------------------------- common_eig_gen
-        // ------------------------------------------------ Funkcja robioca
-        // jednoczesna diagonalizacje macierzy symetrycznych
         Decomposition common_eig_gen(const arma::cx_cube& Ms);
     }
 }

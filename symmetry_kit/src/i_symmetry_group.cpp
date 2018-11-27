@@ -2,36 +2,36 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "symmetry_kit/misc.hpp"
 #include "symmetry_kit/symmetry_group.hpp"
 
+#include <cmath>
+
 namespace {
-    std::vector<arma::mat> _generators()
-    {
-        std::vector<arma::mat> g;
-        g.push_back(niedoida::symmetry::make_cn_rep(5));
-        // FIXME: improve precision
-        g.push_back(niedoida::symmetry::make_axis_rep(
-            5, -0.894389, 0.00951793, 0.447188));
-        g.push_back(niedoida::symmetry::make_axis_rep(
-            5, 0.285377, 0.847633, -0.447301));
-        g.push_back(niedoida::symmetry::make_axis_rep(
-            5, -0.267359, 0.853537, 0.447206));
-        g.push_back(niedoida::symmetry::make_axis_rep(
-            5, 0.717956, -0.533354, 0.447295));
-        g.push_back(
-            niedoida::symmetry::make_axis_rep(5, 0.729081, 0.518035, 0.447304));
-        return g;
-    }
+    const double phi = (1 + std::sqrt(5)) / 2;
+
+    const std::vector<arma::mat> _generators = {
+        {
+            {
+                {-1.0,  0.0,  0.0},
+                { 0.0, -1.0,  0.0},
+                { 0.0,  0.0,  1.0}
+            },
+            {
+                {(phi-1) / 2,    -phi / 2,           0.5},
+                {    phi / 2,         0.5,   (phi-1) / 2},
+                {       -0.5, (phi-1) / 2,       phi / 2}
+            }
+        }
+    };
 }
 
 namespace niedoida {
     namespace symmetry {
-        ISymmetryGroup::ISymmetryGroup() : FiniteSymmetryGroup(_generators()) {}
+        ISymmetryGroup::ISymmetryGroup() : FiniteSymmetryGroup(_generators) {}
 
         ISymmetryGroup::ISymmetryGroup(
             const std::vector<arma::mat>& super_generators) :
-            FiniteSymmetryGroup(super_generators)
+            FiniteSymmetryGroup(_merge(_generators, super_generators))
         {
         }
 

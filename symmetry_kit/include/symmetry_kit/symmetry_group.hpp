@@ -46,6 +46,10 @@ namespace niedoida {
             const std::vector<std::string>& real_character_labels() const;
 
         protected:
+            static std::vector<arma::mat> _merge(const std::vector<arma::mat>&,
+                                                 const std::vector<arma::mat>&);
+
+        private:
             std::vector<arma::mat> _elements;
             arma::umat _cayley_table;
             bool _abelian;

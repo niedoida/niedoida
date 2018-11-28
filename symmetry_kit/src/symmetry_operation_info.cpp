@@ -4,7 +4,7 @@
 
 #include "symmetry_kit/symmetry_operation_info.hpp"
 
-#include "symmetry_kit/misc.hpp"
+#include "symmetry_kit/rotation_matrix.hpp"
 
 namespace {
     boost::rational<unsigned> farey(double x, unsigned n = 16)
@@ -99,9 +99,9 @@ namespace niedoida {
                                        ? proper_axis_fold(arma::trace(R))
                                        : improper_axis_fold(arma::trace(R));
                 if (f > 1) {
-                    const arma::mat A = make_axis_rep((_is_proper ? 1 : -1) *
-                                                          static_cast<int>(f),
-                                                      _direction);
+                    const arma::mat A = rotation_matrix((_is_proper ? 1 : -1) *
+                                                            static_cast<int>(f),
+                                                        _direction);
                     arma::mat B = A;
 
                     for (unsigned i = 1; i < 2 * f; ++i) {

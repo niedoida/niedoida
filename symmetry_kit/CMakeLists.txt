@@ -4,8 +4,7 @@
 
 set (HDRS
     include/symmetry_kit/decomposition.hpp
-    include/symmetry_kit/find_symmetry_utils.hpp
-    include/symmetry_kit/misc.hpp
+    include/symmetry_kit/rotation_matrix.hpp
     include/symmetry_kit/symmetry_group.hpp
     include/symmetry_kit/symmetry_info.hpp
     include/symmetry_kit/symmetry_kit.hpp
@@ -14,9 +13,6 @@ set (HDRS
     include/symmetry_kit/wigner_matrices.hpp)
 
 set (SRCS
-    src/align.cpp
-    src/canonic.cpp
-    src/center_of_mass.cpp
     src/ci_symmetry_group.cpp
     src/cn_symmetry_group.cpp
     src/cnh_symmetry_group.cpp
@@ -28,26 +24,15 @@ set (SRCS
     src/dnd_symmetry_group.cpp
     src/dnh_symmetry_group.cpp
     src/downgrade_infinite_symm_group.cpp
-    src/find_elements.cpp
-    src/find_finite_group.cpp
-    src/find_symmetry.cpp
-    src/find_symmetry_asymmetric_top.cpp
-    src/find_symmetry_atomic.cpp
-    src/find_symmetry_linear.cpp
-    src/find_symmetry_spheric_top.cpp
-    src/find_symmetry_symmetric_top.cpp
     src/finite_symmetry_group.cpp
     src/i_symmetry_group.cpp
     src/ih_symmetry_group.cpp
-    src/inertia.cpp
     src/is_subgroup.cpp
     src/largest_abelian_subgroup.cpp
-    src/misc.cpp
+    src/rotation_matrix.cpp
     src/symmetry_groups.cpp
     src/o_symmetry_group.cpp
     src/oh_symmetry_group.cpp
-    src/rotate.cpp
-    src/rotation_matrix.cpp
     src/sn_symmetry_group.cpp
     src/symmetrize_coords.cpp
     src/symmetry_info.cpp

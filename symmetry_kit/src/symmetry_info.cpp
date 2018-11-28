@@ -65,6 +65,8 @@ namespace {
 
         explicit fp_less(double eps) : eps(eps) {}
 
+
+
         bool operator()(double lhs, double rhs) const
         {
             if (std::abs(lhs - rhs) < eps)
@@ -72,7 +74,8 @@ namespace {
 
             return lhs < rhs;
         }
-        const double eps;
+        
+        double eps;
     };
 
     struct compare_vecs
@@ -86,7 +89,7 @@ namespace {
                 lhs.begin(), lhs.end(), rhs.begin(), rhs.end(), comp);
         }
 
-        const fp_less comp;
+        fp_less comp;
     };
 
     struct compare_axes : std::binary_function<const SymmetryElement&,
@@ -105,7 +108,7 @@ namespace {
             return vec_compare(lhs.dir, rhs.dir);
         }
 
-        const compare_vecs vec_compare;
+        compare_vecs vec_compare;
     };
 
     typedef std::set<SymmetryElement, compare_axes> AxisSet;

@@ -1,6 +1,4 @@
 #include "core_kit/mo_symmetry.hpp"
-
-#include "scf_kit/scf.hpp"
 #include "core_kit/ao_symmetry.hpp"
 #include "io_kit/io_kit.hpp"
 
@@ -8,21 +6,23 @@
 
 namespace {
     arma::uvec irrep_product(const arma::mat& rct,
-			   const arma::uvec& cc_sizes,
-			   const arma::uvec& ss,
-			   arma::uword mo) {
+                             const arma::uvec& cc_sizes,
+                             const arma::uvec& ss,
+                             arma::uword mo)
+    {
         arma::vec characters(rct.n_rows, arma::fill::zeros);
         for (unsigned i = 0; i < ss.n_rows; ++i)
-            for(unsigned g = 0; g < rct.n_cols; ++g) 
-	        characters(i) = rct(mo, g) * rct(i, g) * ss(i);
+            for (unsigned g = 0; g < rct.n_cols; ++g)
+                characters(i) = rct(mo, g) * rct(i, g) * ss(i);
 
         const unsigned order = arma::sum(cc_sizes);
         arma::uvec decomposed(rct.n_rows, arma::fill::zeros);
 
         for (unsigned row = 0; row < rct.n_rows; ++row) {
             double result = 0;
-	    for (unsigned i = 0; i < characters.n_cols; ++i)
-	        result += characters(i) * rct(row, i) * cc_sizes[i];
+
+            for (unsigned i = 0; i < characters.n_cols; ++i)
+                result += characters(i) * rct(row, i) * cc_sizes[i];
             result /= order;
             decomposed(row) = static_cast<unsigned>(std::round(result));
     }
@@ -32,9 +32,10 @@ namespace {
 
 namespace niedoida {
     namespace core {
-        arma::uvec mo_degeneracy(const core::System &system,
-                                 const arma::vec &energies,
-                                 const double eps) {
+        arma::uvec mo_degeneracy(const core::System& system,
+                                 const arma::vec& energies,
+                                 const double eps)
+        {
             const arma::vec delta = arma::diff(energies);
 
             arma::uvec degeneracy(1, arma::fill::ones);
@@ -48,10 +49,11 @@ namespace niedoida {
             return degeneracy;
         }
 
-        arma::mat symmetrize_mo(const core::System &system,
-                                const arma::vec &energies,
-                                const arma::mat &C,
-                                const double eps) {
+        arma::mat symmetrize_mo(const core::System& system,
+                                const arma::vec& energies,
+                                const arma::mat& C,
+                                const double eps)
+        {
             const arma::uvec degeneracy = mo_degeneracy(system, energies, eps);
 
             const arma::mat SC = *system.basis_set.overlap_matrix * C;
@@ -101,7 +103,8 @@ namespace niedoida {
             return D;
         }
 
-        arma::uvec mo_symmetry(const core::System &system, const arma::mat &C) {
+        arma::uvec mo_symmetry(const core::System& system, const arma::mat& C)
+        {
             const arma::cube P = ao_projections(system);
 
             const arma::mat SC = *system.basis_set.overlap_matrix * C;
@@ -126,8 +129,9 @@ namespace niedoida {
             return irreps;
         }
 
-        std::vector<std::string> mo_symmetry_labels(const core::System &system,
-                                                    const arma::mat &C) {
+        std::vector<std::string> mo_symmetry_labels(const core::System& system,
+                                                    const arma::mat& C)
+        {
             const arma::uvec irreps = mo_symmetry(system, C);
             std::vector<std::string> labels(irreps.size(), "?");
 
@@ -144,40 +148,39 @@ namespace niedoida {
             return labels;
         }
 
-
-      
         arma::uword state_symmetry(const arma::mat& rct,
-                                 const arma::uvec& cc_sizes,
-                                 const arma::vec& occ,
-                                 const arma::uvec& degeneracy,
-                                 const arma::uvec& mo_symmetry) {
+                                   const arma::uvec& cc_sizes,
+                                   const arma::vec& occ,
+                                   const arma::uvec& degeneracy,
+                                   const arma::uvec& mo_symmetry)
+        {
             arma::uvec ss(rct.n_rows, arma::fill::zeros);
             ss(0) = 1;
-        
+
             for (unsigned i = 0, j = 0; j < degeneracy.n_rows; i += degeneracy(j++)) {
                 const unsigned d = degeneracy(j);
                 const unsigned n =
-                    static_cast<unsigned>(std::round(arma::sum(occ.rows(i, i + d - 1))));
+                        static_cast<unsigned>(std::round(arma::sum(occ.rows(i, i + d - 1))));
 
-            if (n == 0)
-                break;
+                if (n == 0)
+                    break;
 
-            for (unsigned k = 0; k < d; ++k)
-                if (mo_symmetry(i + k) == -1)
-                    return -1;
-          
-            if (n == 2 * d)
+                for (unsigned k = 0; k < d; ++k)
+                    if (mo_symmetry(i + k) == arma::uword(-1))
+                        return -1;
+
+                if (n == 2 * d)
                     continue;
 
-            for (unsigned k = 0; k < d; ++k)
-                if (static_cast<unsigned>(std::round(occ(i + k))) != 2)
-                    ss = irrep_product(rct, cc_sizes, ss, mo_symmetry(i + k));
-        }
-        
-        if (arma::sum(ss) > 1)
-            return -1;
+                for (unsigned k = 0; k < d; ++k)
+                    if (static_cast<unsigned>(std::round(occ(i + k))) != 2)
+                        ss = irrep_product(rct, cc_sizes, ss, mo_symmetry(i + k));
+            }
 
-        return arma::uvec(arma::find(ss))(0);
+            if (arma::sum(ss) > 1)
+                return -1;
+
+            return arma::uvec(arma::find(ss))(0);
         }
     }
 }

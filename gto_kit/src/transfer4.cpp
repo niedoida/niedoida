@@ -4431,6 +4431,42 @@ namespace niedoida {
                               p_over_q,
                               one_over_two_q,
                               b);
+                if (first_max == 12)
+                    break;
+            case 13:
+                transfer_13_4(prefactor_x,
+                              prefactor_y,
+                              prefactor_z,
+                              p_over_q,
+                              one_over_two_q,
+                              b);
+                if (first_max == 13)
+                    break;
+            case 14:
+                transfer_14_4(prefactor_x,
+                              prefactor_y,
+                              prefactor_z,
+                              p_over_q,
+                              one_over_two_q,
+                              b);
+                if (first_max == 14)
+                    break;
+            case 15:
+                transfer_15_4(prefactor_x,
+                              prefactor_y,
+                              prefactor_z,
+                              p_over_q,
+                              one_over_two_q,
+                              b);
+                if (first_max == 15)
+                    break;
+            case 16:
+                transfer_16_4(prefactor_x,
+                              prefactor_y,
+                              prefactor_z,
+                              p_over_q,
+                              one_over_two_q,
+                              b);
             }
             return;
         }

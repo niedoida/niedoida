@@ -32,6 +32,26 @@ namespace niedoida {
                      const double, const double, const double,
                      double* NIEDOIDA_RESTRICT);
 
+        void vr17(const double, const double, const unsigned,
+                  const double, const double, const double,
+                  const double, const double, const double,
+                  double* NIEDOIDA_RESTRICT);
+
+        void vr18(const double, const double, const unsigned,
+                  const double, const double, const double,
+                  const double, const double, const double,
+                  double* NIEDOIDA_RESTRICT);
+
+        void vr19(const double, const double, const unsigned,
+                  const double, const double, const double,
+                  const double, const double, const double,
+                  double* NIEDOIDA_RESTRICT);
+
+        void vr20(const double, const double, const unsigned,
+                  const double, const double, const double,
+                  const double, const double, const double,
+                  double* NIEDOIDA_RESTRICT);
+    
         void svr1_4(const double, const double, const unsigned,
                     const double, const double, const double,
                     double* NIEDOIDA_RESTRICT);
@@ -51,6 +71,221 @@ namespace niedoida {
         void svr15_16(const double, const double, const unsigned,
                       const double, const double, const double,
                       double* NIEDOIDA_RESTRICT);
+
+        void svr17(const double, const double, const unsigned,
+                   const double, const double, const double,
+                   double* NIEDOIDA_RESTRICT);
+
+        void svr18(const double, const double, const unsigned,
+                   const double, const double, const double,
+                   double* NIEDOIDA_RESTRICT);
+
+        void svr19(const double, const double, const unsigned,
+                   const double, const double, const double,
+                   double* NIEDOIDA_RESTRICT);
+
+        void svr20(const double, const double, const unsigned,
+                   const double, const double, const double,
+                   double* NIEDOIDA_RESTRICT);
+
+        void hvr1(const double X_PA, const double Y_PA, const unsigned Z_PA,
+                  const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                  const double one_over_two_p, const double wab,
+                  double* NIEDOIDA_RESTRICT A);
+
+        void hsvr1(const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                   const double one_over_two_p, const double wab,
+                   double* NIEDOIDA_RESTRICT A);
+
+        void hvr2(const double X_PA, const double Y_PA, const unsigned Z_PA,
+                  const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                  const double one_over_two_p, const double wab,
+                  double* NIEDOIDA_RESTRICT A);
+
+        void hsvr2(const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                   const double one_over_two_p, const double wab,
+                   double* NIEDOIDA_RESTRICT A);
+
+        void hvr3(const double X_PA, const double Y_PA, const unsigned Z_PA,
+                  const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                  const double one_over_two_p, const double wab,
+                  double* NIEDOIDA_RESTRICT A);
+
+        void hsvr3(const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                   const double one_over_two_p, const double wab,
+                   double* NIEDOIDA_RESTRICT A);
+
+        void hvr4(const double X_PA, const double Y_PA, const unsigned Z_PA,
+                  const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                  const double one_over_two_p, const double wab,
+                  double* NIEDOIDA_RESTRICT A);
+
+        void hsvr4(const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                   const double one_over_two_p, const double wab,
+                   double* NIEDOIDA_RESTRICT A);
+
+        void hvr5(const double X_PA, const double Y_PA, const unsigned Z_PA,
+                  const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                  const double one_over_two_p, const double wab,
+                  double* NIEDOIDA_RESTRICT A);
+
+        void hsvr5(const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                   const double one_over_two_p, const double wab,
+                   double* NIEDOIDA_RESTRICT A);
+
+        void hvr6(const double X_PA, const double Y_PA, const unsigned Z_PA,
+                  const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                  const double one_over_two_p, const double wab,
+                  double* NIEDOIDA_RESTRICT A);
+
+        void hsvr6(const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                   const double one_over_two_p, const double wab,
+                   double* NIEDOIDA_RESTRICT A);
+
+        void hvr7(const double X_PA, const double Y_PA, const unsigned Z_PA,
+                  const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                  const double one_over_two_p, const double wab,
+                  double* NIEDOIDA_RESTRICT A);
+
+        void hsvr7(const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                   const double one_over_two_p, const double wab,
+                   double* NIEDOIDA_RESTRICT A);
+
+        void hvr8(const double X_PA, const double Y_PA, const unsigned Z_PA,
+                  const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                  const double one_over_two_p, const double wab,
+                  double* NIEDOIDA_RESTRICT A);
+
+        void hsvr8(const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                   const double one_over_two_p, const double wab,
+                   double* NIEDOIDA_RESTRICT A);
+
+        void hvr7(const double X_PA, const double Y_PA, const unsigned Z_PA,
+                  const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                  const double one_over_two_p, const double wab,
+                  double* NIEDOIDA_RESTRICT A);
+
+        void hsvr7(const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                   const double one_over_two_p, const double wab,
+                   double* NIEDOIDA_RESTRICT A);
+
+        void hvr8(const double X_PA, const double Y_PA, const unsigned Z_PA,
+                  const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                  const double one_over_two_p, const double wab,
+                  double* NIEDOIDA_RESTRICT A);
+
+        void hsvr8(const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                   const double one_over_two_p, const double wab,
+                   double* NIEDOIDA_RESTRICT A);
+
+        void hvr9(const double X_PA, const double Y_PA, const unsigned Z_PA,
+                  const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                  const double one_over_two_p, const double wab,
+                  double* NIEDOIDA_RESTRICT A);
+
+        void hsvr9(const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                   const double one_over_two_p, const double wab,
+                   double* NIEDOIDA_RESTRICT A);
+
+        void hvr10(const double X_PA, const double Y_PA, const unsigned Z_PA,
+                  const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                  const double one_over_two_p, const double wab,
+                  double* NIEDOIDA_RESTRICT A);
+
+        void hsvr10(const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                   const double one_over_two_p, const double wab,
+                   double* NIEDOIDA_RESTRICT A);
+
+        void hvr11(const double X_PA, const double Y_PA, const unsigned Z_PA,
+                  const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                  const double one_over_two_p, const double wab,
+                  double* NIEDOIDA_RESTRICT A);
+
+        void hsvr11(const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                   const double one_over_two_p, const double wab,
+                   double* NIEDOIDA_RESTRICT A);
+
+        void hvr12(const double X_PA, const double Y_PA, const unsigned Z_PA,
+                  const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                  const double one_over_two_p, const double wab,
+                  double* NIEDOIDA_RESTRICT A);
+
+        void hsvr12(const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                   const double one_over_two_p, const double wab,
+                   double* NIEDOIDA_RESTRICT A);
+
+        void hvr13(const double X_PA, const double Y_PA, const unsigned Z_PA,
+                  const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                  const double one_over_two_p, const double wab,
+                  double* NIEDOIDA_RESTRICT A);
+
+        void hsvr13(const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                   const double one_over_two_p, const double wab,
+                   double* NIEDOIDA_RESTRICT A);
+
+        void hvr14(const double X_PA, const double Y_PA, const unsigned Z_PA,
+                  const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                  const double one_over_two_p, const double wab,
+                  double* NIEDOIDA_RESTRICT A);
+
+        void hsvr14(const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                   const double one_over_two_p, const double wab,
+                   double* NIEDOIDA_RESTRICT A);
+
+        void hvr15(const double X_PA, const double Y_PA, const unsigned Z_PA,
+                  const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                  const double one_over_two_p, const double wab,
+                  double* NIEDOIDA_RESTRICT A);
+
+        void hsvr15(const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                   const double one_over_two_p, const double wab,
+                   double* NIEDOIDA_RESTRICT A);
+
+        void hvr16(const double X_PA, const double Y_PA, const unsigned Z_PA,
+                  const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                  const double one_over_two_p, const double wab,
+                  double* NIEDOIDA_RESTRICT A);
+
+        void hsvr16(const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                   const double one_over_two_p, const double wab,
+                   double* NIEDOIDA_RESTRICT A);
+
+        void hvr17(const double X_PA, const double Y_PA, const unsigned Z_PA,
+                  const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                  const double one_over_two_p, const double wab,
+                  double* NIEDOIDA_RESTRICT A);
+
+        void hsvr17(const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                   const double one_over_two_p, const double wab,
+                   double* NIEDOIDA_RESTRICT A);
+
+        void hvr18(const double X_PA, const double Y_PA, const unsigned Z_PA,
+                  const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                  const double one_over_two_p, const double wab,
+                  double* NIEDOIDA_RESTRICT A);
+
+        void hsvr18(const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                   const double one_over_two_p, const double wab,
+                   double* NIEDOIDA_RESTRICT A);
+
+        void hvr19(const double X_PA, const double Y_PA, const unsigned Z_PA,
+                  const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                  const double one_over_two_p, const double wab,
+                  double* NIEDOIDA_RESTRICT A);
+
+        void hsvr19(const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                   const double one_over_two_p, const double wab,
+                   double* NIEDOIDA_RESTRICT A);
+
+        void hvr20(const double X_PA, const double Y_PA, const unsigned Z_PA,
+                  const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                  const double one_over_two_p, const double wab,
+                  double* NIEDOIDA_RESTRICT A);
+
+        void hsvr20(const double X_PQ, const double Y_PQ, const unsigned Z_PQ,
+                   const double one_over_two_p, const double wab,
+                   double* NIEDOIDA_RESTRICT A);
+
     }
 }
 

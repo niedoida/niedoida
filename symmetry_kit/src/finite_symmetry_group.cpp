@@ -729,5 +729,14 @@ namespace niedoida {
         {
             return _real_character_labels;
         }
+
+        std::vector<arma::mat>
+        FiniteSymmetryGroup::_merge(const std::vector<arma::mat>& v1,
+                                    const std::vector<arma::mat>& v2)
+        {
+            std::vector<arma::mat> v(v1);
+            std::copy(v2.begin(), v2.end(), std::back_inserter(v));
+            return v;
+        }
     }
 }

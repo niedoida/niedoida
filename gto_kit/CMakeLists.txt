@@ -23,10 +23,13 @@ set (SRCS
     src/hr3_1.cpp
     src/hr3_2.cpp
     src/hr3_3.cpp
+    src/hr3_4.cpp
     src/hr4_1.cpp
     src/hr4_2.cpp
     src/hr4_3.cpp
     src/hr4_4.cpp
+    src/hr4_5.cpp
+    src/hr5.cpp
     src/os1_efield.cpp
     src/os1_implementation.cpp
     src/os1_integral_engine_factory.cpp
@@ -41,40 +44,148 @@ set (SRCS
     src/svr1_4.cpp
     src/svr5_8.cpp
     src/svr9_12.cpp
+    src/svr17.cpp
+    src/svr18.cpp
+    src/svr19.cpp
+    src/svr20.cpp
     src/transfer1.cpp
     src/transfer1_1.cpp
     src/transfer2.cpp
     src/transfer2_1.cpp
+    src/transfer2_2.cpp
     src/transfer3.cpp
     src/transfer3_1.cpp
+    src/transfer3_2.cpp
     src/transfer4.cpp
     src/transfer4_1.cpp
     src/transfer4_2.cpp
     src/transfer4_3.cpp
+    src/transfer4_4.cpp
     src/transfer5.cpp
     src/transfer5_1.cpp
     src/transfer5_2.cpp
     src/transfer5_3.cpp
+    src/transfer5_4.cpp
     src/transfer6.cpp
     src/transfer6_1.cpp
     src/transfer6_2.cpp
     src/transfer6_3.cpp
     src/transfer6_4.cpp
+    src/transfer6_5.cpp
     src/transfer7.cpp
     src/transfer7_1.cpp
     src/transfer7_2.cpp
     src/transfer7_3.cpp
     src/transfer7_4.cpp
+    src/transfer7_5.cpp
     src/transfer8.cpp
     src/transfer8_1.cpp
     src/transfer8_2.cpp
     src/transfer8_3.cpp
     src/transfer8_4.cpp
+    src/transfer8_5.cpp
+    src/transfer9.cpp
+    src/transfer9_1.cpp
+    src/transfer10.cpp
+    src/transfer10_1.cpp
+    src/htransfer1.cpp
+    src/htransfer2.cpp
+    src/htransfer3.cpp
+    src/htransfer4.cpp
+    src/htransfer5.cpp
+    src/htransfer6.cpp
+    src/htransfer7.cpp
+    src/htransfer8.cpp
+    src/htransfer9.cpp
+    src/htransfer10.cpp
     src/vr13_14.cpp
     src/vr15_16.cpp
     src/vr1_4.cpp
     src/vr5_8.cpp
     src/vr9_12.cpp
+    src/vr17.cpp
+    src/vr18.cpp
+    src/vr19.cpp
+    src/vr20.cpp
+    src/hvr1.cpp
+    src/hvr2.cpp
+    src/hvr3.cpp
+    src/hvr4.cpp
+    src/hvr5.cpp
+    src/hvr6.cpp
+    src/hvr7.cpp
+    src/hvr8.cpp
+    src/hvr9.cpp
+    src/hvr10.cpp
+    src/hvr11.cpp
+    src/hvr12.cpp
+    src/hvr13.cpp
+    src/hvr14.cpp
+    src/hvr15.cpp
+    src/hvr16.cpp
+    src/hvr17.cpp
+    src/hvr18.cpp
+    src/hvr19.cpp
+    src/hvr20.cpp
+    src/hsvr1.cpp
+    src/hsvr2.cpp
+    src/hsvr3.cpp
+    src/hsvr4.cpp
+    src/hsvr5.cpp
+    src/hsvr6.cpp
+    src/hsvr7.cpp
+    src/hsvr8.cpp
+    src/hsvr9.cpp
+    src/hsvr10.cpp
+    src/hsvr11.cpp
+    src/hsvr12.cpp
+    src/hsvr13.cpp
+    src/hsvr14.cpp
+    src/hsvr15.cpp
+    src/hsvr16.cpp
+    src/hsvr17.cpp
+    src/hsvr18.cpp
+    src/hsvr19.cpp
+    src/hsvr20.cpp
+    src/hhr01.cpp
+    src/hhr02.cpp
+    src/hhr03.cpp
+    src/hhr04.cpp
+    src/hhr05.cpp
+    src/hhr11.cpp
+    src/hhr12.cpp
+    src/hhr13.cpp
+    src/hhr14.cpp
+    src/hhr15.cpp
+    src/hhr21.cpp
+    src/hhr22.cpp
+    src/hhr23.cpp
+    src/hhr24.cpp
+    src/hhr25.cpp
+    src/hhr31.cpp
+    src/hhr32.cpp
+    src/hhr33.cpp
+    src/hhr34.cpp
+    src/hhr35.cpp
+    src/hhr41.cpp
+    src/hhr42.cpp
+    src/hhr43.cpp
+    src/hhr44.cpp
+    src/hhr45.cpp
+    src/hhr51.cpp
+    src/hhr52.cpp
+    src/hhr53.cpp
+    src/hhr54.cpp
+    src/hhr55.cpp
+    src/hhr61.cpp
+    src/hhr62.cpp
+    src/hhr63.cpp
+    src/hhr64.cpp
+    src/hhr65.cpp
+    src/hhr71.cpp
+    src/hhr72.cpp
+    src/hhr73.cpp
+    src/hhr74.cpp
     src/xc_integral_engine.cpp
     src/xc_integral_engine_ks_matrix_core_gradient.cpp
     src/xc_integral_engine_factory.cpp

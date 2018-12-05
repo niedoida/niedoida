@@ -7,26 +7,26 @@
 #include <boost/algorithm/string.hpp>
 
 namespace {
-  arma::uvec irrep_product(const arma::mat& rct,
+    arma::uvec irrep_product(const arma::mat& rct,
 			   const arma::uvec& cc_sizes,
 			   const arma::uvec& ss,
 			   arma::uword mo) {
-    arma::vec characters(rct.n_rows, arma::fill::zeros);
-    for (unsigned i = 0; i < ss.n_rows; ++i)
-        for(unsigned g = 0; g < rct.n_cols; ++g) 
-	  characters(i) = rct(mo, g) * rct(i, g) * ss(i);
+        arma::vec characters(rct.n_rows, arma::fill::zeros);
+        for (unsigned i = 0; i < ss.n_rows; ++i)
+            for(unsigned g = 0; g < rct.n_cols; ++g) 
+	        characters(i) = rct(mo, g) * rct(i, g) * ss(i);
 
-    const unsigned order = arma::sum(cc_sizes);
-    arma::uvec decomposed(rct.n_rows, arma::fill::zeros);
+        const unsigned order = arma::sum(cc_sizes);
+        arma::uvec decomposed(rct.n_rows, arma::fill::zeros);
 
-    for (unsigned row = 0; row < rct.n_rows; ++row) {
-        double result = 0;
-	for (unsigned i = 0; i < characters.n_cols; ++i)
-	    result += characters(i) * rct(row, i) * cc_sizes[i];
-        result /= order;
-        decomposed(row) = static_cast<unsigned>(std::round(result));
+        for (unsigned row = 0; row < rct.n_rows; ++row) {
+            double result = 0;
+	    for (unsigned i = 0; i < characters.n_cols; ++i)
+	        result += characters(i) * rct(row, i) * cc_sizes[i];
+            result /= order;
+            decomposed(row) = static_cast<unsigned>(std::round(result));
     }
-    return decomposed;
+        return decomposed;
   }
 }
 
@@ -147,17 +147,17 @@ namespace niedoida {
 
       
         arma::uword state_symmetry(const arma::mat& rct,
-				 const arma::uvec& cc_sizes,
-				 const arma::vec& occ,
-				 const arma::uvec& degeneracy,
-				 const arma::uvec& mo_symmetry) {
+                                 const arma::uvec& cc_sizes,
+                                 const arma::vec& occ,
+                                 const arma::uvec& degeneracy,
+                                 const arma::uvec& mo_symmetry) {
             arma::uvec ss(rct.n_rows, arma::fill::zeros);
             ss(0) = 1;
-	
-	    for (unsigned i = 0, j = 0; j < degeneracy.n_rows; i += degeneracy(j++)) {
-	        const unsigned d = degeneracy(j);
-	        const unsigned n =
-		    static_cast<unsigned>(std::round(arma::sum(occ.rows(i, i + d - 1))));
+        
+            for (unsigned i = 0, j = 0; j < degeneracy.n_rows; i += degeneracy(j++)) {
+                const unsigned d = degeneracy(j);
+                const unsigned n =
+                    static_cast<unsigned>(std::round(arma::sum(occ.rows(i, i + d - 1))));
 
             if (n == 0)
                 break;
@@ -165,15 +165,15 @@ namespace niedoida {
             for (unsigned k = 0; k < d; ++k)
                 if (mo_symmetry(i + k) == -1)
                     return -1;
-	  
+          
             if (n == 2 * d)
                     continue;
 
             for (unsigned k = 0; k < d; ++k)
                 if (static_cast<unsigned>(std::round(occ(i + k))) != 2)
                     ss = irrep_product(rct, cc_sizes, ss, mo_symmetry(i + k));
-	}
-	
+        }
+        
         if (arma::sum(ss) > 1)
             return -1;
 

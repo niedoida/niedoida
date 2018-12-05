@@ -25,9 +25,10 @@ namespace {
                 result += characters(i) * rct(row, i) * cc_sizes[i];
             result /= order;
             decomposed(row) = static_cast<unsigned>(std::round(result));
-    }
+        }
+
         return decomposed;
-  }
+    }
 }
 
 namespace niedoida {
@@ -44,7 +45,7 @@ namespace niedoida {
                     degeneracy.tail(1) += 1;
                 else
                     degeneracy =
-                            arma::join_cols(degeneracy, arma::ones<arma::uvec>(1));
+                        arma::join_cols(degeneracy, arma::ones<arma::uvec>(1));
 
             return degeneracy;
         }
@@ -69,14 +70,13 @@ namespace niedoida {
                 const unsigned da = degeneracy(j);
                 for (unsigned nu = 0; nu < P.n_slices; ++nu) {
                     const arma::mat prj =
-                            projected_C.slice(nu).cols(i, i + da - 1).t() *
-                            SC.cols(i, i + da - 1);
+                        projected_C.slice(nu).cols(i, i + da - 1).t() *
+                        SC.cols(i, i + da - 1);
 
                     if (arma::norm(prj) < eps)
                         continue;
 
-                    if (arma::norm(prj - arma::eye<arma::mat>(
-                            arma::size(prj))) < eps) {
+                    if (arma::norm(prj - arma::eye<arma::mat>(arma::size(prj))) < eps) {
                         D = arma::join_rows(D, C.cols(i, i + da - 1));
                         continue;
                     }
@@ -87,15 +87,15 @@ namespace niedoida {
 
                     D = arma::join_rows(D,
                                         C.cols(i, i + da - 1) *
-                                        evec.cols(arma::find(eval > 0.99)));
+                                            evec.cols(arma::find(eval > 0.99)));
                 }
             }
 
             if (arma::size(C) != arma::size(D)) {
                 io::Log::instance().write(
-                        io::Logger::TERSE,
-                        "warning",
-                        "failed to symmetrize molecular orbitals");
+                    io::Logger::TERSE,
+                    "warning",
+                    "failed to symmetrize molecular orbitals");
 
                 D = C;
             }
@@ -138,11 +138,11 @@ namespace niedoida {
             for (unsigned i = 0; i < C.n_cols; ++i) {
                 if (irreps(i) != arma::uword(-1))
                     labels[i] = system.symmetry_info->finite_symmetry_group()
-                            .real_character_labels()[irreps(i)];
+                                    .real_character_labels()[irreps(i)];
                 labels[i] = std::to_string(i + 1) + " - " + labels[i];
             }
 
-            for (std::string &l : labels)
+            for (std::string& l : labels)
                 boost::algorithm::to_lower(l);
 
             return labels;

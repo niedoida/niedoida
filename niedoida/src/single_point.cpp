@@ -201,9 +201,9 @@ namespace niedoida {
 
                 for (unsigned i = 0; i < cc_sizes.n_rows; ++i)
                   cc_sizes(i) = cc[i].size();
-        
+
                 const arma::uvec mo_sym = core::mo_symmetry(*system, C_alpha);
-                        
+
                 const arma::uword ss =
                   core::state_symmetry(fsg.real_character_table(),
                                        cc_sizes,

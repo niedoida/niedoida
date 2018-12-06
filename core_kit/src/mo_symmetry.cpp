@@ -24,6 +24,7 @@ namespace {
 
         for (unsigned row = 0; row < rct.n_rows; ++row) {
             double result = 0;
+
             for (unsigned g = 0; g < rct.n_cols; ++g)
                 result += characters(g) * rct(row, g) * cc_sizes(g);
             result /= order;
@@ -175,12 +176,9 @@ namespace niedoida {
                 if (n == 2 * d)
                     continue;
 
-                for (unsigned k = 0; k < d; ++k){
-                    unsigned liczba = static_cast<unsigned>(std::round(occ(i + k)));
-
-                    if (liczba != 2)
+                for (unsigned k = 0; k < d; ++k)
+                    if (static_cast<unsigned>(std::round(occ(i + k))) != 2)
                         ss = irrep_product(rct, cc_sizes, ss, mo_symmetry(i + k));
-                }
             }
 
             if (arma::sum(ss) > 1)

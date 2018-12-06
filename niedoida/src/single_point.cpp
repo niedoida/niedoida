@@ -185,6 +185,40 @@ namespace niedoida {
                 const std::vector<std::string> mo_labels_beta =
                     core::mo_symmetry_labels(*system, C_beta);
 
+                const symmetry::FiniteSymmetryGroup &fsg =
+                   system->symmetry_info->finite_symmetry_group();
+
+                const arma::vec occ =
+                    scf->mo_occupations(core::SPIN_ALPHA) +
+                    scf->mo_occupations(core::SPIN_BETA);
+
+                const arma::uvec degeneracy =
+                    core::mo_degeneracy(*system,
+                                        scf->mo_energies(core::SPIN_ALPHA));
+
+                const std::vector<std::vector<unsigned>>& cc = fsg.conjugacy_classes();
+                arma::uvec cc_sizes(cc.size(), arma::fill::zeros);
+
+                for (unsigned i = 0; i < cc_sizes.n_rows; ++i)
+                  cc_sizes(i) = cc[i].size();
+
+                const arma::uvec mo_sym = core::mo_symmetry(*system, C_alpha);
+
+                const arma::uword ss =
+                  core::state_symmetry(fsg.real_character_table(),
+                                       cc_sizes,
+                                       occ,
+                                       degeneracy,
+                                       mo_sym);
+
+                const std::string ss_label = (ss == arma::uword(-1))
+                  ? "?symmetry"
+                  : fsg.real_character_labels()[ss];
+
+                io::Log::instance().write(io::Logger::NORMAL,
+                                          "ground state symmetry",
+                                          ss_label);
+
                 io::Logger::VectorFormatInfo fi =
                     io::Logger::DEFAULT_VECTOR_FORMAT;
                 fi.labels = mo_labels_alpha;
@@ -236,6 +270,8 @@ namespace niedoida {
                         "beta_mo_coefficients",
                         scf->mo_coefficients(core::SPIN_BETA),
                         mfi_beta);
+
+
 
                 print_population_analysis(input_data,
                                           system,

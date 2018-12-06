@@ -54,6 +54,16 @@ for:
     - set MSMPI_INC=C:\Program Files (x86)\Microsoft SDKs\MPI\Include\
     - set MSMPI_LIB32=C:\Program Files (x86)\Microsoft SDKs\MPI\Lib\x86\
     - set MSMPI_LIB64=C:\Program Files (x86)\Microsoft SDKs\MPI\Lib\x64\
+    - appveyor DownloadFile https://download.microsoft.com/download/4/A/6/4A6AAED8-200C-457C-AB86-37505DE4C90D/msmpisetup.exe
+    - msmpisetup -unattend -full -verbose
+    - set PATH=c:\Python37-x64;c:\Python37-x64\Scripts;%PATH%
+    - pip install numpy
+    - appveyor DownloadFile https://github.com/grzegorzmazur/cclib/archive/niedoida.zip
+    - 7z x niedoida.zip
+    - cd cclib-niedoida
+    - python .\setup.py install --user
+    - cd ..
+    - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
     build_script:
     - 7z x prebuilt_external_packages/appveyor-VS2017.tar.xz
     - 7z x appveyor-VS2017.tar
@@ -61,3 +71,9 @@ for:
     - cd build
     - cmake -DCMAKE_GENERATOR_PLATFORM=x64 ..
     - cmake --build . --target niedoida --config Release
+    - cd ..
+    test_script:
+    - copy build\niedoida\Release\niedoida.exe tests\niedoida
+    - copy external_packages\bin\*.dll tests\niedoida
+    - cd tests\niedoida
+    - python run_all_methods_tests.py

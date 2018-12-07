@@ -70,7 +70,7 @@ for:
     - mkdir build
     - cd build
     - cmake -DCMAKE_GENERATOR_PLATFORM=x64 ..
-    - cmake --build . --target niedoida --config Release
+    - cmake --build . --target niedoida --config Release --parallel %NUMBER_OF_PROCESSORS%
     - cd ..
     test_script:
     - copy build\niedoida\Release\niedoida.exe tests\niedoida

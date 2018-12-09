@@ -92,7 +92,7 @@ namespace niedoida {
             }
 
             std::unique_ptr<core::FockMatrixGenerator> m_fock_matrix_generator =
-                std::move(fm_gen->make(system));
+                fm_gen->make(system);
 
             std::vector<arma::mat> dS_x_occ_occ;
             std::vector<arma::mat> dS_y_occ_occ;

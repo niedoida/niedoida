@@ -82,7 +82,7 @@ namespace niedoida {
                 _C_virt * trans(ci_coeffs) * ci_coeffs * trans(_C_virt) -
                 _C_occ * ci_coeffs * trans(ci_coeffs) * trans(_C_occ);
             std::unique_ptr<core::FockMatrixGenerator> m_fock_matrix_generator =
-                std::move(fm_gen->make(system));
+                fm_gen->make(system);
             m_fock_matrix_generator->set_density_matrix(P, P);
             arma::mat F_temp =
                 m_fock_matrix_generator->coulomb_matrix() +
@@ -213,7 +213,7 @@ namespace niedoida {
             arma::vec eps_virt_vec = eps.subvec(n_occ_alpha, n_orbitals - 1);
 
             std::unique_ptr<core::FockMatrixGenerator> m_fock_matrix_generator =
-                std::move(fm_gen->make(system));
+                fm_gen->make(system);
 
             for (std::size_t un_it = 0; un_it < no_un; un_it++) {
                 std::size_t n = atoms[un_it];
@@ -352,7 +352,7 @@ namespace niedoida {
             arma::mat C_t = trans(C);
 
             std::unique_ptr<core::FockMatrixGenerator> m_fock_matrix_generator =
-                std::move(fm_gen->make(system));
+                fm_gen->make(system);
 
             for (std::size_t un_it = 0; un_it < no_un; un_it++) {
                 std::size_t n = atoms[un_it];

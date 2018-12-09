@@ -41,7 +41,7 @@ namespace niedoida {
         {
             std::unique_ptr<Logger> p(new SimpleLogger(_os, s));
             p->set_verbosity(_vl);
-            return std::move(p);
+            return p;
         }
 
         Logger::VerbosityLevel SimpleLogger::set_verbosity(VerbosityLevel vl)

@@ -25,7 +25,7 @@ namespace niedoida {
         std::unique_ptr<Logger> Log::reset(std::unique_ptr<Logger> l)
         {
             _instance.swap(l);
-            return std::move(l);
+            return l;
         }
 
         std::unique_ptr<Logger> Log::_instance;

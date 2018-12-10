@@ -90,7 +90,7 @@ namespace niedoida {
             arma::vec eps_virt_vec = eps.subvec(n_occ_alpha, n_orbitals - 1);
 
             std::unique_ptr<FockMatrixGenerator> m_fock_matrix_generator =
-                std::move(fm_gen->make(system));
+                fm_gen->make(system);
 
             const std::size_t lumo_idx = system->no_electrons(core::SPIN_ALPHA);
             arma::mat not_fake_P = scf::density_matrix(C, lumo_idx);

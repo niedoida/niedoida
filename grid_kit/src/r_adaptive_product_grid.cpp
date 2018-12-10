@@ -135,17 +135,6 @@ namespace {
             return _alpha * _m * std::pow((-std::log(x)), _m - 1.0) / x;
     }
 
-    inline unsigned gcd(unsigned a, unsigned b)
-    {
-        do {
-            const unsigned t = b;
-            b = a % b;
-            a = t;
-        } while (b);
-
-        return a;
-    }
-
     typedef std::map<boost::rational<unsigned>, std::pair<double, unsigned>>
         Cache;
 
@@ -269,8 +258,6 @@ namespace {
 
         unsigned m = 0;
         unsigned mm = 0;
-
-        const double d = (x2 - x1) / 2;
 
         Cache cache;
 

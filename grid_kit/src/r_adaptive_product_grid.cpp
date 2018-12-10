@@ -259,8 +259,6 @@ namespace {
         unsigned m = 0;
         unsigned mm = 0;
 
-        const double d = (x2 - x1) / 2;
-
         Cache cache;
 
         double prev_q;

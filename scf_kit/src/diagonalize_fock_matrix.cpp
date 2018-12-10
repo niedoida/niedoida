@@ -34,11 +34,9 @@ namespace niedoida {
         void StdDiagonalizeFockMatrix::
         operator()(const arma::mat& F, arma::mat& C, arma::vec& epsilons) const
         {
-            const std::size_t n = F.n_rows;
-
-            assert(F.n_cols == n);
-            assert(_S_12.n_rows == n);
-            assert(_S_12.n_cols == n);
+            assert(F.n_cols == F.n_rows);
+            assert(_S_12.n_rows == F.n_rows);
+            assert(_S_12.n_cols == F.n_rows);
 
             const arma::mat F_ = _S_12 * F * _S_12;
 

@@ -42,7 +42,9 @@ for:
 
         cd ..
     test_script:
-    - sh: ./run_all_niedoida_methods_tests build/niedoida/niedoida
+    - sh: cp build/niedoida/niedoida tests/niedoida
+    - sh: cd tests/niedoida
+    - sh: python3 run_tests.py -k test -g methods ./niedoida
 -
     matrix:
         only:
@@ -76,4 +78,4 @@ for:
     - copy build\niedoida\Release\niedoida.exe tests\niedoida
     - copy external_packages\bin\*.dll tests\niedoida
     - cd tests\niedoida
-    - python run_all_methods_tests.py
+    - python run_tests.py -k test -g methods niedoida.exe

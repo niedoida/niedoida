@@ -16,6 +16,8 @@
 #include "td_kit/tdks_dressed_tda.hpp"
 #include "td_kit/tdks_tda.hpp"
 
+#include "core_kit/mo_symmetry.hpp"
+
 namespace {
     using namespace niedoida;
 
@@ -23,7 +25,11 @@ namespace {
                                unsigned no_occ,
                                unsigned no_virt,
                                unsigned no_frozen,
-                               unsigned no_deleted)
+                               unsigned no_deleted,
+                               const core::System& system,
+                               const arma::uvec& degeneracy,
+                               const arma::uvec& cc_sizes,
+                               const arma::uvec& mo_symmetry)
     {
         const unsigned eff_no_occ = no_occ - no_frozen;
         const unsigned eff_no_virt = no_virt - no_deleted;
@@ -41,7 +47,16 @@ namespace {
                 "energies (eV)",
                 arma::vec(misc::hartree_to_ev * rtd.energies()));
 
+            std::size_t a_max {0};
+            std::size_t i_max {0};
+            double max_v {0};
             for (std::size_t n = 0; n < rtd.coefficients().n_cols; ++n) {
+                io::Log::instance().write(io::Logger::NORMAL,
+                                          "state", n + 1);
+                io::Log::instance().write(io::Logger::NORMAL,
+                                          "energy (eV)",
+                                          misc::hartree_to_ev * rtd.energies()(n));
+
                 std::vector<std::string> labels;
                 arma::vec values(rtd.coefficients().n_rows);
                 std::size_t k = 0;
@@ -49,6 +64,11 @@ namespace {
                     for (std::size_t i = 0; i < eff_no_virt; ++i) {
                         const double v =
                             rtd.coefficients()(a * eff_no_virt + i, n);
+                        if (std::abs(v) > max_v) {
+                          max_v = v;
+                          a_max = a + no_frozen;
+                          i_max = i + no_occ;
+                        }
                         if (std::abs(v) > 5e-2) {
                             const std::string sa =
                                 std::to_string(a + no_frozen + 1);
@@ -60,6 +80,36 @@ namespace {
                             k += 1;
                         }
                     }
+
+                arma::vec occ(eff_no_occ + eff_no_virt,
+                              arma::fill::zeros);
+
+                for (unsigned i = 0; i < eff_no_occ; ++i)
+                    occ(i) = 2;
+                occ(a_max) -= 1;
+                occ(i_max) += 1;
+
+                const symmetry::FiniteSymmetryGroup& fsg =
+                    system.symmetry_info->finite_symmetry_group();
+
+                const arma::mat& rct = fsg.real_character_table();
+                const std::vector<std::string>& rcl =
+                    fsg.real_character_labels();
+
+                const arma::uword ss =
+                    core::state_symmetry(rct,
+                                         cc_sizes,
+                                         occ,
+                                         degeneracy,
+                                         mo_symmetry);
+
+                const std::string ss_label = (ss == arma::uword(-1))
+                    ? "?symmetry"
+                    : rcl[ss];
+
+                io::Log::instance().write(io::Logger::NORMAL,
+                                          "symmetry",
+                                          ss_label);
 
                 io::Logger::VectorFormatInfo vfi =
                     io::Logger::DEFAULT_VECTOR_FORMAT;
@@ -89,7 +139,10 @@ namespace niedoida {
                    ao_value_engine_factory,
                std::shared_ptr<const grid::GridFactory> grid_factory,
                std::shared_ptr<const DFTMethod> dft_method,
-               std::shared_ptr<const core::FockMatrixGeneratorFactory> fm_gen)
+               std::shared_ptr<const core::FockMatrixGeneratorFactory> fm_gen,
+               const arma::uvec& degeneracy,
+               const arma::uvec& cc_sizes,
+               const arma::uvec& mo_symmetry)
     {
         std::unique_ptr<td::RestrictedTD> rtd;
 
@@ -152,8 +205,11 @@ namespace niedoida {
                     arma::mat full_coeffs = rtd->coefficients(true);
                     arma::vec full_energies = rtd->energies(true);
 
-                    print_excitation_info(
-                        *rtd, no_occ, no_virt, no_frozen, no_deleted);
+                    print_excitation_info(*rtd, no_occ,
+                                          no_virt, no_frozen,
+                                          no_deleted, *system,
+                                          degeneracy, cc_sizes,
+                                          mo_symmetry);
 
                     std::shared_ptr<const td::MOOneEIntGenerator>
                         mo_one_e_int_gen;
@@ -210,8 +266,11 @@ namespace niedoida {
                         full_coeffs = rtd->coefficients(true);
                         full_energies = rtd->energies(true);
 
-                        print_excitation_info(
-                            *rtd, no_occ, no_virt, no_frozen, no_deleted);
+                        print_excitation_info(*rtd, no_occ,
+                                              no_virt, no_frozen,
+                                              no_deleted, *system,
+                                              degeneracy, cc_sizes,
+                                              mo_symmetry);
 
                         double max_energy_change = 0.0;
 
@@ -282,8 +341,11 @@ namespace niedoida {
                     arma::mat full_coeffs = rtd->coefficients(true);
                     arma::vec full_energies = rtd->energies(true);
 
-                    print_excitation_info(
-                        *rtd, no_occ, no_virt, no_frozen, no_deleted);
+                    print_excitation_info(*rtd, no_occ,
+                                          no_virt, no_frozen,
+                                          no_deleted, *system,
+                                          degeneracy, cc_sizes,
+                                          mo_symmetry);
 
                     std::shared_ptr<const td::MOOneEIntGenerator>
                         mo_one_e_int_gen;
@@ -342,8 +404,11 @@ namespace niedoida {
                         full_coeffs = rtd->coefficients(true);
                         full_energies = rtd->energies(true);
 
-                        print_excitation_info(
-                            *rtd, no_occ, no_virt, no_frozen, no_deleted);
+                        print_excitation_info(*rtd, no_occ,
+                                              no_virt, no_frozen,
+                                              no_deleted, *system,
+                                              degeneracy, cc_sizes,
+                                              mo_symmetry);
 
                         double max_energy_change = 0.0;
 
@@ -377,7 +442,11 @@ namespace niedoida {
             energies = rtd->energies();
             coeffs = rtd->coefficients();
 
-            print_excitation_info(*rtd, no_occ, no_virt, no_frozen, no_deleted);
+            print_excitation_info(*rtd, no_occ,
+                                  no_virt, no_frozen,
+                                  no_deleted, *system,
+                                  degeneracy, cc_sizes,
+                                  mo_symmetry);
 
             if (energies.size() > 0) {
 
@@ -481,11 +550,11 @@ namespace niedoida {
                 //                                               input_data.td_params.diagonalization_threshold,
                 //                                               fxc));
             }
-
-            energies = rtd->energies();
-            coeffs = rtd->coefficients();
-
-            print_excitation_info(*rtd, no_occ, no_virt, no_frozen, no_deleted);
+            print_excitation_info(*rtd, no_occ,
+                                  no_virt, no_frozen,
+                                  no_deleted, *system,
+                                  degeneracy, cc_sizes,
+                                  mo_symmetry);
         }
     }
 }

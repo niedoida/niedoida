@@ -20,7 +20,7 @@ std::unique_ptr<niedoida::core::BasisSetBuilder> create_bs_builder(
         throw std::runtime_error( std::string( "unsupported basis set format: " ) + format );
     }
 
-    return std::move( basis_set_builder );
+    return basis_set_builder;
 }
 
 arma::mat orthonormalize_basis( const arma::mat& S, double threshold )

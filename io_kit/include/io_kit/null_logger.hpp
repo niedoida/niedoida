@@ -77,7 +77,7 @@ namespace niedoida {
         
         inline std::unique_ptr<Logger> NullLogger::sublogger(const std::string& name)
         {
-            return std::move(std::unique_ptr<Logger>(new NullLogger));
+            return std::unique_ptr<Logger>(new NullLogger);
         }
     }
 }

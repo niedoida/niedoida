@@ -14,18 +14,7 @@
 
 #include "io_kit/io_kit.hpp"
 
-namespace {
-    void zero_vector_cube(std::vector<arma::cube>& vector_cube)
-    {
-        for (std::vector<arma::cube>::iterator it = vector_cube.begin();
-             it != vector_cube.end();
-             it++)
-            it->zeros();
-    }
-}
-
 namespace niedoida {
-
     namespace core {
 
         StandardKMatrixCoreGradientGenerator::

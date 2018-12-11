@@ -1,9 +1,39 @@
-#include "core_kit/mo_symmetry.hpp"
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "core_kit/mo_symmetry.hpp"
 #include "core_kit/ao_symmetry.hpp"
 #include "io_kit/io_kit.hpp"
 
 #include <boost/algorithm/string.hpp>
+
+namespace {
+    arma::uvec irrep_product(const arma::mat& rct,
+                             const arma::uvec& cc_sizes,
+                             const arma::uvec& ss,
+                             arma::uword mo)
+    {
+        arma::vec characters(rct.n_cols, arma::fill::zeros);
+        for (unsigned g = 0; g < rct.n_cols; ++g)
+            for (unsigned irrep = 0; irrep < rct.n_rows; ++irrep)
+                characters(g) += rct(mo, g) * rct(irrep, g) * ss(irrep);
+
+        const unsigned order = arma::sum(cc_sizes);
+        arma::uvec decomposed(rct.n_rows, arma::fill::zeros);
+
+        for (unsigned row = 0; row < rct.n_rows; ++row) {
+            double result = 0;
+
+            for (unsigned g = 0; g < rct.n_cols; ++g)
+                result += characters(g) * rct(row, g) * cc_sizes(g);
+            result /= order;
+            decomposed(row) = static_cast<unsigned>(std::round(result));
+        }
+
+        return decomposed;
+    }
+}
 
 namespace niedoida {
     namespace core {
@@ -50,8 +80,7 @@ namespace niedoida {
                     if (arma::norm(prj) < eps)
                         continue;
 
-                    if (arma::norm(prj - arma::eye<arma::mat>(
-                                             arma::size(prj))) < eps) {
+                    if (arma::norm(prj - arma::eye<arma::mat>(arma::size(prj))) < eps) {
                         D = arma::join_rows(D, C.cols(i, i + da - 1));
                         continue;
                     }
@@ -121,6 +150,40 @@ namespace niedoida {
                 boost::algorithm::to_lower(l);
 
             return labels;
+        }
+
+        arma::uword state_symmetry(const arma::mat& rct,
+                                   const arma::uvec& cc_sizes,
+                                   const arma::vec& occ,
+                                   const arma::uvec& degeneracy,
+                                   const arma::uvec& mo_symmetry)
+        {
+            arma::uvec ss(rct.n_rows, arma::fill::zeros);
+            ss(0) = 1;
+
+            for (unsigned i = 0, j = 0; j < degeneracy.n_rows; i += degeneracy(j++)) {
+                const unsigned d = degeneracy(j);
+                const unsigned n =
+                        static_cast<unsigned>(std::round(arma::sum(occ.rows(i, i + d - 1))));
+
+                if (n == 0)
+                    break;
+
+                for (unsigned k = 0; k < d; ++k)
+                    if (mo_symmetry(i + k) == arma::uword(-1))
+                        return -1;
+
+                if (n == 2 * d)
+                    continue;
+
+                for (unsigned k = 0; k < d; ++k)
+                    if (static_cast<unsigned>(std::round(occ(i + k))) != 2)
+                        ss = irrep_product(rct, cc_sizes, ss, mo_symmetry(i + k));
+            }
+
+            if (arma::sum(ss) > 1)
+                return -1;
+            return arma::uvec(arma::find(ss))(0);
         }
     }
 }

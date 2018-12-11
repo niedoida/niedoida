@@ -150,7 +150,7 @@ namespace {
         arma::mat C_virt_t = trans(C_virt);
 
         std::unique_ptr<niedoida::core::FockMatrixGenerator>
-            m_fock_matrix_generator = std::move(fm_gen->make(system));
+            m_fock_matrix_generator = fm_gen->make(system);
 
         // SaSb - occ occ, occ occ
 

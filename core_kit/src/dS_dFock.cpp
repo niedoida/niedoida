@@ -63,7 +63,7 @@ namespace niedoida {
             unsigned n_orbitals = C.n_rows;
 
             std::unique_ptr<FockMatrixGenerator> FMG =
-                std::move(fm_gen->make(system));
+                fm_gen->make(system);
             arma::mat C_occ = C.submat(arma::span(0, n_orbitals - 1),
                                        arma::span(0, n_occ - 1));
             arma::mat C_occ_t = trans(C_occ);

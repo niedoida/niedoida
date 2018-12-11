@@ -550,6 +550,10 @@ namespace niedoida {
                 //                                               input_data.td_params.diagonalization_threshold,
                 //                                               fxc));
             }
+
+            energies = rtd->energies();
+            coeffs = rtd->coefficients();
+
             print_excitation_info(*rtd, no_occ,
                                   no_virt, no_frozen,
                                   no_deleted, *system,

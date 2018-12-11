@@ -1,0 +1,23 @@
+# Results from older niedoida
+# Direct comparison to others is impossible 
+# as we use very simplistic hamiltonian
+# Energy =  -38.4052008 hartrees
+
+title: methylene
+
+run_type: single_point
+basis_set: sto-3g
+multiplicity: 3
+theory: hf
+
+scf:
+  method: rohf 
+
+units:
+  length: angstrom
+  energy: hartree
+
+atoms: 
+- C     0.000000     0.000000 -0.020583
+- H    -0.828840     0.707900  0.010292
+- H     0.828840     0.707900  0.010292

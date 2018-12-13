@@ -7,7 +7,7 @@ class NiedoidaSmokeCaseBasisCcpvtz(NiedoidaTestCase):
         self.data = self.run_calculations("smoke-basis-cc-pvtz")
 
     def test_energy(self):
-        self.assertAlmostEqual(self.data.scfenergies[0], -19578.4143855895, 3)
+        self.assertAlmostEqual(self.data.scfenergies[0], -11879.322318, 3)
 
 if __name__ == '__main__':
     unittest.main()

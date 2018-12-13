@@ -6,6 +6,7 @@ basis_set: sto-3g
 td:
   type: tda
   no_states: 5
+  multiplicity: 1
 
 units:
   length: angstrom

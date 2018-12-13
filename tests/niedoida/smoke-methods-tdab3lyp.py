@@ -13,12 +13,7 @@ class NiedoidaSmokeCaseMethodsTdab3lyp(NiedoidaTestCase):
     def test_excitation_energies(self):
         [self.assertAlmostEqual(x[0], x[1], 0)
          for x in zip(self.data.etenergies,
-                      [28305.9,
-                       38284.9,
-                       39484.3,
-                       43032.3,
-                       43326.0,
-                       44078.6,
+                      [43326.0,
                        47090.6,
                        50298.3,
                        57844.7,

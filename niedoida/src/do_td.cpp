@@ -47,8 +47,8 @@ namespace {
                 "energies (eV)",
                 arma::vec(misc::hartree_to_ev * rtd.energies()));
 
-            std::size_t a_max {0};
-            std::size_t i_max {0};
+            std::size_t a_max = 0;
+            std::size_t i_max = 0;
             double max_v {0};
             for (std::size_t n = 0; n < rtd.coefficients().n_cols; ++n) {
                 io::Log::instance().write(io::Logger::NORMAL,
@@ -65,9 +65,9 @@ namespace {
                         const double v =
                             rtd.coefficients()(a * eff_no_virt + i, n);
                         if (std::abs(v) > max_v) {
-                          max_v = v;
-                          a_max = a + no_frozen;
-                          i_max = i + no_occ;
+                            max_v = v;
+                            a_max = a + no_frozen;
+                            i_max = i + no_occ;
                         }
                         if (std::abs(v) > 5e-2) {
                             const std::string sa =

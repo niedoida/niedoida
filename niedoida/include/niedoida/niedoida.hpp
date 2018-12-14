@@ -108,6 +108,7 @@ namespace niedoida {
         NonTimeDependent, TimeDependent
     };
 
+
     struct GeometryOptimizationData {
         arma::mat last_coeffs;
         unsigned multiplicity;
@@ -121,11 +122,7 @@ namespace niedoida {
         double integral_threshold;
     };
 
-    struct StateSymmetryRepresentation {
-        static arma::uvec degeneracy;
-        static arma::uvec cc_sizes;
-        static arma::uvec mo_symmetry;
-    };
+
 
     void do_td( const InputData& input_data,
                 std::shared_ptr<const core::System> system,
@@ -206,29 +203,29 @@ namespace niedoida {
                                 std::shared_ptr<const core::TwoElectronIntegralEngineFactory> two_e_ie_factory,
                                 std::shared_ptr<const core::OneElectronIntegralEngineFactory> one_e_ie_factory,
                                 std::shared_ptr<const core::FockMatrixGeneratorFactory> fmg_factory,
-                                std::shared_ptr<const core::AOValueEngineFactory> ao_value_engine_factory, 
-                                std::shared_ptr<const grid::GridFactory> grid_factory,
-                                std::shared_ptr<const DFTMethod> dft_method );
+                               std::shared_ptr<const core::AOValueEngineFactory> ao_value_engine_factory, 
+                               std::shared_ptr<const grid::GridFactory> grid_factory,
+                               std::shared_ptr<const DFTMethod> dft_method );
 
     void do_el_stat_prop( const Config& config,
-			  const InputData& input_data,
+                          const InputData& input_data,
                           const std::shared_ptr<const core::System> system,
-			  const std::shared_ptr<const core::TwoElectronIntegralEngineFactory> two_e_ie_factory,
-	                  const scf::SCF& scf );
+                          const std::shared_ptr<const core::TwoElectronIntegralEngineFactory> two_e_ie_factory,
+                          const scf::SCF& scf );
 
     arma::mat orthonormalize_basis( const arma::mat&, double threshold );
     void print_job_info( const Config& config, const InputData& input_data );
     void print_basis_set( io::Logger& log, const core::BasisSet& bs );
     void print_population_analysis(
         const InputData& input_data,
-        std::shared_ptr<const core::System> system,
-        const arma::mat& P_alpha,
+        std::shared_ptr<const core::System> system, 
+        const arma::mat& P_alpha, 
         const arma::mat& P_beta,
         std::shared_ptr<const grid::GridFactory> grid_factory);
     void print_bond_order_analysis(
         const InputData& input_data,
-        std::shared_ptr<const core::System> system,
-        const arma::mat& P_alpha,
+        std::shared_ptr<const core::System> system, 
+        const arma::mat& P_alpha, 
         const arma::mat& P_beta);
 
 

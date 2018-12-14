@@ -12,10 +12,6 @@
 
 namespace niedoida {
 
-    arma::uvec StateSymmetryRepresentation::degeneracy;
-    arma::uvec StateSymmetryRepresentation::cc_sizes;
-    arma::uvec StateSymmetryRepresentation::mo_symmetry;
-
     void single_point(
         const InputData& input_data,
         const Config& config,
@@ -34,6 +30,15 @@ namespace niedoida {
         std::shared_ptr<const scf::SCFFactory> scf_factory)
     {
         std::unique_ptr<scf::SCF> scf = scf_factory->make(system);
+
+        const symmetry::FiniteSymmetryGroup& fsg =
+            system->symmetry_info->finite_symmetry_group();
+
+        const std::vector<std::vector<unsigned>>& cc =
+            fsg.conjugacy_classes();
+        arma::uvec cc_sizes(cc.size(), arma::fill::zeros);
+        arma::uvec degeneracy;
+        arma::uvec mo_symmetry;
 
         {
             io::Log::Section scf_section("scf");
@@ -189,30 +194,18 @@ namespace niedoida {
                 const std::vector<std::string> mo_labels_beta =
                     core::mo_symmetry_labels(*system, C_beta);
 
-                const symmetry::FiniteSymmetryGroup& fsg =
-                    system->symmetry_info->finite_symmetry_group();
-
                 const arma::vec occ =
                     scf->mo_occupations(core::SPIN_ALPHA) +
                     scf->mo_occupations(core::SPIN_BETA);
 
-                const arma::uvec degeneracy =
+                degeneracy =
                     core::mo_degeneracy(*system,
                                         scf->mo_energies(core::SPIN_ALPHA));
-
-                const std::vector<std::vector<unsigned>>& cc =
-                    fsg.conjugacy_classes();
-                arma::uvec cc_sizes(cc.size(), arma::fill::zeros);
-
                 for (unsigned i = 0; i < cc_sizes.n_rows; ++i)
                     cc_sizes(i) = cc[i].size();
 
-                const arma::uvec mo_symmetry =
+                mo_symmetry =
                     core::mo_symmetry(*system, C_alpha);
-
-                StateSymmetryRepresentation::degeneracy = degeneracy;
-                StateSymmetryRepresentation::cc_sizes = cc_sizes;
-                StateSymmetryRepresentation::mo_symmetry = mo_symmetry;
 
                 const arma::uword ss =
                     core::state_symmetry(fsg.real_character_table(),
@@ -389,8 +382,8 @@ namespace niedoida {
                   grid_factory,
                   dft_method,
                   fm_gen_factory,
-                  StateSymmetryRepresentation::degeneracy,
-                  StateSymmetryRepresentation::cc_sizes,
-                  StateSymmetryRepresentation::mo_symmetry);
+                  degeneracy,
+                  cc_sizes,
+                  mo_symmetry);
     }
 }

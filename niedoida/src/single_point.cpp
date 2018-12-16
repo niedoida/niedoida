@@ -37,6 +37,9 @@ namespace niedoida {
         const std::vector<std::vector<unsigned>>& cc =
             fsg.conjugacy_classes();
         arma::uvec cc_sizes(cc.size(), arma::fill::zeros);
+        for (unsigned i = 0; i < cc_sizes.n_rows; ++i)
+            cc_sizes(i) = cc[i].size();
+
         arma::uvec degeneracy;
         arma::uvec mo_symmetry;
 
@@ -201,9 +204,6 @@ namespace niedoida {
                 degeneracy =
                     core::mo_degeneracy(*system,
                                         scf->mo_energies(core::SPIN_ALPHA));
-                for (unsigned i = 0; i < cc_sizes.n_rows; ++i)
-                    cc_sizes(i) = cc[i].size();
-
                 mo_symmetry =
                     core::mo_symmetry(*system, C_alpha);
 

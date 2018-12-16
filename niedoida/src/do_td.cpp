@@ -26,7 +26,7 @@ namespace {
                                unsigned no_virt,
                                unsigned no_frozen,
                                unsigned no_deleted,
-                               const core::System& system,
+                               const symmetry::FiniteSymmetryGroup& fsg,
                                const arma::uvec& degeneracy,
                                const arma::uvec& cc_sizes,
                                const arma::uvec& mo_symmetry)
@@ -88,9 +88,6 @@ namespace {
                     occ(i) = 2;
                 occ(a_max) -= 1;
                 occ(i_max) += 1;
-
-                const symmetry::FiniteSymmetryGroup& fsg =
-                    system.symmetry_info->finite_symmetry_group();
 
                 const arma::mat& rct = fsg.real_character_table();
                 const std::vector<std::string>& rcl =
@@ -178,6 +175,9 @@ namespace niedoida {
 
         std::shared_ptr<td::XCMultiKernelGenerator> xc_kernel_gen;
 
+	const symmetry::FiniteSymmetryGroup& fsg =
+            system->symmetry_info->finite_symmetry_group();
+
         if (input_data.td_params.multiplicity & (1 << 0)) {
             io::Log::Section s_section("singlet states");
 
@@ -207,7 +207,7 @@ namespace niedoida {
 
                     print_excitation_info(*rtd, no_occ,
                                           no_virt, no_frozen,
-                                          no_deleted, *system,
+                                          no_deleted, fsg,
                                           degeneracy, cc_sizes,
                                           mo_symmetry);
 
@@ -268,7 +268,7 @@ namespace niedoida {
 
                         print_excitation_info(*rtd, no_occ,
                                               no_virt, no_frozen,
-                                              no_deleted, *system,
+                                              no_deleted, fsg,
                                               degeneracy, cc_sizes,
                                               mo_symmetry);
 
@@ -343,7 +343,7 @@ namespace niedoida {
 
                     print_excitation_info(*rtd, no_occ,
                                           no_virt, no_frozen,
-                                          no_deleted, *system,
+                                          no_deleted, fsg,
                                           degeneracy, cc_sizes,
                                           mo_symmetry);
 
@@ -406,7 +406,7 @@ namespace niedoida {
 
                         print_excitation_info(*rtd, no_occ,
                                               no_virt, no_frozen,
-                                              no_deleted, *system,
+                                              no_deleted, fsg,
                                               degeneracy, cc_sizes,
                                               mo_symmetry);
 
@@ -444,7 +444,7 @@ namespace niedoida {
 
             print_excitation_info(*rtd, no_occ,
                                   no_virt, no_frozen,
-                                  no_deleted, *system,
+                                  no_deleted, fsg,
                                   degeneracy, cc_sizes,
                                   mo_symmetry);
 
@@ -556,7 +556,7 @@ namespace niedoida {
 
             print_excitation_info(*rtd, no_occ,
                                   no_virt, no_frozen,
-                                  no_deleted, *system,
+                                  no_deleted, fsg,
                                   degeneracy, cc_sizes,
                                   mo_symmetry);
         }

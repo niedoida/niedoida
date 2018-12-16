@@ -103,7 +103,7 @@ namespace niedoida {
         std::shared_ptr<const scf::ConvergenceAcceleratorFactory> );
 
     constexpr double COORDS_SCALE = 100;
-
+    
     enum GeometryOptimizationType {
         NonTimeDependent, TimeDependent
     };
@@ -144,7 +144,7 @@ namespace niedoida {
         std::shared_ptr<const core::TwoElectronIntegralEngineFactory> two_e_ie_factory,
         std::shared_ptr<const core::PostHFQuasiTwoElectronIntegralEngineFactory> posthf_quasi_two_e_ie_factory,
         std::shared_ptr<const DFTMethod> dft_method);
-
+    
     struct GeometryOptimizationContext {
         GeometryOptimizationType gType;
         GeometryOptimizationData* gData;
@@ -203,9 +203,9 @@ namespace niedoida {
                                 std::shared_ptr<const core::TwoElectronIntegralEngineFactory> two_e_ie_factory,
                                 std::shared_ptr<const core::OneElectronIntegralEngineFactory> one_e_ie_factory,
                                 std::shared_ptr<const core::FockMatrixGeneratorFactory> fmg_factory,
-                               std::shared_ptr<const core::AOValueEngineFactory> ao_value_engine_factory, 
-                               std::shared_ptr<const grid::GridFactory> grid_factory,
-                               std::shared_ptr<const DFTMethod> dft_method );
+                              std::shared_ptr<const core::AOValueEngineFactory> ao_value_engine_factory, 
+                              std::shared_ptr<const grid::GridFactory> grid_factory,
+                              std::shared_ptr<const DFTMethod> dft_method );
 
     void do_el_stat_prop( const Config& config,
                           const InputData& input_data,

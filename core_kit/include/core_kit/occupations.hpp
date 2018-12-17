@@ -113,6 +113,7 @@ namespace niedoida {
                 const arma::mat& /*initial_mocoeffs_beta*/);
 
             const arma::vec& occupation_numbers(
+                const arma::vec& /*epsilons*/, 
                 const arma::mat& /*coeffs*/,
                 Spin /*s*/);
 

@@ -34,7 +34,7 @@ namespace niedoida {
                 boost::optional<double> shift_1,
                 double energy_threshold, double density_threshold);
 
-            bool is_restricted() const { return true; }
+            bool is_restricted() const override { return true; }
 
             void set_initial_density_matrix(
                 const arma::mat&,

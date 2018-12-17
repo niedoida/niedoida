@@ -49,7 +49,7 @@ namespace {
 
             std::size_t a_max = 0;
             std::size_t i_max = 0;
-            double max_v {0};
+            double max_v = 0;
             for (std::size_t n = 0; n < rtd.coefficients().n_cols; ++n) {
                 io::Log::instance().write(io::Logger::NORMAL,
                                           "state", n + 1);

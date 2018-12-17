@@ -132,10 +132,13 @@ namespace niedoida {
                 std::shared_ptr<const core::AOValueEngineFactory> ao_value_engine_factory,
                 std::shared_ptr<const grid::GridFactory> grid_factory,
                 std::shared_ptr<const DFTMethod> dft_method,
-                std::shared_ptr<const core::FockMatrixGeneratorFactory> fm_gen );
-    
-    void do_posthf( 
-        const InputData& input_data, 
+                std::shared_ptr<const core::FockMatrixGeneratorFactory> fm_gen,
+                const arma::uvec& degeneracy,
+                const arma::uvec& cc_sizes,
+                const arma::uvec& mo_symmetry);
+
+    void do_posthf(
+        const InputData& input_data,
         std::shared_ptr<const core::System> system,
         const scf::SCF& scf,
         std::shared_ptr<const core::TwoElectronIntegralEngineFactory> two_e_ie_factory,
@@ -200,15 +203,15 @@ namespace niedoida {
                                 std::shared_ptr<const core::TwoElectronIntegralEngineFactory> two_e_ie_factory,
                                 std::shared_ptr<const core::OneElectronIntegralEngineFactory> one_e_ie_factory,
                                 std::shared_ptr<const core::FockMatrixGeneratorFactory> fmg_factory,
-                               std::shared_ptr<const core::AOValueEngineFactory> ao_value_engine_factory, 
-                               std::shared_ptr<const grid::GridFactory> grid_factory,
-                               std::shared_ptr<const DFTMethod> dft_method );
+                              std::shared_ptr<const core::AOValueEngineFactory> ao_value_engine_factory, 
+                              std::shared_ptr<const grid::GridFactory> grid_factory,
+                              std::shared_ptr<const DFTMethod> dft_method );
 
     void do_el_stat_prop( const Config& config,
-			  const InputData& input_data,
+                          const InputData& input_data,
                           const std::shared_ptr<const core::System> system,
-			  const std::shared_ptr<const core::TwoElectronIntegralEngineFactory> two_e_ie_factory,
-	                  const scf::SCF& scf );
+                          const std::shared_ptr<const core::TwoElectronIntegralEngineFactory> two_e_ie_factory,
+                          const scf::SCF& scf );
 
     arma::mat orthonormalize_basis( const arma::mat&, double threshold );
     void print_job_info( const Config& config, const InputData& input_data );

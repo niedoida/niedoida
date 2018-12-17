@@ -14,6 +14,8 @@ namespace niedoida {
 
         class InitialGuessFactory: 
             public Factory<InitialGuess> {
+        public:
+            virtual ~InitialGuessFactory() = default;
         };
 
         class InitialGuessHCoreFactory:

@@ -542,7 +542,7 @@ namespace niedoida {
                 new cphf_context_RHF(matFreeC,
                                      vecFreeEorb,
                                      Nocc,
-                                     std::move(fm_gen_factory->make(system))))
+                                     fm_gen_factory->make(system)))
         {
             // Tworzymy macierz glowna ukladu rownan CPHF:
             MatCreateShell(PETSC_COMM_SELF,

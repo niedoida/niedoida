@@ -21,6 +21,8 @@ namespace niedoida {
 
         class InitialGuess {
         public:
+            virtual ~InitialGuess() = default;
+
             virtual const arma::mat& density_matrix(Spin) const = 0;
         };
 

@@ -187,9 +187,8 @@ namespace niedoida {
                 m_C0[SPIN_BETA]);
         }
 
-        const arma::vec&
-        MaximumOverlapOccupations::occupation_numbers(const arma::mat& mocoeffs,
-                                                      Spin s)
+        const arma::vec& MaximumOverlapOccupations::occupation_numbers(
+            const arma::vec& /*epsilons*/, const arma::mat& mocoeffs, Spin s)
         {
             // (for details see: Besley, Gilbert, Gill (2009): J. Chem. Phys.
             // 130, 124308)

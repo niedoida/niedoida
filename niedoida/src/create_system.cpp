@@ -27,7 +27,7 @@ namespace {
                 std::string("unsupported basis set format: ") + format);
         }
 
-        return std::move(basis_set_builder);
+        return basis_set_builder;
     }
 }
 

@@ -11,6 +11,8 @@ namespace niedoida {
     namespace scf {
         class DiagonalizeFockMatrix {
         public:
+            virtual ~DiagonalizeFockMatrix() = default;
+            
             virtual void operator()(const arma::mat& F,
                                     arma::mat& C,
                                     arma::vec& epsilons) const = 0;

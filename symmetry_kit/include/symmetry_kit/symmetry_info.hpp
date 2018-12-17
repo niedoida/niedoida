@@ -14,8 +14,9 @@ namespace niedoida {
 
         class AbstractSymmetryInfo {
 	public:
-	  //virtual SymmetryType symmetry_type() const override;
-	  // virtual TopType top_type() const override;
+            virtual ~AbstractSymmetryInfo() = default;
+            // virtual SymmetryType symmetry_type() const override;
+            // virtual TopType top_type() const override;
             virtual const SymmetryGroup& symmetry_group() const = 0;
             virtual const FiniteSymmetryGroup& finite_symmetry_group() const = 0;
             virtual const arma::mat& rotation_to_std_frame() const = 0;

@@ -79,5 +79,6 @@
         "future": "cpp",
         "armadillo": "cpp",
         "string_view": "cpp"
-    }
+    },
+    "cmake.buildDirectory": "${workspaceRoot}/build/${buildKit}/${buildType}"
 }

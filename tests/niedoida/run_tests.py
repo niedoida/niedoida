@@ -3,6 +3,8 @@ from enum import Enum
 import glob
 import sys
 import unittest
+import niedoida_test_case
+
 
 class Kind(Enum):
     all = 'all'
@@ -47,6 +49,8 @@ if args.test == 'all':
     pattern += '*'
 else:
     pattern += args.test
+
+niedoida_test_case.NiedoidaTestCase.NIEDOIDA = args.niedoida
 
 test_file_strings = glob.glob(pattern + '.py')
 module_strings = [str[0:len(str)-3] for str in test_file_strings]

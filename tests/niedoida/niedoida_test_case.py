@@ -6,19 +6,19 @@ from cclib.parser import ccopen
 
 class NiedoidaTestCase(unittest.TestCase):
 
+    NIEDOIDA = './niedoida'
+
     def run_calculations(self, fname):
-        if os.name == 'nt':
-            niedoida = 'niedoida.exe'
-        else:
-            niedoida = './niedoida'
-        
+
         inp_fname = fname + '.inp'
         log_fname = fname + '.log'
 
+        print([self.NIEDOIDA, inp_fname])
+
         if 'NUMBER_OF_PROCESSORS' in os.environ:
-            subprocess.check_call([niedoida, '--no-cores=' + os.environ['NUMBER_OF_PROCESSORS'], inp_fname])
+            subprocess.check_call([self.NIEDOIDA, '--no-cores=' + os.environ['NUMBER_OF_PROCESSORS'], inp_fname])
         else:
-            subprocess.check_call([niedoida, inp_fname])
+            subprocess.check_call([self.NIEDOIDA, inp_fname])
 
         log = ccopen(log_fname)
         log.logger.setLevel(logging.WARNING)

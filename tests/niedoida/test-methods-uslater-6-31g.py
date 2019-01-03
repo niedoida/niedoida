@@ -3,8 +3,9 @@ from niedoida_test_case import NiedoidaTestCase
 
 class NiedoidaTestCaseMethodsuslater631g(NiedoidaTestCase):
 
-    def setUp(self):
-        self.data = self.run_calculations("test-methods-uslater-6-31g")
+    @classmethod
+    def setUpClass(cls):
+        cls.data = cls.run_calculations("test-methods-uslater-6-31g")
 
     def test_energy(self):
         self.assertAlmostEqual(self.data.scfenergies[0], -1040.88170627982, 2)

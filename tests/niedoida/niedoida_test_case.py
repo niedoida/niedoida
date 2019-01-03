@@ -8,17 +8,18 @@ class NiedoidaTestCase(unittest.TestCase):
 
     NIEDOIDA = './niedoida'
 
-    def run_calculations(self, fname):
+    @classmethod
+    def run_calculations(cls, fname):
 
         inp_fname = fname + '.inp'
         log_fname = fname + '.log'
 
-        print([self.NIEDOIDA, inp_fname])
+        print('setting up ' +  cls.__name__)
 
         if 'NUMBER_OF_PROCESSORS' in os.environ:
-            subprocess.check_call([self.NIEDOIDA, '--no-cores=' + os.environ['NUMBER_OF_PROCESSORS'], inp_fname])
+            subprocess.check_call([cls.NIEDOIDA, '--no-cores=' + os.environ['NUMBER_OF_PROCESSORS'], inp_fname])
         else:
-            subprocess.check_call([self.NIEDOIDA, inp_fname])
+            subprocess.check_call([cls.NIEDOIDA, inp_fname])
 
         log = ccopen(log_fname)
         log.logger.setLevel(logging.WARNING)

@@ -4,8 +4,9 @@ from niedoida_test_case import NiedoidaTestCase
 
 class NiedoidaTestCaseTdaB3lyp(NiedoidaTestCase):
 
-    def setUp(self):
-        self.data = self.run_calculations("test22")
+    @classmethod
+    def setUpClass(cls):
+        cls.data = cls.run_calculations("test22")
 
     def test_energy(self):
         self.assertAlmostEqual(self.data.scfenergies[0], -10403.1374497064, 3)

@@ -3,8 +3,9 @@ from niedoida_test_case import NiedoidaTestCase
 
 class NiedoidaTestCaseMethodsb2plypccpvtz(NiedoidaTestCase):
 
-    def setUp(self):
-        self.data = self.run_calculations("test13")
+    @classmethod
+    def setUpClass(cls):
+        cls.data = cls.run_calculations("test13")
 
     def test_energy(self):
         self.assertAlmostEqual(self.data.mpenergies[0][0], -2079.2293, 2)

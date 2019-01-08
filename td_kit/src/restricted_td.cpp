@@ -42,11 +42,10 @@ namespace niedoida {
             io::Log::instance().write(
                 io::Logger::VERBOSE, "mini_n_virt", m_small_part_virt);
 
-            if (m_small_part_occ > m_no_occ - no_frozen)
+            if (m_small_part_occ > m_no_occ - no_frozen || m_small_part_virt > m_no_virt - no_deleted) {
                 m_small_part_occ = m_no_occ - no_frozen;
-
-            if (m_small_part_virt > m_no_virt - no_deleted)
                 m_small_part_virt = m_no_virt - no_deleted;
+            }
 
             const unsigned small_n = m_small_part_occ * m_small_part_virt;
 

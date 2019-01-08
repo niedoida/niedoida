@@ -156,7 +156,7 @@
         - { cpp-type: unsigned, cpp-name: multiplicity, cpp-init: =1<<0|1<<1, fill-strategy: optional-scalar}
         - { cpp-type: unsigned, cpp-name: no_frozen, cpp-init: =0, fill-strategy: optional-scalar}
         - { cpp-type: unsigned, cpp-name: no_deleted, cpp-init: =0, fill-strategy: optional-scalar}
-        - { cpp-type: unsigned, cpp-name: no_states, cpp-init: =0, fill-strategy: optional-scalar}
+        - { cpp-type: unsigned, cpp-name: no_states, cpp-init: =3, fill-strategy: optional-scalar}
         - { cpp-type: unsigned, cpp-name: no_roots, cpp-init: =0, fill-strategy: optional-scalar}
         - { cpp-type: unsigned, cpp-name: no_iterations, cpp-init: =50, fill-strategy: optional-scalar}
         - { cpp-type: double, cpp-name: diagonalization_threshold, cpp-init: =1e-4, fill-strategy: optional-scalar, input-key: dress_davidson_threshold}

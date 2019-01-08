@@ -4,7 +4,7 @@
 
 /* Header file generated automatically by yaml-inputter-tk-code-generator.
  * The header content is based on the provided input-data-specification file.
- * File generation date: Sun Apr 22 16:57:13 2018
+ * File generation date: Fri Jan  4 18:05:35 2019
  * WARNING: Do not modify this file!
  * (Every change will be overridden during the next compilation.)
  */
@@ -211,7 +211,7 @@ namespace niedoida {
             unsigned multiplicity=1<<0|1<<1; // fill-strategy: optional-scalar, yaml-key: "multiplicity"
             unsigned no_frozen=0; // fill-strategy: optional-scalar, yaml-key: "no_frozen"
             unsigned no_deleted=0; // fill-strategy: optional-scalar, yaml-key: "no_deleted"
-            unsigned no_states=0; // fill-strategy: optional-scalar, yaml-key: "no_states"
+            unsigned no_states=3; // fill-strategy: optional-scalar, yaml-key: "no_states"
             unsigned no_roots=0; // fill-strategy: optional-scalar, yaml-key: "no_roots"
             unsigned no_iterations=50; // fill-strategy: optional-scalar, yaml-key: "no_iterations"
             double diagonalization_threshold=1e-4; // fill-strategy: optional-scalar, yaml-key: "dress_davidson_threshold"

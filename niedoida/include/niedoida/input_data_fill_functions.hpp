@@ -4,7 +4,7 @@
 
 /* Header file generated automatically by yaml-inputter-tk-code-generator.
  * The header content is based on the provided input-data-specification file.
- * File generation date: Sun Apr 22 16:57:13 2018
+ * File generation date: Fri Jan  4 18:05:35 2019
  * WARNING: Do not modify this file!
  * (Every change will be overridden during the next compilation.)
  */

@@ -157,6 +157,11 @@ namespace niedoida {
         const unsigned no_states =
             std::min(input_data.td_params.no_states, no_roots);
 
+        if (no_states < input_data.td_params.no_states)
+            throw std::runtime_error(
+                "too many excited states requested, max allowed is " +
+                std::to_string(eff_no_occ * eff_no_virt));
+
         const double energy_unit = (input_data.units.energy_unit ==
                                     InputData::Units::ENERGY_UNIT_HARTREE)
                                        ? 1
@@ -175,7 +180,7 @@ namespace niedoida {
 
         std::shared_ptr<td::XCMultiKernelGenerator> xc_kernel_gen;
 
-	const symmetry::FiniteSymmetryGroup& fsg =
+        const symmetry::FiniteSymmetryGroup& fsg =
             system->symmetry_info->finite_symmetry_group();
 
         if (input_data.td_params.multiplicity & (1 << 0)) {

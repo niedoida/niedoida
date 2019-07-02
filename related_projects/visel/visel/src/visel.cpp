@@ -10,18 +10,15 @@
 #include<vtkRenderWindowInteractor.h>
 #include<vtkSmartPointer.h>
 
-#include<boost/algorithm/string/predicate.hpp>
-#include<boost/range/combine.hpp>
+#include<boost/algorithm/string/join.hpp>
 
 #include<array>
 #include<vector>
 #include<map>
 #include<string>
-
 #include<iostream>
 #include<fstream>
 #include<regex>
-
 #include<cassert>
 #include<cmath>
 
@@ -30,45 +27,48 @@ int main(int argc, char** argv)
   const auto program_options = grep_program_options(argc, argv);
   std::cout << "[INFO   ] [PROGRAM_OPTIONS] niedoida out file path = " << program_options.niedoida_out_file_path << std::endl;
   std::cout << "[INFO   ] [PROGRAM_OPTIONS] population type        = " << program_options.population_type << std::endl;
+  std::cout << "[INFO   ] [PROGRAM_OPTIONS] orientation type       = " << program_options.orientation_type << std::endl;
   // -------------------------------------------
   // ##############################################
-  // ####### GREP PART ############################
+  // ####### PARSE PART ###########################
   // ##############################################
   if (!exists(program_options.niedoida_out_file_path)) {
     std::cerr << "[ERROR  ] The file " << program_options.niedoida_out_file_path << " does not exist" << std::endl;
     return 1;
   }
   // -------------------------------------------
-  const std::string title_population_type = program_options.population_type == ViselProgramOptions::PopulationType::Lowdin ?
-                                            "lowdin" : "mulliken";
+  const std::string title_population_type = program_options.population_type == ViselProgramOptions::PopulationType::Mulliken ?
+                                            "mulliken" : "lowdin";
+  const std::string title_orientation_type = program_options.orientation_type == ViselProgramOptions::Orientation::Inp ?
+                                            "inp" : "std";
   const std::string partial_charges_title = "atomic-partial-" + title_population_type + "-charges [total]";
-  const std::string partial_dipoles_title = "atomic-partial-" + title_population_type + "-dipoles (in std-frame) [total, electrons contribution]";
-  const std::string partial_quadrupoles_title = "atomic-partial-" + title_population_type + "-quadrupoles (raw, in std-frame) [total, electrons contribution]";
+  const std::string partial_dipoles_title = "atomic-partial-" + title_population_type + "-dipoles (in " + title_orientation_type + "-frame) [total, electrons contribution]";
+  const std::string partial_quadrupoles_title = "atomic-partial-" + title_population_type + "-quadrupoles (raw, in " + title_orientation_type + "-frame) [total, electrons contribution]";
   // -------------------------------------------
-  std::cout << "[INFO] Program is about to grep level of theory -- TODO." << std::endl;
-  std::string title_theory_type = "TheoryTODO";
-  std::cout << "[INFO] Program is about to grep basis -- TODO." << std::endl;
-  std::string title_basis_type = "BasisTODO";
-  std::cout << "[INFO] Program is about to grep atoms coors." << std::endl;
+  std::cout << "[INFO] Program is about to parse level of theory." << std::endl;
+  const auto title_theory_type = grep_string(program_options.niedoida_out_file_path, "theory");
+  std::cout << "[INFO] Program is about to parse basis." << std::endl;
+  const auto title_basis_type = grep_string(program_options.niedoida_out_file_path, "basis set");
+  std::cout << "[INFO] Program is about to parse atoms coors." << std::endl;
   const auto cords = grep_matrix(program_options.niedoida_out_file_path, "coordinates").t().eval();
   if (cords.n_cols == 0) {
     std::cerr << "[ERROR  ] [PARSE] Problem while parsing atoms cords." << std::endl;
     return 2;
   }
   const auto symbols = std::vector<std::string>(cords.n_cols, "X"); //TODO
-   std::cout << "[INFO] Program is about to grep atomic-partial-charges coors." << std::endl;
+   std::cout << "[INFO] Program is about to parse atomic-partial-charges coors." << std::endl;
   const auto partial_charges = grep_vector(program_options.niedoida_out_file_path, partial_charges_title);
   if (partial_charges.n_cols == 0) {
     std::cerr << "[ERROR  ] [PARSE] Problem while parsing atomic-partial-charges." << std::endl;
     return 3;
   }
-   std::cout << "[INFO] Program is about to grep atomic-partial-dipoles coors." << std::endl;
+   std::cout << "[INFO] Program is about to parse atomic-partial-dipoles coors." << std::endl;
   const auto partial_dipoles = grep_matrix(program_options.niedoida_out_file_path, partial_dipoles_title);
   if (partial_dipoles.n_cols == 0) {
     std::cerr << "[ERROR  ] [PARSE] Problem while parsing atomic-partial-dipoles." << std::endl;
     return 4;
   }
-   std::cout << "[INFO] Program is about to grep atomic-partial-quadrupoles coors." << std::endl;
+   std::cout << "[INFO] Program is about to parse atomic-partial-quadrupoles coors." << std::endl;
   const auto partial_quadrupoles = grep_matrix(program_options.niedoida_out_file_path, partial_quadrupoles_title);
   if (partial_quadrupoles.n_cols == 0) {
     std::cerr << "[ERROR  ] [PARSE] Problem while parsing atomic-partial-quadrupoles." << std::endl;
@@ -111,9 +111,11 @@ int main(int argc, char** argv)
   // -------------------------------------------
   add_axes(renderer2);
   add_bonds(renderer2, cords);
+  add_partial_dipoles(renderer2, cords, partial_dipoles);
   // -------------------------------------------
   add_axes(renderer3);
   add_bonds(renderer3, cords);
+ add_partial_quadrupoles(renderer3, cords, partial_quadrupoles);
   // -------------------------------------------
   vtkSmartPointer<vtkCamera> camera =
     vtkSmartPointer<vtkCamera>::New(); 
@@ -142,7 +144,8 @@ int main(int argc, char** argv)
   renderWindow->AddRenderer(renderer1);
   renderWindow->AddRenderer(renderer2);
   renderWindow->AddRenderer(renderer3);
-  std::string windoes_name = "Visel | " + title_theory_type +" | " + title_basis_type + " | " + title_population_type;
+  const std::vector<std::string> title_bits {"Visel", title_theory_type , title_basis_type, title_population_type, title_orientation_type};
+  std::string windoes_name = boost::join(title_bits, "|");
   renderWindow->SetWindowName(windoes_name.c_str());
   // -------------------------------------------
   vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =

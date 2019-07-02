@@ -31,14 +31,19 @@ USAGE:
 
   Visel is a simple post-processing tool.
   It it launched using CLI (in terminal).
-  A niedoida output file has to be provided as an CLI argument.
-
+  A niedoida output file has to be provided as an CLI argument:
   > niedoida $PATH_TO_NIEDOIDA_INPUT_FILE
   > visel $PATH_TO_NIEDOIDA_OUTPUT_FILE
 
+  The full synopis:
+  visel [-l] [-s] <PATH_TO_NIEDOIDA_OUTPUT_FILE>
+
+  Options:
+   -l  Use Lowdin population analysis instead of Mulliken population analysis (default is Mulliken).
+   -s  Use standard (molecule) orientation instead of input orientation analysis (default is input).
+
   Note:
   The niedoia input file has to contain the following options turned on:
-
   ```
    properties:
     electric:

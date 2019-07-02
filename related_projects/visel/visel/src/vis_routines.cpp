@@ -9,14 +9,16 @@
 #include<vtkProperty.h>
 #include<vtkSmartPointer.h>
 
+const auto arbitrary_factor = 1.0;
+
 void add_axes(vtkSmartPointer<vtkRenderer> renderer) {
   struct AxeInfo{
     std::array<double, 3> direction;
     std::array<double, 3> color;
   };
-  const std::vector<AxeInfo> axe_infos = {{{1.0, 0.0, 0.0}, {1.0, 0.0, 0.0}},
-                                          {{0.0, 1.0, 0.0}, {0.0, 1.0, 0.0}},
-                                          {{0.0, 0.0, 1.0}, {0.0, 0.0, 1.0}}};
+  const std::vector<AxeInfo> axe_infos {{{1.0, 0.0, 0.0}, {1.0, 0.0, 0.0}},
+                                        {{0.0, 1.0, 0.0}, {0.0, 1.0, 0.0}},
+                                        {{0.0, 0.0, 1.0}, {0.0, 0.0, 1.0}}};
   for (const auto& axe_info : axe_infos) {
     // Line:
     vtkSmartPointer<vtkLineSource> lineSource = 
@@ -124,7 +126,7 @@ void add_partial_charges(vtkSmartPointer<vtkRenderer> renderer,
   for (auto idx = 0ul; idx < cords.n_cols; ++idx) {
     const auto& cords_i = cords.col(idx).eval();
     const auto& charges_i = partial_charges(idx);
-    const auto radius = std::cbrt(std::abs(charges_i));
+    const auto radius = std::cbrt(std::abs(charges_i)) * arbitrary_factor;
     const auto& color = charges_i>0 ? pos_color : neg_color;
     vtkSmartPointer<vtkSphereSource> sphere =
       vtkSmartPointer<vtkSphereSource>::New();
@@ -141,4 +143,110 @@ void add_partial_charges(vtkSmartPointer<vtkRenderer> renderer,
     sphereActor->GetProperty()->SetColor(const_cast<double*>(color.data()));
     renderer->AddActor(sphereActor);
   }
+}
+
+void add_partial_dipoles(vtkSmartPointer<vtkRenderer> renderer,
+          const arma::mat& cords,
+          const arma::mat& partial_dipoles) {
+  assert(cords.n_rows == 3);
+  assert(partial_dipoles.n_rows == 3);
+  assert(cords.n_cols == partial_dipoles.n_cols);
+  const std::array<double, 3> pos_color {1.0, 0.0, 0.0};
+  const std::array<double, 3> neg_color {0.0, 0.0, 1.0};
+  for (auto idx = 0ul; idx < cords.n_cols; ++idx) {
+    const auto& cords_i = cords.col(idx).eval();
+    const auto& dipoles_i = partial_dipoles.col(idx).eval();
+    const auto radius = std::pow(arma::norm(dipoles_i), 0.25) / 2 * arbitrary_factor;
+    arma::vec3 center_plus =  cords_i + radius * dipoles_i / arma::norm(dipoles_i);
+    arma::vec3 center_minus = cords_i - radius * dipoles_i / arma::norm(dipoles_i);
+    std::array<double, 3> red = {1.0,0.0,0.0};
+    std::array<double, 3> blue = {0.0,0.0,1.0};
+    struct SphereInfo {
+      arma::vec3 center;
+      std::array<double, 3> color;
+    };
+    std::array<SphereInfo, 2> sphere_infos {{{center_plus, red},
+                                             {center_minus, blue}}};
+    // Spheres:
+    for (const auto& sphere_info : sphere_infos) {
+      vtkSmartPointer<vtkSphereSource> sphere =
+        vtkSmartPointer<vtkSphereSource>::New();
+      sphere->SetPhiResolution(16);
+      sphere->SetThetaResolution(16);
+      sphere->SetCenter(const_cast<double*>(sphere_info.center.memptr()));
+      sphere->SetRadius(radius);
+      vtkSmartPointer<vtkPolyDataMapper> sphereMapper =
+        vtkSmartPointer<vtkPolyDataMapper>::New();
+      sphereMapper->SetInputConnection(sphere->GetOutputPort());
+      vtkSmartPointer<vtkActor> sphereActor =
+        vtkSmartPointer<vtkActor>::New();
+      sphereActor->SetMapper(sphereMapper);
+      sphereActor->GetProperty()->SetColor(const_cast<double*>(sphere_info.color.data()));
+      renderer->AddActor(sphereActor);
+    }
+  }
+}
+
+namespace {
+
+  arma::mat33 _Qvec_to_Qmat(const arma::vec6& _) {
+    const auto& Q_xx = _(0);
+    const auto& Q_xy = _(1);
+    const auto& Q_xz = _(2);
+    const auto& Q_yy = _(3);
+    const auto& Q_yz = _(4);
+    const auto& Q_zz = _(5);
+    return {{Q_xx, Q_xy, Q_xz},
+            {Q_xy, Q_yy, Q_yz},
+            {Q_xz, Q_yz, Q_zz}};
+  }
+
+}
+
+void add_partial_quadrupoles(vtkSmartPointer<vtkRenderer> renderer,
+          const arma::mat& cords,
+          const arma::mat& partial_quadrupoles) {
+  assert(cords.n_rows == 3);
+  assert(partial_quadrupoles.n_rows == 6);
+  assert(cords.n_cols == partial_quadrupoles.n_cols);
+  const std::array<double, 3> pos_color {1.0, 0.0, 0.0};
+  const std::array<double, 3> neg_color {0.0, 0.0, 1.0};
+  for (auto idx = 0ul; idx < cords.n_cols; ++idx) {
+    const auto& cords_i = cords.col(idx).eval();
+    const auto& quardupoles_i = _Qvec_to_Qmat(partial_quadrupoles.col(idx).eval());
+    /*
+    const auto radius = std::pow(arma::norm(dipoles_i), 0.25) / 2 * arbitrary_factor;
+    arma::vec3 center_plus =  cords_i + radius * dipoles_i / arma::norm(dipoles_i);
+    arma::vec3 center_minus = cords_i - radius * dipoles_i / arma::norm(dipoles_i);
+    std::array<double, 3> red = {1.0,0.0,0.0};
+    std::array<double, 3> blue = {0.0,0.0,1.0};
+    */
+    struct SphereInfo {
+      double radius;
+      arma::vec3 center;
+      std::array<double, 3> color;
+    };
+    //std::array<SphereInfo, 2> sphere_infos {{{center_plus, red},
+    //                                         {center_minus, blue}}};
+    std::array<SphereInfo, 2> sphere_infos;
+    // Spheres:
+    for (const auto& sphere_info : sphere_infos) {
+      vtkSmartPointer<vtkSphereSource> sphere =
+        vtkSmartPointer<vtkSphereSource>::New();
+      sphere->SetPhiResolution(16);
+      sphere->SetThetaResolution(16);
+      sphere->SetCenter(const_cast<double*>(sphere_info.center.memptr()));
+      sphere->SetRadius(sphere_info.radius);
+      vtkSmartPointer<vtkPolyDataMapper> sphereMapper =
+        vtkSmartPointer<vtkPolyDataMapper>::New();
+      sphereMapper->SetInputConnection(sphere->GetOutputPort());
+      vtkSmartPointer<vtkActor> sphereActor =
+        vtkSmartPointer<vtkActor>::New();
+      sphereActor->SetMapper(sphereMapper);
+      sphereActor->GetProperty()->SetColor(const_cast<double*>(sphere_info.color.data()));
+      renderer->AddActor(sphereActor);
+    }
+  }
+
+
 }

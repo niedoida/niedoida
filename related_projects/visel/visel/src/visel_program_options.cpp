@@ -1,14 +1,14 @@
-#include <visel/visel_program_options.hpp>
+#include<visel/visel_program_options.hpp>
 
-#include <boost/program_options.hpp>
-#include <iostream>
+#include<boost/program_options.hpp>
+#include<iostream>
 
 namespace {
 
     void emit_help(
             std::ostream& s,
             const boost::program_options::options_description& desc) {
-        s << "Program: Vesel" << std::endl;
+        s << "Program: Visel" << std::endl;
         s << desc << std::endl;
     }
 } // namespace
@@ -26,7 +26,11 @@ ViselProgramOptions grep_program_options(int argc, char** argv) {
             // --lowdin, -l:
             ("lowdin,l",
             boost::program_options::bool_switch(),
-            "Use Lowdin population analysis instead of Mulliken population analysis (default is Mulliken).");
+            "Use Lowdin population analysis instead of Mulliken population analysis (default is Mulliken).")
+            // --standard, -s:
+            ("standard,s",
+            boost::program_options::bool_switch(),
+            "Use standard (molecule) orientation instead of input orientation analysis (default is input).");
     boost::program_options::positional_options_description p;
     p.add("niedoida-out-file-path", 1);
     // -------------------------------------------------------------------------
@@ -54,11 +58,14 @@ ViselProgramOptions grep_program_options(int argc, char** argv) {
     program_options.population_type = vm["lowdin"].as<bool>() ?
                                       ViselProgramOptions::PopulationType::Lowdin :
                                       ViselProgramOptions::PopulationType::Mulliken;
+    program_options.orientation_type = vm["standard"].as<bool>() ?
+                                       ViselProgramOptions::Orientation::Std :
+                                       ViselProgramOptions::Orientation::Inp;
     return program_options;
 }
 
-std::ostream& operator<<(std::ostream& stream, ViselProgramOptions::PopulationType script_type) {
-    switch (script_type) {
+std::ostream& operator<<(std::ostream& stream, ViselProgramOptions::PopulationType population_type) {
+    switch (population_type) {
         case ViselProgramOptions::PopulationType::Lowdin:
             stream << "Lowdin population analysis";
             break;
@@ -67,6 +74,20 @@ std::ostream& operator<<(std::ostream& stream, ViselProgramOptions::PopulationTy
             break;
         default:
             stream << "<invalid population analysis>";
+    }
+    return stream;
+}
+
+std::ostream& operator<<(std::ostream& stream, ViselProgramOptions::Orientation orientation) {
+    switch (orientation) {
+        case ViselProgramOptions::Orientation::Std:
+            stream << "Standard orientation";
+            break;
+        case ViselProgramOptions::Orientation::Inp:
+            stream << "Input orientation";
+            break;
+        default:
+            stream << "<invalid orientation>";
     }
     return stream;
 }

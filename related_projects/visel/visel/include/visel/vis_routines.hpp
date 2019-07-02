@@ -19,4 +19,12 @@ void add_partial_charges(vtkSmartPointer<vtkRenderer> renderer,
           const arma::mat& cords,
           const arma::vec& partial_charges);
 
+void add_partial_dipoles(vtkSmartPointer<vtkRenderer> renderer,
+          const arma::mat& cords,
+          const arma::mat& partial_dipoles);
+
+void add_partial_quadrupoles(vtkSmartPointer<vtkRenderer> renderer,
+          const arma::mat& cords,
+          const arma::mat& partial_quadrupoles);
+
 #endif

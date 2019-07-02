@@ -1,0 +1,72 @@
+Visel -- Visualization for niedoida partial multipoles module
+
+RATIONALE:
+
+    With the aid of niedoida package one may calculate
+    atomic partial multipoles.
+    Although the algebraic description of the multipoles
+    (as a set of numbers) is complete, it does not provide
+    straightforward insight into the physical nature of the mutipoles.
+    Visel is supposed to provide the insight
+    by generating a graphical representation of the multiopoles.
+
+INSTALLATION:
+
+- Visel compilation is not a part of niedoida compilation.
+- Compilation platform: Visel is intended to work on Ubuntu-like systems.
+- Compiler: GCC8 (needs to provide <filesystem> header).
+- Visel dependencies: Visel uses the niedoida's external_packages,
+  and VTK (Visualization Tookit). The latter is not provided by
+  the Visel build system.
+- VTK is a very popular high-level wrapper for OpenGL.
+  On Ubuntu-like system VTK may be installed from the system repo:
+  > apt install libvtk7-dev
+- Viesel compilation:
+  > mkdir build
+  > cd build
+  > cmake -DCMAKE_BUILD_TYPE=Release ..
+  > make
+
+USAGE:
+
+  Visel is a simple post-processing tool.
+  It it launched using CLI (in terminal).
+  A niedoida output file has to be provided as an CLI argument.
+
+  > niedoida $PATH_TO_NIEDOIDA_INPUT_FILE
+  > visel $PATH_TO_NIEDOIDA_OUTPUT_FILE
+
+  Note:
+  The niedoia input file has to contain the following options turned on:
+
+  ```
+   properties:
+    electric:
+      atomic_partial_mulliken_charges: true
+      atomic_partial_mulliken_dipoles_in_inp_frame: true
+      atomic_partial_mulliken_quadrupoles_in_inp_frame: true
+  ```
+  or:
+  ```
+   properties:
+    electric:
+      atomic_partial_mulliken_charges: true
+      atomic_partial_mulliken_dipoles_in_std_frame: true
+      atomic_partial_mulliken_quadrupoles_in_std_frame: true
+  ```
+  or:
+  ```
+   properties:
+    electric:
+      atomic_partial_lowdin_charges: true
+      atomic_partial_lowdin_dipoles_in_std_frame: true
+      atomic_partial_lowdin_quadrupoles_in_std_frame: true
+  ```
+  or:
+  ```
+   properties:
+    electric:
+      atomic_partial_lowdin_charges: true
+      atomic_partial_lowdin_dipoles_in_inp_frame: true
+      atomic_partial_lowdin_quadrupoles_in_inp_frame: true
+  ```

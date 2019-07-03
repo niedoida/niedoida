@@ -8,7 +8,7 @@ namespace {
     void emit_help(
             std::ostream& s,
             const boost::program_options::options_description& desc) {
-        s << "Program: Visel" << std::endl;
+        s << "Program: Visel -- Visualization for niedoida partial multipoles module" << std::endl;
         s << desc << std::endl;
     }
 } // namespace

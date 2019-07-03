@@ -124,10 +124,10 @@ int main(int argc, char** argv)
   renderer2->SetActiveCamera(camera); 
   renderer3->SetActiveCamera(camera); 
   // -------------------------------------------
-  renderer0->SetBackground(0.1, 0.2, 0.4);
-  renderer1->SetBackground(0.1, 0.2, 0.4);
-  renderer2->SetBackground(0.1, 0.2, 0.4);
-  renderer3->SetBackground(0.1, 0.2, 0.4);
+  renderer0->SetBackground(0.1, 0.2, 0.2);
+  renderer1->SetBackground(0.1, 0.2, 0.2);
+  renderer2->SetBackground(0.1, 0.2, 0.2);
+  renderer3->SetBackground(0.1, 0.2, 0.2);
   // -------------------------------------------
   renderer0->SetViewport(const_cast<double*>(view_port_coords[0].data()));
   renderer1->SetViewport(const_cast<double*>(view_port_coords[1].data()));

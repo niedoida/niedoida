@@ -37,6 +37,7 @@ USAGE:
 
   The full synopis:
   visel [-l] [-s] <PATH_TO_NIEDOIDA_OUTPUT_FILE>
+  visel -h
 
   Options:
    -l  Use Lowdin population analysis instead of Mulliken population analysis (default is Mulliken).

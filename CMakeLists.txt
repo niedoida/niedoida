@@ -99,5 +99,5 @@ add_subdirectory (el_stat_prop_kit)
 add_subdirectory (niedoida)
 
 install (DIRECTORY data/ DESTINATION share/niedoida)
-install (PROGRAMS run_all_niedoida_basis_tests run_all_niedoida_methods_tests run_all_niedoida_tests DESTINATION share/niedoida)
+#install (PROGRAMS run_all_niedoida_basis_tests run_all_niedoida_methods_tests run_all_niedoida_tests DESTINATION share/niedoida)
 install (DIRECTORY tests/niedoida DESTINATION share/niedoida/tests FILES_MATCHING PATTERN "*.inp" PATTERN "*.py")

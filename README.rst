@@ -83,7 +83,7 @@ macOS
      ./build_external_packages
      mkdir build
      cd build
-     ../external_packages/bin/cmake -DCMAKE_BUILD_TYPE=Release [-DNIEDOIDA_ENABLE_USER_DOCS=On] [-DCMAKE_INSTALL_PREFIX=<installation path>]..
+     ../external_packages/bin/cmake -DCMAKE_BUILD_TYPE=Release [-DNIEDOIDA_ENABLE_USER_DOCS=On] [-DCMAKE_INSTALL_PREFIX=<installation path>] ..
      make
 
 5. To install newly built binaries execute

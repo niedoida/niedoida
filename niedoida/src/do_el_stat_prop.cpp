@@ -439,7 +439,7 @@ namespace niedoida {
                 values.value_electron().memptr(), 3u, n_atoms);
             io::Log::instance().write(
                 io::Logger::TERSE,
-                "atomic_partial_lowdin_dipoles (in std-frame) [total, "
+                "atomic-partial-lowdin-dipoles (in std-frame) [total, "
                 "electrons contribution]",
                 value_electrons,
                 mfi_p());

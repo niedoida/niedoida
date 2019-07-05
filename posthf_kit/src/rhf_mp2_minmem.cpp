@@ -449,7 +449,7 @@ namespace niedoida {
             try {
                 m_I.resize(boost::extents[m_n][m_n][m_no_pairs_in_full_pass]);
                 m_P.resize(boost::extents[m_n][m_n][m_no_pairs_in_full_pass]);
-            } catch (std::bad_alloc) {
+            } catch (std::bad_alloc&) {
                 throw std::runtime_error(
                     "Not enough memory to make integral transformation.");
             }

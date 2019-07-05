@@ -51,7 +51,7 @@ namespace niedoida {
             try {
                 m_T1.resize(boost::extents[m_n][m_n * (m_n + 1) / 2]
                                           [m_no_occ_in_full_pass]);
-            } catch (std::bad_alloc) {
+            } catch (std::bad_alloc&) {
                 throw std::runtime_error(
                     "Not enough memory to make integral transformation.");
             }

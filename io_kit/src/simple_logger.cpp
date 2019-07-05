@@ -17,6 +17,7 @@ extern "C" {
 namespace niedoida {
     namespace io {
         SimpleLogger::SimpleLogger(std::ostream& os, const std::string& s) :
+            _vl(io::Logger::TERSE),
             _os(os),
             _s(s)
         {

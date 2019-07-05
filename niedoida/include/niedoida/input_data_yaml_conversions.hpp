@@ -102,7 +102,7 @@ namespace YAML {
 	    try {
 	      for( std::size_t i = 0; i < s; ++i )
 		v( i ) = n[i].as<double>();
-	    } catch (YAML::BadConversion) {
+	    } catch (YAML::BadConversion&) {
 	      return false;
 	    }
             return true;
@@ -146,9 +146,9 @@ namespace YAML {
 	      if ( pos != z_token.size())
 		return false;
 	      return true;
-	    } catch (std::invalid_argument) {
+	    } catch (std::invalid_argument&) {
 	      return false;
-	    } catch (std::out_of_range) {
+	    } catch (std::out_of_range&) {
 	      return false;
 	    }
         }
@@ -185,9 +185,9 @@ namespace YAML {
 	      if ( pos != charge_token.size())
 		return false;
 	      return true;
-	    } catch (std::invalid_argument) {
+	    } catch (std::invalid_argument&) {
 	      return false;
-	    } catch (std::out_of_range) {
+	    } catch (std::out_of_range&) {
 	      return false;
 	    }
         }
@@ -273,7 +273,7 @@ namespace YAML {
 	  try {
 	    v = n.as<double>();
             return true;
-	  } catch (YAML::BadConversion) {
+	  } catch (YAML::BadConversion&) {
 	    return false;
 	  }
         }

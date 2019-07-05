@@ -93,7 +93,7 @@ namespace yaml_inputter {
             try {
                 Value_t val = result.value.template as<Value_t>();
                 return {val, result.name, result.problem};
-            } catch (YAML::BadConversion) {
+            } catch (YAML::BadConversion&) {
                 Problem problem;
                 problem.no = Errno::fetched_conversion_fail;
                 problem.message = "[PROBLEM] yaml-bad-conversion error.";
@@ -113,7 +113,7 @@ namespace yaml_inputter {
             try {
                 Value_t val = result.value.template as<Value_t>();
                 return {val, result.name, result.problem};
-            } catch (YAML::BadConversion) {
+            } catch (YAML::BadConversion&) {
                 Problem problem;
                 problem.no = Errno::fetched_conversion_fail;
                 problem.message = "[PROBLEM] yaml-bad-conversion error.";

@@ -58,7 +58,7 @@ namespace niedoida {
             try {
                 m_gmo = arma::zeros<arma::vec>(no_occ * (no_occ + 1) * no_virt *
                                                no_virt / 2);
-            } catch (std::bad_alloc) {
+            } catch (std::bad_alloc&) {
                 throw std::runtime_error("Not enough memory to make in-memory "
                                          "integral transformation");
             }
@@ -389,7 +389,7 @@ namespace niedoida {
             try {
                 m_gmo =
                     arma::zeros<arma::vec>(no_occ * no_occ * no_virt * no_virt);
-            } catch (std::bad_alloc) {
+            } catch (std::bad_alloc&) {
                 throw std::runtime_error("Not enough memory to make in-memory "
                                          "integral transformation");
             }

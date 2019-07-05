@@ -15,6 +15,17 @@ INSTALLATION:
 - Visel compilation is not a part of niedoida compilation.
 - Compilation platform: Visel is intended to work on Ubuntu-like systems.
 - Compiler: GCC8 (needs to provide <filesystem> header).
+- Ubuntu 18.04 is shipped with GCC7. GCC8 may be installed from the system repo:
+  > sudo apt-get install gcc-8 g++-8 gfortran-8
+  > gcc-8 --version; g++-8 --version; gfortran-8 --version;
+  To make sure all the GCC components are used consistently
+  one may take advantage of the system update-alternatives tool:
+  > sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 700 --slave /usr/bin/g++ g++ /usr/bin/g++-7 --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-7
+  > sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 800 --slave /usr/bin/g++ g++ /usr/bin/g++-8 --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-8
+  > gcc --version; g++ --version; gfortran --version;
+  > update-alternatives --query gcc
+  To change the exposed version run:
+  # sudo update-alternatives --config gcc
 - Visel dependencies: Visel uses the niedoida's external_packages,
   and VTK (Visualization Tookit). The latter is not provided by
   the Visel build system.

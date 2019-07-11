@@ -85,6 +85,9 @@ namespace niedoida {
      * [1] http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.707.1405&rep=rep1&type=pdf
      */
 
+    /* 
+     * Abstract class for common open/close shell interface.
+     */
     class CPHF_linearResponse{
     public:
       virtual ~CPHF_linearResponse() = default;
@@ -96,7 +99,8 @@ namespace niedoida {
     };
 
 
-    /* Implementacja interfejsu CPHF_linearResponse dla wersji otwartopowlokowej:
+    /* 
+     * Concrete class for open shell calculations.
      */
     class CPHF_linearResponse_UHF : public CPHF_linearResponse, boost::noncopyable  {
     private:
@@ -133,7 +137,8 @@ namespace niedoida {
     };
 
 
-    /* Implementacja interfejsu CPHF_linearResponse dla wersji zamknietopowlokowej:
+    /* 
+     * Concrete class for closed shell calculations.
      */
     class CPHF_linearResponse_RHF : public CPHF_linearResponse, boost::noncopyable {
     private:
@@ -171,7 +176,9 @@ namespace niedoida {
     };
 
 
-    /* Wyjatek jaki moze byc rzucony gdy nie uda sie rozwiazac rownan CPHFu:
+    /*
+     * The exception class thrown when
+     * solving CPHF equation system fails.
      */
     class CPHF_linearResponse_solver_exception : public std::exception {
     private:
@@ -192,10 +199,16 @@ namespace niedoida {
       }
     };
 
-
-    /* Zwykle stanu ukladu niezaburzonego liczymy SCFem;
-     * w tych sytuacjach klase implementujaca CPHF_linearResponse
-     * mozna latwo utworzyc ponizsza funkcja:
+    /*
+     * SFC calculations has to be carried out
+     * before the CPHF calculations are triggered.
+     *
+     * This helper function is a factory function for
+     * creating a CPHF solver class based on a SCF solver class.
+     * For closed (open) shell SCF solver classes the function creates
+     * closed (open) shell CPHF solver classes.
+     * In this way the function provides a common closed/open shell API and
+     * eliminates the needs of using the CPHF solver classes constructors on the client side.
      */
     std::shared_ptr<CPHF_linearResponse>
     make_CPHF_linearResponse(
@@ -204,13 +217,24 @@ namespace niedoida {
       std::shared_ptr<const core::TwoElectronIntegralEngineFactory> ie_factory);
 
 
-    /* funkcja pomocnicza,
-     * zamienia macierz zaburzenia jednoelektronowego HperturbAO (macierz Nbasis x Nbasis)
-     * na pare macierzy DDE_over_DxDkappa_alpha oraz DDE_over_DxDkappa_beta (macierze Nocc x Nvirt).
-     * Scislej, postulujemy zaburzenie H' = x * HperturbAO, gdzie x to liczba rzeczywista.
-     * Do konwersji porzebna jest wiedza:
-     *   jak wygladaja macierze matFreeC_alpha oraz matFreeC_beta, oraz
-     *   jakie sa wartosci Nocc_alpha oraz Nocc_beta.
+    /*
+     * The CPHF_linearResponse API utilizes the mixed derivative
+     * \frac{\partial^2 E}{\partial \kappa_{ar\sigma} \partial x} values
+     * instead of an explicit Hamiltonian - its parameter dependency definition.
+     *
+     * This is a helper function that generates the derivative values
+     * for a very special, yet common Hamiltonian - its parameter dependency type:
+     * \hat H(x;1...N) = \hat H_0(1...N) + x * sum_{n=1...N} H'(n)
+     * where: N the total number of electron,
+     *        \hat H(x;1...N), \hat H_0(1...N) the ‘full’ and the ‘not perturbed’
+     *        Hamiltonians defined the N-electron Hilbert space,
+     *        (the semicolon is to distinguish between the Hamiltonian parameter
+     *         and the Hamiltonian arguments),
+     *        H'(n) the one electron perturbation Hamiltonian.
+     * We assume that H' is spin projection invariant
+     * (depends only on the spatial part of an electron wave function).
+     *
+     * All the input matrix arguments are expressed in the AO basis set.
      */
     std::pair<arma::mat, arma::mat>
     transform_HperturbAO_to_DDE_over_DxDkappa(const arma::mat & HperturbAO,

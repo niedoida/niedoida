@@ -55,7 +55,7 @@ namespace niedoida {
      * (each time with with respect to an arbitrary parameter
      * describing the Hamiltonian dependence).
      *
-     * At the class client endpoint the calculations requires two member functions call.
+     * At the class client endpoint the calculations requires two member functions calls:
      * (i)  solveCPHFequations_given_DDE member function call
      *      to perform the calculations and save the results internally
      *      (inside the solveCPHFequations_given_DDE class instance),
@@ -229,7 +229,7 @@ namespace niedoida {
      * \hat H(x;1...N) = \hat H_0(1...N) + x * sum_{n=1...N} H'(n)
      * where: N denotes the total number of electron,
      *        \hat H(x;1...N) and \hat H_0(1...N) denotes
-     *        a ‘full’ and a ‘not perturbed’ Hamiltonians
+     *        a 'full' and a 'not perturbed' Hamiltonians
      *        defined the N-electron Hilbert space,
      *        (the semicolon is to distinguish between the Hamiltonian parameter
      *         and the Hamiltonian arguments),

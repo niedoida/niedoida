@@ -128,7 +128,7 @@ namespace niedoida {
         const arma::vec& mo_energies_beta);
       CPHF_linearResponse_UHF(const CPHF_linearResponse_UHF &) = delete;
       const CPHF_linearResponse_UHF & operator=(const CPHF_linearResponse_UHF &) = delete;
-      ~ CPHF_linearResponse_UHF(); 
+      ~CPHF_linearResponse_UHF(); 
       void solveCPHFequations_given_DDE(
         const arma::mat & DDE_over_DxDkappa_alpha,
         const arma::mat & DDE_over_DxDkappa_beta) override;
@@ -233,7 +233,7 @@ namespace niedoida {
      *        defined the N-electron Hilbert space,
      *        (the semicolon is to distinguish between the Hamiltonian parameter
      *         and the Hamiltonian arguments),
-     *        H'(n) denotes a one electron perturbation Hamiltonian.
+     *        H'(n) denotes a one electron 'perturbation' Hamiltonian.
      * Here H' is assumed to be spin projection invariant
      * (i.e. depends only on the spatial part of an electron wave function).
      *

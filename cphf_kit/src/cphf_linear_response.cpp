@@ -91,6 +91,7 @@ namespace {
     // ...........................................................
     // ...The contex classes will be used together ...............
     //    with (i) MatShell and (ii) PCShell classes..............
+    // ...........................................................
 
     struct cphf_context_UHF {
         cphf_context_UHF(
@@ -101,13 +102,13 @@ namespace {
             unsigned n_occ_alpha,
             unsigned n_occ_beta,
             std::unique_ptr<niedoida::core::HFFockMatrixGenerator> fmg);
-        arma::mat C_alpha;
-        arma::mat C_beta;
-        arma::vec eps_alpha;
-        arma::vec eps_beta;
-        unsigned n_occ_alpha;
-        unsigned n_occ_beta;
-        std::unique_ptr<niedoida::core::HFFockMatrixGenerator> fmg;
+        const arma::mat C_alpha;
+        const arma::mat C_beta;
+        const arma::vec eps_alpha;
+        const arma::vec eps_beta;
+        const unsigned n_occ_alpha;
+        const unsigned n_occ_beta;
+        const std::unique_ptr<niedoida::core::HFFockMatrixGenerator> fmg;
     };
 
     cphf_context_UHF::cphf_context_UHF(
@@ -135,10 +136,10 @@ namespace {
             unsigned n_occ,
             std::unique_ptr<niedoida::core::FockMatrixGenerator> fmg);
 
-        arma::mat C;
-        arma::vec eps;
-        unsigned n_occ;
-        std::unique_ptr<niedoida::core::FockMatrixGenerator> fmg;
+        const arma::mat C;
+        const arma::vec eps;
+        const unsigned n_occ;
+        const std::unique_ptr<niedoida::core::FockMatrixGenerator> fmg;
     };
 
     cphf_context_RHF::cphf_context_RHF(

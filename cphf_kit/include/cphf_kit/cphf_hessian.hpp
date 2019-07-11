@@ -37,10 +37,10 @@ namespace niedoida {
      * it may be reused many times to calculate the Hessian matrix
      * with the aid of calculate_CPHF_Hessian_given_DDE member function --
      * each time with with respect to an arbitrary set of the Hamiltonian parameters.
-     * The function takes the Hamiltonian parameters dependency as its input.
+     * The function takes the Hamiltonian - its parameters dependency as its input.
      * The dependency is not defined directly, but by means of
      * a set of mixed derrivative
-     * \frac{\partial^2 E}{\partial \kappa_{ar} \partial x_i} values
+     * \frac{\partial^2 E}{\partial \kappa_{ar\sigma} \partial x_i} values
      * (compare to eq. 24 and eq. 30 in [1]).
      *
      * References:
@@ -53,7 +53,7 @@ namespace niedoida {
       std::vector< arma::mat > calculated_U_matrices; // used by calc_u_matrixes and get_U;
     public:
       CPHF_Hessian(CPHF_linearResponse& );
-      arma::mat calculate_CPHF_Hessian_given_DDE(const std::vector<std::pair<arma::mat,arma::mat>> & collectionOf_DDE_over_DxDkappa);
+      arma::mat calculate_CPHF_Hessian_given_DDE(const std::vector<std::pair<arma::mat,arma::mat>> & collectionOf_DDE_over_DxDkappa) const;
       void calc_u_matrices(const std::vector<std::pair<arma::mat,arma::mat>> & collectionOf_DDE_over_DxDkappa);
       std::vector< arma::mat > get_U();
     };

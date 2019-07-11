@@ -35,44 +35,56 @@ namespace niedoida {
      * CPHF_linearResponse interface class and its concrete subclasses
      * are to provide an implementation of calculations of
      * the wave function coefficients derivatives.
-     * The calculations include both:
+     * The implementation includes both:
      * (1) construction of the CPHF equations system, and
      * (2) solving of the system.
      *
      * The CPHF equations system is build up on the HF/DFT LCAO SCF methodology.
      * The equations take the SCF calculations results as their parameters.
-     * Hence the concrete subclasses takes the corresponding SCF calculations results
+     * Hence the concrete subclasses take the corresponding SCF calculations results
      * as their instances initialization parameters.
      *
      * The class follows the strategy design pattern --
      * allowing the two-electron integrals calculations
-     * to be implemented in an arbitrary class
+     * to be implemented in an arbitrary class.
+     * The strategy is set during a CPHF_linearResponse
+     * class instance initialization.
      *
+     * Once a CPHF_linearResponse class instance is initialized
+     * it may be reused many times to calculate the LCAO coefficients derivatives,
+     * (each time with with respect to an arbitrary parameter
+     * describing the Hamiltonian dependence).
+     *
+     * At the class client endpoint the calculations requires two member functions call.
+     * (i)  solveCPHFequations_given_DDE member function call
+     *      to perform the calculations and save the results internally
+     *      (inside the solveCPHFequations_given_DDE class instance),
+     * (ii) get_solution member function call to retrieve the saved results.
+     *
+     * The former function takes the Hamiltonian - its parameter dependency as its input.
+     * The dependency is not defined directly, but by means of a set of mixed derivative
+     * \frac{\partial^2 E}{\partial \kappa_{ar\sigma} \partial x} values.
+     * where: x \in \mathbf{R} is the parameter introduced to describe the \hat H(x) dependence,
+     *        \kappa_{ar\sigma} are the orbital rotation coefficients with
+     *        a, r, \sigma indices denoting the occupied MO, virtual MO and the spin projection.
+     *        E = E(x, \kappa) the mean value of \hat H(x) for the electronic state 
+     *        corresponding to \kappa,
+     * The values are arranged in the matrix layout as follows:
+     * there are two matrices - one for each spin projection value;
+     * the row index of the matrices corresponds to occupied MO and
+     * the col index of the matrices corresponds to virtual MO.
+     *
+     * The calculation solutions -- the values of
+     * \frac{\partial \kappa_{ar\sigma}}{partial x}
+     * are arranged in matrix layout analogical to the layout described above:
+     * there are two matrices - one for each spin projection value;
+     * the row index of the matrices corresponds to occupied MO and
+     * the col index of the matrices corresponds to virtual MO.
+     * 
      * References:
      * [1] http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.707.1405&rep=rep1&type=pdf
      */
 
-    /*
-     *
-     * Raz utworzona klasa pozwala na obiczenie
-     * odpowiedzi liniowej stanu elektronowego danego ukladu chemicznego
-     * wielokrotnie.
-     *
-     * Wynik obliczen, tj. odpowiedz liniowa stanu elektronowego
-     * reprezentowanej jest poprzez ,,macierze roatcji''.
-     * tj. macierze Dkappa_alpha_over_Dx oraz Dkappa_beta_over_Dx.
-     * obie te macierze to macierze Nocc x Nvirt [odpowiednio: alpha, beta]
-     * (indeksy macierzowe to indeksy kappa)
-     *
-     * Dane do obliczen, tj. zaburzenie hamiltonianu
-     * reprezentowane sa przez macierze
-     * DDE_over_DxDkappa_alpha oraz DDE_over_DxDkappa_beta
-     * obie te macierze to macierze Nocc x Nvirt [odpowiednio: alpha, beta]
-     * (indeksy macierzowe to indeksy kappa)
-     *
-     * Pojedyczne obliczenia polega na wywolaniu metody solveCPHFequations_given_DDE(...)
-     * oraz czytaniu wyniku za pomoca get_solution(Spin);
-     */
     class CPHF_linearResponse{
     public:
       virtual ~CPHF_linearResponse() = default;

@@ -18,7 +18,7 @@ namespace niedoida {
 
         arma::mat CPHF_Hessian::calculate_CPHF_Hessian_given_DDE(
             const std::vector<std::pair<arma::mat, arma::mat>>&
-                collectionOf_DDE_over_DxDkappa)
+                collectionOf_DDE_over_DxDkappa) const
         {
             const unsigned Nperturbations =
                 collectionOf_DDE_over_DxDkappa.size();

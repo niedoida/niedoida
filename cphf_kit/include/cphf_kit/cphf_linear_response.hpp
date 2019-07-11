@@ -20,16 +20,39 @@ namespace niedoida {
   namespace cphf {
 
     //#################################################################################
-    //####################   CPHF_linearResponse     ##################################     
+    //####################   CPHF_linearResponse     ##################################
     //#################################################################################
-        
-    /* Klasa CPHF_linearResponse to maszynka do liczenia
-     * liniowej odpowiedzi stanu elektronowego metody HF na zaburzenie Hamiltonianu.
+
+    /*
+     * When the electronic Hamiltonian depends on an arbitrary parameter
+     * so does the electronic wave function.
+     * In the lowest nontrivial order the latter is quantified by the
+     * wave function LCAO coefficients derivatives (with respect to the parameter).
      *
-     * Klase tworzy sie dla zadanego ukladu chemicznego;
-     * przy czym konieczne jest podanie (w konstruktorze) stanu ukladu niezaburzonego.
-     * [ktory to trzeba wyliczyc wczesniej innymi dostepnymi metodami, np. SCFem].
-     * Przez stanu ukladu niezaburzonego rozumiemy tu stosowne macierze C oraz wektor epsilon.
+     * The derivatives may be calculated as a solution of CPHF equations system,
+     * see eq. 27 in [1].
+     *
+     * CPHF_linearResponse interface class and its concrete subclasses
+     * are to provide an implementation of calculations of
+     * the wave function coefficients derivatives.
+     * The calculations include both:
+     * (1) construction of the CPHF equations system, and
+     * (2) solving of the system.
+     *
+     * The CPHF equations system is build up on the HF/DFT LCAO SCF methodology.
+     * The equations take the SCF calculations results as their parameters.
+     * Hence the concrete subclasses takes the corresponding SCF calculations results
+     * as their instances initialization parameters.
+     *
+     * The class follows the strategy design pattern --
+     * allowing the two-electron integrals calculations
+     * to be implemented in an arbitrary class
+     *
+     * References:
+     * [1] http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.707.1405&rep=rep1&type=pdf
+     */
+
+    /*
      *
      * Raz utworzona klasa pozwala na obiczenie
      * odpowiedzi liniowej stanu elektronowego danego ukladu chemicznego
@@ -54,8 +77,8 @@ namespace niedoida {
     public:
       virtual ~CPHF_linearResponse() = default;
       virtual void solveCPHFequations_given_DDE(
-                const arma::mat & DDE_over_DxDkappa_alpha,
-		const arma::mat & DDE_over_DxDkappa_beta) = 0;  
+        const arma::mat & DDE_over_DxDkappa_alpha,
+        const arma::mat & DDE_over_DxDkappa_beta) = 0;
       virtual arma::mat get_solution(core::Spin) const = 0;
       virtual bool is_restricted() const = 0;
     };
@@ -82,18 +105,18 @@ namespace niedoida {
       KSP ksp;
     public:
       CPHF_linearResponse_UHF(std::shared_ptr<const core::System> system,
-            std::shared_ptr<const core::TwoElectronIntegralEngineFactory> ie_factory, 
-            const arma::mat& mo_coeffs_alpha,
-            const arma::mat& mo_coeffs_beta, 
-            const arma::vec& mo_energies_alpha,
-            const arma::vec& mo_energies_beta );
+        std::shared_ptr<const core::TwoElectronIntegralEngineFactory> ie_factory,
+        const arma::mat& mo_coeffs_alpha,
+        const arma::mat& mo_coeffs_beta,
+        const arma::vec& mo_energies_alpha,
+        const arma::vec& mo_energies_beta);
       CPHF_linearResponse_UHF(const CPHF_linearResponse_UHF &) = delete;
       const CPHF_linearResponse_UHF & operator=(const CPHF_linearResponse_UHF &) = delete;
       ~ CPHF_linearResponse_UHF(); 
       void solveCPHFequations_given_DDE(
-                const arma::mat & DDE_over_DxDkappa_alpha,
-                const arma::mat & DDE_over_DxDkappa_beta) override;  
-      arma::mat get_solution(core::Spin) const override;  
+        const arma::mat & DDE_over_DxDkappa_alpha,
+        const arma::mat & DDE_over_DxDkappa_beta) override;
+      arma::mat get_solution(core::Spin) const override;
       bool is_restricted() const override;
     };
 
@@ -114,21 +137,23 @@ namespace niedoida {
       Mat A;
       KSP ksp;
     public:
-      CPHF_linearResponse_RHF(std::shared_ptr<const core::System> system,
-            std::shared_ptr<const core::TwoElectronIntegralEngineFactory> ie_factory, 
-            const arma::mat& mo_coeffs,
-            const arma::vec& mo_energies);
-      CPHF_linearResponse_RHF(std::shared_ptr<const core::System> system,
-                 std::shared_ptr<const core::TwoElectronIntegralEngineFactory> ie_factory, 
-                 std::shared_ptr<const core::FockMatrixGeneratorFactory> fm_gen_factory,                                        
-                 const arma::mat& mo_coeffs, 
-                 const arma::vec& mo_energies );
+      CPHF_linearResponse_RHF(
+        std::shared_ptr<const core::System> system,
+        std::shared_ptr<const core::TwoElectronIntegralEngineFactory> ie_factory,
+        const arma::mat& mo_coeffs,
+        const arma::vec& mo_energies);
+      CPHF_linearResponse_RHF(
+        std::shared_ptr<const core::System> system,
+        std::shared_ptr<const core::TwoElectronIntegralEngineFactory> ie_factory,
+        std::shared_ptr<const core::FockMatrixGeneratorFactory> fm_gen_factory,
+        const arma::mat& mo_coeffs,
+        const arma::vec& mo_energies);
       CPHF_linearResponse_RHF(const CPHF_linearResponse_RHF &) = delete;
       const CPHF_linearResponse_RHF & operator=(const CPHF_linearResponse_RHF &) = delete;
-      ~ CPHF_linearResponse_RHF();
+      ~CPHF_linearResponse_RHF();
       void solveCPHFequations_given_DDE(
-		const arma::mat & DDE_over_DxDkappa_alpha,
-                const arma::mat & DDE_over_DxDkappa_beta) override;
+        const arma::mat & DDE_over_DxDkappa_alpha,
+        const arma::mat & DDE_over_DxDkappa_beta) override;
       arma::mat get_solution(core::Spin) const override;
       bool is_restricted() const override;
     };
@@ -161,13 +186,14 @@ namespace niedoida {
      * mozna latwo utworzyc ponizsza funkcja:
      */
     std::shared_ptr<CPHF_linearResponse>
-    make_CPHF_linearResponse(std::shared_ptr<const core::System> system,
-                              const scf::SCF & free_scf,
-                              std::shared_ptr<const core::TwoElectronIntegralEngineFactory> ie_factory);
+    make_CPHF_linearResponse(
+      std::shared_ptr<const core::System> system,
+      const scf::SCF & free_scf,
+      std::shared_ptr<const core::TwoElectronIntegralEngineFactory> ie_factory);
 
 
     /* funkcja pomocnicza,
-     * zamienia macierz zaburzenia jednoelektronowego HperturbAO (macierz Nbasis x Nbasis) 
+     * zamienia macierz zaburzenia jednoelektronowego HperturbAO (macierz Nbasis x Nbasis)
      * na pare macierzy DDE_over_DxDkappa_alpha oraz DDE_over_DxDkappa_beta (macierze Nocc x Nvirt).
      * Scislej, postulujemy zaburzenie H' = x * HperturbAO, gdzie x to liczba rzeczywista.
      * Do konwersji porzebna jest wiedza:
@@ -182,13 +208,15 @@ namespace niedoida {
 
     template<class RandomAccessBitIt>
     std::vector<std::pair<arma::mat, arma::mat>>
-    transform_HperturbAO_to_DDE_over_DxDkappa(RandomAccessBitIt first, RandomAccessBitIt last,
-					      const arma::mat & matFreeC_alpha, const arma::mat & matFreeC_beta,
-					      unsigned Nocc_alpha, unsigned Nocc_beta){
+    transform_HperturbAO_to_DDE_over_DxDkappa(
+        RandomAccessBitIt first, RandomAccessBitIt last,
+        const arma::mat & matFreeC_alpha, const arma::mat & matFreeC_beta,
+        unsigned Nocc_alpha, unsigned Nocc_beta){
       std::vector<std::pair<arma::mat, arma::mat>> retult(last - first);
-      using fn_t = std::pair<arma::mat, arma::mat> (*)(const arma::mat & HperturbAO,
-						       const arma::mat & matFreeC_alpha, const arma::mat & matFreeC_beta,
-						       unsigned Nocc_alpha, unsigned Nocc_beta);
+      using fn_t = std::pair<arma::mat, arma::mat> (*)(
+        const arma::mat & HperturbAO,
+        const arma::mat & matFreeC_alpha, const arma::mat & matFreeC_beta,
+        unsigned Nocc_alpha, unsigned Nocc_beta);
       fn_t basic_function = transform_HperturbAO_to_DDE_over_DxDkappa;
       std::transform(first, last, retult.begin(), std::bind(basic_function, std::placeholders::_1, matFreeC_alpha, matFreeC_beta, Nocc_alpha, Nocc_beta));
       return retult;

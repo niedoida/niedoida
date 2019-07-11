@@ -13,21 +13,17 @@
 
 namespace {
 
-    // ######################################################################################################
-    // ###################################### [ funkcje pomocnicze ]
-    // ########################################
-    // ######################################################################################################
+    // ###########################################################
+    // ############ helper functions #############################
+    // ###########################################################
 
-    //   ..................................................................................................
-    //   ................................  pomocnicza funkcja robiaca konwersje:
-    //   ..........................
-    //   ...... arma::mat [macierz, dwa indeksy] <-> petsc Vec [wektor o jedym
-    //   multiindeksie] .............
-    //   ..................................................................................................
+    // ...........................................................
+    // .... Helper functions for algebraic data type conversion ..
+    // ...........................................................
 
-    void arma_mat_to_petsc_vec(const arma::mat& A, Vec a)
+    void arma_mat_to_petsc_vec(const arma::mat& A,
+                               Vec a)
     {
-        // Ta funkcja porzebna jest w CPHF_RHF'ie
         for (unsigned i = 0; i < A.n_rows; ++i)
             for (unsigned j = 0; j < A.n_cols; ++j) {
                 const PetscInt ij = j * A.n_rows + i;
@@ -42,7 +38,6 @@ namespace {
                                    const arma::mat& A_beta,
                                    Vec a)
     {
-        // Ta funkcja porzebna jest w CPHF_UHF'ie
         for (unsigned i = 0; i < A_alpha.n_rows; ++i)
             for (unsigned j = 0; j < A_alpha.n_cols; ++j) {
                 const PetscInt ij = j * A_alpha.n_rows + i;
@@ -62,7 +57,6 @@ namespace {
 
     void petsc_vec_to_arma_mat(Vec a, arma::mat& A)
     {
-        // Ta funkcja porzebna jest w CPHF_RHF'ie
         for (unsigned i = 0; i < A.n_rows; ++i)
             for (unsigned j = 0; j < A.n_cols; ++j) {
                 const PetscInt ij = j * A.n_rows + i;
@@ -74,7 +68,6 @@ namespace {
 
     void petsc_vec_to_arma_two_mat(Vec a, arma::mat& A_alpha, arma::mat& A_beta)
     {
-        // Ta funkcja porzebna jest w CPHF_UHF'ie
         for (unsigned i = 0; i < A_alpha.n_rows; ++i)
             for (unsigned j = 0; j < A_alpha.n_cols; ++j) {
                 const PetscInt ij = j * A_alpha.n_rows + i;
@@ -92,21 +85,12 @@ namespace {
             }
     }
 
-    // ..............................................................................
-    // .............................. DEFINICJA KONTEKSTOW
-    // ..........................
-    // ..............................................................................
-    // .....  konteksty to obiekty wymyslone w PETSC by mogly dzialac:
-    // ..............
-    // ...... (i) MatShell
-    // ..........................................................
-    // ...... (ii) PCShell
-    // ..........................................................
-    // ...... Np. funkcja wykonujaca dzialanie x -> Ax moze poprosic o kontekst,
-    // ....
-    // ...... z ktorego czyta wszystkie potrzebne jej dane
-    // ..........................
-    // ..............................................................................
+    // ...........................................................
+    // .. Definition of the contex classes .......................
+    // .. used for PETSC C-type API solver .......................
+    // ...........................................................
+    // ...The contex classes will be used together ...............
+    //    with (i) MatShell and (ii) PCShell classes..............
 
     struct cphf_context_UHF {
         cphf_context_UHF(
@@ -169,12 +153,10 @@ namespace {
     {
     }
 
-    // ...................................................................................
-    // .....................DEFINICJA FUNKCJI POTRZEBNYVH DO
-    // .............................
-    // .....................PRECONDITIONINGu
-    // .............................................
-    // ...................................................................................
+    // ...........................................................
+    // ..Definition of functions used at .........................
+    // . preconditioning stage ...................................
+    // ...........................................................
 
     PetscErrorCode pcApply_UHF(PC pc, Vec x, Vec PCx)
     {
@@ -228,21 +210,10 @@ namespace {
         return 0;
     }
 
-    // ..................................................................................
-    // .....................DEFINICJA FUNKCJI WYKONUJACYCH
-    // .............................
-    // .....................MNOZENIE: MACIERZ GLOWNA UKLADU ROWNAN CPHF (Mat A)
-    // .........
-    // .............................. razy
-    // ..............................................
-    // .............................. WEKTOR PROBNY (Vec x)
-    // .............................
-    // ..................................................................................
-    // ... Vec x ma Nocc * Nvirt elementow [RHF], lub
-    // ...................................
-    // ... Vec x ma Nocc_alpha * Nvirt_alpha + Nocc_beta * Nvirt_beta elementow
-    // [UHF] ...
-    // ..................................................................................
+    // ...........................................................
+    // ..Definition of functions used by .........................
+    // . the CPHF equation system main matrix shell ..............
+    // ...........................................................
 
     PetscErrorCode mult_UHF(Mat A, Vec x, Vec Ax)
     {
@@ -294,9 +265,6 @@ namespace {
         return 0;
     }
 
-    // ................................................. mult_RHF
-    // ..............................................
-
     PetscErrorCode mult_RHF(Mat A, Vec x, Vec Ax)
     {
         // Logger::Section section(Log::instance(), "mult_RHF (cphf)");
@@ -327,15 +295,14 @@ namespace {
         return 0;
     }
 
-} // Koniec anonimowej przestrzeni nazw
+}
 
 namespace niedoida {
     namespace cphf {
 
-        // ###############################################################################################
-        // ##################     CPHF_linearResponse_UHF
-        // ###########################################
-        // ###############################################################################################
+        // #############################################################
+        // ##################     CPHF_linearResponse_UHF    ###########
+        // #############################################################
 
         CPHF_linearResponse_UHF::CPHF_linearResponse_UHF(
             std::shared_ptr<const core::System> system,
@@ -466,10 +433,9 @@ namespace niedoida {
 
         bool CPHF_linearResponse_UHF::is_restricted() const { return false; }
 
-        // ###############################################################################################
-        // ##################     CPHF_linearResponse_RHF
-        // ###########################################
-        // ###############################################################################################
+        // #############################################################
+        // ##################     CPHF_linearResponse_RHF    ###########
+        // #############################################################
 
         CPHF_linearResponse_RHF::CPHF_linearResponse_RHF(
             std::shared_ptr<const core::System> system,
@@ -620,10 +586,9 @@ namespace niedoida {
 
         bool CPHF_linearResponse_RHF::is_restricted() const { return true; }
 
-        // ###############################################################################################
-        // ##################     funkcja: make_CPHF_linearResponse(....)
-        // ##############################
-        // ###############################################################################################
+        // #############################################################
+        // ############  make_CPHF_linearResponse(...)  ################
+        // #############################################################
 
         std::shared_ptr<CPHF_linearResponse> make_CPHF_linearResponse(
             std::shared_ptr<const core::System> system,
@@ -649,10 +614,9 @@ namespace niedoida {
                         free_scf.mo_energies(core::SPIN_BETA)));
         }
 
-        // ###############################################################################################
-        // ##################     funkcja:
-        // transform_HperturbAO_to_DDE_over_DxDkappa(...)   ##############
-        // ###############################################################################################
+        // #############################################################
+        // ###### transform_HperturbAO_to_DDE_over_DxDkappa(...)   #####
+        // #############################################################
 
         std::pair<arma::mat, arma::mat>
         transform_HperturbAO_to_DDE_over_DxDkappa(
@@ -662,7 +626,6 @@ namespace niedoida {
             unsigned Nocc_alpha,
             unsigned Nocc_beta)
         {
-
             const unsigned N = matFreeC_alpha.n_cols;
             const arma::mat mat_DDE_over_DxDkappa_alpha =
                 2 * matFreeC_alpha.cols(0, Nocc_alpha - 1).t() * HperturbAO *

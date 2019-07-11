@@ -204,7 +204,9 @@ namespace niedoida {
      * before the CPHF calculations are triggered.
      *
      * This helper function is a factory function for
-     * creating a CPHF solver class based on a SCF solver class.
+     * creating a CPHF solver class (instance of a subclass of CPHF_linearResponse class)
+     * based on a SCF solver class.
+     *
      * For closed (open) shell SCF solver classes the function creates
      * closed (open) shell CPHF solver classes.
      * In this way the function provides a common closed/open shell API and
@@ -225,21 +227,23 @@ namespace niedoida {
      * This is a helper function that generates the derivative values
      * for a very special, yet common Hamiltonian - its parameter dependency type:
      * \hat H(x;1...N) = \hat H_0(1...N) + x * sum_{n=1...N} H'(n)
-     * where: N the total number of electron,
-     *        \hat H(x;1...N), \hat H_0(1...N) the ‘full’ and the ‘not perturbed’
-     *        Hamiltonians defined the N-electron Hilbert space,
+     * where: N denotes the total number of electron,
+     *        \hat H(x;1...N) and \hat H_0(1...N) denotes
+     *        a ‘full’ and a ‘not perturbed’ Hamiltonians
+     *        defined the N-electron Hilbert space,
      *        (the semicolon is to distinguish between the Hamiltonian parameter
      *         and the Hamiltonian arguments),
-     *        H'(n) the one electron perturbation Hamiltonian.
-     * We assume that H' is spin projection invariant
-     * (depends only on the spatial part of an electron wave function).
+     *        H'(n) denotes a one electron perturbation Hamiltonian.
+     * Here H' is assumed to be spin projection invariant
+     * (i.e. depends only on the spatial part of an electron wave function).
      *
      * All the input matrix arguments are expressed in the AO basis set.
      */
     std::pair<arma::mat, arma::mat>
-    transform_HperturbAO_to_DDE_over_DxDkappa(const arma::mat & HperturbAO,
-                                              const arma::mat & matFreeC_alpha, const arma::mat & matFreeC_beta,
-                                              unsigned Nocc_alpha, unsigned Nocc_beta);
+    transform_HperturbAO_to_DDE_over_DxDkappa(
+      const arma::mat & HperturbAO,
+      const arma::mat & matFreeC_alpha, const arma::mat & matFreeC_beta,
+      unsigned Nocc_alpha, unsigned Nocc_beta);
 
 
     template<class RandomAccessBitIt>

@@ -9,926 +9,462 @@ namespace {
     static const double Pi = M_PI;
 }
 
-void overlap_gradient_32(double ae,
-                         double be,
-                         double cc,
-                         double xAB,
-                         double yAB,
-                         double zAB,
-                         double* const gx,
-                         double* const gy,
-                         double* const gz,
-                         std::size_t matrix_size,
-                         std::size_t Ai,
-                         std::size_t Bi)
+void overlap_gradient_32(
+double ae , 
+double be , 
+double cc , 
+double xAB , 
+double yAB , 
+double zAB , 
+double* const gx , 
+double* const gy , 
+double* const gz , 
+std::size_t matrix_size , 
+std::size_t Ai , 
+std::size_t Bi ) 
 {
-    const double C18920 = ae + be;
-    const double C18922 = Pi / C18920;
-    const double C18923 = std::sqrt(C18922);
-    const double C18926 = std::pow(C18920, 2);
-    const double C18925 = be * xAB;
-    const double C18929 = 2. * C18920;
-    const double C18928 = std::pow(C18925, 2);
-    const double C18931 = C18923 / C18929;
-    const double C18930 = C18923 * C18928;
-    const double C18932 = C18930 / C18926;
-    const double C18933 = C18932 + C18931;
-    const double C18940 = ae * xAB;
-    const double C18939 = C18933 * C18925;
-    const double C18938 = 2. * C18926;
-    const double C18937 = C18923 * C18925;
-    const double C18942 = C18939 / C18920;
-    const double C18941 = -2. * C18937;
-    const double C18943 = C18941 / C18938;
-    const double C18944 = C18943 - C18942;
-    const double C18953 = be * yAB;
-    const double C18959 = ae * yAB;
-    const double C18958 = std::pow(C18953, 2);
-    const double C18957 = C18923 * C18953;
-    const double C18961 = C18923 * C18958;
-    const double C18960 = -2. * C18957;
-    const double C18963 = C18961 / C18926;
-    const double C18962 = C18960 / C18938;
-    const double C18964 = C18963 + C18931;
-    const double C18965 = C18964 * C18953;
-    const double C18966 = C18965 / C18920;
-    const double C18967 = C18962 - C18966;
-    const double C18970 = be * zAB;
-    const double C18975 = ae * zAB;
-    const double C18974 = std::pow(C18970, 2);
-    const double C18973 = C18923 * C18970;
-    const double C18977 = C18923 * C18974;
-    const double C18976 = -2. * C18973;
-    const double C18979 = C18977 / C18926;
-    const double C18978 = C18976 / C18938;
-    const double C18980 = C18979 + C18931;
-    const double C18981 = C18980 * C18970;
-    const double C18982 = C18981 / C18920;
-    const double C18983 = C18978 - C18982;
-    const double C19017 = C18975 * C18973;
-    const double C19016 = C18959 * C18957;
-    const double C19015 = C18940 * C18937;
-    const double C19014 = C18980 * C18975;
-    const double C19013 = 3. * C18980;
-    const double C19012 = C18983 * C18975;
-    const double C19011 = std::pow(C18970, 2);
-    const double C19010 = C18964 * C18959;
-    const double C19009 = 3. * C18964;
-    const double C19008 = C18967 * C18959;
-    const double C19007 = std::pow(C18953, 2);
-    const double C19006 = C18923 * C18940;
-    const double C19005 = ae * zAB;
-    const double C19004 = ae * yAB;
-    const double C19003 = C18933 * C18940;
-    const double C19002 = 3. * C18933;
-    const double C19001 = 2. * C18926;
-    const double C19000 = C18923 * C18925;
-    const double C18999 = 2. * C18920;
-    const double C18998 = be * xAB;
-    const double C19033 = C19017 / C18926;
-    const double C19032 = C19016 / C18926;
-    const double C19031 = C19015 / C18926;
-    const double C19030 = C19014 / C18920;
-    const double C19029 = C19013 / C18929;
-    const double C19028 = C19012 / C18920;
-    const double C19027 = C18923 * C19011;
-    const double C19026 = C19010 / C18920;
-    const double C19025 = C19009 / C18929;
-    const double C19024 = C19008 / C18920;
-    const double C19023 = C18923 * C19007;
-    const double C19022 = C19006 / C18920;
-    const double C19021 = C19003 / C18920;
-    const double C19020 = C19002 / C18929;
-    const double C19019 = -2. * C19000;
-    const double C19018 = C18923 / C18999;
-    const double C19044 = C18931 - C19033;
-    const double C19043 = C18931 - C19032;
-    const double C19042 = C18931 - C19031;
-    const double C19041 = C19030 + C18978;
-    const double C19040 = C19028 + C19029;
-    const double C19039 = C19027 / C18926;
-    const double C19038 = C19026 + C18962;
-    const double C19037 = C19024 + C19025;
-    const double C19036 = C19023 / C18926;
-    const double C19035 = C19021 + C18943;
-    const double C19034 = C19019 / C19001;
-    const double C19046 = C19039 + C18931;
-    const double C19045 = C19036 + C18931;
-    const double C18673 = std::sqrt(Pi / (ae + be));
-    const double C18674 = -(std::sqrt(Pi / C18920) * C18998) / C18920;
-    const double C18675 =
-        (C18923 * std::pow(C18998, 2)) / std::pow(C18920, 2) + C19018;
-    const double C18676 =
-        C19034 -
-        (((C18923 * std::pow(C18925, 2)) / C18926 + C19018) * C18925) / C18920;
-    const double C18677 =
-        ((C19034 - (C18933 * C18925) / C18920) * ae * xAB) / C18920 + C19020;
-    const double C18680 =
-        (((C18944 * C18940) / C18920 + C19020) * C18940) / C18920 +
-        (3 * C19035 + C18944) / C18929;
-    const double C18681 = -(C18923 * be * yAB) / C18920;
-    const double C18682 = -(C18923 * be * zAB) / C18920;
-    const double C18715 = (C18923 * std::pow(C19004, 2)) / C18926 + C18931;
-    const double C18716 = (C18923 * C19004) / C18920;
-    const double C18722 = (C18923 * std::pow(C19005, 2)) / C18926 + C18931;
-    const double C18723 = (C18923 * C19005) / C18920;
-    const double C18736 =
-        (-2. * C18923 * C18953) / C18938 - (C19045 * C18953) / C18920;
-    const double C18737 = (C18923 * std::pow(C18940, 2)) / C18926 + C18931;
-    const double C18751 =
-        (C19037 * C18959) / C18920 + (3 * C19038 + C18967) / C18929;
-    const double C18780 =
-        (-2. * C18923 * C18970) / C18938 - (C19046 * C18970) / C18920;
-    const double C18796 =
-        (C19040 * C18975) / C18920 + (3 * C19041 + C18983) / C18929;
-    const double C18824 =
-        (C19035 * C18940) / C18920 + (2 * C19042 + C18933) / C18929;
-    const double C18827 =
-        (C19043 * C18959) / C18920 +
-        ((C18923 * C18959) / C18920 - C18957 / C18920) / C18929;
-    const double C18843 =
-        (C19044 * C18975) / C18920 +
-        ((C18923 * C18975) / C18920 - C18973 / C18920) / C18929;
-    const double C18855 =
-        (C19038 * C18959) / C18920 + (2 * C19043 + C18964) / C18929;
-    const double C18868 =
-        (C19042 * C18940) / C18920 + (C19022 - C18937 / C18920) / C18929;
-    const double C18885 =
-        (C19041 * C18975) / C18920 + (2 * C19044 + C18980) / C18929;
-    const double C18689 = ae * xAB;
-    const double C18688 = be * C18674;
-    const double C18687 = be * C18675;
-    const double C18686 = be * xAB;
-    const double C18685 = ae * C18674;
-    const double C18684 = ae + be;
-    const double C18683 = be * C18673;
-    const double C18695 = 2 * C18688;
-    const double C18694 = 2 * C18685;
-    const double C18693 = 2 * C18687;
-    const double C18692 = C18685 * C18686;
-    const double C18691 = 2. * C18684;
-    const double C18690 = 2 * C18683;
-    const double C18698 = C18694 - C18695;
-    const double C18697 = 2 * C18692;
-    const double C18696 = -C18690;
-    const double C18701 = C18698 / C18691;
-    const double C18700 = C18697 / C18684;
-    const double C18699 = C18696 / C18691;
-    const double C18702 = C18699 - C18700;
-    const double C18704 = C18702 * C18686;
-    const double C18703 = 2 * C18702;
-    const double C18706 = C18704 / C18684;
-    const double C18705 = C18703 - C18693;
-    const double C18708 = C18701 - C18706;
-    const double C18707 = C18705 / C18691;
-    const double C18709 = C18708 * C18686;
-    const double C18710 = C18709 / C18684;
-    const double C18711 = C18707 - C18710;
-    const double C18718 = ae * yAB;
-    const double C18717 = ae * C18681;
-    const double C18725 = ae * zAB;
-    const double C18724 = ae * C18682;
-    const double C18740 = be * yAB;
-    const double C18739 = be * C18923;
-    const double C18742 = C18717 * C18740;
-    const double C18741 = 2 * C18739;
-    const double C18744 = 2 * C18742;
-    const double C18743 = -C18741;
-    const double C18746 = C18744 / C18684;
-    const double C18745 = C18743 / C18691;
-    const double C18747 = C18745 - C18746;
-    const double C18757 = C18747 * C18740;
-    const double C18756 = be * C18681;
-    const double C18755 = 2 * C18717;
-    const double C18754 = be * C19045;
-    const double C18753 = 2 * C18747;
-    const double C18760 = C18757 / C18684;
-    const double C18759 = 2 * C18756;
-    const double C18758 = 2 * C18754;
-    const double C18762 = C18755 - C18759;
-    const double C18761 = C18753 - C18758;
-    const double C18764 = C18762 / C18691;
-    const double C18763 = C18761 / C18691;
-    const double C18765 = C18764 - C18760;
-    const double C18766 = C18765 * C18740;
-    const double C18767 = C18766 / C18684;
-    const double C18768 = C18763 - C18767;
-    const double C18783 = be * zAB;
-    const double C18782 = be * C18923;
-    const double C18785 = C18724 * C18783;
-    const double C18784 = 2 * C18782;
-    const double C18787 = 2 * C18785;
-    const double C18786 = -C18784;
-    const double C18789 = C18787 / C18684;
-    const double C18788 = C18786 / C18691;
-    const double C18790 = C18788 - C18789;
-    const double C18802 = C18790 * C18783;
-    const double C18801 = be * C18682;
-    const double C18800 = 2 * C18724;
-    const double C18799 = be * C19046;
-    const double C18798 = 2 * C18790;
-    const double C18805 = C18802 / C18684;
-    const double C18804 = 2 * C18801;
-    const double C18803 = 2 * C18799;
-    const double C18807 = C18800 - C18804;
-    const double C18806 = C18798 - C18803;
-    const double C18809 = C18807 / C18691;
-    const double C18808 = C18806 / C18691;
-    const double C18810 = C18809 - C18805;
-    const double C18811 = C18810 * C18783;
-    const double C18812 = C18811 / C18684;
-    const double C18813 = C18808 - C18812;
-    const double C19085 = ae * C19041;
-    const double C19084 = ae * C19042;
-    const double C19083 = ae * C19038;
-    const double C19082 = ae * C19044;
-    const double C19081 = 4. * C18724;
-    const double C19080 = C18790 * C18725;
-    const double C19079 = ae * C19043;
-    const double C19078 = 4. * C18717;
-    const double C19077 = C18747 * C18718;
-    const double C19076 = ae * C19035;
-    const double C19075 = 4. * C18685;
-    const double C19074 = C18702 * C18689;
-    const double C19073 = ae * C19046;
-    const double C19072 = C18810 * C18725;
-    const double C19071 = ae * C18780;
-    const double C19070 = 3 * C18810;
-    const double C19069 = C18813 * C18725;
-    const double C19068 = ae * C19045;
-    const double C19067 = C18765 * C18718;
-    const double C19066 = ae * C18736;
-    const double C19065 = 3 * C18765;
-    const double C19064 = C18768 * C18718;
-    const double C19063 = ae * C19022;
-    const double C19062 = ae * C18673;
-    const double C19061 = C18685 * C18689;
-    const double C19060 = ae * C18723;
-    const double C19059 = C18724 * C18725;
-    const double C19058 = ae * C18716;
-    const double C19057 = ae * C18923;
-    const double C19056 = C18717 * C18718;
-    const double C19055 = ae * C18675;
-    const double C19054 = C18708 * C18689;
-    const double C19053 = ae * C18676;
-    const double C19052 = 3 * C18708;
-    const double C19051 = C18711 * C18689;
-    const double C19117 = 2 * C19085;
-    const double C19116 = 2 * C19084;
-    const double C19115 = 2 * C19083;
-    const double C19114 = 2 * C19082;
-    const double C19113 = C19081 / C18691;
-    const double C19112 = C19080 / C18684;
-    const double C19111 = 2 * C19079;
-    const double C19110 = C19078 / C18691;
-    const double C19109 = C19077 / C18684;
-    const double C19108 = 2 * C19076;
-    const double C19107 = C19075 / C18691;
-    const double C19106 = C19074 / C18684;
-    const double C19105 = 2 * C19073;
-    const double C19104 = C19072 / C18684;
-    const double C19103 = 2 * C19071;
-    const double C19102 = C19069 / C18684;
-    const double C19101 = 2 * C19068;
-    const double C19100 = C19067 / C18684;
-    const double C19099 = 2 * C19066;
-    const double C19098 = C19064 / C18684;
-    const double C19097 = 2 * C19063;
-    const double C19096 = 2. * C19062;
-    const double C19095 = 2 * C19061;
-    const double C19094 = 2 * C19060;
-    const double C19093 = 2 * C19059;
-    const double C19092 = 2 * C19058;
-    const double C19091 = 2. * C19057;
-    const double C19090 = 2 * C19056;
-    const double C19089 = 2 * C19055;
-    const double C19088 = C19054 / C18684;
-    const double C19087 = 2 * C19053;
-    const double C19086 = C19051 / C18684;
-    const double C19134 = C19112 + C19113;
-    const double C19133 = C19109 + C19110;
-    const double C19132 = C19106 + C19107;
-    const double C19131 = C18798 + C19105;
-    const double C19130 = C19070 + C19103;
-    const double C19129 = C18753 + C19101;
-    const double C19128 = C19065 + C19099;
-    const double C19127 = C18694 + C19097;
-    const double C19126 = C19096 / C18691;
-    const double C19125 = C19095 / C18684;
-    const double C19124 = C18800 + C19094;
-    const double C19123 = C19093 / C18684;
-    const double C19122 = C18755 + C19092;
-    const double C19121 = C19091 / C18691;
-    const double C19120 = C19090 / C18684;
-    const double C19119 = C18703 + C19089;
-    const double C19118 = C19052 + C19087;
-    const double C19152 = 2 * C19134;
-    const double C19151 = C19132 * C18689;
-    const double C19150 = 2 * C19133;
-    const double C19149 = C19134 * C18725;
-    const double C19148 = C19133 * C18718;
-    const double C19147 = 2 * C19132;
-    const double C19146 = C19131 / C18691;
-    const double C19145 = C19130 / C18691;
-    const double C19144 = C19129 / C18691;
-    const double C19143 = C19128 / C18691;
-    const double C19142 = C19127 / C18691;
-    const double C19141 = C19125 + C19126;
-    const double C19140 = C19124 / C18691;
-    const double C19139 = C19123 + C19121;
-    const double C19138 = C19122 / C18691;
-    const double C19137 = C19120 + C19121;
-    const double C19136 = C19119 / C18691;
-    const double C19135 = C19118 / C18691;
-    const double C19170 = C19152 + C18810;
-    const double C19169 = C19141 + C18702;
-    const double C19168 = C19151 / C18684;
-    const double C19167 = C19150 + C18765;
-    const double C19166 = C19139 + C18790;
-    const double C19165 = C19149 / C18684;
-    const double C19164 = C19137 + C18747;
-    const double C19163 = C19148 / C18684;
-    const double C19162 = C19147 + C18708;
-    const double C19161 = C19104 + C19146;
-    const double C19160 = C19102 + C19145;
-    const double C19159 = C19100 + C19144;
-    const double C19158 = C19098 + C19143;
-    const double C19157 = C19141 * C18689;
-    const double C19156 = C19139 * C18725;
-    const double C19155 = C19137 * C18718;
-    const double C19154 = C19088 + C19136;
-    const double C19153 = C19086 + C19135;
-    const double C19182 = C19170 + C19117;
-    const double C19181 = C19161 * C18725;
-    const double C19180 = C19169 + C19116;
-    const double C19179 = C19167 + C19115;
-    const double C19178 = C19159 * C18718;
-    const double C19177 = C19166 + C19114;
-    const double C19176 = C19164 + C19111;
-    const double C19175 = C19162 + C19108;
-    const double C19174 = C19154 * C18689;
-    const double C19173 = C19157 / C18684;
-    const double C19172 = C19156 / C18684;
-    const double C19171 = C19155 / C18684;
-    const double C19194 = C19182 / C18691;
-    const double C19193 = C19181 / C18684;
-    const double C19192 = C19180 / C18691;
-    const double C19191 = C19179 / C18691;
-    const double C19190 = C19178 / C18684;
-    const double C19189 = C19177 / C18691;
-    const double C19188 = C19176 / C18691;
-    const double C19187 = C19175 / C18691;
-    const double C19186 = C19174 / C18684;
-    const double C19185 = C19173 + C19142;
-    const double C19184 = C19172 + C19140;
-    const double C19183 = C19171 + C19138;
-    const double C19200 = C19193 + C19194;
-    const double C19199 = C19168 + C19192;
-    const double C19198 = C19190 + C19191;
-    const double C19197 = C19165 + C19189;
-    const double C19196 = C19163 + C19188;
-    const double C19195 = C19186 + C19187;
-    const double gx300200 = ((C19153 * C18689) / C18684 +
-                             (3 * C19154 + C18711 + 2 * ae * C18677) / C18691) *
-                            std::pow(C18923, 2);
-    const double gx300020 = C18711 * C18715 * C18923;
-    const double gx300002 = C18711 * C18923 * C18722;
-    const double gx300110 = C19153 * C18716 * C18923;
-    const double gx300101 = C19153 * C18923 * C18723;
-    const double gx300011 = C18711 * C18716 * C18723;
-    const double gx030200 = C19185 * C18736 * C18923;
-    const double gx030020 = 2 * C18685 * C18751 * C18923;
-    const double gx030002 = 2 * C18685 * C18736 * C18722;
-    const double gx030110 = C19141 * C19037 * C18923;
-    const double gx030101 = C19141 * C18736 * C18723;
-    const double gx030011 = 2 * C18685 * C19037 * C18723;
-    const double gx003200 = C19185 * C18923 * C18780;
-    const double gx003020 = 2 * C18685 * C18715 * C18780;
-    const double gx003002 = 2 * C18685 * C18923 * C18796;
-    const double gx003110 = C19141 * C18716 * C18780;
-    const double gx003101 = C19141 * C18923 * C19040;
-    const double gx003011 = 2 * C18685 * C18716 * C19040;
-    const double gx210200 = C19195 * C18681 * C18923;
-    const double gx210020 = C18708 * C18827 * C18923;
-    const double gx210002 = C18708 * C18681 * C18722;
-    const double gx210110 = C19154 * C19043 * C18923;
-    const double gx210101 = C19154 * C18681 * C18723;
-    const double gx210011 = C18708 * C19043 * C18723;
-    const double gx201200 = C19195 * C18923 * C18682;
-    const double gx201020 = C18708 * C18715 * C18682;
-    const double gx201002 = C18708 * C18923 * C18843;
-    const double gx201110 = C19154 * C18716 * C18682;
-    const double gx201101 = C19154 * C18923 * C19044;
-    const double gx201011 = C18708 * C18716 * C19044;
-    const double gx021200 = C19185 * C19045 * C18682;
-    const double gx021020 = 2 * C18685 * C18855 * C18682;
-    const double gx021002 = 2 * C18685 * C19045 * C18843;
-    const double gx021110 = C19141 * C19038 * C18682;
-    const double gx021101 = C19141 * C19045 * C19044;
-    const double gx021011 = 2 * C18685 * C19038 * C19044;
-    const double gx120200 = C19199 * C19045 * C18923;
-    const double gx120020 = C18702 * C18855 * C18923;
-    const double gx120002 = C18702 * C19045 * C18722;
-    const double gx120110 = C19132 * C19038 * C18923;
-    const double gx120101 = C19132 * C19045 * C18723;
-    const double gx120011 = C18702 * C19038 * C18723;
-    const double gx102200 = C19199 * C18923 * C19046;
-    const double gx102020 = C18702 * C18715 * C19046;
-    const double gx102002 = C18702 * C18923 * C18885;
-    const double gx102110 = C19132 * C18716 * C19046;
-    const double gx102101 = C19132 * C18923 * C19041;
-    const double gx102011 = C18702 * C18716 * C19041;
-    const double gx012200 = C19185 * C18681 * C19046;
-    const double gx012020 = 2 * C18685 * C18827 * C19046;
-    const double gx012002 = 2 * C18685 * C18681 * C18885;
-    const double gx012110 = C19141 * C19043 * C19046;
-    const double gx012101 = C19141 * C18681 * C19041;
-    const double gx012011 = 2 * C18685 * C19043 * C19041;
-    const double gx111200 = C19199 * C18681 * C18682;
-    const double gx111020 = C18702 * C18827 * C18682;
-    const double gx111002 = C18702 * C18681 * C18843;
-    const double gx111110 = C19132 * C19043 * C18682;
-    const double gx111101 = C19132 * C18681 * C19044;
-    const double gx111011 = C18702 * C19043 * C19044;
-    gx[(Ai + 0) * matrix_size + Bi + 0] +=
-        cc *
-        (std::sqrt(135. / 8.0) * gx210110 - std::sqrt(15. / 8.0) * gx030110);
-    gx[(Ai + 0) * matrix_size + Bi + 1] +=
-        cc *
-        (std::sqrt(135. / 8.0) * gx210011 - std::sqrt(15. / 8.0) * gx030011);
-    gx[(Ai + 0) * matrix_size + Bi + 2] +=
-        cc *
-        (std::sqrt(1.25 / 8.0) * gx030200 + std::sqrt(1.25 / 8.0) * gx030020 -
-         std::sqrt(5.0 / 8.0) * gx030002 - std::sqrt(11.25 / 8.0) * gx210200 -
-         std::sqrt(11.25 / 8.0) * gx210020 + std::sqrt(45. / 8.0) * gx210002);
-    gx[(Ai + 0) * matrix_size + Bi + 3] +=
-        cc *
-        (std::sqrt(135. / 8.0) * gx210101 - std::sqrt(15. / 8.0) * gx030101);
-    gx[(Ai + 0) * matrix_size + Bi + 4] +=
-        cc *
-        (std::sqrt(3.75 / 8.0) * gx030020 - std::sqrt(3.75 / 8.0) * gx030200 +
-         std::sqrt(33.75 / 8.0) * gx210200 - std::sqrt(33.75 / 8.0) * gx210020);
-    gx[(Ai + 1) * matrix_size + Bi + 0] += cc * std::sqrt(45.) * gx111110;
-    gx[(Ai + 1) * matrix_size + Bi + 1] += cc * std::sqrt(45.) * gx111011;
-    gx[(Ai + 1) * matrix_size + Bi + 2] +=
-        cc * (std::sqrt(15.0) * gx111002 -
-              (std::sqrt(3.75) * gx111020 + std::sqrt(3.75) * gx111200));
-    gx[(Ai + 1) * matrix_size + Bi + 3] += cc * std::sqrt(45.) * gx111101;
-    gx[(Ai + 1) * matrix_size + Bi + 4] +=
-        cc * (std::sqrt(11.25) * gx111200 - std::sqrt(11.25) * gx111020);
-    gx[(Ai + 2) * matrix_size + Bi + 0] +=
-        -cc * (std::sqrt(18.) * gx012110 + std::sqrt(9. / 8.0) * gx210110 +
-               std::sqrt(9. / 8.0) * gx030110);
-    gx[(Ai + 2) * matrix_size + Bi + 1] +=
-        -cc * (std::sqrt(18.) * gx012011 + std::sqrt(9. / 8.0) * gx210011 +
-               std::sqrt(9. / 8.0) * gx030011);
-    gx[(Ai + 2) * matrix_size + Bi + 2] +=
-        cc *
-        (std::sqrt(0.75 / 8.0) * gx030200 + std::sqrt(0.75 / 8.0) * gx030020 -
-         std::sqrt(3.0 / 8.0) * gx030002 + std::sqrt(0.75 / 8.0) * gx210200 +
-         std::sqrt(0.75 / 8.0) * gx210020 - std::sqrt(3.0 / 8.0) * gx210002 +
-         std::sqrt(1.5) * gx012200 + std::sqrt(1.5) * gx012020 -
-         std::sqrt(6.0) * gx012002);
-    gx[(Ai + 2) * matrix_size + Bi + 3] +=
-        -cc * (std::sqrt(18.) * gx012101 + std::sqrt(9. / 8.0) * gx210101 +
-               std::sqrt(9. / 8.0) * gx030101);
-    gx[(Ai + 2) * matrix_size + Bi + 4] +=
-        cc *
-        (std::sqrt(2.25 / 8.0) * gx030020 - std::sqrt(2.25 / 8.0) * gx030200 -
-         std::sqrt(2.25 / 8.0) * gx210200 + std::sqrt(2.25 / 8.0) * gx210020 -
-         std::sqrt(4.5) * gx012200 + std::sqrt(4.5) * gx012020);
-    gx[(Ai + 3) * matrix_size + Bi + 0] +=
-        cc * (std::sqrt(3.0) * gx003110 - std::sqrt(6.75) * gx201110 -
-              std::sqrt(6.75) * gx021110);
-    gx[(Ai + 3) * matrix_size + Bi + 1] +=
-        cc * (std::sqrt(3.0) * gx003011 - std::sqrt(6.75) * gx201011 -
-              std::sqrt(6.75) * gx021011);
-    gx[(Ai + 3) * matrix_size + Bi + 2] +=
-        cc * (-0.5 * gx003200 - 0.5 * gx003020 + gx003002 + 0.75 * gx201200 +
-              0.75 * gx201020 - 1.5 * gx201002 + 0.75 * gx021200 +
-              0.75 * gx021020 - 1.5 * gx021002);
-    gx[(Ai + 3) * matrix_size + Bi + 3] +=
-        cc * (std::sqrt(3.0) * gx003101 - std::sqrt(6.75) * gx201101 -
-              std::sqrt(6.75) * gx021101);
-    gx[(Ai + 3) * matrix_size + Bi + 4] +=
-        cc * (std::sqrt(0.75) * gx003200 - std::sqrt(0.75) * gx003020 -
-              std::sqrt(1.6875) * gx201200 + std::sqrt(1.6875) * gx201020 -
-              std::sqrt(1.6875) * gx021200 + std::sqrt(1.6875) * gx021020);
-    gx[(Ai + 4) * matrix_size + Bi + 0] +=
-        cc * (std::sqrt(18.) * gx102110 - (std::sqrt(9. / 8.0) * gx120110 +
-                                           std::sqrt(9. / 8.0) * gx300110));
-    gx[(Ai + 4) * matrix_size + Bi + 1] +=
-        cc * (std::sqrt(18.) * gx102011 - (std::sqrt(9. / 8.0) * gx120011 +
-                                           std::sqrt(9. / 8.0) * gx300011));
-    gx[(Ai + 4) * matrix_size + Bi + 2] +=
-        cc *
-        (std::sqrt(0.75 / 8.0) * gx300200 + std::sqrt(0.75 / 8.0) * gx300020 -
-         std::sqrt(3.0 / 8.0) * gx300002 + std::sqrt(0.75 / 8.0) * gx120200 +
-         std::sqrt(0.75 / 8.0) * gx120020 - std::sqrt(3.0 / 8.0) * gx120002 -
-         std::sqrt(1.5) * gx102200 - std::sqrt(1.5) * gx102020 +
-         std::sqrt(6.0) * gx102002);
-    gx[(Ai + 4) * matrix_size + Bi + 3] +=
-        cc * (std::sqrt(18.) * gx102101 - (std::sqrt(9. / 8.0) * gx120101 +
-                                           std::sqrt(9. / 8.0) * gx300101));
-    gx[(Ai + 4) * matrix_size + Bi + 4] +=
-        cc *
-        (std::sqrt(2.25 / 8.0) * gx300020 - std::sqrt(2.25 / 8.0) * gx300200 -
-         std::sqrt(2.25 / 8.0) * gx120200 + std::sqrt(2.25 / 8.0) * gx120020 +
-         std::sqrt(4.5) * gx102200 - std::sqrt(4.5) * gx102020);
-    gx[(Ai + 5) * matrix_size + Bi + 0] +=
-        cc * (std::sqrt(22.5) * gx201110 - std::sqrt(22.5) * gx021110);
-    gx[(Ai + 5) * matrix_size + Bi + 1] +=
-        cc * (std::sqrt(22.5) * gx201011 - std::sqrt(22.5) * gx021011);
-    gx[(Ai + 5) * matrix_size + Bi + 2] +=
-        cc * (std::sqrt(7.5) * gx201002 -
-              (std::sqrt(1.875) * gx201020 + std::sqrt(1.875) * gx201200) +
-              std::sqrt(1.875) * gx021200 + std::sqrt(1.875) * gx021020 -
-              std::sqrt(7.5) * gx021002);
-    gx[(Ai + 5) * matrix_size + Bi + 3] +=
-        cc * (std::sqrt(22.5) * gx201101 - std::sqrt(22.5) * gx021101);
-    gx[(Ai + 5) * matrix_size + Bi + 4] +=
-        cc * (std::sqrt(5.625) * gx201200 - std::sqrt(5.625) * gx201020 -
-              std::sqrt(5.625) * gx021200 + std::sqrt(5.625) * gx021020);
-    gx[(Ai + 6) * matrix_size + Bi + 0] +=
-        cc *
-        (std::sqrt(15. / 8.0) * gx300110 + std::sqrt(135. / 8.0) * gx120110);
-    gx[(Ai + 6) * matrix_size + Bi + 1] +=
-        cc *
-        (std::sqrt(15. / 8.0) * gx300011 + std::sqrt(135. / 8.0) * gx120011);
-    gx[(Ai + 6) * matrix_size + Bi + 2] +=
-        cc *
-        (std::sqrt(5.0 / 8.0) * gx300002 -
-         (std::sqrt(1.25 / 8.0) * gx300020 + std::sqrt(1.25 / 8.0) * gx300200) -
-         std::sqrt(11.25 / 8.0) * gx120200 - std::sqrt(11.25 / 8.0) * gx120020 +
-         std::sqrt(45.0 / 8.0) * gx120002);
-    gx[(Ai + 6) * matrix_size + Bi + 3] +=
-        cc *
-        (std::sqrt(15. / 8.0) * gx300101 + std::sqrt(135. / 8.0) * gx120101);
-    gx[(Ai + 6) * matrix_size + Bi + 4] +=
-        cc *
-        (std::sqrt(3.75 / 8.0) * gx300200 - std::sqrt(3.75 / 8.0) * gx300020 +
-         std::sqrt(33.75 / 8.0) * gx120200 - std::sqrt(33.75 / 8.0) * gx120020);
-    const double gy300200 = C18680 * C18755 * C18923;
-    const double gy300020 = C18676 * C19183 * C18923;
-    const double gy300002 = C18676 * C18755 * C18722;
-    const double gy300110 = C18677 * C19137 * C18923;
-    const double gy300101 = C18677 * C18755 * C18723;
-    const double gy300011 = C18676 * C19137 * C18723;
-    const double gy030200 = C18737 * C18768 * C18923;
-    const double gy030020 = C18673 *
-                            ((C19158 * C18718) / C18684 +
-                             (3 * C19159 + C18768 + 2 * ae * C19037) / C18691) *
-                            C18923;
-    const double gy030002 = C18673 * C18768 * C18722;
-    const double gy030110 = C19022 * C19158 * C18923;
-    const double gy030101 = C19022 * C18768 * C18723;
-    const double gy030011 = C18673 * C19158 * C18723;
-    const double gy003200 = C18737 * C18755 * C18780;
-    const double gy003020 = C18673 * C19183 * C18780;
-    const double gy003002 = C18673 * C18755 * C18796;
-    const double gy003110 = C19022 * C19137 * C18780;
-    const double gy003101 = C19022 * C18755 * C19040;
-    const double gy003011 = C18673 * C19137 * C19040;
-    const double gy210200 = C18824 * C18747 * C18923;
-    const double gy210020 = C18675 * C19196 * C18923;
-    const double gy210002 = C18675 * C18747 * C18722;
-    const double gy210110 = C19035 * C19133 * C18923;
-    const double gy210101 = C19035 * C18747 * C18723;
-    const double gy210011 = C18675 * C19133 * C18723;
-    const double gy201200 = C18824 * C18755 * C18682;
-    const double gy201020 = C18675 * C19183 * C18682;
-    const double gy201002 = C18675 * C18755 * C18843;
-    const double gy201110 = C19035 * C19137 * C18682;
-    const double gy201101 = C19035 * C18755 * C19044;
-    const double gy201011 = C18675 * C19137 * C19044;
-    const double gy021200 = C18737 * C18765 * C18682;
-    const double gy021020 = C18673 * C19198 * C18682;
-    const double gy021002 = C18673 * C18765 * C18843;
-    const double gy021110 = C19022 * C19159 * C18682;
-    const double gy021101 = C19022 * C18765 * C19044;
-    const double gy021011 = C18673 * C19159 * C19044;
-    const double gy120200 = C18868 * C18765 * C18923;
-    const double gy120020 = C18674 * C19198 * C18923;
-    const double gy120002 = C18674 * C18765 * C18722;
-    const double gy120110 = C19042 * C19159 * C18923;
-    const double gy120101 = C19042 * C18765 * C18723;
-    const double gy120011 = C18674 * C19159 * C18723;
-    const double gy102200 = C18868 * C18755 * C19046;
-    const double gy102020 = C18674 * C19183 * C19046;
-    const double gy102002 = C18674 * C18755 * C18885;
-    const double gy102110 = C19042 * C19137 * C19046;
-    const double gy102101 = C19042 * C18755 * C19041;
-    const double gy102011 = C18674 * C19137 * C19041;
-    const double gy012200 = C18737 * C18747 * C19046;
-    const double gy012020 = C18673 * C19196 * C19046;
-    const double gy012002 = C18673 * C18747 * C18885;
-    const double gy012110 = C19022 * C19133 * C19046;
-    const double gy012101 = C19022 * C18747 * C19041;
-    const double gy012011 = C18673 * C19133 * C19041;
-    const double gy111200 = C18868 * C18747 * C18682;
-    const double gy111020 = C18674 * C19196 * C18682;
-    const double gy111002 = C18674 * C18747 * C18843;
-    const double gy111110 = C19042 * C19133 * C18682;
-    const double gy111101 = C19042 * C18747 * C19044;
-    const double gy111011 = C18674 * C19133 * C19044;
-    gy[(Ai + 0) * matrix_size + Bi + 0] +=
-        cc *
-        (std::sqrt(135. / 8.0) * gy210110 - std::sqrt(15. / 8.0) * gy030110);
-    gy[(Ai + 0) * matrix_size + Bi + 1] +=
-        cc *
-        (std::sqrt(135. / 8.0) * gy210011 - std::sqrt(15. / 8.0) * gy030011);
-    gy[(Ai + 0) * matrix_size + Bi + 2] +=
-        cc *
-        (std::sqrt(1.25 / 8.0) * gy030200 + std::sqrt(1.25 / 8.0) * gy030020 -
-         std::sqrt(5.0 / 8.0) * gy030002 - std::sqrt(11.25 / 8.0) * gy210200 -
-         std::sqrt(11.25 / 8.0) * gy210020 + std::sqrt(45. / 8.0) * gy210002);
-    gy[(Ai + 0) * matrix_size + Bi + 3] +=
-        cc *
-        (std::sqrt(135. / 8.0) * gy210101 - std::sqrt(15. / 8.0) * gy030101);
-    gy[(Ai + 0) * matrix_size + Bi + 4] +=
-        cc *
-        (std::sqrt(3.75 / 8.0) * gy030020 - std::sqrt(3.75 / 8.0) * gy030200 +
-         std::sqrt(33.75 / 8.0) * gy210200 - std::sqrt(33.75 / 8.0) * gy210020);
-    gy[(Ai + 1) * matrix_size + Bi + 0] += cc * std::sqrt(45.) * gy111110;
-    gy[(Ai + 1) * matrix_size + Bi + 1] += cc * std::sqrt(45.) * gy111011;
-    gy[(Ai + 1) * matrix_size + Bi + 2] +=
-        cc * (std::sqrt(15.0) * gy111002 -
-              (std::sqrt(3.75) * gy111020 + std::sqrt(3.75) * gy111200));
-    gy[(Ai + 1) * matrix_size + Bi + 3] += cc * std::sqrt(45.) * gy111101;
-    gy[(Ai + 1) * matrix_size + Bi + 4] +=
-        cc * (std::sqrt(11.25) * gy111200 - std::sqrt(11.25) * gy111020);
-    gy[(Ai + 2) * matrix_size + Bi + 0] +=
-        -cc * (std::sqrt(18.) * gy012110 + std::sqrt(9. / 8.0) * gy210110 +
-               std::sqrt(9. / 8.0) * gy030110);
-    gy[(Ai + 2) * matrix_size + Bi + 1] +=
-        -cc * (std::sqrt(18.) * gy012011 + std::sqrt(9. / 8.0) * gy210011 +
-               std::sqrt(9. / 8.0) * gy030011);
-    gy[(Ai + 2) * matrix_size + Bi + 2] +=
-        cc *
-        (std::sqrt(0.75 / 8.0) * gy030200 + std::sqrt(0.75 / 8.0) * gy030020 -
-         std::sqrt(3.0 / 8.0) * gy030002 + std::sqrt(0.75 / 8.0) * gy210200 +
-         std::sqrt(0.75 / 8.0) * gy210020 - std::sqrt(3.0 / 8.0) * gy210002 +
-         std::sqrt(1.5) * gy012200 + std::sqrt(1.5) * gy012020 -
-         std::sqrt(6.0) * gy012002);
-    gy[(Ai + 2) * matrix_size + Bi + 3] +=
-        -cc * (std::sqrt(18.) * gy012101 + std::sqrt(9. / 8.0) * gy210101 +
-               std::sqrt(9. / 8.0) * gy030101);
-    gy[(Ai + 2) * matrix_size + Bi + 4] +=
-        cc *
-        (std::sqrt(2.25 / 8.0) * gy030020 - std::sqrt(2.25 / 8.0) * gy030200 -
-         std::sqrt(2.25 / 8.0) * gy210200 + std::sqrt(2.25 / 8.0) * gy210020 -
-         std::sqrt(4.5) * gy012200 + std::sqrt(4.5) * gy012020);
-    gy[(Ai + 3) * matrix_size + Bi + 0] +=
-        cc * (std::sqrt(3.0) * gy003110 - std::sqrt(6.75) * gy201110 -
-              std::sqrt(6.75) * gy021110);
-    gy[(Ai + 3) * matrix_size + Bi + 1] +=
-        cc * (std::sqrt(3.0) * gy003011 - std::sqrt(6.75) * gy201011 -
-              std::sqrt(6.75) * gy021011);
-    gy[(Ai + 3) * matrix_size + Bi + 2] +=
-        cc * (-0.5 * gy003200 - 0.5 * gy003020 + gy003002 + 0.75 * gy201200 +
-              0.75 * gy201020 - 1.5 * gy201002 + 0.75 * gy021200 +
-              0.75 * gy021020 - 1.5 * gy021002);
-    gy[(Ai + 3) * matrix_size + Bi + 3] +=
-        cc * (std::sqrt(3.0) * gy003101 - std::sqrt(6.75) * gy201101 -
-              std::sqrt(6.75) * gy021101);
-    gy[(Ai + 3) * matrix_size + Bi + 4] +=
-        cc * (std::sqrt(0.75) * gy003200 - std::sqrt(0.75) * gy003020 -
-              std::sqrt(1.6875) * gy201200 + std::sqrt(1.6875) * gy201020 -
-              std::sqrt(1.6875) * gy021200 + std::sqrt(1.6875) * gy021020);
-    gy[(Ai + 4) * matrix_size + Bi + 0] +=
-        cc * (std::sqrt(18.) * gy102110 - (std::sqrt(9. / 8.0) * gy120110 +
-                                           std::sqrt(9. / 8.0) * gy300110));
-    gy[(Ai + 4) * matrix_size + Bi + 1] +=
-        cc * (std::sqrt(18.) * gy102011 - (std::sqrt(9. / 8.0) * gy120011 +
-                                           std::sqrt(9. / 8.0) * gy300011));
-    gy[(Ai + 4) * matrix_size + Bi + 2] +=
-        cc *
-        (std::sqrt(0.75 / 8.0) * gy300200 + std::sqrt(0.75 / 8.0) * gy300020 -
-         std::sqrt(3.0 / 8.0) * gy300002 + std::sqrt(0.75 / 8.0) * gy120200 +
-         std::sqrt(0.75 / 8.0) * gy120020 - std::sqrt(3.0 / 8.0) * gy120002 -
-         std::sqrt(1.5) * gy102200 - std::sqrt(1.5) * gy102020 +
-         std::sqrt(6.0) * gy102002);
-    gy[(Ai + 4) * matrix_size + Bi + 3] +=
-        cc * (std::sqrt(18.) * gy102101 - (std::sqrt(9. / 8.0) * gy120101 +
-                                           std::sqrt(9. / 8.0) * gy300101));
-    gy[(Ai + 4) * matrix_size + Bi + 4] +=
-        cc *
-        (std::sqrt(2.25 / 8.0) * gy300020 - std::sqrt(2.25 / 8.0) * gy300200 -
-         std::sqrt(2.25 / 8.0) * gy120200 + std::sqrt(2.25 / 8.0) * gy120020 +
-         std::sqrt(4.5) * gy102200 - std::sqrt(4.5) * gy102020);
-    gy[(Ai + 5) * matrix_size + Bi + 0] +=
-        cc * (std::sqrt(22.5) * gy201110 - std::sqrt(22.5) * gy021110);
-    gy[(Ai + 5) * matrix_size + Bi + 1] +=
-        cc * (std::sqrt(22.5) * gy201011 - std::sqrt(22.5) * gy021011);
-    gy[(Ai + 5) * matrix_size + Bi + 2] +=
-        cc * (std::sqrt(7.5) * gy201002 -
-              (std::sqrt(1.875) * gy201020 + std::sqrt(1.875) * gy201200) +
-              std::sqrt(1.875) * gy021200 + std::sqrt(1.875) * gy021020 -
-              std::sqrt(7.5) * gy021002);
-    gy[(Ai + 5) * matrix_size + Bi + 3] +=
-        cc * (std::sqrt(22.5) * gy201101 - std::sqrt(22.5) * gy021101);
-    gy[(Ai + 5) * matrix_size + Bi + 4] +=
-        cc * (std::sqrt(5.625) * gy201200 - std::sqrt(5.625) * gy201020 -
-              std::sqrt(5.625) * gy021200 + std::sqrt(5.625) * gy021020);
-    gy[(Ai + 6) * matrix_size + Bi + 0] +=
-        cc *
-        (std::sqrt(15. / 8.0) * gy300110 + std::sqrt(135. / 8.0) * gy120110);
-    gy[(Ai + 6) * matrix_size + Bi + 1] +=
-        cc *
-        (std::sqrt(15. / 8.0) * gy300011 + std::sqrt(135. / 8.0) * gy120011);
-    gy[(Ai + 6) * matrix_size + Bi + 2] +=
-        cc *
-        (std::sqrt(5.0 / 8.0) * gy300002 -
-         (std::sqrt(1.25 / 8.0) * gy300020 + std::sqrt(1.25 / 8.0) * gy300200) -
-         std::sqrt(11.25 / 8.0) * gy120200 - std::sqrt(11.25 / 8.0) * gy120020 +
-         std::sqrt(45.0 / 8.0) * gy120002);
-    gy[(Ai + 6) * matrix_size + Bi + 3] +=
-        cc *
-        (std::sqrt(15. / 8.0) * gy300101 + std::sqrt(135. / 8.0) * gy120101);
-    gy[(Ai + 6) * matrix_size + Bi + 4] +=
-        cc *
-        (std::sqrt(3.75 / 8.0) * gy300200 - std::sqrt(3.75 / 8.0) * gy300020 +
-         std::sqrt(33.75 / 8.0) * gy120200 - std::sqrt(33.75 / 8.0) * gy120020);
-    const double gz300200 = C18680 * C18923 * C18800;
-    const double gz300020 = C18676 * C18715 * C18800;
-    const double gz300002 = C18676 * C18923 * C19184;
-    const double gz300110 = C18677 * C18716 * C18800;
-    const double gz300101 = C18677 * C18923 * C19139;
-    const double gz300011 = C18676 * C18716 * C19139;
-    const double gz030200 = C18737 * C18736 * C18800;
-    const double gz030020 = C18673 * C18751 * C18800;
-    const double gz030002 = C18673 * C18736 * C19184;
-    const double gz030110 = C19022 * C19037 * C18800;
-    const double gz030101 = C19022 * C18736 * C19139;
-    const double gz030011 = C18673 * C19037 * C19139;
-    const double gz003200 = C18737 * C18923 * C18813;
-    const double gz003020 = C18673 * C18715 * C18813;
-    const double gz003002 = C18673 * C18923 *
-                            ((C19160 * C18725) / C18684 +
-                             (3 * C19161 + C18813 + 2 * ae * C19040) / C18691);
-    const double gz003110 = C19022 * C18716 * C18813;
-    const double gz003101 = C19022 * C18923 * C19160;
-    const double gz003011 = C18673 * C18716 * C19160;
-    const double gz210200 = C18824 * C18681 * C18800;
-    const double gz210020 = C18675 * C18827 * C18800;
-    const double gz210002 = C18675 * C18681 * C19184;
-    const double gz210110 = C19035 * C19043 * C18800;
-    const double gz210101 = C19035 * C18681 * C19139;
-    const double gz210011 = C18675 * C19043 * C19139;
-    const double gz201200 = C18824 * C18923 * C18790;
-    const double gz201020 = C18675 * C18715 * C18790;
-    const double gz201002 = C18675 * C18923 * C19197;
-    const double gz201110 = C19035 * C18716 * C18790;
-    const double gz201101 = C19035 * C18923 * C19134;
-    const double gz201011 = C18675 * C18716 * C19134;
-    const double gz021200 = C18737 * C19045 * C18790;
-    const double gz021020 = C18673 * C18855 * C18790;
-    const double gz021002 = C18673 * C19045 * C19197;
-    const double gz021110 = C19022 * C19038 * C18790;
-    const double gz021101 = C19022 * C19045 * C19134;
-    const double gz021011 = C18673 * C19038 * C19134;
-    const double gz120200 = C18868 * C19045 * C18800;
-    const double gz120020 = C18674 * C18855 * C18800;
-    const double gz120002 = C18674 * C19045 * C19184;
-    const double gz120110 = C19042 * C19038 * C18800;
-    const double gz120101 = C19042 * C19045 * C19139;
-    const double gz120011 = C18674 * C19038 * C19139;
-    const double gz102200 = C18868 * C18923 * C18810;
-    const double gz102020 = C18674 * C18715 * C18810;
-    const double gz102002 = C18674 * C18923 * C19200;
-    const double gz102110 = C19042 * C18716 * C18810;
-    const double gz102101 = C19042 * C18923 * C19161;
-    const double gz102011 = C18674 * C18716 * C19161;
-    const double gz012200 = C18737 * C18681 * C18810;
-    const double gz012020 = C18673 * C18827 * C18810;
-    const double gz012002 = C18673 * C18681 * C19200;
-    const double gz012110 = C19022 * C19043 * C18810;
-    const double gz012101 = C19022 * C18681 * C19161;
-    const double gz012011 = C18673 * C19043 * C19161;
-    const double gz111200 = C18868 * C18681 * C18790;
-    const double gz111020 = C18674 * C18827 * C18790;
-    const double gz111002 = C18674 * C18681 * C19197;
-    const double gz111110 = C19042 * C19043 * C18790;
-    const double gz111101 = C19042 * C18681 * C19134;
-    const double gz111011 = C18674 * C19043 * C19134;
-    gz[(Ai + 0) * matrix_size + Bi + 0] +=
-        cc *
-        (std::sqrt(135. / 8.0) * gz210110 - std::sqrt(15. / 8.0) * gz030110);
-    gz[(Ai + 0) * matrix_size + Bi + 1] +=
-        cc *
-        (std::sqrt(135. / 8.0) * gz210011 - std::sqrt(15. / 8.0) * gz030011);
-    gz[(Ai + 0) * matrix_size + Bi + 2] +=
-        cc *
-        (std::sqrt(1.25 / 8.0) * gz030200 + std::sqrt(1.25 / 8.0) * gz030020 -
-         std::sqrt(5.0 / 8.0) * gz030002 - std::sqrt(11.25 / 8.0) * gz210200 -
-         std::sqrt(11.25 / 8.0) * gz210020 + std::sqrt(45. / 8.0) * gz210002);
-    gz[(Ai + 0) * matrix_size + Bi + 3] +=
-        cc *
-        (std::sqrt(135. / 8.0) * gz210101 - std::sqrt(15. / 8.0) * gz030101);
-    gz[(Ai + 0) * matrix_size + Bi + 4] +=
-        cc *
-        (std::sqrt(3.75 / 8.0) * gz030020 - std::sqrt(3.75 / 8.0) * gz030200 +
-         std::sqrt(33.75 / 8.0) * gz210200 - std::sqrt(33.75 / 8.0) * gz210020);
-    gz[(Ai + 1) * matrix_size + Bi + 0] += cc * std::sqrt(45.) * gz111110;
-    gz[(Ai + 1) * matrix_size + Bi + 1] += cc * std::sqrt(45.) * gz111011;
-    gz[(Ai + 1) * matrix_size + Bi + 2] +=
-        cc * (std::sqrt(15.0) * gz111002 -
-              (std::sqrt(3.75) * gz111020 + std::sqrt(3.75) * gz111200));
-    gz[(Ai + 1) * matrix_size + Bi + 3] += cc * std::sqrt(45.) * gz111101;
-    gz[(Ai + 1) * matrix_size + Bi + 4] +=
-        cc * (std::sqrt(11.25) * gz111200 - std::sqrt(11.25) * gz111020);
-    gz[(Ai + 2) * matrix_size + Bi + 0] +=
-        -cc * (std::sqrt(18.) * gz012110 + std::sqrt(9. / 8.0) * gz210110 +
-               std::sqrt(9. / 8.0) * gz030110);
-    gz[(Ai + 2) * matrix_size + Bi + 1] +=
-        -cc * (std::sqrt(18.) * gz012011 + std::sqrt(9. / 8.0) * gz210011 +
-               std::sqrt(9. / 8.0) * gz030011);
-    gz[(Ai + 2) * matrix_size + Bi + 2] +=
-        cc *
-        (std::sqrt(0.75 / 8.0) * gz030200 + std::sqrt(0.75 / 8.0) * gz030020 -
-         std::sqrt(3.0 / 8.0) * gz030002 + std::sqrt(0.75 / 8.0) * gz210200 +
-         std::sqrt(0.75 / 8.0) * gz210020 - std::sqrt(3.0 / 8.0) * gz210002 +
-         std::sqrt(1.5) * gz012200 + std::sqrt(1.5) * gz012020 -
-         std::sqrt(6.0) * gz012002);
-    gz[(Ai + 2) * matrix_size + Bi + 3] +=
-        -cc * (std::sqrt(18.) * gz012101 + std::sqrt(9. / 8.0) * gz210101 +
-               std::sqrt(9. / 8.0) * gz030101);
-    gz[(Ai + 2) * matrix_size + Bi + 4] +=
-        cc *
-        (std::sqrt(2.25 / 8.0) * gz030020 - std::sqrt(2.25 / 8.0) * gz030200 -
-         std::sqrt(2.25 / 8.0) * gz210200 + std::sqrt(2.25 / 8.0) * gz210020 -
-         std::sqrt(4.5) * gz012200 + std::sqrt(4.5) * gz012020);
-    gz[(Ai + 3) * matrix_size + Bi + 0] +=
-        cc * (std::sqrt(3.0) * gz003110 - std::sqrt(6.75) * gz201110 -
-              std::sqrt(6.75) * gz021110);
-    gz[(Ai + 3) * matrix_size + Bi + 1] +=
-        cc * (std::sqrt(3.0) * gz003011 - std::sqrt(6.75) * gz201011 -
-              std::sqrt(6.75) * gz021011);
-    gz[(Ai + 3) * matrix_size + Bi + 2] +=
-        cc * (-0.5 * gz003200 - 0.5 * gz003020 + gz003002 + 0.75 * gz201200 +
-              0.75 * gz201020 - 1.5 * gz201002 + 0.75 * gz021200 +
-              0.75 * gz021020 - 1.5 * gz021002);
-    gz[(Ai + 3) * matrix_size + Bi + 3] +=
-        cc * (std::sqrt(3.0) * gz003101 - std::sqrt(6.75) * gz201101 -
-              std::sqrt(6.75) * gz021101);
-    gz[(Ai + 3) * matrix_size + Bi + 4] +=
-        cc * (std::sqrt(0.75) * gz003200 - std::sqrt(0.75) * gz003020 -
-              std::sqrt(1.6875) * gz201200 + std::sqrt(1.6875) * gz201020 -
-              std::sqrt(1.6875) * gz021200 + std::sqrt(1.6875) * gz021020);
-    gz[(Ai + 4) * matrix_size + Bi + 0] +=
-        cc * (std::sqrt(18.) * gz102110 - (std::sqrt(9. / 8.0) * gz120110 +
-                                           std::sqrt(9. / 8.0) * gz300110));
-    gz[(Ai + 4) * matrix_size + Bi + 1] +=
-        cc * (std::sqrt(18.) * gz102011 - (std::sqrt(9. / 8.0) * gz120011 +
-                                           std::sqrt(9. / 8.0) * gz300011));
-    gz[(Ai + 4) * matrix_size + Bi + 2] +=
-        cc *
-        (std::sqrt(0.75 / 8.0) * gz300200 + std::sqrt(0.75 / 8.0) * gz300020 -
-         std::sqrt(3.0 / 8.0) * gz300002 + std::sqrt(0.75 / 8.0) * gz120200 +
-         std::sqrt(0.75 / 8.0) * gz120020 - std::sqrt(3.0 / 8.0) * gz120002 -
-         std::sqrt(1.5) * gz102200 - std::sqrt(1.5) * gz102020 +
-         std::sqrt(6.0) * gz102002);
-    gz[(Ai + 4) * matrix_size + Bi + 3] +=
-        cc * (std::sqrt(18.) * gz102101 - (std::sqrt(9. / 8.0) * gz120101 +
-                                           std::sqrt(9. / 8.0) * gz300101));
-    gz[(Ai + 4) * matrix_size + Bi + 4] +=
-        cc *
-        (std::sqrt(2.25 / 8.0) * gz300020 - std::sqrt(2.25 / 8.0) * gz300200 -
-         std::sqrt(2.25 / 8.0) * gz120200 + std::sqrt(2.25 / 8.0) * gz120020 +
-         std::sqrt(4.5) * gz102200 - std::sqrt(4.5) * gz102020);
-    gz[(Ai + 5) * matrix_size + Bi + 0] +=
-        cc * (std::sqrt(22.5) * gz201110 - std::sqrt(22.5) * gz021110);
-    gz[(Ai + 5) * matrix_size + Bi + 1] +=
-        cc * (std::sqrt(22.5) * gz201011 - std::sqrt(22.5) * gz021011);
-    gz[(Ai + 5) * matrix_size + Bi + 2] +=
-        cc * (std::sqrt(7.5) * gz201002 -
-              (std::sqrt(1.875) * gz201020 + std::sqrt(1.875) * gz201200) +
-              std::sqrt(1.875) * gz021200 + std::sqrt(1.875) * gz021020 -
-              std::sqrt(7.5) * gz021002);
-    gz[(Ai + 5) * matrix_size + Bi + 3] +=
-        cc * (std::sqrt(22.5) * gz201101 - std::sqrt(22.5) * gz021101);
-    gz[(Ai + 5) * matrix_size + Bi + 4] +=
-        cc * (std::sqrt(5.625) * gz201200 - std::sqrt(5.625) * gz201020 -
-              std::sqrt(5.625) * gz021200 + std::sqrt(5.625) * gz021020);
-    gz[(Ai + 6) * matrix_size + Bi + 0] +=
-        cc *
-        (std::sqrt(15. / 8.0) * gz300110 + std::sqrt(135. / 8.0) * gz120110);
-    gz[(Ai + 6) * matrix_size + Bi + 1] +=
-        cc *
-        (std::sqrt(15. / 8.0) * gz300011 + std::sqrt(135. / 8.0) * gz120011);
-    gz[(Ai + 6) * matrix_size + Bi + 2] +=
-        cc *
-        (std::sqrt(5.0 / 8.0) * gz300002 -
-         (std::sqrt(1.25 / 8.0) * gz300020 + std::sqrt(1.25 / 8.0) * gz300200) -
-         std::sqrt(11.25 / 8.0) * gz120200 - std::sqrt(11.25 / 8.0) * gz120020 +
-         std::sqrt(45.0 / 8.0) * gz120002);
-    gz[(Ai + 6) * matrix_size + Bi + 3] +=
-        cc *
-        (std::sqrt(15. / 8.0) * gz300101 + std::sqrt(135. / 8.0) * gz120101);
-    gz[(Ai + 6) * matrix_size + Bi + 4] +=
-        cc *
-        (std::sqrt(3.75 / 8.0) * gz300200 - std::sqrt(3.75 / 8.0) * gz300020 +
-         std::sqrt(33.75 / 8.0) * gz120200 - std::sqrt(33.75 / 8.0) * gz120020);
+    double cnst0 = std::sqrt(22.5);
+    double C18725 = ae*zAB;
+    double C18718 = yAB*ae;
+    double cnst1 = std::sqrt(3.75);
+    double cnst4 = ae*2;
+    double cnst6 = std::sqrt( ( 3.75/8.0 ) );
+    double cnst8 = std::sqrt( ( 15./8.0 ) );
+    double cnst10 = std::sqrt( ( 2.25/8.0 ) );
+    double cnst12 = std::sqrt( ( 135./8.0 ) );
+    double cnst14 = std::sqrt( ( 33.75/8.0 ) );
+    double cnst16 = std::sqrt( ( 1.25/8.0 ) );
+    double cnst17 = std::sqrt(1.875);
+    double cnst18 = std::sqrt(5.625);
+    double C18689 = xAB*ae;
+    double cnst21 = std::sqrt( ( 0.75/8.0 ) );
+    double cnst22 = std::sqrt(0.75);
+    double cnst24 = std::sqrt( ( 45.0/8.0 ) );
+    double cnst26 = std::sqrt( ( 5.0/8.0 ) );
+    double cnst27 = std::sqrt(4.5);
+    double cnst29 = std::sqrt( ( 9./8.0 ) );
+    double cnst30 = std::sqrt(3.0);
+    double cnst32 = std::sqrt( ( 3.0/8.0 ) );
+    double cnst33 = std::sqrt(6.75);
+    double cnst34 = std::sqrt(7.5);
+    double cnst35 = std::sqrt(6.0);
+    double cnst36 = std::sqrt(1.6875);
+    double cnst37 = std::sqrt(15.0);
+    double cnst39 = std::sqrt( ( 45./8.0 ) );
+    double cnst41 = cc* ( std::sqrt(45.) ) ;
+    double C18684 = be+ae;
+    double C18673 = std::sqrt( ( Pi/C18684 ) );
+    double C18723 =  ( C18673*C18725 ) /C18684;
+    double C19022 =  ( C18689*C18673 ) /C18684;
+    double C18716 =  ( C18718*C18673 ) /C18684;
+    double C18926 = std::pow(C18684 , 2);
+    double C19001 = C18926*2.;
+    double C18691 = 2.*C18684;
+    double C19018 = C18673/C18691;
+    double C18715 =  (  (  ( std::pow(C18718 , 2) ) *C18673 ) /C18926 ) +C19018;
+    double C18722 =  (  ( C18673* ( std::pow(C18725 , 2) )  ) /C18926 ) +C19018;
+    double C18737 = C19018+ (  ( C18673* ( std::pow(C18689 , 2) )  ) /C18926 ) ;
+    double C18788 =  ( - (  ( be*C18673 ) *2 )  ) /C18691;
+    double C19121 =  (  ( C18673*ae ) *2. ) /C18691;
+    double C18740 = be*yAB;
+    double C19045 =  (  ( C18673* ( std::pow(C18740 , 2) )  ) /C18926 ) +C19018;
+    double C18957 = C18740*C18673;
+    double C19043 = C19018- (  ( C18718*C18957 ) /C18926 ) ;
+    double C18962 =  ( - ( C18957*2. )  ) /C19001;
+    double C19038 = C18962+ (  ( C18718*C19045 ) /C18684 ) ;
+    double C18855 =  (  (  ( 2*C19043 ) +C19045 ) /C18691 ) + (  ( C18718*C19038 ) /C18684 ) ;
+    double C18736 = C18962- (  ( C18740*C19045 ) /C18684 ) ;
+    double C19037 =  (  ( C18718*C18736 ) /C18684 ) + (  ( C19045*3. ) /C18691 ) ;
+    double C18751 =  (  ( C18736+ ( C19038*3 )  ) /C18691 ) + (  ( C18718*C19037 ) /C18684 ) ;
+    double cnst85 = C18957/C18684;
+    double C18827 =  (  ( C18718*C19043 ) /C18684 ) + (  ( C18716-cnst85 ) /C18691 ) ;
+    double C18681 = -cnst85;
+    double C18717 = C18681*ae;
+    double C18747 = C18788- (  (  ( C18740*C18717 ) *2 ) /C18684 ) ;
+    double C18753 = C18747*2;
+    double C19133 =  (  ( 4.*C18717 ) /C18691 ) + (  ( C18718*C18747 ) /C18684 ) ;
+    double C19137 = C19121+ (  (  ( C18718*C18717 ) *2 ) /C18684 ) ;
+    double C19196 =  (  ( C18718*C19133 ) /C18684 ) + (  (  (  ( ae*C19043 ) *2 ) + ( C19137+C18747 )  ) /C18691 ) ;
+    double C18755 = C18717*2;
+    double C18765 =  (  ( C18755- (  ( C18681*be ) *2 )  ) /C18691 ) - (  ( C18740*C18747 ) /C18684 ) ;
+    double C19159 =  (  (  ( 2* ( ae*C19045 )  ) +C18753 ) /C18691 ) + (  ( C18718*C18765 ) /C18684 ) ;
+    double C19198 =  (  (  (  ( C19038*ae ) *2 ) + ( C18765+ ( C19133*2 )  )  ) /C18691 ) + (  ( C18718*C19159 ) /C18684 ) ;
+    double C18768 =  (  ( C18753- (  ( be*C19045 ) *2 )  ) /C18691 ) - (  ( C18740*C18765 ) /C18684 ) ;
+    double gy030200 = C18673* ( C18737*C18768 ) ;
+    double gy030101 = C18723* ( C18768*C19022 ) ;
+    double gy030002 =  ( C18768*C18673 ) *C18722;
+    double C19158 =  (  (  ( C18765*3 ) + (  ( C18736*ae ) *2 )  ) /C18691 ) + (  ( C18718*C18768 ) /C18684 ) ;
+    double gy030110 = C18673* ( C19158*C19022 ) ;
+    double cnst124 =  (  (  ( C19037*cnst4 ) + ( C18768+ ( 3*C19159 )  )  ) /C18691 ) + (  ( C18718*C19158 ) /C18684 ) ;
+    double gy030020 = C18673* ( cnst124*C18673 ) ;
+    double gy030011 = C18723* ( C18673*C19158 ) ;
+    double C19183 =  (  ( C18718*C19137 ) /C18684 ) + (  ( C18755+ (  ( ae*C18716 ) *2 )  ) /C18691 ) ;
+    double C18686 = xAB*be;
+    double C19000 = C18686*C18673;
+    double C19042 = C19018- (  ( C18689*C19000 ) /C18926 ) ;
+    double gy120110 = C18673* ( C19042*C19159 ) ;
+    double gy120101 =  ( C19042*C18765 ) *C18723;
+    double C19034 =  ( - ( C19000*2. )  ) /C19001;
+    double cnst165 = C19000/C18684;
+    double C18674 = -cnst165;
+    double gy120020 = C18673* ( C19198*C18674 ) ;
+    double C18685 = ae*C18674;
+    double C18702 = C18788- (  (  ( C18686*C18685 ) *2 ) /C18684 ) ;
+    double gx120011 = C18723* ( C18702*C19038 ) ;
+    double C19132 =  (  ( C18702*C18689 ) /C18684 ) + (  ( C18685*4. ) /C18691 ) ;
+    double gx120110 = C18673* ( C19132*C19038 ) ;
+    double gx120101 = C18723* ( C19132*C19045 ) ;
+    double gx120002 =  ( C18702*C19045 ) *C18722;
+    double gx120020 =  ( C18702*C18855 ) *C18673;
+    double C18703 = C18702*2;
+    double C18694 = C18685*2;
+    double gx030011 =  ( C18694*C19037 ) *C18723;
+    double gx030020 =  ( C18694*C18751 ) *C18673;
+    double gx030002 =  ( C18694*C18736 ) *C18722;
+    double C19141 = C19121+ (  (  ( C18689*C18685 ) *2 ) /C18684 ) ;
+    double gx030101 = C18723* ( C18736*C19141 ) ;
+    double gx030110 = C18673* ( C19141*C19037 ) ;
+    double C19185 =  (  ( C18694+ (  ( C19022*ae ) *2 )  ) /C18691 ) + (  ( C19141*C18689 ) /C18684 ) ;
+    double gx030200 =  ( C19185*C18736 ) *C18673;
+    double C19199 =  (  (  ( C18702+C19141 ) + (  ( C19042*ae ) *2 )  ) /C18691 ) + (  ( C19132*C18689 ) /C18684 ) ;
+    double gx120200 =  ( C19199*C19045 ) *C18673;
+    double gy120002 =  ( C18765*C18674 ) *C18722;
+    double gy120011 = C18723* ( C18674*C19159 ) ;
+    double C18708 =  (  ( C18694- ( 2* ( be*C18674 )  )  ) /C18691 ) - (  ( C18702*C18686 ) /C18684 ) ;
+    double gx210011 = C18723* ( C18708*C19043 ) ;
+    gx[(Ai + 0) * matrix_size + Bi + 1] += cc* (  ( cnst12*gx210011 ) - ( cnst8*gx030011 )  ) ;
+    double gx210020 = C18673* ( C18827*C18708 ) ;
+    double gx210002 =  ( C18681*C18708 ) *C18722;
+    double C18868 =  (  ( C19042*C18689 ) /C18684 ) + (  ( C19022-cnst165 ) /C18691 ) ;
+    double gy120200 =  ( C18765*C18868 ) *C18673;
+    double C18675 =  (  ( C18673* ( std::pow(C18686 , 2) )  ) /C18926 ) +C19018;
+    double C19035 = C19034+ (  ( C18689*C18675 ) /C18684 ) ;
+    double gy210101 = C18723* ( C19035*C18747 ) ;
+    gy[(Ai + 0) * matrix_size + Bi + 3] += cc* (  ( cnst12*gy210101 ) - ( cnst8*gy030101 )  ) ;
+    double gy210110 = C18673* ( C19035*C19133 ) ;
+    gy[(Ai + 0) * matrix_size + Bi + 0] += cc* (  ( cnst12*gy210110 ) - ( cnst8*gy030110 )  ) ;
+    double C18676 = C19034- (  ( C18686*C18675 ) /C18684 ) ;
+    double gy300020 = C18673* ( C18676*C19183 ) ;
+    double gy300002 =  ( C18755*C18676 ) *C18722;
+    double C19053 = C18676*ae;
+    double gy300011 = C18723* ( C18676*C19137 ) ;
+    gy[(Ai + 6) * matrix_size + Bi + 1] += cc* (  ( cnst12*gy120011 ) + ( gy300011*cnst8 )  ) ;
+    double gy210020 = C18673* ( C19196*C18675 ) ;
+    double C18824 =  (  ( C19035*C18689 ) /C18684 ) + (  ( C18675+ ( C19042*2 )  ) /C18691 ) ;
+    double gy210200 = C18673* ( C18824*C18747 ) ;
+    double cnst342 =  (  (  ( cnst6*gy030020 ) - ( gy030200*cnst6 )  ) + ( gy210200*cnst14 )  ) - ( gy210020*cnst14 ) ;
+    gy[(Ai + 0) * matrix_size + Bi + 4] += cc*cnst342;
+    double cnst344 =  ( gy210200*cnst21 ) + (  (  ( cnst21*gy030020 ) + ( gy030200*cnst21 )  ) - ( cnst32*gy030002 )  ) ;
+    double cnst348 =  (  (  ( gy030020*cnst10 ) - ( gy030200*cnst10 )  ) - ( gy210200*cnst10 )  ) + ( gy210020*cnst10 ) ;
+    double C18711 =  (  ( C18703- (  ( be*C18675 ) *2 )  ) /C18691 ) - (  ( C18686*C18708 ) /C18684 ) ;
+    double gx300020 = C18673* ( C18715*C18711 ) ;
+    double gx300002 = C18722* ( C18673*C18711 ) ;
+    double C19153 =  (  (  ( 3*C18708 ) + ( C19053*2 )  ) /C18691 ) + (  ( C18689*C18711 ) /C18684 ) ;
+    double gx300110 = C18673* ( C19153*C18716 ) ;
+    gx[(Ai + 6) * matrix_size + Bi + 0] += cc* (  ( cnst8*gx300110 ) + ( gx120110*cnst12 )  ) ;
+    double gx300101 = C18723* ( C18673*C19153 ) ;
+    gx[(Ai + 6) * matrix_size + Bi + 3] += cc* (  ( cnst8*gx300101 ) + ( cnst12*gx120101 )  ) ;
+    double gx300011 = C18723* ( C18716*C18711 ) ;
+    gx[(Ai + 6) * matrix_size + Bi + 1] +=  (  ( cnst12*gx120011 ) + ( cnst8*gx300011 )  ) *cc;
+    double gy210011 = C18723* ( C19133*C18675 ) ;
+    gy[(Ai + 0) * matrix_size + Bi + 1] += cc* (  ( cnst12*gy210011 ) - ( cnst8*gy030011 )  ) ;
+    double C18677 =  (  ( C18675*3. ) /C18691 ) + (  ( xAB*C19053 ) /C18684 ) ;
+    double gy300110 =  ( C18677*C19137 ) *C18673;
+    gy[(Ai + 6) * matrix_size + Bi + 0] += cc* (  ( cnst8*gy300110 ) + ( cnst12*gy120110 )  ) ;
+    double C18680 =  (  ( C18676+ ( C19035*3 )  ) /C18691 ) + (  ( C18677*C18689 ) /C18684 ) ;
+    double gy300200 =  ( C18755*C18680 ) *C18673;
+    double cnst402 =  (  ( gy120200*cnst14 ) + (  ( gy300200*cnst6 ) - ( cnst6*gy300020 )  )  ) - ( cnst14*gy120020 ) ;
+    gy[(Ai + 6) * matrix_size + Bi + 4] += cc*cnst402;
+    double cnst406 =  ( gy120200*cnst21 ) + (  (  ( gy300200*cnst21 ) + ( cnst21*gy300020 )  ) - ( gy300002*cnst32 )  ) ;
+    double cnst412 =  ( gy120020*cnst10 ) + (  (  ( cnst10*gy300020 ) - ( gy300200*cnst10 )  ) - ( gy120200*cnst10 )  ) ;
+    double gy300101 = C18723* ( C18677*C18755 ) ;
+    gy[(Ai + 6) * matrix_size + Bi + 3] += cc* (  ( cnst8*gy300101 ) + ( cnst12*gy120101 )  ) ;
+    double C19154 =  (  ( C18689*C18708 ) /C18684 ) + (  ( C18703+ (  ( ae*C18675 ) *2 )  ) /C18691 ) ;
+    double gx210110 = C18673* ( C19154*C19043 ) ;
+    gx[(Ai + 0) * matrix_size + Bi + 0] += cc* (  ( cnst12*gx210110 ) - ( cnst8*gx030110 )  ) ;
+    double gx210101 = C18723* ( C18681*C19154 ) ;
+    gx[(Ai + 0) * matrix_size + Bi + 3] += cc* (  ( cnst12*gx210101 ) - ( gx030101*cnst8 )  ) ;
+    double C19195 =  (  ( C18689*C19154 ) /C18684 ) + (  (  (  ( C19132*2 ) +C18708 ) + (  ( C19035*ae ) *2 )  ) /C18691 ) ;
+    double gx210200 =  ( C19195*C18681 ) *C18673;
+    double cnst431 =  (  (  ( gx030020*cnst21 ) + ( cnst21*gx030200 )  ) - ( cnst32*gx030002 )  ) + ( gx210200*cnst21 ) ;
+    double cnst436 =  (  ( gx210200*cnst14 ) + (  ( gx030020*cnst6 ) - ( cnst6*gx030200 )  )  ) - ( gx210020*cnst14 ) ;
+    gx[(Ai + 0) * matrix_size + Bi + 4] += cc*cnst436;
+    double cnst439 =  ( gx210020*cnst10 ) + (  (  ( gx030020*cnst10 ) - ( cnst10*gx030200 )  ) - ( gx210200*cnst10 )  ) ;
+    double cnst444 =  (  ( C18689*C19153 ) /C18684 ) + (  (  (  ( 3*C19154 ) +C18711 ) + ( C18677*cnst4 )  ) /C18691 ) ;
+    double gx300200 =  ( std::pow(C18673 , 2) ) *cnst444;
+    double cnst448 =  (  (  ( cnst10*gx300020 ) - ( gx300200*cnst10 )  ) - ( gx120200*cnst10 )  ) + ( gx120020*cnst10 ) ;
+    double cnst455 =  (  ( gx120200*cnst14 ) + (  ( gx300200*cnst6 ) - ( cnst6*gx300020 )  )  ) - ( gx120020*cnst14 ) ;
+    gx[(Ai + 6) * matrix_size + Bi + 4] += cc*cnst455;
+    double cnst459 =  (  (  ( gx300200*cnst21 ) + ( cnst21*gx300020 )  ) - ( cnst32*gx300002 )  ) + ( gx120200*cnst21 ) ;
+    double gy210002 =  ( C18747*C18675 ) *C18722;
+    double C18783 = be*zAB;
+    double C18973 = C18673*C18783;
+    double C19044 = C19018- (  ( C18973*C18725 ) /C18926 ) ;
+    double gx021101 =  ( C19141*C19045 ) *C19044;
+    gy[(Ai + 1) * matrix_size + Bi + 1] +=  (  ( C19133*C18674 ) *C19044 ) *cnst41;
+    double gx021011 =  ( C18694*C19038 ) *C19044;
+    double gy201101 =  ( C19035*C18755 ) *C19044;
+    double gy021101 =  ( C18765*C19022 ) *C19044;
+    gy[(Ai + 5) * matrix_size + Bi + 3] += cc* (  ( gy201101*cnst0 ) - ( cnst0*gy021101 )  ) ;
+    gx[(Ai + 1) * matrix_size + Bi + 3] +=  (  ( C18681*C19132 ) *C19044 ) *cnst41;
+    double gx201011 =  ( C18708*C18716 ) *C19044;
+    gx[(Ai + 5) * matrix_size + Bi + 1] += cc* (  ( gx201011*cnst0 ) - ( cnst0*gx021011 )  ) ;
+    double gy201011 =  ( C19137*C18675 ) *C19044;
+    gx[(Ai + 1) * matrix_size + Bi + 1] +=  (  ( C18702*C19043 ) *C19044 ) *cnst41;
+    double gy021011 =  ( C18673*C19159 ) *C19044;
+    gy[(Ai + 5) * matrix_size + Bi + 1] += cc* (  ( cnst0*gy201011 ) - ( gy021011*cnst0 )  ) ;
+    double gx201101 =  ( C18673*C19154 ) *C19044;
+    gx[(Ai + 5) * matrix_size + Bi + 3] += cc* (  ( cnst0*gx201101 ) - ( cnst0*gx021101 )  ) ;
+    gy[(Ai + 1) * matrix_size + Bi + 3] +=  (  ( C19042*C18747 ) *C19044 ) *cnst41;
+    double C18978 =  ( - ( C18973*2. )  ) /C19001;
+    double cnst491 = C18973/C18684;
+    double C18843 =  (  ( C18725*C19044 ) /C18684 ) + (  ( C18723-cnst491 ) /C18691 ) ;
+    double gx201002 = C18843* ( C18673*C18708 ) ;
+    double gy201002 = C18843* ( C18755*C18675 ) ;
+    double gx021002 = C18843* ( C18694*C19045 ) ;
+    double gy021002 = C18843* ( C18765*C18673 ) ;
+    double C18682 = -cnst491;
+    double gx111200 = C18682* ( C18681*C19199 ) ;
+    double gx201020 = C18682* ( C18708*C18715 ) ;
+    double gx201200 = C18682* ( C19195*C18673 ) ;
+    double gz120020 = C18682* ( C18694*C18855 ) ;
+    double gx201110 = C18682* ( C18716*C19154 ) ;
+    double gy021020 =  ( C18673*C19198 ) *C18682;
+    double gx021110 = C18682* ( C19141*C19038 ) ;
+    gx[(Ai + 5) * matrix_size + Bi + 0] += cc* (  ( cnst0*gx201110 ) - ( cnst0*gx021110 )  ) ;
+    double gy111020 =  ( C19196*C18674 ) *C18682;
+    double gy201020 = C18682* ( C19183*C18675 ) ;
+    double gz210200 =  ( C18755*C18824 ) *C18682;
+    double gx021200 =  ( C19185*C19045 ) *C18682;
+    double cnst544 =  (  ( gx201002*cnst34 ) - (  ( cnst17*gx201020 ) + ( cnst17*gx201200 )  )  ) + ( cnst17*gx021200 ) ;
+    gx[(Ai + 5) * matrix_size + Bi + 2] += cc* (  (  ( cnst17*gz120020 ) +cnst544 ) - ( gx021002*cnst34 )  ) ;
+    double cnst551 =  (  (  ( cnst18*gx201200 ) - ( cnst18*gx201020 )  ) - ( cnst18*gx021200 )  ) + ( cnst18*gz120020 ) ;
+    gx[(Ai + 5) * matrix_size + Bi + 4] += cc*cnst551;
+    gy[(Ai + 1) * matrix_size + Bi + 0] +=  ( C18682* ( C19042*C19133 )  ) *cnst41;
+    double gy201110 =  ( C19035*C19137 ) *C18682;
+    double gy021110 = C18682* ( C19022*C19159 ) ;
+    gy[(Ai + 5) * matrix_size + Bi + 0] += cc* (  ( gy201110*cnst0 ) - ( cnst0*gy021110 )  ) ;
+    double gy111200 = C18682* ( C18868*C18747 ) ;
+    double cnst559 =  (  ( C18843* ( C18747*C18674 )  ) *cnst37 ) - (  ( cnst1*gy111200 ) + ( gy111020*cnst1 )  ) ;
+    gy[(Ai + 1) * matrix_size + Bi + 2] += cc*cnst559;
+    double C18724 = C18682*ae;
+    double C18800 = C18724*2;
+    double gz300110 =  ( C18677*C18716 ) *C18800;
+    double gz030200 =  ( C18737*C18736 ) *C18800;
+    double gz300200 = C18800* ( C18680*C18673 ) ;
+    double gz120200 = C18800* ( C18868*C19045 ) ;
+    double gz030110 = C18800* ( C19037*C19022 ) ;
+    double gz030020 =  ( C18673*C18751 ) *C18800;
+    double gz120110 =  ( C19042*C19038 ) *C18800;
+    gz[(Ai + 6) * matrix_size + Bi + 0] += cc* (  ( cnst8*gz300110 ) + ( cnst12*gz120110 )  ) ;
+    double gz210020 = C18800* ( C18827*C18675 ) ;
+    double cnst591 =  (  (  ( cnst10*gz030020 ) - ( gz030200*cnst10 )  ) - ( cnst10*gz210200 )  ) + ( gz210020*cnst10 ) ;
+    double cnst593 =  (  (  ( cnst6*gz030020 ) - ( gz030200*cnst6 )  ) + ( cnst14*gz210200 )  ) - ( gz210020*cnst14 ) ;
+    gz[(Ai + 0) * matrix_size + Bi + 4] += cc*cnst593;
+    double gz300020 =  ( C18676*C18715 ) *C18800;
+    double cnst599 =  (  ( gz120200*cnst14 ) + (  ( gz300200*cnst6 ) - ( gz300020*cnst6 )  )  ) - ( gz120020*cnst14 ) ;
+    gz[(Ai + 6) * matrix_size + Bi + 4] += cc*cnst599;
+    double cnst603 =  (  (  ( gz300020*cnst10 ) - ( gz300200*cnst10 )  ) - ( gz120200*cnst10 )  ) + ( gz120020*cnst10 ) ;
+    double gz210110 =  ( C19035*C19043 ) *C18800;
+    gz[(Ai + 0) * matrix_size + Bi + 0] +=  (  ( gz210110*cnst12 ) - ( cnst8*gz030110 )  ) *cc;
+    double C19139 = C19121+ (  (  ( C18724*C18725 ) *2 ) /C18684 ) ;
+    double gz120011 = C19139* ( C19038*C18674 ) ;
+    double gz120101 = C19139* ( C19042*C19045 ) ;
+    double gz300011 = C19139* ( C18676*C18716 ) ;
+    gz[(Ai + 6) * matrix_size + Bi + 1] += cc* (  ( cnst12*gz120011 ) + ( cnst8*gz300011 )  ) ;
+    double gz030011 = C19139* ( C19037*C18673 ) ;
+    double gz210101 = C19139* ( C19035*C18681 ) ;
+    double C19184 =  (  ( C19139*C18725 ) /C18684 ) + (  (  (  ( C18723*ae ) *2 ) +C18800 ) /C18691 ) ;
+    double gz300002 =  ( C18676*C18673 ) *C19184;
+    double cnst623 =  ( cnst21*gz120200 ) + (  (  ( gz300020*cnst21 ) + ( gz300200*cnst21 )  ) - ( cnst32*gz300002 )  ) ;
+    double gz030002 = C19184* ( C18736*C18673 ) ;
+    double cnst629 =  (  (  ( gz030200*cnst21 ) + ( cnst21*gz030020 )  ) - ( cnst32*gz030002 )  ) + ( cnst21*gz210200 ) ;
+    double gz210002 = C19184* ( C18681*C18675 ) ;
+    double gz120002 = C19184* ( C19045*C18674 ) ;
+    double gz210011 = C19139* ( C18675*C19043 ) ;
+    gz[(Ai + 0) * matrix_size + Bi + 1] += cc* (  ( cnst12*gz210011 ) - ( cnst8*gz030011 )  ) ;
+    double gz300101 = C19139* ( C18677*C18673 ) ;
+    gz[(Ai + 6) * matrix_size + Bi + 3] += cc* (  ( cnst12*gz120101 ) + ( gz300101*cnst8 )  ) ;
+    double gz030101 =  ( C18736*C19022 ) *C19139;
+    gz[(Ai + 0) * matrix_size + Bi + 3] += cc* (  ( gz210101*cnst12 ) - ( gz030101*cnst8 )  ) ;
+    double C18790 = C18788- (  (  ( C18724*C18783 ) *2 ) /C18684 ) ;
+    double gz021110 = C18790* ( C19038*C19022 ) ;
+    double gz111200 = C18790* ( C18681*C18868 ) ;
+    double gz021020 =  ( C18855*C18673 ) *C18790;
+    double C18810 =  (  ( C18800- (  ( C18682*be ) *2 )  ) /C18691 ) - (  ( C18783*C18790 ) /C18684 ) ;
+    double gz102200 = C18810* ( C18868*C18673 ) ;
+    double gz012020 =  ( C18827*C18673 ) *C18810;
+    double gz012200 =  ( C18737*C18681 ) *C18810;
+    gz[(Ai + 2) * matrix_size + Bi + 4] += cc* (  ( cnst591- ( cnst27*gz012200 )  ) + ( gz012020*cnst27 )  ) ;
+    double gz102020 = C18810* ( C18715*C18674 ) ;
+    gz[(Ai + 4) * matrix_size + Bi + 4] += cc* (  (  ( cnst27*gz102200 ) +cnst603 ) - ( gz102020*cnst27 )  ) ;
+    double C19134 =  (  ( C18725*C18790 ) /C18684 ) + (  ( C18724*4. ) /C18691 ) ;
+    double gz021011 =  ( C19038*C18673 ) *C19134;
+    double gz201101 =  ( C19035*C18673 ) *C19134;
+    double gz201011 = C19134* ( C18716*C18675 ) ;
+    gz[(Ai + 5) * matrix_size + Bi + 1] += cc* (  ( gz201011*cnst0 ) - ( cnst0*gz021011 )  ) ;
+    gz[(Ai + 1) * matrix_size + Bi + 3] +=  (  ( C19042*C18681 ) *C19134 ) *cnst41;
+    double gz021101 =  ( C19022*C19045 ) *C19134;
+    gz[(Ai + 5) * matrix_size + Bi + 3] += cc* (  ( cnst0*gz201101 ) - ( gz021101*cnst0 )  ) ;
+    gz[(Ai + 1) * matrix_size + Bi + 1] +=  ( C19134* ( C18674*C19043 )  ) *cnst41;
+    double C18798 = C18790*2;
+    double gz021200 =  ( C18737*C19045 ) *C18790;
+    double gz201110 = C18790* ( C19035*C18716 ) ;
+    gz[(Ai + 5) * matrix_size + Bi + 0] += cc* (  ( cnst0*gz201110 ) - ( gz021110*cnst0 )  ) ;
+    double C19197 =  (  (  (  ( ae*C19044 ) *2 ) + ( C19139+C18790 )  ) /C18691 ) + (  ( C18725*C19134 ) /C18684 ) ;
+    double gz021002 =  ( C18673*C19045 ) *C19197;
+    double gz201002 =  ( C18673*C18675 ) *C19197;
+    gz[(Ai + 1) * matrix_size + Bi + 0] += cnst41* ( C18790* ( C19042*C19043 )  ) ;
+    double gz111020 =  ( C18827*C18674 ) *C18790;
+    double cnst686 =  (  (  ( C18681*C18674 ) *C19197 ) *cnst37 ) - (  ( cnst1*gz111200 ) + ( gz111020*cnst1 )  ) ;
+    gz[(Ai + 1) * matrix_size + Bi + 2] += cc*cnst686;
+    double gz201200 =  ( C18824*C18673 ) *C18790;
+    double gz201020 = C18790* ( C18715*C18675 ) ;
+    double cnst695 =  ( gz021200*cnst17 ) + (  ( gz201002*cnst34 ) - (  ( gz201020*cnst17 ) + ( cnst17*gz201200 )  )  ) ;
+    gz[(Ai + 5) * matrix_size + Bi + 2] += cc* (  (  ( cnst17*gz021020 ) +cnst695 ) - ( gz021002*cnst34 )  ) ;
+    double cnst702 =  ( cnst18*gz021020 ) + (  (  ( cnst18*gz201200 ) - ( cnst18*gz201020 )  ) - ( gz021200*cnst18 )  ) ;
+    gz[(Ai + 5) * matrix_size + Bi + 4] += cc*cnst702;
+    double gx111020 = C18682* ( C18827*C18702 ) ;
+    double cnst705 =  (  ( C18843* ( C18681*C18702 )  ) *cnst37 ) - (  ( cnst1*gx111200 ) + ( gx111020*cnst1 )  ) ;
+    gx[(Ai + 1) * matrix_size + Bi + 2] += cc*cnst705;
+    double gy021200 = C18682* ( C18737*C18765 ) ;
+    double cnst708 =  (  (  ( cnst18*gz210200 ) - ( cnst18*gy201020 )  ) - ( cnst18*gy021200 )  ) + ( cnst18*gy021020 ) ;
+    gy[(Ai + 5) * matrix_size + Bi + 4] += cc*cnst708;
+    double cnst711 =  ( gy021200*cnst17 ) + (  ( gy201002*cnst34 ) - (  ( cnst17*gy201020 ) + ( cnst17*gz210200 )  )  ) ;
+    gy[(Ai + 5) * matrix_size + Bi + 2] += cc* (  ( cnst711+ ( cnst17*gy021020 )  ) - ( gy021002*cnst34 )  ) ;
+    gx[(Ai + 1) * matrix_size + Bi + 0] +=  (  ( C19132*C19043 ) *C18682 ) *cnst41;
+    double C19046 = C19018+ (  ( C18673* ( std::pow(C18783 , 2) )  ) /C18926 ) ;
+    double gy012020 =  ( C18673*C19196 ) *C19046;
+    double C18780 = C18978- (  ( C18783*C19046 ) /C18684 ) ;
+    double gx003020 = C18780* ( C18694*C18715 ) ;
+    double gy003020 = C18780* ( C19183*C18673 ) ;
+    double C19040 =  (  ( C19046*3. ) /C18691 ) + (  ( C18780*C18725 ) /C18684 ) ;
+    double cnst720 =  (  ( cnst30* (  ( C18673*C19137 ) *C19040 )  ) - ( cnst33*gy201011 )  ) - ( gy021011*cnst33 ) ;
+    gy[(Ai + 3) * matrix_size + Bi + 1] += cnst720*cc;
+    double cnst724 =  (  (  (  ( C19141*C18673 ) *C19040 ) *cnst30 ) - ( gx201101*cnst33 )  ) - ( gx021101*cnst33 ) ;
+    gx[(Ai + 3) * matrix_size + Bi + 3] += cc*cnst724;
+    double cnst727 =  (  ( cnst30* (  ( C18755*C19022 ) *C19040 )  ) - ( gy201101*cnst33 )  ) - ( gy021101*cnst33 ) ;
+    gy[(Ai + 3) * matrix_size + Bi + 3] += cc*cnst727;
+    double cnst732 =  (  ( cnst30* (  ( C18694*C18716 ) *C19040 )  ) - ( gx201011*cnst33 )  ) - ( cnst33*gx021011 ) ;
+    gx[(Ai + 3) * matrix_size + Bi + 1] += cnst732*cc;
+    double cnst735 =  (  ( cnst30* ( C18780* ( C19137*C19022 )  )  ) - ( gy201110*cnst33 )  ) - ( gy021110*cnst33 ) ;
+    gy[(Ai + 3) * matrix_size + Bi + 0] += cnst735*cc;
+    double gy003200 =  ( C18737*C18755 ) *C18780;
+    double cnst739 =  ( cnst36*gy201020 ) + (  (  ( cnst22*gy003200 ) - ( cnst22*gy003020 )  ) - ( cnst36*gz210200 )  ) ;
+    gy[(Ai + 3) * matrix_size + Bi + 4] += cc* (  ( cnst36*gy021020 ) + ( cnst739- ( gy021200*cnst36 )  )  ) ;
+    double gx003200 =  ( C19185*C18673 ) *C18780;
+    double cnst745 =  ( cnst36*gx201020 ) + (  (  ( cnst22*gx003200 ) - ( cnst22*gx003020 )  ) - ( cnst36*gx201200 )  ) ;
+    gx[(Ai + 3) * matrix_size + Bi + 4] += cc* (  ( cnst745- ( cnst36*gx021200 )  ) + ( gz120020*cnst36 )  ) ;
+    double cnst750 =  (  (  ( C18780* ( C19141*C18716 )  ) *cnst30 ) - ( gx201110*cnst33 )  ) - ( gx021110*cnst33 ) ;
+    gx[(Ai + 3) * matrix_size + Bi + 0] += cc*cnst750;
+    double gy012200 =  ( C18737*C18747 ) *C19046;
+    gy[(Ai + 2) * matrix_size + Bi + 4] += cc* (  ( cnst348- ( gy012200*cnst27 )  ) + ( cnst27*gy012020 )  ) ;
+    double gy102020 =  ( C19183*C18674 ) *C19046;
+    double gx102200 =  ( C19199*C18673 ) *C19046;
+    double gx102020 =  ( C18702*C18715 ) *C19046;
+    gx[(Ai + 4) * matrix_size + Bi + 4] +=  (  ( cnst448+ ( cnst27*gx102200 )  ) - ( cnst27*gx102020 )  ) *cc;
+    double gy102200 =  ( C18755*C18868 ) *C19046;
+    gy[(Ai + 4) * matrix_size + Bi + 4] += cc* (  (  ( gy102200*cnst27 ) +cnst412 ) - ( cnst27*gy102020 )  ) ;
+    double C18813 =  (  ( C18798- (  ( be*C19046 ) *2 )  ) /C18691 ) - (  ( C18810*C18783 ) /C18684 ) ;
+    double C19160 =  (  (  ( C18810*3 ) + (  ( C18780*ae ) *2 )  ) /C18691 ) + (  ( C18813*C18725 ) /C18684 ) ;
+    double cnst768 =  (  ( cnst30* (  ( C18673*C18716 ) *C19160 )  ) - ( gz201011*cnst33 )  ) - ( gz021011*cnst33 ) ;
+    gz[(Ai + 3) * matrix_size + Bi + 1] += cc*cnst768;
+    double cnst771 =  (  ( cnst30* (  ( C18673*C19022 ) *C19160 )  ) - ( gz201101*cnst33 )  ) - ( gz021101*cnst33 ) ;
+    gz[(Ai + 3) * matrix_size + Bi + 3] += cc*cnst771;
+    double gz003020 = C18813* ( C18673*C18715 ) ;
+    double cnst775 =  (  (  ( C18813* ( C19022*C18716 )  ) *cnst30 ) - ( cnst33*gz201110 )  ) - ( gz021110*cnst33 ) ;
+    gz[(Ai + 3) * matrix_size + Bi + 0] += cc*cnst775;
+    double gz003200 = C18813* ( C18737*C18673 ) ;
+    double cnst779 =  (  (  ( cnst22*gz003200 ) - ( cnst22*gz003020 )  ) - ( gz201200*cnst36 )  ) + ( gz201020*cnst36 ) ;
+    gz[(Ai + 3) * matrix_size + Bi + 4] +=  (  ( cnst779- ( gz021200*cnst36 )  ) + ( cnst36*gz021020 )  ) *cc;
+    double C19161 =  (  ( C18798+ (  ( C19046*ae ) *2 )  ) /C18691 ) + (  ( C18810*C18725 ) /C18684 ) ;
+    double cnst786 =  (  ( C18725*C19160 ) /C18684 ) + (  (  ( cnst4*C19040 ) + (  ( 3*C19161 ) +C18813 )  ) /C18691 ) ;
+    double gx012020 =  ( C18694*C18827 ) *C19046;
+    double gx012200 =  ( C18681*C19185 ) *C19046;
+    gx[(Ai + 2) * matrix_size + Bi + 4] += cc* (  ( gx012020*cnst27 ) + ( cnst439- ( cnst27*gx012200 )  )  ) ;
+    double C19041 = C18978+ (  ( C18725*C19046 ) /C18684 ) ;
+    double C18796 =  (  ( C19040*C18725 ) /C18684 ) + (  (  ( C19041*3 ) +C18780 ) /C18691 ) ;
+    double C18885 =  (  ( C19041*C18725 ) /C18684 ) + (  (  ( 2*C19044 ) +C19046 ) /C18691 ) ;
+    double cnst797 = cnst35* (  ( C18694*C18681 ) *C18885 ) ;
+    double C19200 =  (  ( C18725*C19161 ) /C18684 ) + (  (  (  ( C19041*ae ) *2 ) + ( C18810+ ( 2*C19134 )  )  ) /C18691 ) ;
+    double cnst807 =  (  ( - ( 0.5*gy003200 )  ) - ( 0.5*gy003020 )  ) + (  ( C18755*C18673 ) *C18796 ) ;
+    double cnst813 =  (  ( C18694*C18673 ) *C18796 ) + (  ( - ( 0.5*gx003200 )  ) - ( 0.5*gx003020 )  ) ;
+    double cnst819 =  ( cnst786* ( C18673*C18673 )  ) + (  ( - ( 0.5*gz003200 )  ) - ( 0.5*gz003020 )  ) ;
+    double cnst822 = std::sqrt(18.);
+    double cnst825 =  ( cnst29*gy030110 ) + (  ( gy210110*cnst29 ) + (  (  ( C19133*C19022 ) *C19046 ) *cnst822 )  ) ;
+    gy[(Ai + 2) * matrix_size + Bi + 0] += - ( cc*cnst825 ) ;
+    double cnst828 =  (  (  ( C19132*C18716 ) *C19046 ) *cnst822 ) - (  ( gx120110*cnst29 ) + ( cnst29*gx300110 )  ) ;
+    gx[(Ai + 4) * matrix_size + Bi + 0] += cc*cnst828;
+    double cnst830 =  (  ( C19041* ( C19137*C18674 )  ) *cnst822 ) - (  ( gy120011*cnst29 ) + ( gy300011*cnst29 )  ) ;
+    gy[(Ai + 4) * matrix_size + Bi + 1] += cc*cnst830;
+    double cnst832 =  ( cnst822* (  ( C19042*C18673 ) *C19161 )  ) - (  ( cnst29*gz120101 ) + ( gz300101*cnst29 )  ) ;
+    gz[(Ai + 4) * matrix_size + Bi + 3] += cc*cnst832;
+    double cnst834 =  ( cnst822* ( C19046* ( C19042*C19137 )  )  ) - (  ( gy120110*cnst29 ) + ( gy300110*cnst29 )  ) ;
+    gy[(Ai + 4) * matrix_size + Bi + 0] += cc*cnst834;
+    double cnst836 =  (  ( C19041* ( C18702*C18716 )  ) *cnst822 ) - (  ( gx300011*cnst29 ) + ( gx120011*cnst29 )  ) ;
+    gx[(Ai + 4) * matrix_size + Bi + 1] += cc*cnst836;
+    double cnst839 =  ( gy030011*cnst29 ) + (  ( gy210011*cnst29 ) + (  ( C19041* ( C18673*C19133 )  ) *cnst822 )  ) ;
+    gy[(Ai + 2) * matrix_size + Bi + 1] += - ( cc*cnst839 ) ;
+    double cnst842 =  ( cnst822* (  ( C19132*C18673 ) *C19041 )  ) - (  ( cnst29*gx120101 ) + ( gx300101*cnst29 )  ) ;
+    gx[(Ai + 4) * matrix_size + Bi + 3] += cc*cnst842;
+    double cnst844 =  ( cnst822* (  ( C18716*C18674 ) *C19161 )  ) - (  ( cnst29*gz120011 ) + ( gz300011*cnst29 )  ) ;
+    gz[(Ai + 4) * matrix_size + Bi + 1] += cc*cnst844;
+    double cnst846 =  ( cnst822* ( C18810* ( C19042*C18716 )  )  ) - (  ( cnst29*gz300110 ) + ( gz120110*cnst29 )  ) ;
+    gz[(Ai + 4) * matrix_size + Bi + 0] += cc*cnst846;
+    double cnst849 =  (  ( gz210101*cnst29 ) + (  (  ( C18681*C19022 ) *C19161 ) *cnst822 )  ) + ( gz030101*cnst29 ) ;
+    gz[(Ai + 2) * matrix_size + Bi + 3] += - ( cc*cnst849 ) ;
+    double cnst853 =  (  ( gy210101*cnst29 ) + (  ( C19041* ( C19022*C18747 )  ) *cnst822 )  ) + ( cnst29*gy030101 ) ;
+    gy[(Ai + 2) * matrix_size + Bi + 3] += - ( cc*cnst853 ) ;
+    double cnst856 =  ( cnst822* ( C19041* ( C19042*C18755 )  )  ) - (  ( cnst29*gy300101 ) + ( cnst29*gy120101 )  ) ;
+    gy[(Ai + 4) * matrix_size + Bi + 3] += cnst856*cc;
+    double cnst859 =  (  ( gz210110*cnst29 ) + (  (  ( C19022*C19043 ) *C18810 ) *cnst822 )  ) + ( cnst29*gz030110 ) ;
+    gz[(Ai + 2) * matrix_size + Bi + 0] += - ( cc*cnst859 ) ;
+    double cnst863 =  ( cnst29*gx030011 ) + (  ( cnst822* (  ( C18694*C19043 ) *C19041 )  ) + ( cnst29*gx210011 )  ) ;
+    gx[(Ai + 2) * matrix_size + Bi + 1] += - ( cc*cnst863 ) ;
+    double cnst867 =  ( gz030011*cnst29 ) + (  ( gz210011*cnst29 ) + (  (  ( C18673*C19043 ) *C19161 ) *cnst822 )  ) ;
+    gz[(Ai + 2) * matrix_size + Bi + 1] += - ( cc*cnst867 ) ;
+    double cnst871 =  ( cnst29*gx030110 ) + (  ( gx210110*cnst29 ) + ( cnst822* ( C19046* ( C19141*C19043 )  )  )  ) ;
+    gx[(Ai + 2) * matrix_size + Bi + 0] += - ( cc*cnst871 ) ;
+    double cnst875 =  ( gx030101*cnst29 ) + (  (  (  ( C18681*C19141 ) *C19041 ) *cnst822 ) + ( cnst29*gx210101 )  ) ;
+    gx[(Ai + 2) * matrix_size + Bi + 3] += - ( cnst875*cc ) ;
+    double cnst878 = std::sqrt(1.5);
+    double cnst880 =  ( gy012200*cnst878 ) + (  (  ( cnst21*gy210020 ) +cnst344 ) - ( gy210002*cnst32 )  ) ;
+    double cnst882 =  ( cnst878*gx012200 ) + (  ( cnst431+ ( gx210020*cnst21 )  ) - ( gx210002*cnst32 )  ) ;
+    double cnst885 =  (  ( cnst623+ ( gz120020*cnst21 )  ) - ( gz120002*cnst32 )  ) - ( cnst878*gz102200 ) ;
+    double cnst888 =  (  ( cnst878*gy012020 ) +cnst880 ) - (  (  ( C18673*C18747 ) *C18885 ) *cnst35 ) ;
+    gy[(Ai + 2) * matrix_size + Bi + 2] += cc*cnst888;
+    double cnst890 =  (  (  ( cnst21*gy120020 ) +cnst406 ) - ( gy120002*cnst32 )  ) - ( cnst878*gy102200 ) ;
+    double cnst893 =  ( cnst35* ( C19200* ( C18673*C18674 )  )  ) + ( cnst885- ( gz102020*cnst878 )  ) ;
+    gz[(Ai + 4) * matrix_size + Bi + 2] += cc*cnst893;
+    double cnst895 =  (  ( cnst459+ ( gx120020*cnst21 )  ) - ( gx120002*cnst32 )  ) - ( cnst878*gx102200 ) ;
+    double cnst897 =  ( cnst895- ( cnst878*gx102020 )  ) + ( cnst35* (  ( C18702*C18673 ) *C18885 )  ) ;
+    gx[(Ai + 4) * matrix_size + Bi + 2] += cc*cnst897;
+    gy[(Ai + 4) * matrix_size + Bi + 2] += cc* ( cnst797+ ( cnst890- ( cnst878*gy102020 )  )  ) ;
+    gx[(Ai + 2) * matrix_size + Bi + 2] += cc* (  (  ( gx012020*cnst878 ) +cnst882 ) -cnst797 ) ;
+    double cnst906 =  ( cnst878*gz012200 ) + (  (  ( gz210020*cnst21 ) +cnst629 ) - ( cnst32*gz210002 )  ) ;
+    double cnst908 =  (  ( cnst878*gz012020 ) +cnst906 ) - ( cnst35* (  ( C18681*C18673 ) *C19200 )  ) ;
+    gz[(Ai + 2) * matrix_size + Bi + 2] += cc*cnst908;
+    double cnst913 =  ( gy021200*0.75 ) + (  (  ( gy201020*0.75 ) + ( cnst807+ ( gz210200*0.75 )  )  ) - ( gy201002*1.5 )  ) ;
+    gy[(Ai + 3) * matrix_size + Bi + 2] += cc* (  ( cnst913+ ( gy021020*0.75 )  ) - ( gy021002*1.5 )  ) ;
+    double cnst918 =  (  (  (  ( gz201200*0.75 ) +cnst819 ) + ( gz201020*0.75 )  ) - ( gz201002*1.5 )  ) + ( gz021200*0.75 ) ;
+    gz[(Ai + 3) * matrix_size + Bi + 2] += cc* (  ( cnst918+ ( gz021020*0.75 )  ) - ( gz021002*1.5 )  ) ;
+    double cnst923 =  (  (  ( gx201020*0.75 ) + (  ( gx201200*0.75 ) +cnst813 )  ) - ( gx201002*1.5 )  ) + ( gx021200*0.75 ) ;
+    gx[(Ai + 3) * matrix_size + Bi + 2] += cc* (  ( cnst923+ ( gz120020*0.75 )  ) - ( gx021002*1.5 )  ) ;
+    double cnst927 = std::sqrt( ( 11.25/8.0 ) );
+    double cnst929 =  (  (  ( cnst16*gx030200 ) + ( gx030020*cnst16 )  ) - ( cnst26*gx030002 )  ) - ( gx210200*cnst927 ) ;
+    gx[(Ai + 0) * matrix_size + Bi + 2] += cc* (  ( cnst929- ( gx210020*cnst927 )  ) + ( gx210002*cnst39 )  ) ;
+    double cnst934 =  (  ( cnst26*gz300002 ) - (  ( gz300020*cnst16 ) + ( cnst16*gz300200 )  )  ) - ( cnst927*gz120200 ) ;
+    double cnst936 =  (  (  ( cnst16*gy030020 ) + ( cnst16*gy030200 )  ) - ( cnst26*gy030002 )  ) - ( cnst927*gy210200 ) ;
+    gz[(Ai + 6) * matrix_size + Bi + 2] += cc* (  ( cnst24*gz120002 ) + ( cnst934- ( cnst927*gz120020 )  )  ) ;
+    gy[(Ai + 0) * matrix_size + Bi + 2] += cc* (  ( cnst936- ( cnst927*gy210020 )  ) + ( cnst39*gy210002 )  ) ;
+    double cnst945 =  (  (  ( gz030200*cnst16 ) + ( cnst16*gz030020 )  ) - ( cnst26*gz030002 )  ) - ( cnst927*gz210200 ) ;
+    gz[(Ai + 0) * matrix_size + Bi + 2] += cc* (  ( cnst39*gz210002 ) + ( cnst945- ( gz210020*cnst927 )  )  ) ;
+    double cnst949 =  (  ( cnst26*gx300002 ) - (  ( cnst16*gx300020 ) + ( cnst16*gx300200 )  )  ) - ( cnst927*gx120200 ) ;
+    double cnst951 =  (  ( gy300002*cnst26 ) - (  ( cnst16*gy300020 ) + ( gy300200*cnst16 )  )  ) - ( cnst927*gy120200 ) ;
+    gx[(Ai + 6) * matrix_size + Bi + 2] +=  (  ( cnst24*gx120002 ) + ( cnst949- ( cnst927*gx120020 )  )  ) *cc;
+    gy[(Ai + 6) * matrix_size + Bi + 2] += cc* (  ( cnst951- ( cnst927*gy120020 )  ) + ( gy120002*cnst24 )  ) ;
+    double cnst958 = std::sqrt(11.25);
+    gx[(Ai + 1) * matrix_size + Bi + 4] += cc* (  ( cnst958*gx111200 ) - ( cnst958*gx111020 )  ) ;
+    gz[(Ai + 1) * matrix_size + Bi + 4] += cc* (  ( cnst958*gz111200 ) - ( cnst958*gz111020 )  ) ;
+    gy[(Ai + 1) * matrix_size + Bi + 4] += cc* (  ( cnst958*gy111200 ) - ( gy111020*cnst958 )  ) ;
 }
-
-// Automatically generated, do not edit

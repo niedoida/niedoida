@@ -9,31 +9,26 @@ namespace {
     static const double Pi = M_PI;
 }
 
-void overlap_gradient_00(double ae,
-                         double be,
-                         double cc,
-                         double xAB,
-                         double yAB,
-                         double zAB,
-                         double* const gx,
-                         double* const gy,
-                         double* const gz,
-                         std::size_t matrix_size,
-                         std::size_t Ai,
-                         std::size_t Bi)
+void overlap_gradient_00(
+double ae , 
+double be , 
+double cc , 
+double xAB , 
+double yAB , 
+double zAB , 
+double* const gx , 
+double* const gy , 
+double* const gz , 
+std::size_t matrix_size , 
+std::size_t Ai , 
+std::size_t Bi ) 
 {
-    const double C49 = ae + be;
-    const double C56 = Pi / C49;
-    const double C57 = std::sqrt(C56);
-    const double C39 = -(C57 * be * xAB) / C49;
-    const double C43 = -(C57 * be * yAB) / C49;
-    const double C44 = -(C57 * be * zAB) / C49;
-    const double gx000000 = 2 * ae * C39 * std::pow(C57, 2);
-    gx[(Ai + 0) * matrix_size + Bi + 0] += cc * gx000000;
-    const double gy000000 = 2 * ae * C43 * std::pow(C57, 2);
-    gy[(Ai + 0) * matrix_size + Bi + 0] += cc * gy000000;
-    const double gz000000 = std::pow(C57, 2) * 2 * ae * C44;
-    gz[(Ai + 0) * matrix_size + Bi + 0] += cc * gz000000;
+    double C49 = be+ae;
+    double C57 = std::sqrt( ( Pi/C49 ) );
+    double cnst0 = be*C57;
+    double cnst5 = std::pow(C57 , 2);
+    double cnst8 = ae*2;
+    gy[(Ai + 0) * matrix_size + Bi + 0] += cc* (  ( cnst8* ( - (  ( yAB*cnst0 ) /C49 )  )  ) *cnst5 ) ;
+    gx[(Ai + 0) * matrix_size + Bi + 0] += cc* ( cnst5* (  ( - (  ( xAB*cnst0 ) /C49 )  ) *cnst8 )  ) ;
+    gz[(Ai + 0) * matrix_size + Bi + 0] +=  (  ( - (  ( cnst0*zAB ) /C49 )  ) * (  ( cnst5*2 ) *ae )  ) *cc;
 }
-
-// Automatically generated, do not edit

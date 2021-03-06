@@ -9,1556 +9,788 @@ namespace {
     static const double Pi = M_PI;
 }
 
-void overlap_gradient_33(double ae,
-                         double be,
-                         double cc,
-                         double xAB,
-                         double yAB,
-                         double zAB,
-                         double* const gx,
-                         double* const gy,
-                         double* const gz,
-                         std::size_t matrix_size,
-                         std::size_t Ai,
-                         std::size_t Bi)
+void overlap_gradient_33(
+double ae , 
+double be , 
+double cc , 
+double xAB , 
+double yAB , 
+double zAB , 
+double* const gx , 
+double* const gy , 
+double* const gz , 
+std::size_t matrix_size , 
+std::size_t Ai , 
+std::size_t Bi ) 
 {
-    const double C26108 = ae + be;
-    const double C26110 = Pi / C26108;
-    const double C26111 = std::sqrt(C26110);
-    const double C26114 = std::pow(C26108, 2);
-    const double C26113 = be * xAB;
-    const double C26117 = 2. * C26108;
-    const double C26116 = std::pow(C26113, 2);
-    const double C26119 = C26111 / C26117;
-    const double C26118 = C26111 * C26116;
-    const double C26120 = C26118 / C26114;
-    const double C26121 = C26120 + C26119;
-    const double C26127 = ae * xAB;
-    const double C26126 = C26121 * C26113;
-    const double C26125 = 2. * C26114;
-    const double C26124 = C26111 * C26113;
-    const double C26129 = C26126 / C26108;
-    const double C26128 = -2. * C26124;
-    const double C26130 = C26128 / C26125;
-    const double C26131 = C26130 - C26129;
-    const double C26137 = C26121 * C26127;
-    const double C26136 = 3. * C26121;
-    const double C26135 = C26131 * C26127;
-    const double C26140 = C26137 / C26108;
-    const double C26139 = C26136 / C26117;
-    const double C26138 = C26135 / C26108;
-    const double C26142 = C26140 + C26130;
-    const double C26141 = C26138 + C26139;
-    const double C26146 = ae * yAB;
-    const double C26150 = ae * zAB;
-    const double C26156 = be * yAB;
-    const double C26161 = std::pow(C26156, 2);
-    const double C26160 = C26111 * C26156;
-    const double C26163 = C26111 * C26161;
-    const double C26162 = -2. * C26160;
-    const double C26165 = C26163 / C26114;
-    const double C26164 = C26162 / C26125;
-    const double C26166 = C26165 + C26119;
-    const double C26169 = C26166 * C26146;
-    const double C26168 = 3. * C26166;
-    const double C26167 = C26166 * C26156;
-    const double C26172 = C26169 / C26108;
-    const double C26171 = C26168 / C26117;
-    const double C26170 = C26167 / C26108;
-    const double C26174 = C26172 + C26164;
-    const double C26173 = C26164 - C26170;
-    const double C26175 = C26173 * C26146;
-    const double C26176 = C26175 / C26108;
-    const double C26177 = C26176 + C26171;
-    const double C26182 = be * zAB;
-    const double C26186 = std::pow(C26182, 2);
-    const double C26185 = C26111 * C26182;
-    const double C26188 = C26111 * C26186;
-    const double C26187 = -2. * C26185;
-    const double C26190 = C26188 / C26114;
-    const double C26189 = C26187 / C26125;
-    const double C26191 = C26190 + C26119;
-    const double C26194 = C26191 * C26150;
-    const double C26193 = 3. * C26191;
-    const double C26192 = C26191 * C26182;
-    const double C26197 = C26194 / C26108;
-    const double C26196 = C26193 / C26117;
-    const double C26195 = C26192 / C26108;
-    const double C26199 = C26197 + C26189;
-    const double C26198 = C26189 - C26195;
-    const double C26200 = C26198 * C26150;
-    const double C26201 = C26200 / C26108;
-    const double C26202 = C26201 + C26196;
-    const double C26209 = C26127 * C26124;
-    const double C26210 = C26209 / C26114;
-    const double C26211 = C26119 - C26210;
-    const double C26213 = C26146 * C26160;
-    const double C26214 = C26213 / C26114;
-    const double C26215 = C26119 - C26214;
-    const double C26219 = C26150 * C26185;
-    const double C26220 = C26219 / C26114;
-    const double C26221 = C26119 - C26220;
-    const double C26261 = 2 * C26221;
-    const double C26260 = C26185 / C26108;
-    const double C26259 = C26221 * C26150;
-    const double C26258 = 2 * C26215;
-    const double C26257 = C26160 / C26108;
-    const double C26256 = C26215 * C26146;
-    const double C26255 = C26124 / C26108;
-    const double C26254 = C26211 * C26127;
-    const double C26253 = 2 * C26211;
-    const double C26252 = C26199 * C26150;
-    const double C26251 = 3 * C26199;
-    const double C26250 = C26202 * C26150;
-    const double C26249 = std::pow(C26182, 2);
-    const double C26248 = C26174 * C26146;
-    const double C26247 = 3 * C26174;
-    const double C26246 = C26177 * C26146;
-    const double C26245 = std::pow(C26156, 2);
-    const double C26244 = std::pow(C26127, 2);
-    const double C26243 = C26111 * C26127;
-    const double C26242 = C26111 * C26150;
-    const double C26241 = std::pow(C26150, 2);
-    const double C26240 = C26111 * C26146;
-    const double C26239 = std::pow(C26146, 2);
-    const double C26238 = C26127 * C26124;
-    const double C26237 = C26142 * C26127;
-    const double C26236 = 3. * C26121;
-    const double C26235 = ae * xAB;
-    const double C26234 = 2. * C26114;
-    const double C26233 = C26111 * C26113;
-    const double C26232 = 2. * C26108;
-    const double C26231 = be * xAB;
-    const double C26285 = C26261 + C26191;
-    const double C26284 = C26258 + C26166;
-    const double C26283 = C26259 / C26108;
-    const double C26282 = C26256 / C26108;
-    const double C26281 = C26254 / C26108;
-    const double C26280 = C26252 / C26108;
-    const double C26279 = C26251 + C26198;
-    const double C26278 = C26250 / C26108;
-    const double C26277 = C26111 * C26249;
-    const double C26276 = C26248 / C26108;
-    const double C26275 = C26247 + C26173;
-    const double C26274 = C26246 / C26108;
-    const double C26273 = C26111 * C26245;
-    const double C26272 = C26111 * C26244;
-    const double C26271 = C26243 / C26108;
-    const double C26270 = C26242 / C26108;
-    const double C26269 = C26111 * C26241;
-    const double C26268 = C26240 / C26108;
-    const double C26267 = C26111 * C26239;
-    const double C26266 = C26238 / C26114;
-    const double C26265 = C26237 / C26108;
-    const double C26264 = C26236 / C26117;
-    const double C26263 = -2. * C26233;
-    const double C26262 = C26111 / C26232;
-    const double C26299 = C26285 / C26117;
-    const double C26298 = C26284 / C26117;
-    const double C26297 = C26270 - C26260;
-    const double C26296 = C26268 - C26257;
-    const double C26295 = C26271 - C26255;
-    const double C26294 = C26279 / C26117;
-    const double C26293 = C26277 / C26114;
-    const double C26292 = C26275 / C26117;
-    const double C26291 = C26273 / C26114;
-    const double C26290 = C26272 / C26114;
-    const double C26289 = C26269 / C26114;
-    const double C26288 = C26267 / C26114;
-    const double C26287 = C26119 - C26266;
-    const double C26286 = C26263 / C26234;
-    const double C26312 = C26280 + C26299;
-    const double C26311 = C26276 + C26298;
-    const double C26310 = C26297 / C26117;
-    const double C26309 = C26296 / C26117;
-    const double C26308 = C26295 / C26117;
-    const double C26307 = C26278 + C26294;
-    const double C26306 = C26293 + C26119;
-    const double C26305 = C26274 + C26292;
-    const double C26304 = C26291 + C26119;
-    const double C26303 = C26290 + C26119;
-    const double C26302 = C26289 + C26119;
-    const double C26301 = C26288 + C26119;
-    const double C26300 = 2 * C26287;
-    const double C26316 = C26283 + C26310;
-    const double C26315 = C26282 + C26309;
-    const double C26314 = C26281 + C26308;
-    const double C26313 = C26300 + C26121;
-    const double C26317 = C26313 / C26117;
-    const double C26318 = C26265 + C26317;
-    const double C25685 = std::sqrt(Pi / (ae + be));
-    const double C25686 = -(std::sqrt(Pi / C26108) * C26231) / C26108;
-    const double C25687 =
-        (C26111 * std::pow(C26231, 2)) / std::pow(C26108, 2) + C26262;
-    const double C25688 =
-        C26286 -
-        (((C26111 * std::pow(C26113, 2)) / C26114 + C26262) * C26113) / C26108;
-    const double C25689 =
-        ((C26286 - (C26121 * C26113) / C26108) * C26235) / C26108 + C26264;
-    const double C25690 = (C26121 * C26235) / C26108 + C26286;
-    const double C25691 =
-        (((C26131 * C26127) / C26108 + C26264) * C26127) / C26108 +
-        (3 * ((C26121 * C26127) / C26108 + C26130) + C26131) / C26117;
-    const double C25694 =
-        (((C26141 * C26127) / C26108 + (3 * C26142 + C26131) / C26117) *
-         C26127) /
-            C26108 +
-        (3 * C26318 + 2 * C26141) / C26117;
-    const double C25695 = -(C26111 * be * yAB) / C26108;
-    const double C25696 = -(C26111 * be * zAB) / C26108;
-    const double C25744 = (C26301 * C26146) / C26108 + (2. * C26240) / C26125;
-    const double C25759 = (C26302 * C26150) / C26108 + (2. * C26242) / C26125;
-    const double C25790 =
-        (-2. * C26111 * C26156) / C26125 - (C26304 * C26156) / C26108;
-    const double C25791 = (C26303 * C26127) / C26108 + (2. * C26243) / C26125;
-    const double C25812 =
-        (C26305 * C26146) / C26108 +
-        (3 * (C26276 +
-              (2 * (C26119 - (C26146 * C26160) / C26114) + C26166) / C26117) +
-         2 * C26177) /
-            C26117;
-    const double C25866 =
-        (-2. * C26111 * C26182) / C26125 - (C26306 * C26182) / C26108;
-    const double C25882 =
-        (C26307 * C26150) / C26108 +
-        (3 * (C26280 +
-              (2 * (C26119 - (C26150 * C26185) / C26114) + C26191) / C26117) +
-         2 * C26202) /
-            C26117;
-    const double C25936 =
-        ((C26265 + (C26253 + C26121) / C26117) * C26127) / C26108 +
-        (2 * C26314 + 2 * C26142) / C26117;
-    const double C25945 =
-        (C26315 * C26146) / C26108 + (C26301 + C26258) / C26117;
-    const double C25976 =
-        (C26316 * C26150) / C26108 + (C26302 + C26261) / C26117;
-    const double C26003 =
-        (C26311 * C26146) / C26108 + (2 * C26315 + 2 * C26174) / C26117;
-    const double C26024 =
-        (C26314 * C26127) / C26108 + (C26303 + C26253) / C26117;
-    const double C26049 =
-        (C26312 * C26150) / C26108 + (2 * C26316 + 2 * C26199) / C26117;
-    const double C25705 = ae * C25687;
-    const double C25704 = ae * C25688;
-    const double C25703 = ae * xAB;
-    const double C25702 = be * C25686;
-    const double C25701 = be * C25687;
-    const double C25700 = be * xAB;
-    const double C25699 = ae * C25686;
-    const double C25698 = ae + be;
-    const double C25697 = be * C25685;
-    const double C25713 = 2 * C25705;
-    const double C25712 = 2 * C25704;
-    const double C25711 = 2 * C25702;
-    const double C25710 = 2 * C25699;
-    const double C25709 = 2 * C25701;
-    const double C25708 = C25699 * C25700;
-    const double C25707 = 2. * C25698;
-    const double C25706 = 2 * C25697;
-    const double C25716 = C25710 - C25711;
-    const double C25715 = 2 * C25708;
-    const double C25714 = -C25706;
-    const double C25719 = C25716 / C25707;
-    const double C25718 = C25715 / C25698;
-    const double C25717 = C25714 / C25707;
-    const double C25720 = C25717 - C25718;
-    const double C25722 = C25720 * C25700;
-    const double C25721 = 2 * C25720;
-    const double C25725 = C25721 + C25713;
-    const double C25724 = C25722 / C25698;
-    const double C25723 = C25721 - C25709;
-    const double C25728 = C25725 / C25707;
-    const double C25727 = C25719 - C25724;
-    const double C25726 = C25723 / C25707;
-    const double C25731 = C25727 * C25703;
-    const double C25730 = 3 * C25727;
-    const double C25729 = C25727 * C25700;
-    const double C25734 = C25731 / C25698;
-    const double C25733 = C25730 + C25712;
-    const double C25732 = C25729 / C25698;
-    const double C25737 = C25734 + C25728;
-    const double C25736 = C25733 / C25707;
-    const double C25735 = C25726 - C25732;
-    const double C25738 = C25735 * C25703;
-    const double C25739 = C25738 / C25698;
-    const double C25740 = C25739 + C25736;
-    const double C25749 = ae * C26111;
-    const double C25748 = ae * yAB;
-    const double C25747 = ae * C25695;
-    const double C25751 = 2. * C25749;
-    const double C25750 = C25747 * C25748;
-    const double C25753 = C25751 / C25707;
-    const double C25752 = 2 * C25750;
-    const double C25754 = C25752 / C25698;
-    const double C25755 = C25754 + C25753;
-    const double C25764 = ae * C26111;
-    const double C25763 = ae * zAB;
-    const double C25762 = ae * C25696;
-    const double C25766 = 2. * C25764;
-    const double C25765 = C25762 * C25763;
-    const double C25768 = C25766 / C25707;
-    const double C25767 = 2 * C25765;
-    const double C25769 = C25767 / C25698;
-    const double C25770 = C25769 + C25768;
-    const double C25796 = be * yAB;
-    const double C25795 = be * C26111;
-    const double C25794 = ae * C25685;
-    const double C25793 = C25699 * C25703;
-    const double C25800 = C25747 * C25796;
-    const double C25799 = 2 * C25795;
-    const double C25798 = 2. * C25794;
-    const double C25797 = 2 * C25793;
-    const double C25804 = 2 * C25800;
-    const double C25803 = -C25799;
-    const double C25802 = C25798 / C25707;
-    const double C25801 = C25797 / C25698;
-    const double C25807 = C25804 / C25698;
-    const double C25806 = C25803 / C25707;
-    const double C25805 = C25801 + C25802;
-    const double C25808 = C25806 - C25807;
-    const double C25822 = ae * C26304;
-    const double C25821 = ae * C25790;
-    const double C25820 = C25808 * C25796;
-    const double C25819 = be * C25695;
-    const double C25818 = 2 * C25747;
-    const double C25817 = be * C26304;
-    const double C25816 = 2 * C25808;
-    const double C25827 = 2 * C25822;
-    const double C25826 = 2 * C25821;
-    const double C25825 = C25820 / C25698;
-    const double C25824 = 2 * C25819;
-    const double C25823 = 2 * C25817;
-    const double C25830 = C25816 + C25827;
-    const double C25829 = C25818 - C25824;
-    const double C25828 = C25816 - C25823;
-    const double C25833 = C25830 / C25707;
-    const double C25832 = C25829 / C25707;
-    const double C25831 = C25828 / C25707;
-    const double C25834 = C25832 - C25825;
-    const double C25837 = C25834 * C25748;
-    const double C25836 = 3 * C25834;
-    const double C25835 = C25834 * C25796;
-    const double C25840 = C25837 / C25698;
-    const double C25839 = C25836 + C25826;
-    const double C25838 = C25835 / C25698;
-    const double C25843 = C25840 + C25833;
-    const double C25842 = C25839 / C25707;
-    const double C25841 = C25831 - C25838;
-    const double C25844 = C25841 * C25748;
-    const double C25845 = C25844 / C25698;
-    const double C25846 = C25845 + C25842;
-    const double C25869 = be * zAB;
-    const double C25868 = be * C26111;
-    const double C25871 = C25762 * C25869;
-    const double C25870 = 2 * C25868;
-    const double C25873 = 2 * C25871;
-    const double C25872 = -C25870;
-    const double C25875 = C25873 / C25698;
-    const double C25874 = C25872 / C25707;
-    const double C25876 = C25874 - C25875;
-    const double C25892 = ae * C26306;
-    const double C25891 = ae * C25866;
-    const double C25890 = C25876 * C25869;
-    const double C25889 = be * C25696;
-    const double C25888 = 2 * C25762;
-    const double C25887 = be * C26306;
-    const double C25886 = 2 * C25876;
-    const double C25897 = 2 * C25892;
-    const double C25896 = 2 * C25891;
-    const double C25895 = C25890 / C25698;
-    const double C25894 = 2 * C25889;
-    const double C25893 = 2 * C25887;
-    const double C25900 = C25886 + C25897;
-    const double C25899 = C25888 - C25894;
-    const double C25898 = C25886 - C25893;
-    const double C25903 = C25900 / C25707;
-    const double C25902 = C25899 / C25707;
-    const double C25901 = C25898 / C25707;
-    const double C25904 = C25902 - C25895;
-    const double C25907 = C25904 * C25763;
-    const double C25906 = 3 * C25904;
-    const double C25905 = C25904 * C25869;
-    const double C25910 = C25907 / C25698;
-    const double C25909 = C25906 + C25896;
-    const double C25908 = C25905 / C25698;
-    const double C25913 = C25910 + C25903;
-    const double C25912 = C25909 / C25707;
-    const double C25911 = C25901 - C25908;
-    const double C25914 = C25911 * C25763;
-    const double C25915 = C25914 / C25698;
-    const double C25916 = C25915 + C25912;
-    const double C25938 = 4. * C25699;
-    const double C25937 = C25720 * C25703;
-    const double C25940 = C25938 / C25707;
-    const double C25939 = C25937 / C25698;
-    const double C25941 = C25939 + C25940;
-    const double C25949 = 4. * C25747;
-    const double C25948 = C25808 * C25748;
-    const double C25951 = C25949 / C25707;
-    const double C25950 = C25948 / C25698;
-    const double C25952 = C25950 + C25951;
-    const double C25980 = 4. * C25762;
-    const double C25979 = C25876 * C25763;
-    const double C25982 = C25980 / C25707;
-    const double C25981 = C25979 / C25698;
-    const double C25983 = C25981 + C25982;
-    const double C26370 = ae * C26312;
-    const double C26369 = 2 * C25913;
-    const double C26368 = ae * C26314;
-    const double C26367 = ae * C26311;
-    const double C26366 = 2 * C25843;
-    const double C26365 = ae * C26316;
-    const double C26364 = ae * C26221;
-    const double C26363 = C25770 + C25876;
-    const double C26362 = C25983 * C25763;
-    const double C26361 = ae * C26315;
-    const double C26360 = ae * C26215;
-    const double C26359 = C25755 + C25808;
-    const double C26358 = C25952 * C25748;
-    const double C26357 = ae * C26318;
-    const double C26356 = 2 * C25737;
-    const double C26355 = ae * C26287;
-    const double C26354 = C25805 + C25720;
-    const double C26353 = C25941 * C25703;
-    const double C26352 = ae * C26199;
-    const double C26351 = 2 * C25983;
-    const double C26350 = C25913 * C25763;
-    const double C26349 = ae * C26202;
-    const double C26348 = 3 * C25913;
-    const double C26347 = C25916 * C25763;
-    const double C26346 = ae * C26174;
-    const double C26345 = 2 * C25952;
-    const double C26344 = C25843 * C25748;
-    const double C26343 = ae * C26177;
-    const double C26342 = 3 * C25843;
-    const double C26341 = C25846 * C25748;
-    const double C26340 = ae * C26303;
-    const double C26339 = 2 * C25805;
-    const double C26338 = ae * C26271;
-    const double C26337 = C25805 * C25703;
-    const double C26336 = ae * C26302;
-    const double C26335 = 2 * C25770;
-    const double C26334 = ae * C26270;
-    const double C26333 = C25770 * C25763;
-    const double C26332 = ae * C26301;
-    const double C26331 = 2 * C25755;
-    const double C26330 = ae * C26268;
-    const double C26329 = C25755 * C25748;
-    const double C26328 = ae * C25690;
-    const double C26327 = 2 * C25941;
-    const double C26326 = C25737 * C25703;
-    const double C26325 = ae * C25689;
-    const double C26324 = 3 * C25737;
-    const double C26323 = C25740 * C25703;
-    const double C26409 = 2 * C26370;
-    const double C26408 = 2 * C26368;
-    const double C26407 = 2 * C26367;
-    const double C26406 = 2 * C26365;
-    const double C26405 = 2 * C26364;
-    const double C26404 = C26362 / C25698;
-    const double C26403 = 2 * C26361;
-    const double C26402 = 2 * C26360;
-    const double C26401 = C26358 / C25698;
-    const double C26400 = 2 * C26357;
-    const double C26399 = 2 * C26355;
-    const double C26398 = C26353 / C25698;
-    const double C26397 = 2 * C26352;
-    const double C26396 = C26351 + C25904;
-    const double C26395 = C26350 / C25698;
-    const double C26394 = 2 * C26349;
-    const double C26393 = C26348 + C25911;
-    const double C26392 = C26347 / C25698;
-    const double C26391 = 2 * C26346;
-    const double C26390 = C26345 + C25834;
-    const double C26389 = C26344 / C25698;
-    const double C26388 = 2 * C26343;
-    const double C26387 = C26342 + C25841;
-    const double C26386 = C26341 / C25698;
-    const double C26385 = 2 * C26340;
-    const double C26384 = 2 * C26338;
-    const double C26383 = C26337 / C25698;
-    const double C26382 = 2 * C26336;
-    const double C26381 = 2 * C26334;
-    const double C26380 = C26333 / C25698;
-    const double C26379 = 2 * C26332;
-    const double C26378 = 2 * C26330;
-    const double C26377 = C26329 / C25698;
-    const double C26376 = 2 * C26328;
-    const double C26375 = C26327 + C25727;
-    const double C26374 = C26326 / C25698;
-    const double C26373 = 2 * C26325;
-    const double C26372 = C26324 + C25735;
-    const double C26371 = C26323 / C25698;
-    const double C26424 = C26363 + C26405;
-    const double C26423 = C26359 + C26402;
-    const double C26422 = C26354 + C26399;
-    const double C26421 = C26396 + C26397;
-    const double C26420 = C26393 + C26394;
-    const double C26419 = C26390 + C26391;
-    const double C26418 = C26387 + C26388;
-    const double C26417 = C26339 + C26385;
-    const double C26416 = C25710 + C26384;
-    const double C26415 = C26335 + C26382;
-    const double C26414 = C25888 + C26381;
-    const double C26413 = C26331 + C26379;
-    const double C26412 = C25818 + C26378;
-    const double C26411 = C26375 + C26376;
-    const double C26410 = C26372 + C26373;
-    const double C26439 = C26424 / C25707;
-    const double C26438 = C26423 / C25707;
-    const double C26437 = C26422 / C25707;
-    const double C26436 = C26421 / C25707;
-    const double C26435 = C26420 / C25707;
-    const double C26434 = C26419 / C25707;
-    const double C26433 = C26418 / C25707;
-    const double C26432 = C26417 / C25707;
-    const double C26431 = C26416 / C25707;
-    const double C26430 = C26415 / C25707;
-    const double C26429 = C26414 / C25707;
-    const double C26428 = C26413 / C25707;
-    const double C26427 = C26412 / C25707;
-    const double C26426 = C26411 / C25707;
-    const double C26425 = C26410 / C25707;
-    const double C26451 = C26404 + C26439;
-    const double C26450 = C26401 + C26438;
-    const double C26449 = C26398 + C26437;
-    const double C26448 = C26395 + C26436;
-    const double C26447 = C26392 + C26435;
-    const double C26446 = C26389 + C26434;
-    const double C26445 = C26386 + C26433;
-    const double C26444 = C26383 + C26431;
-    const double C26443 = C26380 + C26429;
-    const double C26442 = C26377 + C26427;
-    const double C26441 = C26374 + C26426;
-    const double C26440 = C26371 + C26425;
-    const double C26466 = 2 * C26451;
-    const double C26465 = C26448 * C25763;
-    const double C26464 = C26444 + C26327;
-    const double C26463 = C26449 * C25703;
-    const double C26462 = 2 * C26450;
-    const double C26461 = C26446 * C25748;
-    const double C26460 = C26443 + C26351;
-    const double C26459 = C26451 * C25763;
-    const double C26458 = C26442 + C26345;
-    const double C26457 = C26450 * C25748;
-    const double C26456 = 2 * C26449;
-    const double C26455 = C26441 * C25703;
-    const double C26454 = C26444 * C25703;
-    const double C26453 = C26443 * C25763;
-    const double C26452 = C26442 * C25748;
-    const double C26481 = C26466 + C26369;
-    const double C26480 = C26465 / C25698;
-    const double C26479 = C26464 + C26408;
-    const double C26478 = C26463 / C25698;
-    const double C26477 = C26462 + C26366;
-    const double C26476 = C26461 / C25698;
-    const double C26475 = C26460 + C26406;
-    const double C26474 = C26459 / C25698;
-    const double C26473 = C26458 + C26403;
-    const double C26472 = C26457 / C25698;
-    const double C26471 = C26456 + C26356;
-    const double C26470 = C26455 / C25698;
-    const double C26469 = C26454 / C25698;
-    const double C26468 = C26453 / C25698;
-    const double C26467 = C26452 / C25698;
-    const double C26490 = C26481 + C26409;
-    const double C26489 = C26479 / C25707;
-    const double C26488 = C26477 + C26407;
-    const double C26487 = C26475 / C25707;
-    const double C26486 = C26473 / C25707;
-    const double C26485 = C26471 + C26400;
-    const double C26484 = C26469 + C26432;
-    const double C26483 = C26468 + C26430;
-    const double C26482 = C26467 + C26428;
-    const double C26496 = C26490 / C25707;
-    const double C26495 = C26478 + C26489;
-    const double C26494 = C26488 / C25707;
-    const double C26493 = C26474 + C26487;
-    const double C26492 = C26472 + C26486;
-    const double C26491 = C26485 / C25707;
-    const double C26499 = C26480 + C26496;
-    const double C26498 = C26476 + C26494;
-    const double C26497 = C26470 + C26491;
-    const double gx300300 =
-        ((C26440 * C25703) / C25698 +
-         (3 * C26441 + 2 * C25740 + 2 * ae * C25691) / C25707) *
-        std::pow(C26111, 2);
-    const double gx300030 = C25735 * C25744 * C26111;
-    const double gx300003 = C25735 * C26111 * C25759;
-    const double gx300210 = C26440 * C26268 * C26111;
-    const double gx300201 = C26440 * C26111 * C26270;
-    const double gx300021 = C25735 * C26301 * C26270;
-    const double gx300120 = C25740 * C26301 * C26111;
-    const double gx300102 = C25740 * C26111 * C26302;
-    const double gx300012 = C25735 * C26268 * C26302;
-    const double gx300111 = C25740 * C26268 * C26270;
-    const double gx030300 = C26484 * C25790 * C26111;
-    const double gx030030 = 2 * C25699 * C25812 * C26111;
-    const double gx030003 = 2 * C25699 * C25790 * C25759;
-    const double gx030210 = C26444 * C26177 * C26111;
-    const double gx030201 = C26444 * C25790 * C26270;
-    const double gx030021 = 2 * C25699 * C26305 * C26270;
-    const double gx030120 = C25805 * C26305 * C26111;
-    const double gx030102 = C25805 * C25790 * C26302;
-    const double gx030012 = 2 * C25699 * C26177 * C26302;
-    const double gx030111 = C25805 * C26177 * C26270;
-    const double gx003300 = C26484 * C26111 * C25866;
-    const double gx003030 = 2 * C25699 * C25744 * C25866;
-    const double gx003003 = 2 * C25699 * C26111 * C25882;
-    const double gx003210 = C26444 * C26268 * C25866;
-    const double gx003201 = C26444 * C26111 * C26202;
-    const double gx003021 = 2 * C25699 * C26301 * C26202;
-    const double gx003120 = C25805 * C26301 * C25866;
-    const double gx003102 = C25805 * C26111 * C26307;
-    const double gx003012 = 2 * C25699 * C26268 * C26307;
-    const double gx003111 = C25805 * C26268 * C26202;
-    const double gx210300 = C26497 * C25695 * C26111;
-    const double gx210030 = C25727 * C25945 * C26111;
-    const double gx210003 = C25727 * C25695 * C25759;
-    const double gx210210 = C26441 * C26215 * C26111;
-    const double gx210201 = C26441 * C25695 * C26270;
-    const double gx210021 = C25727 * C26315 * C26270;
-    const double gx210120 = C25737 * C26315 * C26111;
-    const double gx210102 = C25737 * C25695 * C26302;
-    const double gx210012 = C25727 * C26215 * C26302;
-    const double gx210111 = C25737 * C26215 * C26270;
-    const double gx201300 = C26497 * C26111 * C25696;
-    const double gx201030 = C25727 * C25744 * C25696;
-    const double gx201003 = C25727 * C26111 * C25976;
-    const double gx201210 = C26441 * C26268 * C25696;
-    const double gx201201 = C26441 * C26111 * C26221;
-    const double gx201021 = C25727 * C26301 * C26221;
-    const double gx201120 = C25737 * C26301 * C25696;
-    const double gx201102 = C25737 * C26111 * C26316;
-    const double gx201012 = C25727 * C26268 * C26316;
-    const double gx201111 = C25737 * C26268 * C26221;
-    const double gx021300 = C26484 * C26304 * C25696;
-    const double gx021030 = 2 * C25699 * C26003 * C25696;
-    const double gx021003 = 2 * C25699 * C26304 * C25976;
-    const double gx021210 = C26444 * C26174 * C25696;
-    const double gx021201 = C26444 * C26304 * C26221;
-    const double gx021021 = 2 * C25699 * C26311 * C26221;
-    const double gx021120 = C25805 * C26311 * C25696;
-    const double gx021102 = C25805 * C26304 * C26316;
-    const double gx021012 = 2 * C25699 * C26174 * C26316;
-    const double gx021111 = C25805 * C26174 * C26221;
-    const double gx120300 = C26495 * C26304 * C26111;
-    const double gx120030 = C25720 * C26003 * C26111;
-    const double gx120003 = C25720 * C26304 * C25759;
-    const double gx120210 = C26449 * C26174 * C26111;
-    const double gx120201 = C26449 * C26304 * C26270;
-    const double gx120021 = C25720 * C26311 * C26270;
-    const double gx120120 = C25941 * C26311 * C26111;
-    const double gx120102 = C25941 * C26304 * C26302;
-    const double gx120012 = C25720 * C26174 * C26302;
-    const double gx120111 = C25941 * C26174 * C26270;
-    const double gx102300 = C26495 * C26111 * C26306;
-    const double gx102030 = C25720 * C25744 * C26306;
-    const double gx102003 = C25720 * C26111 * C26049;
-    const double gx102210 = C26449 * C26268 * C26306;
-    const double gx102201 = C26449 * C26111 * C26199;
-    const double gx102021 = C25720 * C26301 * C26199;
-    const double gx102120 = C25941 * C26301 * C26306;
-    const double gx102102 = C25941 * C26111 * C26312;
-    const double gx102012 = C25720 * C26268 * C26312;
-    const double gx102111 = C25941 * C26268 * C26199;
-    const double gx012300 = C26484 * C25695 * C26306;
-    const double gx012030 = 2 * C25699 * C25945 * C26306;
-    const double gx012003 = 2 * C25699 * C25695 * C26049;
-    const double gx012210 = C26444 * C26215 * C26306;
-    const double gx012201 = C26444 * C25695 * C26199;
-    const double gx012021 = 2 * C25699 * C26315 * C26199;
-    const double gx012120 = C25805 * C26315 * C26306;
-    const double gx012102 = C25805 * C25695 * C26312;
-    const double gx012012 = 2 * C25699 * C26215 * C26312;
-    const double gx012111 = C25805 * C26215 * C26199;
-    const double gx111300 = C26495 * C25695 * C25696;
-    const double gx111030 = C25720 * C25945 * C25696;
-    const double gx111003 = C25720 * C25695 * C25976;
-    const double gx111210 = C26449 * C26215 * C25696;
-    const double gx111201 = C26449 * C25695 * C26221;
-    const double gx111021 = C25720 * C26315 * C26221;
-    const double gx111120 = C25941 * C26315 * C25696;
-    const double gx111102 = C25941 * C25695 * C26316;
-    const double gx111012 = C25720 * C26215 * C26316;
-    const double gx111111 = C25941 * C26215 * C26221;
-    gx[(Ai + 0) * matrix_size + Bi + 0] +=
-        cc *
-        (std::sqrt(25. / 64.) * gx030030 - std::sqrt(225. / 64.) * gx030210 -
-         std::sqrt(225. / 64.) * gx210030 + std::sqrt(2025. / 64.) * gx210210);
-    gx[(Ai + 0) * matrix_size + Bi + 1] +=
-        cc *
-        (std::sqrt(675. / 8.0) * gx210111 - std::sqrt(75. / 8.0) * gx030111);
-    gx[(Ai + 0) * matrix_size + Bi + 2] +=
-        cc *
-        (std::sqrt(15. / 64.) * gx030030 + std::sqrt(15. / 64.) * gx030210 +
-         std::sqrt(30. / 8.0) * gx030012 - std::sqrt(135. / 64.) * gx210030 -
-         std::sqrt(135. / 64.) * gx210210 - std::sqrt(270. / 8.0) * gx210012);
-    gx[(Ai + 0) * matrix_size + Bi + 3] +=
-        cc *
-        (std::sqrt(11.25 / 8.0) * gx030201 - std::sqrt(5.0 / 8.0) * gx030003 +
-         std::sqrt(11.25 / 8.0) * gx030021 + std::sqrt(45. / 8.0) * gx210003 -
-         std::sqrt(101.25 / 8.0) * gx210201 -
-         std::sqrt(101.25 / 8.0) * gx210021);
-    gx[(Ai + 0) * matrix_size + Bi + 4] +=
-        cc *
-        (std::sqrt(15. / 64.) * gx030300 + std::sqrt(15. / 64.) * gx030120 -
-         std::sqrt(30. / 8.0) * gx030102 - std::sqrt(135. / 64.) * gx210300 -
-         std::sqrt(135. / 64.) * gx210120 + std::sqrt(270. / 8.0) * gx210102);
-    gx[(Ai + 0) * matrix_size + Bi + 5] +=
-        cc *
-        (std::sqrt(37.5 / 8.0) * gx030021 - std::sqrt(37.5 / 8.0) * gx030201 +
-         std::sqrt(337.5 / 8.0) * gx210201 - std::sqrt(337.5 / 8.0) * gx210021);
-    gx[(Ai + 0) * matrix_size + Bi + 6] +=
-        cc *
-        (std::sqrt(225. / 64.) * gx210300 -
-         (std::sqrt(225. / 64.) * gx030120 + std::sqrt(25. / 64.) * gx030300) +
-         std::sqrt(2025. / 64.) * gx210120);
-    gx[(Ai + 1) * matrix_size + Bi + 0] +=
-        cc *
-        (std::sqrt(675. / 8.0) * gx111210 - std::sqrt(75. / 8.0) * gx111030);
-    gx[(Ai + 1) * matrix_size + Bi + 1] += cc * std::sqrt(225.) * gx111111;
-    gx[(Ai + 1) * matrix_size + Bi + 2] +=
-        -cc * (std::sqrt(90.) * gx111012 + std::sqrt(45. / 8.0) * gx111210 +
-               std::sqrt(45. / 8.0) * gx111030);
-    gx[(Ai + 1) * matrix_size + Bi + 3] +=
-        cc * (std::sqrt(15.0) * gx111003 - std::sqrt(33.75) * gx111201 -
-              std::sqrt(33.75) * gx111021);
-    gx[(Ai + 1) * matrix_size + Bi + 4] +=
-        cc * (std::sqrt(90.) * gx111102 - (std::sqrt(45. / 8.0) * gx111120 +
-                                           std::sqrt(45. / 8.0) * gx111300));
-    gx[(Ai + 1) * matrix_size + Bi + 5] +=
-        cc * (std::sqrt(112.5) * gx111201 - std::sqrt(112.5) * gx111021);
-    gx[(Ai + 1) * matrix_size + Bi + 6] +=
-        cc *
-        (std::sqrt(75. / 8.0) * gx111300 + std::sqrt(675. / 8.0) * gx111120);
-    gx[(Ai + 2) * matrix_size + Bi + 0] +=
-        cc *
-        (std::sqrt(15. / 64.) * gx030030 - std::sqrt(135. / 64.) * gx030210 +
-         std::sqrt(15. / 64.) * gx210030 - std::sqrt(135. / 64.) * gx210210 +
-         std::sqrt(30. / 8.0) * gx012030 - std::sqrt(270. / 8.0) * gx012210);
-    gx[(Ai + 2) * matrix_size + Bi + 1] +=
-        -cc * (std::sqrt(90.) * gx012111 + std::sqrt(45. / 8.0) * gx210111 +
-               std::sqrt(45. / 8.0) * gx030111);
-    gx[(Ai + 2) * matrix_size + Bi + 2] +=
-        cc * (std::sqrt(9. / 64.) * gx030030 + std::sqrt(9. / 64.) * gx030210 +
-              std::sqrt(18. / 8.0) * gx030012 + std::sqrt(9. / 64.) * gx210030 +
-              std::sqrt(9. / 64.) * gx210210 + std::sqrt(18. / 8.0) * gx210012 +
-              std::sqrt(18. / 8.0) * gx012030 +
-              std::sqrt(18. / 8.0) * gx012210 + std::sqrt(36.) * gx012012);
-    gx[(Ai + 2) * matrix_size + Bi + 3] +=
-        cc *
-        (std::sqrt(6.75 / 8.0) * gx030201 - std::sqrt(3.0 / 8.0) * gx030003 +
-         std::sqrt(6.75 / 8.0) * gx030021 - std::sqrt(3.0 / 8.0) * gx210003 +
-         std::sqrt(6.75 / 8.0) * gx210201 + std::sqrt(6.75 / 8.0) * gx210021 -
-         std::sqrt(6.0) * gx012003 + std::sqrt(13.5) * gx012201 +
-         std::sqrt(13.5) * gx012021);
-    gx[(Ai + 2) * matrix_size + Bi + 4] +=
-        cc * (std::sqrt(9. / 64.) * gx030300 + std::sqrt(9. / 64.) * gx030120 -
-              std::sqrt(18. / 8.0) * gx030102 + std::sqrt(9. / 64.) * gx210300 +
-              std::sqrt(9. / 64.) * gx210120 - std::sqrt(18. / 8.0) * gx210102 +
-              std::sqrt(18. / 8.0) * gx012300 +
-              std::sqrt(18. / 8.0) * gx012120 - std::sqrt(36.) * gx012102);
-    gx[(Ai + 2) * matrix_size + Bi + 5] +=
-        cc *
-        (std::sqrt(22.5 / 8.0) * gx030021 - std::sqrt(22.5 / 8.0) * gx030201 -
-         std::sqrt(22.5 / 8.0) * gx210201 + std::sqrt(22.5 / 8.0) * gx210021 -
-         std::sqrt(45.) * gx012201 + std::sqrt(45.) * gx012021);
-    gx[(Ai + 2) * matrix_size + Bi + 6] +=
-        -cc *
-        (std::sqrt(270. / 8.0) * gx012120 + std::sqrt(30. / 8.0) * gx012300 +
-         std::sqrt(135. / 64.) * gx210120 + std::sqrt(15. / 64.) * gx210300 +
-         std::sqrt(135. / 64.) * gx030120 + std::sqrt(15. / 64.) * gx030300);
-    gx[(Ai + 3) * matrix_size + Bi + 0] +=
-        cc *
-        (std::sqrt(45. / 8.0) * gx003210 - std::sqrt(5.0 / 8.0) * gx003030 +
-         std::sqrt(11.25 / 8.0) * gx201030 -
-         std::sqrt(101.25 / 8.0) * gx201210 +
-         std::sqrt(11.25 / 8.0) * gx021030 -
-         std::sqrt(101.25 / 8.0) * gx021210);
-    gx[(Ai + 3) * matrix_size + Bi + 1] +=
-        cc * (std::sqrt(15.0) * gx003111 - std::sqrt(33.75) * gx201111 -
-              std::sqrt(33.75) * gx021111);
-    gx[(Ai + 3) * matrix_size + Bi + 2] +=
-        cc * (std::sqrt(6.75 / 8.0) * gx201030 -
-              (std::sqrt(6.0) * gx003012 + std::sqrt(3.0 / 8.0) * gx003210 +
-               std::sqrt(3.0 / 8.0) * gx003030) +
-              std::sqrt(6.75 / 8.0) * gx201210 + std::sqrt(13.5) * gx201012 +
-              std::sqrt(6.75 / 8.0) * gx021030 +
-              std::sqrt(6.75 / 8.0) * gx021210 + std::sqrt(13.5) * gx021012);
-    gx[(Ai + 3) * matrix_size + Bi + 3] +=
-        cc * (gx003003 - 1.5 * gx003201 - 1.5 * gx003021 - 1.5 * gx201003 +
-              2.25 * gx201201 + 2.25 * gx201021 - 1.5 * gx021003 +
-              2.25 * gx021201 + 2.25 * gx021021);
-    gx[(Ai + 3) * matrix_size + Bi + 4] +=
-        cc *
-        (std::sqrt(6.0) * gx003102 -
-         (std::sqrt(3.0 / 8.0) * gx003120 + std::sqrt(3.0 / 8.0) * gx003300) +
-         std::sqrt(6.75 / 8.0) * gx201300 + std::sqrt(6.75 / 8.0) * gx201120 -
-         std::sqrt(13.5) * gx201102 + std::sqrt(6.75 / 8.0) * gx021300 +
-         std::sqrt(6.75 / 8.0) * gx021120 - std::sqrt(13.5) * gx021102);
-    gx[(Ai + 3) * matrix_size + Bi + 5] +=
-        cc * (std::sqrt(7.5) * gx003201 - std::sqrt(7.5) * gx003021 -
-              std::sqrt(16.875) * gx201201 + std::sqrt(16.875) * gx201021 -
-              std::sqrt(16.875) * gx021201 + std::sqrt(16.875) * gx021021);
-    gx[(Ai + 3) * matrix_size + Bi + 6] +=
-        cc *
-        (std::sqrt(5.0 / 8.0) * gx003300 + std::sqrt(45.0 / 8.0) * gx003120 -
-         std::sqrt(11.25 / 8.0) * gx201300 -
-         std::sqrt(101.25 / 8.0) * gx201120 -
-         std::sqrt(11.25 / 8.0) * gx021300 -
-         std::sqrt(101.25 / 8.0) * gx021120);
-    gx[(Ai + 4) * matrix_size + Bi + 0] +=
-        cc *
-        (std::sqrt(15. / 64.) * gx300030 - std::sqrt(135. / 64.) * gx300210 +
-         std::sqrt(15. / 64.) * gx120030 - std::sqrt(135. / 64.) * gx120210 -
-         std::sqrt(30. / 8.0) * gx102030 + std::sqrt(270. / 8.0) * gx102210);
-    gx[(Ai + 4) * matrix_size + Bi + 1] +=
-        cc * (std::sqrt(90.) * gx102111 - (std::sqrt(45. / 8.0) * gx120111 +
-                                           std::sqrt(45. / 8.0) * gx300111));
-    gx[(Ai + 4) * matrix_size + Bi + 2] +=
-        cc * (std::sqrt(9. / 64.) * gx300030 + std::sqrt(9. / 64.) * gx300210 +
-              std::sqrt(18. / 8.0) * gx300012 + std::sqrt(9. / 64.) * gx120030 +
-              std::sqrt(9. / 64.) * gx120210 + std::sqrt(18. / 8.0) * gx120012 -
-              std::sqrt(18. / 8.0) * gx102030 -
-              std::sqrt(18. / 8.0) * gx102210 - std::sqrt(36.) * gx102012);
-    gx[(Ai + 4) * matrix_size + Bi + 3] +=
-        cc *
-        (std::sqrt(6.75 / 8.0) * gx300201 - std::sqrt(3.0 / 8.0) * gx300003 +
-         std::sqrt(6.75 / 8.0) * gx300021 - std::sqrt(3.0 / 8.0) * gx120003 +
-         std::sqrt(6.75 / 8.0) * gx120201 + std::sqrt(6.75 / 8.0) * gx120021 +
-         std::sqrt(6.0) * gx102003 - std::sqrt(13.5) * gx102201 -
-         std::sqrt(13.5) * gx102021);
-    gx[(Ai + 4) * matrix_size + Bi + 4] +=
-        cc * (std::sqrt(9. / 64.) * gx300300 + std::sqrt(9. / 64.) * gx300120 -
-              std::sqrt(18. / 8.0) * gx300102 + std::sqrt(9. / 64.) * gx120300 +
-              std::sqrt(9. / 64.) * gx120120 - std::sqrt(18. / 8.0) * gx120102 -
-              std::sqrt(18. / 8.0) * gx102300 -
-              std::sqrt(18. / 8.0) * gx102120 + std::sqrt(36.) * gx102102);
-    gx[(Ai + 4) * matrix_size + Bi + 5] +=
-        cc *
-        (std::sqrt(22.5 / 8.0) * gx300021 - std::sqrt(22.5 / 8.0) * gx300201 -
-         std::sqrt(22.5 / 8.0) * gx120201 + std::sqrt(22.5 / 8.0) * gx120021 +
-         std::sqrt(45.) * gx102201 - std::sqrt(45.) * gx102021);
-    gx[(Ai + 4) * matrix_size + Bi + 6] +=
-        cc *
-        (std::sqrt(30. / 8.0) * gx102300 -
-         (std::sqrt(135. / 64.) * gx120120 + std::sqrt(15. / 64.) * gx120300 +
-          std::sqrt(135. / 64.) * gx300120 + std::sqrt(15. / 64.) * gx300300) +
-         std::sqrt(270. / 8.0) * gx102120);
-    gx[(Ai + 5) * matrix_size + Bi + 0] +=
-        cc *
-        (std::sqrt(337.5 / 8.0) * gx201210 - std::sqrt(37.5 / 8.0) * gx201030 +
-         std::sqrt(37.5 / 8.0) * gx021030 - std::sqrt(337.5 / 8.0) * gx021210);
-    gx[(Ai + 5) * matrix_size + Bi + 1] +=
-        cc * (std::sqrt(112.5) * gx201111 - std::sqrt(112.5) * gx021111);
-    gx[(Ai + 5) * matrix_size + Bi + 2] +=
-        cc * (std::sqrt(22.5 / 8.0) * gx021030 -
-              (std::sqrt(45.) * gx201012 + std::sqrt(22.5 / 8.0) * gx201210 +
-               std::sqrt(22.5 / 8.0) * gx201030) +
-              std::sqrt(22.5 / 8.0) * gx021210 + std::sqrt(45.) * gx021012);
-    gx[(Ai + 5) * matrix_size + Bi + 3] +=
-        cc * (std::sqrt(7.5) * gx201003 - std::sqrt(16.875) * gx201201 -
-              std::sqrt(16.875) * gx201021 - std::sqrt(7.5) * gx021003 +
-              std::sqrt(16.875) * gx021201 + std::sqrt(16.875) * gx021021);
-    gx[(Ai + 5) * matrix_size + Bi + 4] +=
-        cc *
-        (std::sqrt(45.) * gx201102 -
-         (std::sqrt(22.5 / 8.0) * gx201120 + std::sqrt(22.5 / 8.0) * gx201300) +
-         std::sqrt(22.5 / 8.0) * gx021300 + std::sqrt(22.5 / 8.0) * gx021120 -
-         std::sqrt(45.) * gx021102);
-    gx[(Ai + 5) * matrix_size + Bi + 5] +=
-        cc * (std::sqrt(56.25) * gx201201 - std::sqrt(56.25) * gx201021 -
-              std::sqrt(56.25) * gx021201 + std::sqrt(56.25) * gx021021);
-    gx[(Ai + 5) * matrix_size + Bi + 6] +=
-        cc *
-        (std::sqrt(37.5 / 8.0) * gx201300 + std::sqrt(337.5 / 8.0) * gx201120 -
-         std::sqrt(37.5 / 8.0) * gx021300 - std::sqrt(337.5 / 8.0) * gx021120);
-    gx[(Ai + 6) * matrix_size + Bi + 0] +=
-        cc *
-        (std::sqrt(225. / 64.) * gx300210 - std::sqrt(25. / 64.) * gx300030 -
-         std::sqrt(225. / 64.) * gx120030 + std::sqrt(2025. / 64.) * gx120210);
-    gx[(Ai + 6) * matrix_size + Bi + 1] +=
-        cc *
-        (std::sqrt(75. / 8.0) * gx300111 + std::sqrt(675. / 8.0) * gx120111);
-    gx[(Ai + 6) * matrix_size + Bi + 2] +=
-        -cc *
-        (std::sqrt(270. / 8.0) * gx120012 + std::sqrt(135. / 64.) * gx120210 +
-         std::sqrt(135. / 64.) * gx120030 + std::sqrt(30. / 8.0) * gx300012 +
-         std::sqrt(15. / 64.) * gx300210 + std::sqrt(15. / 64.) * gx300030);
-    gx[(Ai + 6) * matrix_size + Bi + 3] +=
-        cc *
-        (std::sqrt(5.0 / 8.0) * gx300003 - std::sqrt(11.25 / 8.0) * gx300201 -
-         std::sqrt(11.25 / 8.0) * gx300021 + std::sqrt(45.0 / 8.0) * gx120003 -
-         std::sqrt(101.25 / 8.0) * gx120201 -
-         std::sqrt(101.25 / 8.0) * gx120021);
-    gx[(Ai + 6) * matrix_size + Bi + 4] +=
-        cc *
-        (std::sqrt(30. / 8.0) * gx300102 -
-         (std::sqrt(15. / 64.) * gx300120 + std::sqrt(15. / 64.) * gx300300) -
-         std::sqrt(135. / 64.) * gx120300 - std::sqrt(135. / 64.) * gx120120 +
-         std::sqrt(270. / 8.0) * gx120102);
-    gx[(Ai + 6) * matrix_size + Bi + 5] +=
-        cc *
-        (std::sqrt(37.5 / 8.0) * gx300201 - std::sqrt(37.5 / 8.0) * gx300021 +
-         std::sqrt(337.5 / 8.0) * gx120201 - std::sqrt(337.5 / 8.0) * gx120021);
-    gx[(Ai + 6) * matrix_size + Bi + 6] +=
-        cc *
-        (std::sqrt(25. / 64.) * gx300300 + std::sqrt(225. / 64.) * gx300120 +
-         std::sqrt(225. / 64.) * gx120300 + std::sqrt(2025. / 64.) * gx120120);
-    const double gy300300 = C25694 * C25818 * C26111;
-    const double gy300030 = C25688 * C26482 * C26111;
-    const double gy300003 = C25688 * C25818 * C25759;
-    const double gy300210 = C25691 * C25755 * C26111;
-    const double gy300201 = C25691 * C25818 * C26270;
-    const double gy300021 = C25688 * C26442 * C26270;
-    const double gy300120 = C25689 * C26442 * C26111;
-    const double gy300102 = C25689 * C25818 * C26302;
-    const double gy300012 = C25688 * C25755 * C26302;
-    const double gy300111 = C25689 * C25755 * C26270;
-    const double gy030300 = C25791 * C25841 * C26111;
-    const double gy030030 =
-        C25685 *
-        ((C26445 * C25748) / C25698 +
-         (3 * C26446 + 2 * C25846 + 2 * ae * C26305) / C25707) *
-        C26111;
-    const double gy030003 = C25685 * C25841 * C25759;
-    const double gy030210 = C26303 * C25846 * C26111;
-    const double gy030201 = C26303 * C25841 * C26270;
-    const double gy030021 = C25685 * C26445 * C26270;
-    const double gy030120 = C26271 * C26445 * C26111;
-    const double gy030102 = C26271 * C25841 * C26302;
-    const double gy030012 = C25685 * C25846 * C26302;
-    const double gy030111 = C26271 * C25846 * C26270;
-    const double gy003300 = C25791 * C25818 * C25866;
-    const double gy003030 = C25685 * C26482 * C25866;
-    const double gy003003 = C25685 * C25818 * C25882;
-    const double gy003210 = C26303 * C25755 * C25866;
-    const double gy003201 = C26303 * C25818 * C26202;
-    const double gy003021 = C25685 * C26442 * C26202;
-    const double gy003120 = C26271 * C26442 * C25866;
-    const double gy003102 = C26271 * C25818 * C26307;
-    const double gy003012 = C25685 * C25755 * C26307;
-    const double gy003111 = C26271 * C25755 * C26202;
-    const double gy210300 = C25936 * C25808 * C26111;
-    const double gy210030 = C25687 * C26492 * C26111;
-    const double gy210003 = C25687 * C25808 * C25759;
-    const double gy210210 = C26318 * C25952 * C26111;
-    const double gy210201 = C26318 * C25808 * C26270;
-    const double gy210021 = C25687 * C26450 * C26270;
-    const double gy210120 = C25690 * C26450 * C26111;
-    const double gy210102 = C25690 * C25808 * C26302;
-    const double gy210012 = C25687 * C25952 * C26302;
-    const double gy210111 = C25690 * C25952 * C26270;
-    const double gy201300 = C25936 * C25818 * C25696;
-    const double gy201030 = C25687 * C26482 * C25696;
-    const double gy201003 = C25687 * C25818 * C25976;
-    const double gy201210 = C26318 * C25755 * C25696;
-    const double gy201201 = C26318 * C25818 * C26221;
-    const double gy201021 = C25687 * C26442 * C26221;
-    const double gy201120 = C25690 * C26442 * C25696;
-    const double gy201102 = C25690 * C25818 * C26316;
-    const double gy201012 = C25687 * C25755 * C26316;
-    const double gy201111 = C25690 * C25755 * C26221;
-    const double gy021300 = C25791 * C25834 * C25696;
-    const double gy021030 = C25685 * C26498 * C25696;
-    const double gy021003 = C25685 * C25834 * C25976;
-    const double gy021210 = C26303 * C25843 * C25696;
-    const double gy021201 = C26303 * C25834 * C26221;
-    const double gy021021 = C25685 * C26446 * C26221;
-    const double gy021120 = C26271 * C26446 * C25696;
-    const double gy021102 = C26271 * C25834 * C26316;
-    const double gy021012 = C25685 * C25843 * C26316;
-    const double gy021111 = C26271 * C25843 * C26221;
-    const double gy120300 = C26024 * C25834 * C26111;
-    const double gy120030 = C25686 * C26498 * C26111;
-    const double gy120003 = C25686 * C25834 * C25759;
-    const double gy120210 = C26314 * C25843 * C26111;
-    const double gy120201 = C26314 * C25834 * C26270;
-    const double gy120021 = C25686 * C26446 * C26270;
-    const double gy120120 = C26287 * C26446 * C26111;
-    const double gy120102 = C26287 * C25834 * C26302;
-    const double gy120012 = C25686 * C25843 * C26302;
-    const double gy120111 = C26287 * C25843 * C26270;
-    const double gy102300 = C26024 * C25818 * C26306;
-    const double gy102030 = C25686 * C26482 * C26306;
-    const double gy102003 = C25686 * C25818 * C26049;
-    const double gy102210 = C26314 * C25755 * C26306;
-    const double gy102201 = C26314 * C25818 * C26199;
-    const double gy102021 = C25686 * C26442 * C26199;
-    const double gy102120 = C26287 * C26442 * C26306;
-    const double gy102102 = C26287 * C25818 * C26312;
-    const double gy102012 = C25686 * C25755 * C26312;
-    const double gy102111 = C26287 * C25755 * C26199;
-    const double gy012300 = C25791 * C25808 * C26306;
-    const double gy012030 = C25685 * C26492 * C26306;
-    const double gy012003 = C25685 * C25808 * C26049;
-    const double gy012210 = C26303 * C25952 * C26306;
-    const double gy012201 = C26303 * C25808 * C26199;
-    const double gy012021 = C25685 * C26450 * C26199;
-    const double gy012120 = C26271 * C26450 * C26306;
-    const double gy012102 = C26271 * C25808 * C26312;
-    const double gy012012 = C25685 * C25952 * C26312;
-    const double gy012111 = C26271 * C25952 * C26199;
-    const double gy111300 = C26024 * C25808 * C25696;
-    const double gy111030 = C25686 * C26492 * C25696;
-    const double gy111003 = C25686 * C25808 * C25976;
-    const double gy111210 = C26314 * C25952 * C25696;
-    const double gy111201 = C26314 * C25808 * C26221;
-    const double gy111021 = C25686 * C26450 * C26221;
-    const double gy111120 = C26287 * C26450 * C25696;
-    const double gy111102 = C26287 * C25808 * C26316;
-    const double gy111012 = C25686 * C25952 * C26316;
-    const double gy111111 = C26287 * C25952 * C26221;
-    gy[(Ai + 0) * matrix_size + Bi + 0] +=
-        cc *
-        (std::sqrt(25. / 64.) * gy030030 - std::sqrt(225. / 64.) * gy030210 -
-         std::sqrt(225. / 64.) * gy210030 + std::sqrt(2025. / 64.) * gy210210);
-    gy[(Ai + 0) * matrix_size + Bi + 1] +=
-        cc *
-        (std::sqrt(675. / 8.0) * gy210111 - std::sqrt(75. / 8.0) * gy030111);
-    gy[(Ai + 0) * matrix_size + Bi + 2] +=
-        cc *
-        (std::sqrt(15. / 64.) * gy030030 + std::sqrt(15. / 64.) * gy030210 +
-         std::sqrt(30. / 8.0) * gy030012 - std::sqrt(135. / 64.) * gy210030 -
-         std::sqrt(135. / 64.) * gy210210 - std::sqrt(270. / 8.0) * gy210012);
-    gy[(Ai + 0) * matrix_size + Bi + 3] +=
-        cc *
-        (std::sqrt(11.25 / 8.0) * gy030201 - std::sqrt(5.0 / 8.0) * gy030003 +
-         std::sqrt(11.25 / 8.0) * gy030021 + std::sqrt(45. / 8.0) * gy210003 -
-         std::sqrt(101.25 / 8.0) * gy210201 -
-         std::sqrt(101.25 / 8.0) * gy210021);
-    gy[(Ai + 0) * matrix_size + Bi + 4] +=
-        cc *
-        (std::sqrt(15. / 64.) * gy030300 + std::sqrt(15. / 64.) * gy030120 -
-         std::sqrt(30. / 8.0) * gy030102 - std::sqrt(135. / 64.) * gy210300 -
-         std::sqrt(135. / 64.) * gy210120 + std::sqrt(270. / 8.0) * gy210102);
-    gy[(Ai + 0) * matrix_size + Bi + 5] +=
-        cc *
-        (std::sqrt(37.5 / 8.0) * gy030021 - std::sqrt(37.5 / 8.0) * gy030201 +
-         std::sqrt(337.5 / 8.0) * gy210201 - std::sqrt(337.5 / 8.0) * gy210021);
-    gy[(Ai + 0) * matrix_size + Bi + 6] +=
-        cc *
-        (std::sqrt(225. / 64.) * gy210300 -
-         (std::sqrt(225. / 64.) * gy030120 + std::sqrt(25. / 64.) * gy030300) +
-         std::sqrt(2025. / 64.) * gy210120);
-    gy[(Ai + 1) * matrix_size + Bi + 0] +=
-        cc *
-        (std::sqrt(675. / 8.0) * gy111210 - std::sqrt(75. / 8.0) * gy111030);
-    gy[(Ai + 1) * matrix_size + Bi + 1] += cc * std::sqrt(225.) * gy111111;
-    gy[(Ai + 1) * matrix_size + Bi + 2] +=
-        -cc * (std::sqrt(90.) * gy111012 + std::sqrt(45. / 8.0) * gy111210 +
-               std::sqrt(45. / 8.0) * gy111030);
-    gy[(Ai + 1) * matrix_size + Bi + 3] +=
-        cc * (std::sqrt(15.0) * gy111003 - std::sqrt(33.75) * gy111201 -
-              std::sqrt(33.75) * gy111021);
-    gy[(Ai + 1) * matrix_size + Bi + 4] +=
-        cc * (std::sqrt(90.) * gy111102 - (std::sqrt(45. / 8.0) * gy111120 +
-                                           std::sqrt(45. / 8.0) * gy111300));
-    gy[(Ai + 1) * matrix_size + Bi + 5] +=
-        cc * (std::sqrt(112.5) * gy111201 - std::sqrt(112.5) * gy111021);
-    gy[(Ai + 1) * matrix_size + Bi + 6] +=
-        cc *
-        (std::sqrt(75. / 8.0) * gy111300 + std::sqrt(675. / 8.0) * gy111120);
-    gy[(Ai + 2) * matrix_size + Bi + 0] +=
-        cc *
-        (std::sqrt(15. / 64.) * gy030030 - std::sqrt(135. / 64.) * gy030210 +
-         std::sqrt(15. / 64.) * gy210030 - std::sqrt(135. / 64.) * gy210210 +
-         std::sqrt(30. / 8.0) * gy012030 - std::sqrt(270. / 8.0) * gy012210);
-    gy[(Ai + 2) * matrix_size + Bi + 1] +=
-        -cc * (std::sqrt(90.) * gy012111 + std::sqrt(45. / 8.0) * gy210111 +
-               std::sqrt(45. / 8.0) * gy030111);
-    gy[(Ai + 2) * matrix_size + Bi + 2] +=
-        cc * (std::sqrt(9. / 64.) * gy030030 + std::sqrt(9. / 64.) * gy030210 +
-              std::sqrt(18. / 8.0) * gy030012 + std::sqrt(9. / 64.) * gy210030 +
-              std::sqrt(9. / 64.) * gy210210 + std::sqrt(18. / 8.0) * gy210012 +
-              std::sqrt(18. / 8.0) * gy012030 +
-              std::sqrt(18. / 8.0) * gy012210 + std::sqrt(36.) * gy012012);
-    gy[(Ai + 2) * matrix_size + Bi + 3] +=
-        cc *
-        (std::sqrt(6.75 / 8.0) * gy030201 - std::sqrt(3.0 / 8.0) * gy030003 +
-         std::sqrt(6.75 / 8.0) * gy030021 - std::sqrt(3.0 / 8.0) * gy210003 +
-         std::sqrt(6.75 / 8.0) * gy210201 + std::sqrt(6.75 / 8.0) * gy210021 -
-         std::sqrt(6.0) * gy012003 + std::sqrt(13.5) * gy012201 +
-         std::sqrt(13.5) * gy012021);
-    gy[(Ai + 2) * matrix_size + Bi + 4] +=
-        cc * (std::sqrt(9. / 64.) * gy030300 + std::sqrt(9. / 64.) * gy030120 -
-              std::sqrt(18. / 8.0) * gy030102 + std::sqrt(9. / 64.) * gy210300 +
-              std::sqrt(9. / 64.) * gy210120 - std::sqrt(18. / 8.0) * gy210102 +
-              std::sqrt(18. / 8.0) * gy012300 +
-              std::sqrt(18. / 8.0) * gy012120 - std::sqrt(36.) * gy012102);
-    gy[(Ai + 2) * matrix_size + Bi + 5] +=
-        cc *
-        (std::sqrt(22.5 / 8.0) * gy030021 - std::sqrt(22.5 / 8.0) * gy030201 -
-         std::sqrt(22.5 / 8.0) * gy210201 + std::sqrt(22.5 / 8.0) * gy210021 -
-         std::sqrt(45.) * gy012201 + std::sqrt(45.) * gy012021);
-    gy[(Ai + 2) * matrix_size + Bi + 6] +=
-        -cc *
-        (std::sqrt(270. / 8.0) * gy012120 + std::sqrt(30. / 8.0) * gy012300 +
-         std::sqrt(135. / 64.) * gy210120 + std::sqrt(15. / 64.) * gy210300 +
-         std::sqrt(135. / 64.) * gy030120 + std::sqrt(15. / 64.) * gy030300);
-    gy[(Ai + 3) * matrix_size + Bi + 0] +=
-        cc *
-        (std::sqrt(45. / 8.0) * gy003210 - std::sqrt(5.0 / 8.0) * gy003030 +
-         std::sqrt(11.25 / 8.0) * gy201030 -
-         std::sqrt(101.25 / 8.0) * gy201210 +
-         std::sqrt(11.25 / 8.0) * gy021030 -
-         std::sqrt(101.25 / 8.0) * gy021210);
-    gy[(Ai + 3) * matrix_size + Bi + 1] +=
-        cc * (std::sqrt(15.0) * gy003111 - std::sqrt(33.75) * gy201111 -
-              std::sqrt(33.75) * gy021111);
-    gy[(Ai + 3) * matrix_size + Bi + 2] +=
-        cc * (std::sqrt(6.75 / 8.0) * gy201030 -
-              (std::sqrt(6.0) * gy003012 + std::sqrt(3.0 / 8.0) * gy003210 +
-               std::sqrt(3.0 / 8.0) * gy003030) +
-              std::sqrt(6.75 / 8.0) * gy201210 + std::sqrt(13.5) * gy201012 +
-              std::sqrt(6.75 / 8.0) * gy021030 +
-              std::sqrt(6.75 / 8.0) * gy021210 + std::sqrt(13.5) * gy021012);
-    gy[(Ai + 3) * matrix_size + Bi + 3] +=
-        cc * (gy003003 - 1.5 * gy003201 - 1.5 * gy003021 - 1.5 * gy201003 +
-              2.25 * gy201201 + 2.25 * gy201021 - 1.5 * gy021003 +
-              2.25 * gy021201 + 2.25 * gy021021);
-    gy[(Ai + 3) * matrix_size + Bi + 4] +=
-        cc *
-        (std::sqrt(6.0) * gy003102 -
-         (std::sqrt(3.0 / 8.0) * gy003120 + std::sqrt(3.0 / 8.0) * gy003300) +
-         std::sqrt(6.75 / 8.0) * gy201300 + std::sqrt(6.75 / 8.0) * gy201120 -
-         std::sqrt(13.5) * gy201102 + std::sqrt(6.75 / 8.0) * gy021300 +
-         std::sqrt(6.75 / 8.0) * gy021120 - std::sqrt(13.5) * gy021102);
-    gy[(Ai + 3) * matrix_size + Bi + 5] +=
-        cc * (std::sqrt(7.5) * gy003201 - std::sqrt(7.5) * gy003021 -
-              std::sqrt(16.875) * gy201201 + std::sqrt(16.875) * gy201021 -
-              std::sqrt(16.875) * gy021201 + std::sqrt(16.875) * gy021021);
-    gy[(Ai + 3) * matrix_size + Bi + 6] +=
-        cc *
-        (std::sqrt(5.0 / 8.0) * gy003300 + std::sqrt(45.0 / 8.0) * gy003120 -
-         std::sqrt(11.25 / 8.0) * gy201300 -
-         std::sqrt(101.25 / 8.0) * gy201120 -
-         std::sqrt(11.25 / 8.0) * gy021300 -
-         std::sqrt(101.25 / 8.0) * gy021120);
-    gy[(Ai + 4) * matrix_size + Bi + 0] +=
-        cc *
-        (std::sqrt(15. / 64.) * gy300030 - std::sqrt(135. / 64.) * gy300210 +
-         std::sqrt(15. / 64.) * gy120030 - std::sqrt(135. / 64.) * gy120210 -
-         std::sqrt(30. / 8.0) * gy102030 + std::sqrt(270. / 8.0) * gy102210);
-    gy[(Ai + 4) * matrix_size + Bi + 1] +=
-        cc * (std::sqrt(90.) * gy102111 - (std::sqrt(45. / 8.0) * gy120111 +
-                                           std::sqrt(45. / 8.0) * gy300111));
-    gy[(Ai + 4) * matrix_size + Bi + 2] +=
-        cc * (std::sqrt(9. / 64.) * gy300030 + std::sqrt(9. / 64.) * gy300210 +
-              std::sqrt(18. / 8.0) * gy300012 + std::sqrt(9. / 64.) * gy120030 +
-              std::sqrt(9. / 64.) * gy120210 + std::sqrt(18. / 8.0) * gy120012 -
-              std::sqrt(18. / 8.0) * gy102030 -
-              std::sqrt(18. / 8.0) * gy102210 - std::sqrt(36.) * gy102012);
-    gy[(Ai + 4) * matrix_size + Bi + 3] +=
-        cc *
-        (std::sqrt(6.75 / 8.0) * gy300201 - std::sqrt(3.0 / 8.0) * gy300003 +
-         std::sqrt(6.75 / 8.0) * gy300021 - std::sqrt(3.0 / 8.0) * gy120003 +
-         std::sqrt(6.75 / 8.0) * gy120201 + std::sqrt(6.75 / 8.0) * gy120021 +
-         std::sqrt(6.0) * gy102003 - std::sqrt(13.5) * gy102201 -
-         std::sqrt(13.5) * gy102021);
-    gy[(Ai + 4) * matrix_size + Bi + 4] +=
-        cc * (std::sqrt(9. / 64.) * gy300300 + std::sqrt(9. / 64.) * gy300120 -
-              std::sqrt(18. / 8.0) * gy300102 + std::sqrt(9. / 64.) * gy120300 +
-              std::sqrt(9. / 64.) * gy120120 - std::sqrt(18. / 8.0) * gy120102 -
-              std::sqrt(18. / 8.0) * gy102300 -
-              std::sqrt(18. / 8.0) * gy102120 + std::sqrt(36.) * gy102102);
-    gy[(Ai + 4) * matrix_size + Bi + 5] +=
-        cc *
-        (std::sqrt(22.5 / 8.0) * gy300021 - std::sqrt(22.5 / 8.0) * gy300201 -
-         std::sqrt(22.5 / 8.0) * gy120201 + std::sqrt(22.5 / 8.0) * gy120021 +
-         std::sqrt(45.) * gy102201 - std::sqrt(45.) * gy102021);
-    gy[(Ai + 4) * matrix_size + Bi + 6] +=
-        cc *
-        (std::sqrt(30. / 8.0) * gy102300 -
-         (std::sqrt(135. / 64.) * gy120120 + std::sqrt(15. / 64.) * gy120300 +
-          std::sqrt(135. / 64.) * gy300120 + std::sqrt(15. / 64.) * gy300300) +
-         std::sqrt(270. / 8.0) * gy102120);
-    gy[(Ai + 5) * matrix_size + Bi + 0] +=
-        cc *
-        (std::sqrt(337.5 / 8.0) * gy201210 - std::sqrt(37.5 / 8.0) * gy201030 +
-         std::sqrt(37.5 / 8.0) * gy021030 - std::sqrt(337.5 / 8.0) * gy021210);
-    gy[(Ai + 5) * matrix_size + Bi + 1] +=
-        cc * (std::sqrt(112.5) * gy201111 - std::sqrt(112.5) * gy021111);
-    gy[(Ai + 5) * matrix_size + Bi + 2] +=
-        cc * (std::sqrt(22.5 / 8.0) * gy021030 -
-              (std::sqrt(45.) * gy201012 + std::sqrt(22.5 / 8.0) * gy201210 +
-               std::sqrt(22.5 / 8.0) * gy201030) +
-              std::sqrt(22.5 / 8.0) * gy021210 + std::sqrt(45.) * gy021012);
-    gy[(Ai + 5) * matrix_size + Bi + 3] +=
-        cc * (std::sqrt(7.5) * gy201003 - std::sqrt(16.875) * gy201201 -
-              std::sqrt(16.875) * gy201021 - std::sqrt(7.5) * gy021003 +
-              std::sqrt(16.875) * gy021201 + std::sqrt(16.875) * gy021021);
-    gy[(Ai + 5) * matrix_size + Bi + 4] +=
-        cc *
-        (std::sqrt(45.) * gy201102 -
-         (std::sqrt(22.5 / 8.0) * gy201120 + std::sqrt(22.5 / 8.0) * gy201300) +
-         std::sqrt(22.5 / 8.0) * gy021300 + std::sqrt(22.5 / 8.0) * gy021120 -
-         std::sqrt(45.) * gy021102);
-    gy[(Ai + 5) * matrix_size + Bi + 5] +=
-        cc * (std::sqrt(56.25) * gy201201 - std::sqrt(56.25) * gy201021 -
-              std::sqrt(56.25) * gy021201 + std::sqrt(56.25) * gy021021);
-    gy[(Ai + 5) * matrix_size + Bi + 6] +=
-        cc *
-        (std::sqrt(37.5 / 8.0) * gy201300 + std::sqrt(337.5 / 8.0) * gy201120 -
-         std::sqrt(37.5 / 8.0) * gy021300 - std::sqrt(337.5 / 8.0) * gy021120);
-    gy[(Ai + 6) * matrix_size + Bi + 0] +=
-        cc *
-        (std::sqrt(225. / 64.) * gy300210 - std::sqrt(25. / 64.) * gy300030 -
-         std::sqrt(225. / 64.) * gy120030 + std::sqrt(2025. / 64.) * gy120210);
-    gy[(Ai + 6) * matrix_size + Bi + 1] +=
-        cc *
-        (std::sqrt(75. / 8.0) * gy300111 + std::sqrt(675. / 8.0) * gy120111);
-    gy[(Ai + 6) * matrix_size + Bi + 2] +=
-        -cc *
-        (std::sqrt(270. / 8.0) * gy120012 + std::sqrt(135. / 64.) * gy120210 +
-         std::sqrt(135. / 64.) * gy120030 + std::sqrt(30. / 8.0) * gy300012 +
-         std::sqrt(15. / 64.) * gy300210 + std::sqrt(15. / 64.) * gy300030);
-    gy[(Ai + 6) * matrix_size + Bi + 3] +=
-        cc *
-        (std::sqrt(5.0 / 8.0) * gy300003 - std::sqrt(11.25 / 8.0) * gy300201 -
-         std::sqrt(11.25 / 8.0) * gy300021 + std::sqrt(45.0 / 8.0) * gy120003 -
-         std::sqrt(101.25 / 8.0) * gy120201 -
-         std::sqrt(101.25 / 8.0) * gy120021);
-    gy[(Ai + 6) * matrix_size + Bi + 4] +=
-        cc *
-        (std::sqrt(30. / 8.0) * gy300102 -
-         (std::sqrt(15. / 64.) * gy300120 + std::sqrt(15. / 64.) * gy300300) -
-         std::sqrt(135. / 64.) * gy120300 - std::sqrt(135. / 64.) * gy120120 +
-         std::sqrt(270. / 8.0) * gy120102);
-    gy[(Ai + 6) * matrix_size + Bi + 5] +=
-        cc *
-        (std::sqrt(37.5 / 8.0) * gy300201 - std::sqrt(37.5 / 8.0) * gy300021 +
-         std::sqrt(337.5 / 8.0) * gy120201 - std::sqrt(337.5 / 8.0) * gy120021);
-    gy[(Ai + 6) * matrix_size + Bi + 6] +=
-        cc *
-        (std::sqrt(25. / 64.) * gy300300 + std::sqrt(225. / 64.) * gy300120 +
-         std::sqrt(225. / 64.) * gy120300 + std::sqrt(2025. / 64.) * gy120120);
-    const double gz300300 = C25694 * C26111 * C25888;
-    const double gz300030 = C25688 * C25744 * C25888;
-    const double gz300003 = C25688 * C26111 * C26483;
-    const double gz300210 = C25691 * C26268 * C25888;
-    const double gz300201 = C25691 * C26111 * C25770;
-    const double gz300021 = C25688 * C26301 * C25770;
-    const double gz300120 = C25689 * C26301 * C25888;
-    const double gz300102 = C25689 * C26111 * C26443;
-    const double gz300012 = C25688 * C26268 * C26443;
-    const double gz300111 = C25689 * C26268 * C25770;
-    const double gz030300 = C25791 * C25790 * C25888;
-    const double gz030030 = C25685 * C25812 * C25888;
-    const double gz030003 = C25685 * C25790 * C26483;
-    const double gz030210 = C26303 * C26177 * C25888;
-    const double gz030201 = C26303 * C25790 * C25770;
-    const double gz030021 = C25685 * C26305 * C25770;
-    const double gz030120 = C26271 * C26305 * C25888;
-    const double gz030102 = C26271 * C25790 * C26443;
-    const double gz030012 = C25685 * C26177 * C26443;
-    const double gz030111 = C26271 * C26177 * C25770;
-    const double gz003300 = C25791 * C26111 * C25911;
-    const double gz003030 = C25685 * C25744 * C25911;
-    const double gz003003 =
-        C25685 * C26111 *
-        ((C26447 * C25763) / C25698 +
-         (3 * C26448 + 2 * C25916 + 2 * ae * C26307) / C25707);
-    const double gz003210 = C26303 * C26268 * C25911;
-    const double gz003201 = C26303 * C26111 * C25916;
-    const double gz003021 = C25685 * C26301 * C25916;
-    const double gz003120 = C26271 * C26301 * C25911;
-    const double gz003102 = C26271 * C26111 * C26447;
-    const double gz003012 = C25685 * C26268 * C26447;
-    const double gz003111 = C26271 * C26268 * C25916;
-    const double gz210300 = C25936 * C25695 * C25888;
-    const double gz210030 = C25687 * C25945 * C25888;
-    const double gz210003 = C25687 * C25695 * C26483;
-    const double gz210210 = C26318 * C26215 * C25888;
-    const double gz210201 = C26318 * C25695 * C25770;
-    const double gz210021 = C25687 * C26315 * C25770;
-    const double gz210120 = C25690 * C26315 * C25888;
-    const double gz210102 = C25690 * C25695 * C26443;
-    const double gz210012 = C25687 * C26215 * C26443;
-    const double gz210111 = C25690 * C26215 * C25770;
-    const double gz201300 = C25936 * C26111 * C25876;
-    const double gz201030 = C25687 * C25744 * C25876;
-    const double gz201003 = C25687 * C26111 * C26493;
-    const double gz201210 = C26318 * C26268 * C25876;
-    const double gz201201 = C26318 * C26111 * C25983;
-    const double gz201021 = C25687 * C26301 * C25983;
-    const double gz201120 = C25690 * C26301 * C25876;
-    const double gz201102 = C25690 * C26111 * C26451;
-    const double gz201012 = C25687 * C26268 * C26451;
-    const double gz201111 = C25690 * C26268 * C25983;
-    const double gz021300 = C25791 * C26304 * C25876;
-    const double gz021030 = C25685 * C26003 * C25876;
-    const double gz021003 = C25685 * C26304 * C26493;
-    const double gz021210 = C26303 * C26174 * C25876;
-    const double gz021201 = C26303 * C26304 * C25983;
-    const double gz021021 = C25685 * C26311 * C25983;
-    const double gz021120 = C26271 * C26311 * C25876;
-    const double gz021102 = C26271 * C26304 * C26451;
-    const double gz021012 = C25685 * C26174 * C26451;
-    const double gz021111 = C26271 * C26174 * C25983;
-    const double gz120300 = C26024 * C26304 * C25888;
-    const double gz120030 = C25686 * C26003 * C25888;
-    const double gz120003 = C25686 * C26304 * C26483;
-    const double gz120210 = C26314 * C26174 * C25888;
-    const double gz120201 = C26314 * C26304 * C25770;
-    const double gz120021 = C25686 * C26311 * C25770;
-    const double gz120120 = C26287 * C26311 * C25888;
-    const double gz120102 = C26287 * C26304 * C26443;
-    const double gz120012 = C25686 * C26174 * C26443;
-    const double gz120111 = C26287 * C26174 * C25770;
-    const double gz102300 = C26024 * C26111 * C25904;
-    const double gz102030 = C25686 * C25744 * C25904;
-    const double gz102003 = C25686 * C26111 * C26499;
-    const double gz102210 = C26314 * C26268 * C25904;
-    const double gz102201 = C26314 * C26111 * C25913;
-    const double gz102021 = C25686 * C26301 * C25913;
-    const double gz102120 = C26287 * C26301 * C25904;
-    const double gz102102 = C26287 * C26111 * C26448;
-    const double gz102012 = C25686 * C26268 * C26448;
-    const double gz102111 = C26287 * C26268 * C25913;
-    const double gz012300 = C25791 * C25695 * C25904;
-    const double gz012030 = C25685 * C25945 * C25904;
-    const double gz012003 = C25685 * C25695 * C26499;
-    const double gz012210 = C26303 * C26215 * C25904;
-    const double gz012201 = C26303 * C25695 * C25913;
-    const double gz012021 = C25685 * C26315 * C25913;
-    const double gz012120 = C26271 * C26315 * C25904;
-    const double gz012102 = C26271 * C25695 * C26448;
-    const double gz012012 = C25685 * C26215 * C26448;
-    const double gz012111 = C26271 * C26215 * C25913;
-    const double gz111300 = C26024 * C25695 * C25876;
-    const double gz111030 = C25686 * C25945 * C25876;
-    const double gz111003 = C25686 * C25695 * C26493;
-    const double gz111210 = C26314 * C26215 * C25876;
-    const double gz111201 = C26314 * C25695 * C25983;
-    const double gz111021 = C25686 * C26315 * C25983;
-    const double gz111120 = C26287 * C26315 * C25876;
-    const double gz111102 = C26287 * C25695 * C26451;
-    const double gz111012 = C25686 * C26215 * C26451;
-    const double gz111111 = C26287 * C26215 * C25983;
-    gz[(Ai + 0) * matrix_size + Bi + 0] +=
-        cc *
-        (std::sqrt(25. / 64.) * gz030030 - std::sqrt(225. / 64.) * gz030210 -
-         std::sqrt(225. / 64.) * gz210030 + std::sqrt(2025. / 64.) * gz210210);
-    gz[(Ai + 0) * matrix_size + Bi + 1] +=
-        cc *
-        (std::sqrt(675. / 8.0) * gz210111 - std::sqrt(75. / 8.0) * gz030111);
-    gz[(Ai + 0) * matrix_size + Bi + 2] +=
-        cc *
-        (std::sqrt(15. / 64.) * gz030030 + std::sqrt(15. / 64.) * gz030210 +
-         std::sqrt(30. / 8.0) * gz030012 - std::sqrt(135. / 64.) * gz210030 -
-         std::sqrt(135. / 64.) * gz210210 - std::sqrt(270. / 8.0) * gz210012);
-    gz[(Ai + 0) * matrix_size + Bi + 3] +=
-        cc *
-        (std::sqrt(11.25 / 8.0) * gz030201 - std::sqrt(5.0 / 8.0) * gz030003 +
-         std::sqrt(11.25 / 8.0) * gz030021 + std::sqrt(45. / 8.0) * gz210003 -
-         std::sqrt(101.25 / 8.0) * gz210201 -
-         std::sqrt(101.25 / 8.0) * gz210021);
-    gz[(Ai + 0) * matrix_size + Bi + 4] +=
-        cc *
-        (std::sqrt(15. / 64.) * gz030300 + std::sqrt(15. / 64.) * gz030120 -
-         std::sqrt(30. / 8.0) * gz030102 - std::sqrt(135. / 64.) * gz210300 -
-         std::sqrt(135. / 64.) * gz210120 + std::sqrt(270. / 8.0) * gz210102);
-    gz[(Ai + 0) * matrix_size + Bi + 5] +=
-        cc *
-        (std::sqrt(37.5 / 8.0) * gz030021 - std::sqrt(37.5 / 8.0) * gz030201 +
-         std::sqrt(337.5 / 8.0) * gz210201 - std::sqrt(337.5 / 8.0) * gz210021);
-    gz[(Ai + 0) * matrix_size + Bi + 6] +=
-        cc *
-        (std::sqrt(225. / 64.) * gz210300 -
-         (std::sqrt(225. / 64.) * gz030120 + std::sqrt(25. / 64.) * gz030300) +
-         std::sqrt(2025. / 64.) * gz210120);
-    gz[(Ai + 1) * matrix_size + Bi + 0] +=
-        cc *
-        (std::sqrt(675. / 8.0) * gz111210 - std::sqrt(75. / 8.0) * gz111030);
-    gz[(Ai + 1) * matrix_size + Bi + 1] += cc * std::sqrt(225.) * gz111111;
-    gz[(Ai + 1) * matrix_size + Bi + 2] +=
-        -cc * (std::sqrt(90.) * gz111012 + std::sqrt(45. / 8.0) * gz111210 +
-               std::sqrt(45. / 8.0) * gz111030);
-    gz[(Ai + 1) * matrix_size + Bi + 3] +=
-        cc * (std::sqrt(15.0) * gz111003 - std::sqrt(33.75) * gz111201 -
-              std::sqrt(33.75) * gz111021);
-    gz[(Ai + 1) * matrix_size + Bi + 4] +=
-        cc * (std::sqrt(90.) * gz111102 - (std::sqrt(45. / 8.0) * gz111120 +
-                                           std::sqrt(45. / 8.0) * gz111300));
-    gz[(Ai + 1) * matrix_size + Bi + 5] +=
-        cc * (std::sqrt(112.5) * gz111201 - std::sqrt(112.5) * gz111021);
-    gz[(Ai + 1) * matrix_size + Bi + 6] +=
-        cc *
-        (std::sqrt(75. / 8.0) * gz111300 + std::sqrt(675. / 8.0) * gz111120);
-    gz[(Ai + 2) * matrix_size + Bi + 0] +=
-        cc *
-        (std::sqrt(15. / 64.) * gz030030 - std::sqrt(135. / 64.) * gz030210 +
-         std::sqrt(15. / 64.) * gz210030 - std::sqrt(135. / 64.) * gz210210 +
-         std::sqrt(30. / 8.0) * gz012030 - std::sqrt(270. / 8.0) * gz012210);
-    gz[(Ai + 2) * matrix_size + Bi + 1] +=
-        -cc * (std::sqrt(90.) * gz012111 + std::sqrt(45. / 8.0) * gz210111 +
-               std::sqrt(45. / 8.0) * gz030111);
-    gz[(Ai + 2) * matrix_size + Bi + 2] +=
-        cc * (std::sqrt(9. / 64.) * gz030030 + std::sqrt(9. / 64.) * gz030210 +
-              std::sqrt(18. / 8.0) * gz030012 + std::sqrt(9. / 64.) * gz210030 +
-              std::sqrt(9. / 64.) * gz210210 + std::sqrt(18. / 8.0) * gz210012 +
-              std::sqrt(18. / 8.0) * gz012030 +
-              std::sqrt(18. / 8.0) * gz012210 + std::sqrt(36.) * gz012012);
-    gz[(Ai + 2) * matrix_size + Bi + 3] +=
-        cc *
-        (std::sqrt(6.75 / 8.0) * gz030201 - std::sqrt(3.0 / 8.0) * gz030003 +
-         std::sqrt(6.75 / 8.0) * gz030021 - std::sqrt(3.0 / 8.0) * gz210003 +
-         std::sqrt(6.75 / 8.0) * gz210201 + std::sqrt(6.75 / 8.0) * gz210021 -
-         std::sqrt(6.0) * gz012003 + std::sqrt(13.5) * gz012201 +
-         std::sqrt(13.5) * gz012021);
-    gz[(Ai + 2) * matrix_size + Bi + 4] +=
-        cc * (std::sqrt(9. / 64.) * gz030300 + std::sqrt(9. / 64.) * gz030120 -
-              std::sqrt(18. / 8.0) * gz030102 + std::sqrt(9. / 64.) * gz210300 +
-              std::sqrt(9. / 64.) * gz210120 - std::sqrt(18. / 8.0) * gz210102 +
-              std::sqrt(18. / 8.0) * gz012300 +
-              std::sqrt(18. / 8.0) * gz012120 - std::sqrt(36.) * gz012102);
-    gz[(Ai + 2) * matrix_size + Bi + 5] +=
-        cc *
-        (std::sqrt(22.5 / 8.0) * gz030021 - std::sqrt(22.5 / 8.0) * gz030201 -
-         std::sqrt(22.5 / 8.0) * gz210201 + std::sqrt(22.5 / 8.0) * gz210021 -
-         std::sqrt(45.) * gz012201 + std::sqrt(45.) * gz012021);
-    gz[(Ai + 2) * matrix_size + Bi + 6] +=
-        -cc *
-        (std::sqrt(270. / 8.0) * gz012120 + std::sqrt(30. / 8.0) * gz012300 +
-         std::sqrt(135. / 64.) * gz210120 + std::sqrt(15. / 64.) * gz210300 +
-         std::sqrt(135. / 64.) * gz030120 + std::sqrt(15. / 64.) * gz030300);
-    gz[(Ai + 3) * matrix_size + Bi + 0] +=
-        cc *
-        (std::sqrt(45. / 8.0) * gz003210 - std::sqrt(5.0 / 8.0) * gz003030 +
-         std::sqrt(11.25 / 8.0) * gz201030 -
-         std::sqrt(101.25 / 8.0) * gz201210 +
-         std::sqrt(11.25 / 8.0) * gz021030 -
-         std::sqrt(101.25 / 8.0) * gz021210);
-    gz[(Ai + 3) * matrix_size + Bi + 1] +=
-        cc * (std::sqrt(15.0) * gz003111 - std::sqrt(33.75) * gz201111 -
-              std::sqrt(33.75) * gz021111);
-    gz[(Ai + 3) * matrix_size + Bi + 2] +=
-        cc * (std::sqrt(6.75 / 8.0) * gz201030 -
-              (std::sqrt(6.0) * gz003012 + std::sqrt(3.0 / 8.0) * gz003210 +
-               std::sqrt(3.0 / 8.0) * gz003030) +
-              std::sqrt(6.75 / 8.0) * gz201210 + std::sqrt(13.5) * gz201012 +
-              std::sqrt(6.75 / 8.0) * gz021030 +
-              std::sqrt(6.75 / 8.0) * gz021210 + std::sqrt(13.5) * gz021012);
-    gz[(Ai + 3) * matrix_size + Bi + 3] +=
-        cc * (gz003003 - 1.5 * gz003201 - 1.5 * gz003021 - 1.5 * gz201003 +
-              2.25 * gz201201 + 2.25 * gz201021 - 1.5 * gz021003 +
-              2.25 * gz021201 + 2.25 * gz021021);
-    gz[(Ai + 3) * matrix_size + Bi + 4] +=
-        cc *
-        (std::sqrt(6.0) * gz003102 -
-         (std::sqrt(3.0 / 8.0) * gz003120 + std::sqrt(3.0 / 8.0) * gz003300) +
-         std::sqrt(6.75 / 8.0) * gz201300 + std::sqrt(6.75 / 8.0) * gz201120 -
-         std::sqrt(13.5) * gz201102 + std::sqrt(6.75 / 8.0) * gz021300 +
-         std::sqrt(6.75 / 8.0) * gz021120 - std::sqrt(13.5) * gz021102);
-    gz[(Ai + 3) * matrix_size + Bi + 5] +=
-        cc * (std::sqrt(7.5) * gz003201 - std::sqrt(7.5) * gz003021 -
-              std::sqrt(16.875) * gz201201 + std::sqrt(16.875) * gz201021 -
-              std::sqrt(16.875) * gz021201 + std::sqrt(16.875) * gz021021);
-    gz[(Ai + 3) * matrix_size + Bi + 6] +=
-        cc *
-        (std::sqrt(5.0 / 8.0) * gz003300 + std::sqrt(45.0 / 8.0) * gz003120 -
-         std::sqrt(11.25 / 8.0) * gz201300 -
-         std::sqrt(101.25 / 8.0) * gz201120 -
-         std::sqrt(11.25 / 8.0) * gz021300 -
-         std::sqrt(101.25 / 8.0) * gz021120);
-    gz[(Ai + 4) * matrix_size + Bi + 0] +=
-        cc *
-        (std::sqrt(15. / 64.) * gz300030 - std::sqrt(135. / 64.) * gz300210 +
-         std::sqrt(15. / 64.) * gz120030 - std::sqrt(135. / 64.) * gz120210 -
-         std::sqrt(30. / 8.0) * gz102030 + std::sqrt(270. / 8.0) * gz102210);
-    gz[(Ai + 4) * matrix_size + Bi + 1] +=
-        cc * (std::sqrt(90.) * gz102111 - (std::sqrt(45. / 8.0) * gz120111 +
-                                           std::sqrt(45. / 8.0) * gz300111));
-    gz[(Ai + 4) * matrix_size + Bi + 2] +=
-        cc * (std::sqrt(9. / 64.) * gz300030 + std::sqrt(9. / 64.) * gz300210 +
-              std::sqrt(18. / 8.0) * gz300012 + std::sqrt(9. / 64.) * gz120030 +
-              std::sqrt(9. / 64.) * gz120210 + std::sqrt(18. / 8.0) * gz120012 -
-              std::sqrt(18. / 8.0) * gz102030 -
-              std::sqrt(18. / 8.0) * gz102210 - std::sqrt(36.) * gz102012);
-    gz[(Ai + 4) * matrix_size + Bi + 3] +=
-        cc *
-        (std::sqrt(6.75 / 8.0) * gz300201 - std::sqrt(3.0 / 8.0) * gz300003 +
-         std::sqrt(6.75 / 8.0) * gz300021 - std::sqrt(3.0 / 8.0) * gz120003 +
-         std::sqrt(6.75 / 8.0) * gz120201 + std::sqrt(6.75 / 8.0) * gz120021 +
-         std::sqrt(6.0) * gz102003 - std::sqrt(13.5) * gz102201 -
-         std::sqrt(13.5) * gz102021);
-    gz[(Ai + 4) * matrix_size + Bi + 4] +=
-        cc * (std::sqrt(9. / 64.) * gz300300 + std::sqrt(9. / 64.) * gz300120 -
-              std::sqrt(18. / 8.0) * gz300102 + std::sqrt(9. / 64.) * gz120300 +
-              std::sqrt(9. / 64.) * gz120120 - std::sqrt(18. / 8.0) * gz120102 -
-              std::sqrt(18. / 8.0) * gz102300 -
-              std::sqrt(18. / 8.0) * gz102120 + std::sqrt(36.) * gz102102);
-    gz[(Ai + 4) * matrix_size + Bi + 5] +=
-        cc *
-        (std::sqrt(22.5 / 8.0) * gz300021 - std::sqrt(22.5 / 8.0) * gz300201 -
-         std::sqrt(22.5 / 8.0) * gz120201 + std::sqrt(22.5 / 8.0) * gz120021 +
-         std::sqrt(45.) * gz102201 - std::sqrt(45.) * gz102021);
-    gz[(Ai + 4) * matrix_size + Bi + 6] +=
-        cc *
-        (std::sqrt(30. / 8.0) * gz102300 -
-         (std::sqrt(135. / 64.) * gz120120 + std::sqrt(15. / 64.) * gz120300 +
-          std::sqrt(135. / 64.) * gz300120 + std::sqrt(15. / 64.) * gz300300) +
-         std::sqrt(270. / 8.0) * gz102120);
-    gz[(Ai + 5) * matrix_size + Bi + 0] +=
-        cc *
-        (std::sqrt(337.5 / 8.0) * gz201210 - std::sqrt(37.5 / 8.0) * gz201030 +
-         std::sqrt(37.5 / 8.0) * gz021030 - std::sqrt(337.5 / 8.0) * gz021210);
-    gz[(Ai + 5) * matrix_size + Bi + 1] +=
-        cc * (std::sqrt(112.5) * gz201111 - std::sqrt(112.5) * gz021111);
-    gz[(Ai + 5) * matrix_size + Bi + 2] +=
-        cc * (std::sqrt(22.5 / 8.0) * gz021030 -
-              (std::sqrt(45.) * gz201012 + std::sqrt(22.5 / 8.0) * gz201210 +
-               std::sqrt(22.5 / 8.0) * gz201030) +
-              std::sqrt(22.5 / 8.0) * gz021210 + std::sqrt(45.) * gz021012);
-    gz[(Ai + 5) * matrix_size + Bi + 3] +=
-        cc * (std::sqrt(7.5) * gz201003 - std::sqrt(16.875) * gz201201 -
-              std::sqrt(16.875) * gz201021 - std::sqrt(7.5) * gz021003 +
-              std::sqrt(16.875) * gz021201 + std::sqrt(16.875) * gz021021);
-    gz[(Ai + 5) * matrix_size + Bi + 4] +=
-        cc *
-        (std::sqrt(45.) * gz201102 -
-         (std::sqrt(22.5 / 8.0) * gz201120 + std::sqrt(22.5 / 8.0) * gz201300) +
-         std::sqrt(22.5 / 8.0) * gz021300 + std::sqrt(22.5 / 8.0) * gz021120 -
-         std::sqrt(45.) * gz021102);
-    gz[(Ai + 5) * matrix_size + Bi + 5] +=
-        cc * (std::sqrt(56.25) * gz201201 - std::sqrt(56.25) * gz201021 -
-              std::sqrt(56.25) * gz021201 + std::sqrt(56.25) * gz021021);
-    gz[(Ai + 5) * matrix_size + Bi + 6] +=
-        cc *
-        (std::sqrt(37.5 / 8.0) * gz201300 + std::sqrt(337.5 / 8.0) * gz201120 -
-         std::sqrt(37.5 / 8.0) * gz021300 - std::sqrt(337.5 / 8.0) * gz021120);
-    gz[(Ai + 6) * matrix_size + Bi + 0] +=
-        cc *
-        (std::sqrt(225. / 64.) * gz300210 - std::sqrt(25. / 64.) * gz300030 -
-         std::sqrt(225. / 64.) * gz120030 + std::sqrt(2025. / 64.) * gz120210);
-    gz[(Ai + 6) * matrix_size + Bi + 1] +=
-        cc *
-        (std::sqrt(75. / 8.0) * gz300111 + std::sqrt(675. / 8.0) * gz120111);
-    gz[(Ai + 6) * matrix_size + Bi + 2] +=
-        -cc *
-        (std::sqrt(270. / 8.0) * gz120012 + std::sqrt(135. / 64.) * gz120210 +
-         std::sqrt(135. / 64.) * gz120030 + std::sqrt(30. / 8.0) * gz300012 +
-         std::sqrt(15. / 64.) * gz300210 + std::sqrt(15. / 64.) * gz300030);
-    gz[(Ai + 6) * matrix_size + Bi + 3] +=
-        cc *
-        (std::sqrt(5.0 / 8.0) * gz300003 - std::sqrt(11.25 / 8.0) * gz300201 -
-         std::sqrt(11.25 / 8.0) * gz300021 + std::sqrt(45.0 / 8.0) * gz120003 -
-         std::sqrt(101.25 / 8.0) * gz120201 -
-         std::sqrt(101.25 / 8.0) * gz120021);
-    gz[(Ai + 6) * matrix_size + Bi + 4] +=
-        cc *
-        (std::sqrt(30. / 8.0) * gz300102 -
-         (std::sqrt(15. / 64.) * gz300120 + std::sqrt(15. / 64.) * gz300300) -
-         std::sqrt(135. / 64.) * gz120300 - std::sqrt(135. / 64.) * gz120120 +
-         std::sqrt(270. / 8.0) * gz120102);
-    gz[(Ai + 6) * matrix_size + Bi + 5] +=
-        cc *
-        (std::sqrt(37.5 / 8.0) * gz300201 - std::sqrt(37.5 / 8.0) * gz300021 +
-         std::sqrt(337.5 / 8.0) * gz120201 - std::sqrt(337.5 / 8.0) * gz120021);
-    gz[(Ai + 6) * matrix_size + Bi + 6] +=
-        cc *
-        (std::sqrt(25. / 64.) * gz300300 + std::sqrt(225. / 64.) * gz300120 +
-         std::sqrt(225. / 64.) * gz120300 + std::sqrt(2025. / 64.) * gz120120);
+    double cnst0 = std::sqrt(33.75);
+    double cnst1 = std::sqrt(16.875);
+    double cnst2 = std::sqrt(13.5);
+    double cnst3 = std::sqrt(7.5);
+    double cnst4 = std::sqrt(6.0);
+    double cnst5 = std::sqrt(112.5);
+    double cnst6 = std::sqrt(45.);
+    double cnst7 = std::sqrt(56.25);
+    double cnst9 = cc* ( std::sqrt(225.) ) ;
+    double C25763 = ae*zAB;
+    double C25748 = yAB*ae;
+    double cnst10 = ae*2;
+    double cnst11 = std::sqrt(90.);
+    double cnst13 = std::sqrt( ( 6.75/8.0 ) );
+    double cnst15 = std::sqrt( ( 337.5/8.0 ) );
+    double cnst17 = std::sqrt( ( 270./8.0 ) );
+    double cnst19 = std::sqrt( ( 45./8.0 ) );
+    double cnst21 = std::sqrt( ( 22.5/8.0 ) );
+    double cnst23 = std::sqrt( ( 5.0/8.0 ) );
+    double cnst25 = std::sqrt( ( 675./8.0 ) );
+    double cnst27 = std::sqrt( ( 45.0/8.0 ) );
+    double cnst29 = std::sqrt( ( 75./8.0 ) );
+    double cnst31 = std::sqrt( ( 101.25/8.0 ) );
+    double cnst32 = std::sqrt(36.);
+    double cnst34 = std::sqrt( ( 37.5/8.0 ) );
+    double cnst36 = std::sqrt( ( 30./8.0 ) );
+    double C25703 = xAB*ae;
+    double cnst38 = std::sqrt( ( 3.0/8.0 ) );
+    double cnst40 = std::sqrt( ( 225./64. ) );
+    double cnst42 = std::sqrt( ( 2025./64. ) );
+    double cnst44 = std::sqrt( ( 135./64. ) );
+    double cnst46 = std::sqrt( ( 25./64. ) );
+    double cnst48 = std::sqrt( ( 15./64. ) );
+    double cnst50 = std::sqrt( ( 9./64. ) );
+    double cnst51 = std::sqrt(15.0);
+    double C25796 = be*yAB;
+    double C25698 = be+ae;
+    double C25707 = 2.*C25698;
+    double C26114 = std::pow(C25698 , 2);
+    double C26234 = C26114*2.;
+    double C25685 = std::sqrt( ( Pi/C25698 ) );
+    double C25802 =  (  ( C25685*ae ) *2. ) /C25707;
+    double C26242 = C25685*C25763;
+    double C26270 = C26242/C25698;
+    double C25874 =  ( - (  ( C25685*be ) *2 )  ) /C25707;
+    double C26262 = C25685/C25707;
+    double C26303 = C26262+ (  ( C25685* ( std::pow(C25703 , 2) )  ) /C26114 ) ;
+    double C26301 = C26262+ (  (  ( std::pow(C25748 , 2) ) *C25685 ) /C26114 ) ;
+    double C26302 = C26262+ (  ( C25685* ( std::pow(C25763 , 2) )  ) /C26114 ) ;
+    double C25759 =  (  ( C25763*C26302 ) /C25698 ) + (  ( C26242*2. ) /C26234 ) ;
+    double C26240 = C25685*C25748;
+    double C26268 = C26240/C25698;
+    double C25744 =  (  ( C25748*C26301 ) /C25698 ) + (  ( C26240*2. ) /C26234 ) ;
+    double C26243 = C25685*C25703;
+    double C25791 =  (  ( C26303*C25703 ) /C25698 ) + (  ( C26243*2. ) /C26234 ) ;
+    double C26271 = C26243/C25698;
+    double C26160 = C25685*C25796;
+    double C26215 = C26262- (  ( C26160*C25748 ) /C26114 ) ;
+    double C26258 = 2*C26215;
+    double C26257 = C26160/C25698;
+    double C26315 =  (  ( C25748*C26215 ) /C25698 ) + (  ( C26268-C26257 ) /C25707 ) ;
+    double C25945 =  (  ( C26301+C26258 ) /C25707 ) + (  ( C25748*C26315 ) /C25698 ) ;
+    double C25695 = -C26257;
+    double C25747 = C25695*ae;
+    double C25808 = C25874- (  (  ( C25747*C25796 ) *2 ) /C25698 ) ;
+    double C25816 = C25808*2;
+    double C25818 = C25747*2;
+    double C25834 =  (  ( C25818- (  ( be*C25695 ) *2 )  ) /C25707 ) - (  ( C25808*C25796 ) /C25698 ) ;
+    double C25952 =  (  ( C25747*4. ) /C25707 ) + (  ( C25808*C25748 ) /C25698 ) ;
+    double C26345 = 2*C25952;
+    double C25755 =  (  (  ( C25747*C25748 ) *2 ) /C25698 ) +C25802;
+    double C26442 =  (  ( C25755*C25748 ) /C25698 ) + (  (  ( 2* ( ae*C26268 )  ) +C25818 ) /C25707 ) ;
+    double C26482 =  (  (  ( C25755*2 ) + (  ( C26301*ae ) *2 )  ) /C25707 ) + (  ( C26442*C25748 ) /C25698 ) ;
+    double C26450 =  (  ( C25748*C25952 ) /C25698 ) + (  (  ( C25755+C25808 ) + (  ( ae*C26215 ) *2 )  ) /C25707 ) ;
+    double C26492 =  (  ( C26450*C25748 ) /C25698 ) + (  (  ( C26345+C26442 ) + (  ( ae*C26315 ) *2 )  ) /C25707 ) ;
+    double C26164 =  ( - ( C26160*2. )  ) /C26234;
+    double C26304 = C26262+ (  ( C25685* ( std::pow(C25796 , 2) )  ) /C26114 ) ;
+    double C26174 = C26164+ (  ( C25748*C26304 ) /C25698 ) ;
+    double C26311 =  (  ( C25748*C26174 ) /C25698 ) + (  ( C26304+C26258 ) /C25707 ) ;
+    double C26003 =  (  ( C26311*C25748 ) /C25698 ) + (  (  ( C26315*2 ) + ( C26174*2 )  ) /C25707 ) ;
+    double C25843 =  (  ( C25816+ (  ( C26304*ae ) *2 )  ) /C25707 ) + (  ( C25834*C25748 ) /C25698 ) ;
+    double C26446 =  (  (  (  ( C26174*ae ) *2 ) + ( C26345+C25834 )  ) /C25707 ) + (  ( C25748*C25843 ) /C25698 ) ;
+    double C26498 =  (  (  ( 2* ( C26311*ae )  ) + (  ( C26450*2 ) + ( 2*C25843 )  )  ) /C25707 ) + (  ( C25748*C26446 ) /C25698 ) ;
+    double C25790 = C26164- (  ( C26304*C25796 ) /C25698 ) ;
+    double C26177 =  (  ( C25790*C25748 ) /C25698 ) + (  ( C26304*3. ) /C25707 ) ;
+    double C26305 =  (  (  ( C26174*3 ) +C25790 ) /C25707 ) + (  ( C25748*C26177 ) /C25698 ) ;
+    double C25812 =  (  ( C26305*C25748 ) /C25698 ) + (  (  ( C26311*3 ) + ( C26177*2 )  ) /C25707 ) ;
+    double C25841 =  (  ( C25816- (  ( be*C26304 ) *2 )  ) /C25707 ) - (  ( C25834*C25796 ) /C25698 ) ;
+    double C25846 =  (  ( C25748*C25841 ) /C25698 ) + (  (  (  ( C25790*ae ) *2 ) + ( C25834*3 )  ) /C25707 ) ;
+    double gy030210 = C25685* ( C26303*C25846 ) ;
+    double gy030111 = C26270* ( C26271*C25846 ) ;
+    double gy030012 = C26302* ( C25685*C25846 ) ;
+    double C26445 =  (  ( C25748*C25846 ) /C25698 ) + (  (  (  ( 3*C25843 ) +C25841 ) + (  ( ae*C26177 ) *2 )  ) /C25707 ) ;
+    double gy030120 = C25685* ( C26271*C26445 ) ;
+    double gy030021 = C26270* ( C25685*C26445 ) ;
+    double cnst179 =  (  ( C25748*C26445 ) /C25698 ) + (  (  ( C26305*cnst10 ) + (  ( 3*C26446 ) + ( C25846*2 )  )  ) /C25707 ) ;
+    double gy030030 = C25685* ( C25685*cnst179 ) ;
+    double cnst185 = cnst48*gy030030;
+    double gy030201 = C26270* ( C26303*C25841 ) ;
+    double gy030300 = C25685* ( C25791*C25841 ) ;
+    double cnst200 = gy030300*cnst48;
+    double gy030102 = C26302* ( C26271*C25841 ) ;
+    double gy030003 = C25759* ( C25685*C25841 ) ;
+    double C25700 = xAB*be;
+    double C25687 = C26262+ (  ( C25685* ( std::pow(C25700 , 2) )  ) /C26114 ) ;
+    double gy210030 = C25685* ( C25687*C26492 ) ;
+    double cnst213 =  (  ( gy030012*cnst36 ) + ( cnst185+ ( cnst48*gy030210 )  )  ) - ( cnst44*gy210030 ) ;
+    double gy210003 = C25759* ( C25808*C25687 ) ;
+    double cnst229 =  (  (  ( cnst13*gy030201 ) - ( gy030003*cnst38 )  ) + ( cnst13*gy030021 )  ) - ( gy210003*cnst38 ) ;
+    double gy210012 =  ( C25687*C25952 ) *C26302;
+    double gy210021 = C26270* ( C26450*C25687 ) ;
+    double C26233 = C25685*C25700;
+    double C26286 =  ( - ( C26233*2. )  ) /C26234;
+    double C25688 = C26286- (  ( C25700*C25687 ) /C25698 ) ;
+    double gy300003 =  ( C25688*C25818 ) *C25759;
+    double gy300012 = C26302* ( C25688*C25755 ) ;
+    double C25689 =  (  ( C25688*C25703 ) /C25698 ) + (  ( C25687*3. ) /C25707 ) ;
+    double gy300111 = C26270* ( C25755*C25689 ) ;
+    double gy300120 = C25685* ( C26442*C25689 ) ;
+    double gy300102 =  ( C25689*C25818 ) *C26302;
+    double gy300030 = C25685* ( C25688*C26482 ) ;
+    double cnst267 = cnst48*gy300030;
+    double gy300021 = C26270* ( C25688*C26442 ) ;
+    double C25690 =  (  ( C25687*C25703 ) /C25698 ) +C26286;
+    double gy210102 = C26302* ( C25808*C25690 ) ;
+    double C25691 =  (  ( C25689*C25703 ) /C25698 ) + (  (  ( C25690*3 ) +C25688 ) /C25707 ) ;
+    double gy300201 = C26270* ( C25691*C25818 ) ;
+    double gy300210 = C25685* ( C25691*C25755 ) ;
+    double gy210111 = C26270* ( C25690*C25952 ) ;
+    gy[(Ai + 0) * matrix_size + Bi + 1] +=  (  ( cnst25*gy210111 ) - ( cnst29*gy030111 )  ) *cc;
+    double gy210120 = C25685* ( C25690*C26450 ) ;
+    double cnst315 = cnst44*gy210120;
+    double C26287 = C26262- (  ( C26233*C25703 ) /C26114 ) ;
+    double gy120102 = C26302* ( C26287*C25834 ) ;
+    double gy120120 = C25685* ( C26287*C26446 ) ;
+    double cnst333 = cnst44*gy120120;
+    double gy120111 = C26270* ( C26287*C25843 ) ;
+    gy[(Ai + 6) * matrix_size + Bi + 1] += cc* (  ( cnst25*gy120111 ) + ( gy300111*cnst29 )  ) ;
+    double C26300 = C26287*2;
+    double C26318 =  (  ( C25690*C25703 ) /C25698 ) + (  ( C26300+C25687 ) /C25707 ) ;
+    double C25694 =  (  (  ( C26318*3 ) + ( C25689*2 )  ) /C25707 ) + (  ( C25691*C25703 ) /C25698 ) ;
+    double gy300300 = C25685* ( C25694*C25818 ) ;
+    double cnst356 = cnst48*gy300300;
+    double gy210210 = C25685* ( C26318*C25952 ) ;
+    double cnst362 = gy210210*cnst44;
+    gy[(Ai + 0) * matrix_size + Bi + 2] += cc* (  ( cnst213-cnst362 ) - ( cnst17*gy210012 )  ) ;
+    double cnst367 =  (  (  ( cnst46*gy030030 ) - ( cnst40*gy030210 )  ) - ( cnst40*gy210030 )  ) + ( gy210210*cnst42 ) ;
+    gy[(Ai + 0) * matrix_size + Bi + 0] += cc*cnst367;
+    double gy210201 = C26270* ( C25808*C26318 ) ;
+    double cnst375 =  (  (  ( gy030021*cnst34 ) - ( cnst34*gy030201 )  ) + ( cnst15*gy210201 )  ) - ( cnst15*gy210021 ) ;
+    gy[(Ai + 0) * matrix_size + Bi + 5] += cc*cnst375;
+    double cnst379 =  (  (  ( gy030021*cnst21 ) - ( cnst21*gy030201 )  ) - ( gy210201*cnst21 )  ) + ( cnst21*gy210021 ) ;
+    double C26255 = C26233/C25698;
+    double C26314 =  (  ( C26287*C25703 ) /C25698 ) + (  ( C26271-C26255 ) /C25707 ) ;
+    double C26024 =  (  ( C26314*C25703 ) /C25698 ) + (  ( C26300+C26303 ) /C25707 ) ;
+    double gy120300 = C25685* ( C25834*C26024 ) ;
+    double cnst395 =  (  ( gy300102*cnst36 ) - (  ( cnst48*gy300120 ) +cnst356 )  ) - ( cnst44*gy120300 ) ;
+    gy[(Ai + 6) * matrix_size + Bi + 4] += cc* (  ( cnst395-cnst333 ) + ( cnst17*gy120102 )  ) ;
+    double cnst401 =  (  ( cnst40*gy120300 ) + (  ( cnst40*gy300120 ) + ( cnst46*gy300300 )  )  ) + ( cnst42*gy120120 ) ;
+    gy[(Ai + 6) * matrix_size + Bi + 6] += cc*cnst401;
+    double gy120201 = C26270* ( C26314*C25834 ) ;
+    double C25936 =  (  ( C26318*C25703 ) /C25698 ) + (  (  ( C25690*2 ) + ( C26314*2 )  ) /C25707 ) ;
+    double gy210300 = C25685* ( C25936*C25808 ) ;
+    double cnst421 =  (  ( cnst200+ ( cnst48*gy030120 )  ) - ( gy030102*cnst36 )  ) - ( gy210300*cnst44 ) ;
+    gy[(Ai + 0) * matrix_size + Bi + 4] +=  (  ( cnst421-cnst315 ) + ( cnst17*gy210102 )  ) *cc;
+    double cnst427 =  ( cnst42*gy210120 ) + (  ( cnst40*gy210300 ) - (  ( cnst40*gy030120 ) + ( gy030300*cnst46 )  )  ) ;
+    gy[(Ai + 0) * matrix_size + Bi + 6] += cc*cnst427;
+    double gy120210 = C25685* ( C26314*C25843 ) ;
+    double cnst441 = gy120210*cnst44;
+    double C25686 = -C26255;
+    double gy120021 = C26270* ( C25686*C26446 ) ;
+    double cnst445 =  (  (  ( cnst34*gy300201 ) - ( gy300021*cnst34 )  ) + ( gy120201*cnst15 )  ) - ( gy120021*cnst15 ) ;
+    gy[(Ai + 6) * matrix_size + Bi + 5] += cc*cnst445;
+    double cnst447 =  ( gy120021*cnst21 ) + (  (  ( gy300021*cnst21 ) - ( gy300201*cnst21 )  ) - ( gy120201*cnst21 )  ) ;
+    double gy120012 =  ( C25686*C25843 ) *C26302;
+    double C25699 = C25686*ae;
+    double C25805 =  (  (  ( C25699*C25703 ) *2 ) /C25698 ) +C25802;
+    double gx030111 = C26270* ( C26177*C25805 ) ;
+    double gx030102 =  ( C25790*C25805 ) *C26302;
+    double gx030120 = C25685* ( C26305*C25805 ) ;
+    double C25710 = C25699*2;
+    double gx030021 = C26270* ( C26305*C25710 ) ;
+    double gx030030 = C25685* ( C25812*C25710 ) ;
+    double cnst494 = gx030030*cnst48;
+    double gx030012 =  ( C25710*C26177 ) *C26302;
+    double gx030003 =  ( C25790*C25710 ) *C25759;
+    double C26444 =  (  (  (  ( C26271*ae ) *2 ) +C25710 ) /C25707 ) + (  ( C25703*C25805 ) /C25698 ) ;
+    double C26484 =  (  ( C26444*C25703 ) /C25698 ) + (  (  ( 2*C25805 ) + (  ( C26303*ae ) *2 )  ) /C25707 ) ;
+    double gx030300 =  ( C25790*C26484 ) *C25685;
+    double cnst517 = cnst48*gx030300;
+    double gx030210 = C25685* ( C26444*C26177 ) ;
+    double gx030201 = C26270* ( C26444*C25790 ) ;
+    double C25720 = C25874- (  (  ( C25700*C25699 ) *2 ) /C25698 ) ;
+    double C25727 =  (  ( C25710- (  ( C25686*be ) *2 )  ) /C25707 ) - (  ( C25700*C25720 ) /C25698 ) ;
+    double gx210030 = C25685* ( C25727*C25945 ) ;
+    double cnst553 =  (  ( cnst36*gx030012 ) + (  ( gx030210*cnst48 ) +cnst494 )  ) - ( cnst44*gx210030 ) ;
+    double gx210021 = C26270* ( C25727*C26315 ) ;
+    double gx210012 = C26302* ( C25727*C26215 ) ;
+    double gx210003 = C25759* ( C25727*C25695 ) ;
+    double cnst568 =  (  (  ( cnst13*gx030201 ) - ( cnst38*gx030003 )  ) + ( cnst13*gx030021 )  ) - ( cnst38*gx210003 ) ;
+    double gx120012 =  ( C26174*C25720 ) *C26302;
+    double C25721 = C25720*2;
+    double C25735 =  (  ( C25721- (  ( be*C25687 ) *2 )  ) /C25707 ) - (  ( C25727*C25700 ) /C25698 ) ;
+    double C25740 =  (  ( C25735*C25703 ) /C25698 ) + (  (  ( C25727*3 ) + (  ( C25688*ae ) *2 )  ) /C25707 ) ;
+    double gx300120 = C25685* ( C26301*C25740 ) ;
+    double gx300111 = C26270* ( C25740*C26268 ) ;
+    double gx300102 =  ( C25685*C25740 ) *C26302;
+    double gx300012 = C26302* ( C25735*C26268 ) ;
+    double gx300030 = C25685* ( C25735*C25744 ) ;
+    double cnst587 = gx300030*cnst48;
+    double gx300003 = C25759* ( C25685*C25735 ) ;
+    double gx300021 = C26270* ( C25735*C26301 ) ;
+    double C25737 =  (  (  (  ( C25687*ae ) *2 ) +C25721 ) /C25707 ) + (  ( C25727*C25703 ) /C25698 ) ;
+    double gx210111 = C26270* ( C25737*C26215 ) ;
+    gx[(Ai + 0) * matrix_size + Bi + 1] += cc* (  ( cnst25*gx210111 ) - ( gx030111*cnst29 )  ) ;
+    double gx210102 = C26302* ( C25695*C25737 ) ;
+    double C26440 =  (  (  (  ( C25689*ae ) *2 ) + (  ( 3*C25737 ) +C25735 )  ) /C25707 ) + (  ( C25740*C25703 ) /C25698 ) ;
+    double gx300201 = C26270* ( C25685*C26440 ) ;
+    double gx300210 = C25685* ( C26440*C26268 ) ;
+    double gx210120 = C25685* ( C26315*C25737 ) ;
+    double cnst625 = gx210120*cnst44;
+    double C25941 =  (  ( C25699*4. ) /C25707 ) + (  ( C25720*C25703 ) /C25698 ) ;
+    double gx120111 = C26270* ( C26174*C25941 ) ;
+    gx[(Ai + 6) * matrix_size + Bi + 1] += cc* (  ( cnst25*gx120111 ) + ( gx300111*cnst29 )  ) ;
+    double gx120102 =  ( C26304*C25941 ) *C26302;
+    double C26327 = C25941*2;
+    double C26441 =  (  ( C25737*C25703 ) /C25698 ) + (  (  (  ( C25690*ae ) *2 ) + ( C25727+C26327 )  ) /C25707 ) ;
+    double gx210201 = C26270* ( C25695*C26441 ) ;
+    double cnst646 =  ( cnst21*gx210021 ) + (  (  ( cnst21*gx030021 ) - ( gx030201*cnst21 )  ) - ( gx210201*cnst21 )  ) ;
+    double cnst650 =  (  (  ( cnst34*gx030021 ) - ( gx030201*cnst34 )  ) + ( cnst15*gx210201 )  ) - ( cnst15*gx210021 ) ;
+    gx[(Ai + 0) * matrix_size + Bi + 5] += cc*cnst650;
+    double cnst655 =  (  ( C26440*C25703 ) /C25698 ) + (  (  ( C25691*cnst10 ) + (  ( 3*C26441 ) + ( C25740*2 )  )  ) /C25707 ) ;
+    double gx300300 =  ( std::pow(C25685 , 2) ) *cnst655;
+    double cnst656 = gx300300*cnst48;
+    double gx210210 = C25685* ( C26441*C26215 ) ;
+    double cnst666 = cnst44*gx210210;
+    gx[(Ai + 0) * matrix_size + Bi + 2] += cc* (  ( cnst553-cnst666 ) - ( gx210012*cnst17 )  ) ;
+    double cnst672 =  ( cnst42*gx210210 ) + (  (  ( gx030030*cnst46 ) - ( gx030210*cnst40 )  ) - ( cnst40*gx210030 )  ) ;
+    gx[(Ai + 0) * matrix_size + Bi + 0] += cc*cnst672;
+    double gx120120 = C25685* ( C26311*C25941 ) ;
+    double cnst676 = cnst44*gx120120;
+    double gx120003 = C25759* ( C26304*C25720 ) ;
+    double cnst685 =  (  ( cnst13*gx300021 ) + (  ( cnst13*gx300201 ) - ( gx300003*cnst38 )  )  ) - ( gx120003*cnst38 ) ;
+    double gx120030 = C25685* ( C26003*C25720 ) ;
+    double C26449 =  (  (  ( C25720+C25805 ) + ( 2* ( C26287*ae )  )  ) /C25707 ) + (  ( C25941*C25703 ) /C25698 ) ;
+    double gx120201 = C26270* ( C26304*C26449 ) ;
+    double C26497 =  (  (  (  ( C26318*ae ) *2 ) + (  ( C26449*2 ) + ( C25737*2 )  )  ) /C25707 ) + (  ( C26441*C25703 ) /C25698 ) ;
+    double gx210300 = C25685* ( C26497*C25695 ) ;
+    double cnst708 =  (  (  ( cnst48*gx030120 ) +cnst517 ) - ( gx030102*cnst36 )  ) - ( cnst44*gx210300 ) ;
+    gx[(Ai + 0) * matrix_size + Bi + 4] += cc* (  ( cnst17*gx210102 ) + ( cnst708-cnst625 )  ) ;
+    double cnst713 =  (  ( cnst40*gx210300 ) - (  ( cnst40*gx030120 ) + ( cnst46*gx030300 )  )  ) + ( gx210120*cnst42 ) ;
+    gx[(Ai + 0) * matrix_size + Bi + 6] += cc*cnst713;
+    double C26495 =  (  (  (  ( C26314*ae ) *2 ) + ( C26444+C26327 )  ) /C25707 ) + (  ( C26449*C25703 ) /C25698 ) ;
+    double gx120300 = C25685* ( C26304*C26495 ) ;
+    double cnst724 =  (  (  ( gx300300*cnst46 ) + ( gx300120*cnst40 )  ) + ( cnst40*gx120300 )  ) + ( gx120120*cnst42 ) ;
+    gx[(Ai + 6) * matrix_size + Bi + 6] += cc*cnst724;
+    double cnst726 =  (  ( gx300102*cnst36 ) - ( cnst656+ ( gx300120*cnst48 )  )  ) - ( gx120300*cnst44 ) ;
+    gx[(Ai + 6) * matrix_size + Bi + 4] += cc* (  ( cnst726-cnst676 ) + ( cnst17*gx120102 )  ) ;
+    double gx120210 = C25685* ( C26174*C26449 ) ;
+    double cnst734 = cnst44*gx120210;
+    double cnst738 =  ( gx300012*cnst36 ) + (  ( cnst734+ ( cnst17*gx120012 )  ) + ( gx120030*cnst44 )  ) ;
+    gx[(Ai + 6) * matrix_size + Bi + 2] += - ( cc* ( cnst587+ (  ( gx300210*cnst48 ) +cnst738 )  )  ) ;
+    double cnst743 =  ( cnst42*gx120210 ) + (  (  ( gx300210*cnst40 ) - ( gx300030*cnst46 )  ) - ( gx120030*cnst40 )  ) ;
+    gx[(Ai + 6) * matrix_size + Bi + 0] += cc*cnst743;
+    double gx120021 = C26270* ( C26311*C25720 ) ;
+    double cnst749 =  (  (  ( cnst34*gx300201 ) - ( gx300021*cnst34 )  ) + ( gx120201*cnst15 )  ) - ( cnst15*gx120021 ) ;
+    gx[(Ai + 6) * matrix_size + Bi + 5] += cc*cnst749;
+    double cnst751 =  ( cnst21*gx120021 ) + (  (  ( gx300021*cnst21 ) - ( gx300201*cnst21 )  ) - ( gx120201*cnst21 )  ) ;
+    double gy120030 = C25685* ( C25686*C26498 ) ;
+    double cnst756 =  ( gy120210*cnst42 ) + (  (  ( cnst40*gy300210 ) - ( cnst46*gy300030 )  ) - ( gy120030*cnst40 )  ) ;
+    gy[(Ai + 6) * matrix_size + Bi + 0] += cc*cnst756;
+    double cnst760 =  ( gy300012*cnst36 ) + (  ( gy120030*cnst44 ) + ( cnst441+ ( cnst17*gy120012 )  )  ) ;
+    gy[(Ai + 6) * matrix_size + Bi + 2] += - ( cc* (  (  ( cnst48*gy300210 ) +cnst760 ) +cnst267 )  ) ;
+    double gy120003 =  ( C25686*C25834 ) *C25759;
+    double cnst773 =  (  ( cnst13*gy300021 ) + (  ( cnst13*gy300201 ) - ( cnst38*gy300003 )  )  ) - ( cnst38*gy120003 ) ;
+    double C25869 = be*zAB;
+    double C26306 = C26262+ (  ( C25685* ( std::pow(C25869 , 2) )  ) /C26114 ) ;
+    double gy012030 = C26306* ( C25685*C26492 ) ;
+    double cnst777 =  ( gy012030*cnst36 ) + (  (  ( cnst48*gy210030 ) + ( cnst185- ( gy030210*cnst44 )  )  ) -cnst362 ) ;
+    double gx012300 =  ( C26484*C25695 ) *C26306;
+    double gx012030 =  ( C25945*C25710 ) *C26306;
+    double cnst780 =  ( gx012030*cnst36 ) + (  (  ( cnst494- ( gx030210*cnst44 )  ) + ( cnst48*gx210030 )  ) -cnst666 ) ;
+    double gx012120 = C26306* ( C26315*C25805 ) ;
+    double cnst784 =  ( cnst48*gx210300 ) + ( cnst625+ (  ( cnst17*gx012120 ) + ( gx012300*cnst36 )  )  ) ;
+    gx[(Ai + 2) * matrix_size + Bi + 6] += - ( cc* (  (  ( gx030120*cnst44 ) +cnst784 ) +cnst517 )  ) ;
+    double gx102030 = C26306* ( C25744*C25720 ) ;
+    double cnst789 =  (  (  ( gx120030*cnst48 ) + ( cnst587- ( gx300210*cnst44 )  )  ) -cnst734 ) - ( cnst36*gx102030 ) ;
+    double gy012300 = C26306* ( C25791*C25808 ) ;
+    double gy102300 =  ( C25818*C26024 ) *C26306;
+    double cnst792 =  ( gy102300*cnst36 ) - ( cnst356+ (  ( cnst333+ ( cnst48*gy120300 )  ) + ( cnst44*gy300120 )  )  ) ;
+    double gy102030 =  ( C25686*C26482 ) *C26306;
+    double cnst794 =  (  (  ( gy120030*cnst48 ) + ( cnst267- ( cnst44*gy300210 )  )  ) -cnst441 ) - ( gy102030*cnst36 ) ;
+    double gy102120 =  ( C26287*C26442 ) *C26306;
+    gy[(Ai + 4) * matrix_size + Bi + 6] += cc* ( cnst792+ ( cnst17*gy102120 )  ) ;
+    double gy102210 =  ( C26314*C25755 ) *C26306;
+    gy[(Ai + 4) * matrix_size + Bi + 0] += cc* (  ( cnst17*gy102210 ) +cnst794 ) ;
+    double gy012120 =  ( C26450*C26271 ) *C26306;
+    double cnst802 =  ( cnst48*gy210300 ) + (  (  ( gy012300*cnst36 ) + ( cnst17*gy012120 )  ) +cnst315 ) ;
+    gy[(Ai + 2) * matrix_size + Bi + 6] += - ( cc* ( cnst200+ (  ( cnst44*gy030120 ) +cnst802 )  )  ) ;
+    double gx102300 =  ( C25685*C26495 ) *C26306;
+    double cnst807 =  ( gx102300*cnst36 ) - (  (  ( cnst676+ ( cnst48*gx120300 )  ) + ( gx300120*cnst44 )  ) +cnst656 ) ;
+    double gy012210 =  ( C26303*C25952 ) *C26306;
+    gy[(Ai + 2) * matrix_size + Bi + 0] += cc* ( cnst777- ( gy012210*cnst17 )  ) ;
+    double gx102120 =  ( C26301*C25941 ) *C26306;
+    gx[(Ai + 4) * matrix_size + Bi + 6] += cc* (  ( cnst17*gx102120 ) +cnst807 ) ;
+    double gx012210 = C26306* ( C26444*C26215 ) ;
+    gx[(Ai + 2) * matrix_size + Bi + 0] += cc* ( cnst780- ( cnst17*gx012210 )  ) ;
+    double gx102210 = C26306* ( C26449*C26268 ) ;
+    gx[(Ai + 4) * matrix_size + Bi + 0] +=  (  ( cnst17*gx102210 ) +cnst789 ) *cc;
+    double C26185 = C25685*C25869;
+    double C26189 =  ( - ( C26185*2. )  ) /C26234;
+    double C26199 = C26189+ (  ( C25763*C26306 ) /C25698 ) ;
+    double gx012021 = C26199* ( C25710*C26315 ) ;
+    double gx102021 =  ( C26301*C25720 ) *C26199;
+    double cnst823 =  ( cnst19*gy030111 ) + (  ( cnst19*gy210111 ) + ( cnst11* (  ( C26271*C25952 ) *C26199 )  )  ) ;
+    gy[(Ai + 2) * matrix_size + Bi + 1] += - ( cc*cnst823 ) ;
+    double cnst826 =  ( cnst11* (  ( C25941*C26268 ) *C26199 )  ) - (  ( gx300111*cnst19 ) + ( gx120111*cnst19 )  ) ;
+    gx[(Ai + 4) * matrix_size + Bi + 1] += cc*cnst826;
+    double gy012201 = C26199* ( C25808*C26303 ) ;
+    double gy012021 =  ( C25685*C26450 ) *C26199;
+    gy[(Ai + 2) * matrix_size + Bi + 5] += cc* (  ( cnst379- ( cnst6*gy012201 )  ) + ( cnst6*gy012021 )  ) ;
+    double gx102201 =  ( C25685*C26449 ) *C26199;
+    gx[(Ai + 4) * matrix_size + Bi + 5] += cc* (  (  ( cnst6*gx102201 ) +cnst751 ) - ( cnst6*gx102021 )  ) ;
+    double gy102021 = C26199* ( C25686*C26442 ) ;
+    double cnst841 =  ( cnst11* (  ( C26287*C25755 ) *C26199 )  ) - (  ( gy300111*cnst19 ) + ( cnst19*gy120111 )  ) ;
+    gy[(Ai + 4) * matrix_size + Bi + 1] += cnst841*cc;
+    double gx012201 = C26199* ( C26444*C25695 ) ;
+    gx[(Ai + 2) * matrix_size + Bi + 5] += cc* (  ( cnst646- ( cnst6*gx012201 )  ) + ( cnst6*gx012021 )  ) ;
+    double gy102201 = C26199* ( C26314*C25818 ) ;
+    gy[(Ai + 4) * matrix_size + Bi + 5] += cc* (  ( cnst447+ ( cnst6*gy102201 )  ) - ( gy102021*cnst6 )  ) ;
+    double cnst852 =  ( gx030111*cnst19 ) + (  ( gx210111*cnst19 ) + ( cnst11* (  ( C26215*C25805 ) *C26199 )  )  ) ;
+    gx[(Ai + 2) * matrix_size + Bi + 1] += - ( cc*cnst852 ) ;
+    double C25866 = C26189- (  ( C26306*C25869 ) /C25698 ) ;
+    double gx003030 = C25866* ( C25744*C25710 ) ;
+    double C26202 =  (  ( C25763*C25866 ) /C25698 ) + (  ( C26306*3. ) /C25707 ) ;
+    double gy003201 = C26202* ( C26303*C25818 ) ;
+    double gx003021 =  ( C26301*C25710 ) *C26202;
+    double gx003201 = C26202* ( C25685*C26444 ) ;
+    double gy003021 = C26202* ( C25685*C26442 ) ;
+    double gy003210 = C25866* ( C25755*C26303 ) ;
+    double gy003300 = C25866* ( C25791*C25818 ) ;
+    double gx003120 = C25866* ( C26301*C25805 ) ;
+    double gx003300 =  ( C25685*C26484 ) *C25866;
+    double gy003120 = C25866* ( C26442*C26271 ) ;
+    double gy003030 = C25866* ( C25685*C26482 ) ;
+    double C26307 =  (  ( C25763*C26202 ) /C25698 ) + (  ( C25866+ ( 3*C26199 )  ) /C25707 ) ;
+    double cnst889 =  ( cnst4* ( C26307* ( C25685*C25805 )  )  ) - (  ( gx003120*cnst38 ) + ( gx003300*cnst38 )  ) ;
+    double cnst891 =  (  ( C26307* ( C26271*C25818 )  ) *cnst4 ) - (  ( cnst38*gy003120 ) + ( cnst38*gy003300 )  ) ;
+    double cnst894 =  (  (  (  ( C25685*C25755 ) *C26307 ) *cnst4 ) + ( cnst38*gy003210 )  ) + ( cnst38*gy003030 ) ;
+    double gx003210 = C25866* ( C26444*C26268 ) ;
+    double cnst901 =  (  (  (  ( C25710*C26268 ) *C26307 ) *cnst4 ) + ( gx003210*cnst38 )  ) + ( cnst38*gx003030 ) ;
+    double C26260 = C26185/C25698;
+    double C25696 = -C26260;
+    double gx201030 = C25696* ( C25727*C25744 ) ;
+    double gy021210 = C25696* ( C26303*C25843 ) ;
+    double gy111300 = C25696* ( C25808*C26024 ) ;
+    double gx201210 =  ( C26268*C26441 ) *C25696;
+    double gx201120 = C25696* ( C26301*C25737 ) ;
+    double gy201120 =  ( C25690*C26442 ) *C25696;
+    double gx111210 =  ( C26449*C26215 ) *C25696;
+    double gx021210 = C25696* ( C26444*C26174 ) ;
+    double gx111300 =  ( C25695*C26495 ) *C25696;
+    double gy201030 =  ( C26482*C25687 ) *C25696;
+    double gy111120 = C25696* ( C26287*C26450 ) ;
+    gy[(Ai + 1) * matrix_size + Bi + 6] += cc* (  ( cnst29*gy111300 ) + ( cnst25*gy111120 )  ) ;
+    double gx021300 = C25696* ( C26484*C26304 ) ;
+    double gx021120 = C25696* ( C26311*C25805 ) ;
+    double gy021030 = C25696* ( C25685*C26498 ) ;
+    double gx111030 = C25696* ( C25720*C25945 ) ;
+    gx[(Ai + 1) * matrix_size + Bi + 0] +=  (  ( cnst25*gx111210 ) - ( gx111030*cnst29 )  ) *cc;
+    double gy111030 = C25696* ( C25686*C26492 ) ;
+    double gy021120 = C25696* ( C26271*C26446 ) ;
+    double gx111120 = C25696* ( C25941*C26315 ) ;
+    gx[(Ai + 1) * matrix_size + Bi + 6] += cc* (  ( cnst25*gx111120 ) + ( gx111300*cnst29 )  ) ;
+    double gy201210 = C25696* ( C25755*C26318 ) ;
+    double cnst968 =  (  ( gy021030*cnst34 ) + (  ( gy201210*cnst15 ) - ( gy201030*cnst34 )  )  ) - ( gy021210*cnst15 ) ;
+    gy[(Ai + 5) * matrix_size + Bi + 0] += cc*cnst968;
+    double gx201300 = C25696* ( C25685*C26497 ) ;
+    double cnst981 =  (  (  ( gx201300*cnst34 ) + ( gx201120*cnst15 )  ) - ( gx021300*cnst34 )  ) - ( gx021120*cnst15 ) ;
+    gx[(Ai + 5) * matrix_size + Bi + 6] += cc*cnst981;
+    double gy111210 = C25696* ( C26314*C25952 ) ;
+    gy[(Ai + 1) * matrix_size + Bi + 0] += cc* (  ( cnst25*gy111210 ) - ( cnst29*gy111030 )  ) ;
+    double gz120030 = C25696* ( C26003*C25710 ) ;
+    double cnst989 =  (  ( gz120030*cnst34 ) + (  ( gx201210*cnst15 ) - ( cnst34*gx201030 )  )  ) - ( gx021210*cnst15 ) ;
+    gx[(Ai + 5) * matrix_size + Bi + 0] += cc*cnst989;
+    double gy021300 = C25696* ( C25791*C25834 ) ;
+    double C25762 = C25696*ae;
+    double C25888 = C25762*2;
+    double gz210120 =  ( C25690*C26315 ) *C25888;
+    double cnst997 = cnst44*gz210120;
+    double gz300120 = C25888* ( C26301*C25689 ) ;
+    double gz120210 =  ( C26314*C26174 ) *C25888;
+    double cnst1006 = gz120210*cnst44;
+    double gz210210 =  ( C26318*C26215 ) *C25888;
+    double cnst1008 = gz210210*cnst44;
+    double gz120120 =  ( C26287*C26311 ) *C25888;
+    double cnst1012 = cnst44*gz120120;
+    double gz120300 =  ( C26304*C26024 ) *C25888;
+    double gz030030 =  ( C25685*C25812 ) *C25888;
+    double cnst1021 = gz030030*cnst48;
+    double gz300300 =  ( C25685*C25694 ) *C25888;
+    double cnst1022 = gz300300*cnst48;
+    double cnst1028 =  (  ( gz120300*cnst40 ) + (  ( gz300120*cnst40 ) + ( gz300300*cnst46 )  )  ) + ( cnst42*gz120120 ) ;
+    gz[(Ai + 6) * matrix_size + Bi + 6] += cnst1028*cc;
+    double gz030300 =  ( C25791*C25790 ) *C25888;
+    double cnst1031 = cnst48*gz030300;
+    double gz210030 = C25888* ( C25687*C25945 ) ;
+    double gz030120 =  ( C26305*C26271 ) *C25888;
+    double gz300210 =  ( C25691*C26268 ) *C25888;
+    double gz030210 =  ( C26303*C26177 ) *C25888;
+    double cnst1060 =  (  (  ( gz030030*cnst46 ) - ( gz030210*cnst40 )  ) - ( cnst40*gz210030 )  ) + ( gz210210*cnst42 ) ;
+    gz[(Ai + 0) * matrix_size + Bi + 0] += cc*cnst1060;
+    double gz300030 = C25888* ( C25688*C25744 ) ;
+    double cnst1061 = gz300030*cnst48;
+    double cnst1068 =  ( gz120210*cnst42 ) + (  (  ( cnst40*gz300210 ) - ( gz300030*cnst46 )  ) - ( gz120030*cnst40 )  ) ;
+    gz[(Ai + 6) * matrix_size + Bi + 0] += cc*cnst1068;
+    double C25876 = C25874- (  (  ( C25762*C25869 ) *2 ) /C25698 ) ;
+    double C25886 = 2*C25876;
+    double gz111300 =  ( C25695*C26024 ) *C25876;
+    double gz111210 =  ( C26314*C26215 ) *C25876;
+    double gz021120 =  ( C26311*C26271 ) *C25876;
+    double gz111030 =  ( C25686*C25945 ) *C25876;
+    gz[(Ai + 1) * matrix_size + Bi + 0] += cc* (  ( cnst25*gz111210 ) - ( cnst29*gz111030 )  ) ;
+    double gz201120 =  ( C25690*C26301 ) *C25876;
+    double gz201210 =  ( C26318*C26268 ) *C25876;
+    double gz021210 =  ( C26303*C26174 ) *C25876;
+    double C25983 =  (  ( C25762*4. ) /C25707 ) + (  ( C25763*C25876 ) /C25698 ) ;
+    double gz021111 =  ( C26174*C26271 ) *C25983;
+    double gz021201 = C25983* ( C26303*C26304 ) ;
+    double cnst1097 = gz021201*cnst1;
+    double gz201201 = C25983* ( C25685*C26318 ) ;
+    double cnst1099 = gz201201*cnst1;
+    double gz111021 =  ( C25686*C26315 ) *C25983;
+    double gz201021 =  ( C26301*C25687 ) *C25983;
+    double cnst1104 = gz201021*cnst1;
+    double gz201111 =  ( C25690*C26268 ) *C25983;
+    gz[(Ai + 5) * matrix_size + Bi + 1] += cc* (  ( cnst5*gz201111 ) - ( cnst5*gz021111 )  ) ;
+    gz[(Ai + 1) * matrix_size + Bi + 1] += cnst9* (  ( C26287*C26215 ) *C25983 ) ;
+    double C26351 = C25983*2;
+    double gz021021 = C25983* ( C26311*C25685 ) ;
+    double cnst1114 =  ( gz021021*cnst7 ) + (  (  ( gz201201*cnst7 ) - ( gz201021*cnst7 )  ) - ( gz021201*cnst7 )  ) ;
+    gz[(Ai + 5) * matrix_size + Bi + 5] += cc*cnst1114;
+    double cnst1115 = gz021021*cnst1;
+    double gz111201 = C25983* ( C26314*C25695 ) ;
+    gz[(Ai + 1) * matrix_size + Bi + 5] += cc* (  ( cnst5*gz111201 ) - ( cnst5*gz111021 )  ) ;
+    double gz201300 =  ( C25685*C25936 ) *C25876;
+    double C25904 =  (  ( C25888- (  ( C25696*be ) *2 )  ) /C25707 ) - (  ( C25869*C25876 ) /C25698 ) ;
+    double gz012300 = C25904* ( C25791*C25695 ) ;
+    double gz102210 = C25904* ( C26314*C26268 ) ;
+    double C25911 =  (  ( C25886- (  ( be*C26306 ) *2 )  ) /C25707 ) - (  ( C25904*C25869 ) /C25698 ) ;
+    double gz003300 =  ( C25685*C25791 ) *C25911;
+    double gz003210 = C25911* ( C26303*C26268 ) ;
+    double gz003030 = C25911* ( C25685*C25744 ) ;
+    double gz003120 = C25911* ( C26301*C26271 ) ;
+    double gz102300 = C25904* ( C25685*C26024 ) ;
+    double cnst1138 =  ( gz102300*cnst36 ) - (  (  ( cnst1012+ ( gz120300*cnst48 )  ) + ( gz300120*cnst44 )  ) +cnst1022 ) ;
+    double C25913 =  (  ( C25763*C25904 ) /C25698 ) + (  (  (  ( ae*C26306 ) *2 ) +C25886 ) /C25707 ) ;
+    double gz102201 =  ( C26314*C25685 ) *C25913;
+    double gz102021 =  ( C25686*C26301 ) *C25913;
+    double C26448 =  (  ( C25763*C25913 ) /C25698 ) + (  (  (  ( C26199*ae ) *2 ) + ( C25904+C26351 )  ) /C25707 ) ;
+    double gz012021 =  ( C25685*C26315 ) *C25913;
+    double gz012201 = C25913* ( C26303*C25695 ) ;
+    double gz012210 = C25904* ( C26303*C26215 ) ;
+    double gz102030 = C25904* ( C25686*C25744 ) ;
+    double cnst1156 =  (  (  ( cnst1061- ( cnst44*gz300210 )  ) + ( gz120030*cnst48 )  ) -cnst1006 ) - ( gz102030*cnst36 ) ;
+    gz[(Ai + 4) * matrix_size + Bi + 0] += cc* (  ( gz102210*cnst17 ) +cnst1156 ) ;
+    double C25916 =  (  ( C25763*C25911 ) /C25698 ) + (  (  ( C25904*3 ) + (  ( C25866*ae ) *2 )  ) /C25707 ) ;
+    double gz003021 = C25916* ( C25685*C26301 ) ;
+    double gz003201 = C25916* ( C25685*C26303 ) ;
+    double cnst1165 =  (  (  (  ( cnst3*gz003201 ) - ( cnst3*gz003021 )  ) -cnst1099 ) +cnst1104 ) -cnst1097;
+    gz[(Ai + 3) * matrix_size + Bi + 5] += cc* ( cnst1115+cnst1165 ) ;
+    double cnst1169 =  (  ( cnst51* ( C25916* ( C26271*C26268 )  )  ) - ( cnst0*gz201111 )  ) - ( cnst0*gz021111 ) ;
+    gz[(Ai + 3) * matrix_size + Bi + 1] += cc*cnst1169;
+    double C26447 =  (  (  ( C25911+ ( 3*C25913 )  ) + (  ( C26202*ae ) *2 )  ) /C25707 ) + (  ( C25763*C25916 ) /C25698 ) ;
+    double cnst1171 =  ( cnst4* (  ( C25685*C26271 ) *C26447 )  ) - (  ( gz003300*cnst38 ) + ( gz003120*cnst38 )  ) ;
+    double cnst1176 =  ( gz003030*cnst38 ) + (  ( cnst4* (  ( C25685*C26268 ) *C26447 )  ) + ( cnst38*gz003210 )  ) ;
+    double cnst1183 =  (  ( C25763*C26447 ) /C25698 ) + (  (  ( cnst10*C26307 ) + (  ( 3*C26448 ) + ( C25916*2 )  )  ) /C25707 ) ;
+    double gz012120 = C25904* ( C26271*C26315 ) ;
+    double gz012030 = C25904* ( C25685*C25945 ) ;
+    double cnst1190 =  (  (  ( cnst1021- ( gz030210*cnst44 )  ) + ( cnst48*gz210030 )  ) -cnst1008 ) + ( gz012030*cnst36 ) ;
+    gz[(Ai + 2) * matrix_size + Bi + 0] += cc* ( cnst1190- ( cnst17*gz012210 )  ) ;
+    double gz102120 =  ( C26287*C26301 ) *C25904;
+    gz[(Ai + 4) * matrix_size + Bi + 6] += cc* (  ( gz102120*cnst17 ) +cnst1138 ) ;
+    double gz021030 =  ( C25685*C26003 ) *C25876;
+    double gz201030 =  ( C25744*C25687 ) *C25876;
+    double cnst1201 =  (  (  ( gz201210*cnst15 ) - ( cnst34*gz201030 )  ) + ( gz021030*cnst34 )  ) - ( gz021210*cnst15 ) ;
+    gz[(Ai + 5) * matrix_size + Bi + 0] += cc*cnst1201;
+    double gz021300 =  ( C25791*C26304 ) *C25876;
+    double cnst1209 =  (  (  ( gz201300*cnst34 ) + ( cnst15*gz201120 )  ) - ( cnst34*gz021300 )  ) - ( cnst15*gz021120 ) ;
+    gz[(Ai + 5) * matrix_size + Bi + 6] += cnst1209*cc;
+    double gz111120 = C25876* ( C26287*C26315 ) ;
+    gz[(Ai + 1) * matrix_size + Bi + 6] += cc* (  ( cnst29*gz111300 ) + ( cnst25*gz111120 )  ) ;
+    double C25770 =  (  (  ( C25763*C25762 ) *2 ) /C25698 ) +C25802;
+    double gz120021 =  ( C26311*C25686 ) *C25770;
+    double gz030201 = C25770* ( C25790*C26303 ) ;
+    double gz210111 = C25770* ( C25690*C26215 ) ;
+    double gz030021 =  ( C25685*C26305 ) *C25770;
+    double gz210021 = C25770* ( C25687*C26315 ) ;
+    double gz210201 = C25770* ( C26318*C25695 ) ;
+    double cnst1235 =  (  (  ( gz030021*cnst34 ) - ( cnst34*gz030201 )  ) + ( cnst15*gz210201 )  ) - ( cnst15*gz210021 ) ;
+    gz[(Ai + 0) * matrix_size + Bi + 5] += cc*cnst1235;
+    double cnst1240 =  (  (  ( gz030021*cnst21 ) - ( gz030201*cnst21 )  ) - ( gz210201*cnst21 )  ) + ( cnst21*gz210021 ) ;
+    gz[(Ai + 2) * matrix_size + Bi + 5] += cc* (  ( cnst1240- ( cnst6*gz012201 )  ) + ( cnst6*gz012021 )  ) ;
+    double gz300111 = C25770* ( C25689*C26268 ) ;
+    double gz300021 = C25770* ( C25688*C26301 ) ;
+    double gz300201 =  ( C25685*C25691 ) *C25770;
+    double gz120111 = C25770* ( C26287*C26174 ) ;
+    gz[(Ai + 6) * matrix_size + Bi + 1] += cc* (  ( gz300111*cnst29 ) + ( cnst25*gz120111 )  ) ;
+    double cnst1257 =  ( cnst11* ( C25913* ( C26287*C26268 )  )  ) - (  ( gz300111*cnst19 ) + ( cnst19*gz120111 )  ) ;
+    gz[(Ai + 4) * matrix_size + Bi + 1] += cc*cnst1257;
+    double C26443 =  (  (  (  ( C26270*ae ) *2 ) +C25888 ) /C25707 ) + (  ( C25763*C25770 ) /C25698 ) ;
+    double gz300102 =  ( C25685*C25689 ) *C26443;
+    double cnst1260 =  (  ( cnst36*gz300102 ) - ( cnst1022+ ( gz300120*cnst48 )  )  ) - ( gz120300*cnst44 ) ;
+    double gz210102 =  ( C25690*C25695 ) *C26443;
+    double gz030012 = C26443* ( C25685*C26177 ) ;
+    double cnst1265 =  (  ( cnst1021+ ( gz030210*cnst48 )  ) + ( cnst36*gz030012 )  ) - ( cnst44*gz210030 ) ;
+    double gz030102 = C26443* ( C25790*C26271 ) ;
+    double gz120012 = C26443* ( C25686*C26174 ) ;
+    double gz210012 = C26443* ( C25687*C26215 ) ;
+    gz[(Ai + 0) * matrix_size + Bi + 2] += cc* (  ( cnst1265-cnst1008 ) - ( gz210012*cnst17 )  ) ;
+    double gz300012 =  ( C25688*C26268 ) *C26443;
+    double cnst1275 =  (  ( gz120030*cnst44 ) + ( cnst1006+ ( gz120012*cnst17 )  )  ) + ( gz300012*cnst36 ) ;
+    gz[(Ai + 6) * matrix_size + Bi + 2] += - ( cc* (  ( cnst1275+ ( cnst48*gz300210 )  ) +cnst1061 )  ) ;
+    double gz120102 =  ( C26287*C26304 ) *C26443;
+    gz[(Ai + 6) * matrix_size + Bi + 4] += cc* (  ( cnst1260-cnst1012 ) + ( gz120102*cnst17 )  ) ;
+    double gz120201 =  ( C26314*C26304 ) *C25770;
+    double cnst1283 =  (  (  ( gz300021*cnst21 ) - ( cnst21*gz300201 )  ) - ( gz120201*cnst21 )  ) + ( cnst21*gz120021 ) ;
+    gz[(Ai + 4) * matrix_size + Bi + 5] += cc* (  (  ( cnst6*gz102201 ) +cnst1283 ) - ( cnst6*gz102021 )  ) ;
+    double cnst1290 =  (  ( gz120201*cnst15 ) + (  ( cnst34*gz300201 ) - ( gz300021*cnst34 )  )  ) - ( cnst15*gz120021 ) ;
+    gz[(Ai + 6) * matrix_size + Bi + 5] += cc*cnst1290;
+    double gz030111 = C25770* ( C26271*C26177 ) ;
+    double cnst1292 =  ( gz030111*cnst19 ) + (  ( cnst11* (  ( C26271*C26215 ) *C25913 )  ) + ( cnst19*gz210111 )  ) ;
+    gz[(Ai + 2) * matrix_size + Bi + 1] += - ( cc*cnst1292 ) ;
+    gz[(Ai + 0) * matrix_size + Bi + 1] += cc* (  ( cnst25*gz210111 ) - ( gz030111*cnst29 )  ) ;
+    double C26483 =  (  (  (  ( C26302*ae ) *2 ) + ( C25770*2 )  ) /C25707 ) + (  ( C25763*C26443 ) /C25698 ) ;
+    double gz120003 =  ( C25686*C26304 ) *C26483;
+    double gz300003 =  ( C25685*C25688 ) *C26483;
+    double cnst1301 =  (  ( cnst13*gz300021 ) + (  ( cnst13*gz300201 ) - ( cnst38*gz300003 )  )  ) - ( cnst38*gz120003 ) ;
+    double gz030003 =  ( C25685*C25790 ) *C26483;
+    double gz210003 =  ( C25687*C25695 ) *C26483;
+    double cnst1311 =  (  (  ( cnst13*gz030201 ) - ( cnst38*gz030003 )  ) + ( gz030021*cnst13 )  ) - ( gz210003*cnst38 ) ;
+    double gz210300 = C25696* ( C25936*C25818 ) ;
+    double cnst1317 =  (  (  ( gy201120*cnst15 ) + ( gz210300*cnst34 )  ) - ( cnst34*gy021300 )  ) - ( gy021120*cnst15 ) ;
+    gy[(Ai + 5) * matrix_size + Bi + 6] += cc*cnst1317;
+    double cnst1320 =  ( cnst42*gz210120 ) + (  ( gz210300*cnst40 ) - (  ( cnst40*gz030120 ) + ( cnst46*gz030300 )  )  ) ;
+    gz[(Ai + 0) * matrix_size + Bi + 6] += cc*cnst1320;
+    double cnst1327 =  ( cnst997+ (  ( cnst17*gz012120 ) + ( gz012300*cnst36 )  )  ) + ( gz210300*cnst48 ) ;
+    gz[(Ai + 2) * matrix_size + Bi + 6] += - ( cc* (  (  ( cnst44*gz030120 ) +cnst1327 ) +cnst1031 )  ) ;
+    double cnst1333 =  (  (  ( cnst48*gz030120 ) +cnst1031 ) - ( gz030102*cnst36 )  ) - ( gz210300*cnst44 ) ;
+    gz[(Ai + 0) * matrix_size + Bi + 4] += cc* (  ( cnst1333-cnst997 ) + ( cnst17*gz210102 )  ) ;
+    double C26221 = C26262- (  ( C25763*C26185 ) /C26114 ) ;
+    double gy201201 =  ( C26318*C25818 ) *C26221;
+    double cnst1338 = cnst1*gy201201;
+    gy[(Ai + 1) * matrix_size + Bi + 1] += cnst9* (  ( C26287*C25952 ) *C26221 ) ;
+    double C26451 =  (  (  (  ( ae*C26221 ) *2 ) + ( C25770+C25876 )  ) /C25707 ) + (  ( C25763*C25983 ) /C25698 ) ;
+    double cnst1342 =  ( cnst19*gz111030 ) + (  ( cnst11* ( C26451* ( C25686*C26215 )  )  ) + ( gz111210*cnst19 )  ) ;
+    gz[(Ai + 1) * matrix_size + Bi + 2] += - ( cc*cnst1342 ) ;
+    double gz021102 = C26451* ( C26271*C26304 ) ;
+    double gz201102 = C26451* ( C25685*C25690 ) ;
+    double cnst1347 =  (  ( cnst13*gz201120 ) + ( cnst1171+ ( cnst13*gz201300 )  )  ) - ( cnst2*gz201102 ) ;
+    double cnst1350 =  (  (  ( cnst13*gz021300 ) +cnst1347 ) + ( cnst13*gz021120 )  ) - ( gz021102*cnst2 ) ;
+    gz[(Ai + 3) * matrix_size + Bi + 4] += cnst1350*cc;
+    double cnst1353 =  (  ( cnst6*gz201102 ) - (  ( cnst21*gz201120 ) + ( gz201300*cnst21 )  )  ) + ( gz021300*cnst21 ) ;
+    gz[(Ai + 5) * matrix_size + Bi + 4] += cc* (  (  ( cnst21*gz021120 ) +cnst1353 ) - ( cnst6*gz021102 )  ) ;
+    double cnst1357 =  ( cnst11* ( C26451* ( C26287*C25695 )  )  ) - (  ( cnst19*gz111300 ) + ( gz111120*cnst19 )  ) ;
+    gz[(Ai + 1) * matrix_size + Bi + 4] += cc*cnst1357;
+    double gz021012 = C26451* ( C25685*C26174 ) ;
+    double gz201012 = C26451* ( C25687*C26268 ) ;
+    double cnst1363 =  ( gz021030*cnst21 ) - (  (  ( gz201210*cnst21 ) + ( gz201012*cnst6 )  ) + ( cnst21*gz201030 )  ) ;
+    gz[(Ai + 5) * matrix_size + Bi + 2] += cc* (  ( cnst6*gz021012 ) + (  ( gz021210*cnst21 ) +cnst1363 )  ) ;
+    double cnst1367 =  ( gz201012*cnst2 ) + (  ( gz201210*cnst13 ) + (  ( cnst13*gz201030 ) -cnst1176 )  ) ;
+    double cnst1370 =  (  ( gz021210*cnst13 ) + ( cnst1367+ ( cnst13*gz021030 )  )  ) + ( gz021012*cnst2 ) ;
+    gz[(Ai + 3) * matrix_size + Bi + 2] += cc*cnst1370;
+    double gx021201 =  ( C26444*C26304 ) *C26221;
+    double cnst1373 = gx021201*cnst1;
+    double gy201111 =  ( C25755*C25690 ) *C26221;
+    double gx111021 =  ( C25720*C26315 ) *C26221;
+    double gy021201 =  ( C25834*C26303 ) *C26221;
+    double cnst1381 = gy021201*cnst1;
+    gx[(Ai + 1) * matrix_size + Bi + 1] +=  ( C26221* ( C25941*C26215 )  ) *cnst9;
+    double gx021111 =  ( C26174*C25805 ) *C26221;
+    double gy111201 =  ( C26314*C25808 ) *C26221;
+    double gy201021 =  ( C26442*C25687 ) *C26221;
+    double cnst1390 = gy201021*cnst1;
+    double cnst1392 =  (  (  (  ( cnst3*gy003201 ) - ( cnst3*gy003021 )  ) -cnst1338 ) +cnst1390 ) -cnst1381;
+    double gx201111 =  ( C25737*C26268 ) *C26221;
+    gx[(Ai + 5) * matrix_size + Bi + 1] += cc* (  ( cnst5*gx201111 ) - ( gx021111*cnst5 )  ) ;
+    double cnst1397 =  (  ( cnst51* (  ( C26268*C25805 ) *C26202 )  ) - ( cnst0*gx201111 )  ) - ( gx021111*cnst0 ) ;
+    gx[(Ai + 3) * matrix_size + Bi + 1] += cc*cnst1397;
+    double gy021021 =  ( C25685*C26446 ) *C26221;
+    double cnst1400 =  (  (  ( cnst7*gy201201 ) - ( gy201021*cnst7 )  ) - ( cnst7*gy021201 )  ) + ( gy021021*cnst7 ) ;
+    gy[(Ai + 5) * matrix_size + Bi + 5] += cc*cnst1400;
+    double cnst1401 = gy021021*cnst1;
+    gy[(Ai + 3) * matrix_size + Bi + 5] += cc* ( cnst1392+cnst1401 ) ;
+    double gx201021 = C26221* ( C25727*C26301 ) ;
+    double cnst1405 = gx201021*cnst1;
+    double gx111201 =  ( C25695*C26449 ) *C26221;
+    gx[(Ai + 1) * matrix_size + Bi + 5] +=  (  ( gx111201*cnst5 ) - ( gx111021*cnst5 )  ) *cc;
+    double gy021111 =  ( C26271*C25843 ) *C26221;
+    double cnst1410 =  (  ( cnst51* ( C26202* ( C25755*C26271 )  )  ) - ( gy201111*cnst0 )  ) - ( gy021111*cnst0 ) ;
+    gy[(Ai + 3) * matrix_size + Bi + 1] += cnst1410*cc;
+    gy[(Ai + 5) * matrix_size + Bi + 1] += cc* (  ( gy201111*cnst5 ) - ( gy021111*cnst5 )  ) ;
+    double gy111021 =  ( C25686*C26450 ) *C26221;
+    gy[(Ai + 1) * matrix_size + Bi + 5] += cc* (  ( gy111201*cnst5 ) - ( cnst5*gy111021 )  ) ;
+    double C26261 = C26221*2;
+    double C26312 =  (  ( C25763*C26199 ) /C25698 ) + (  ( C26261+C26306 ) /C25707 ) ;
+    double C25882 =  (  ( C25763*C26307 ) /C25698 ) + (  (  ( C26202*2 ) + ( 3*C26312 )  ) /C25707 ) ;
+    double C26499 =  (  (  (  ( C25913*2 ) + ( C26451*2 )  ) + (  ( ae*C26312 ) *2 )  ) /C25707 ) + (  ( C25763*C26448 ) /C25698 ) ;
+    double cnst1432 =  ( cnst4* (  ( C25685*C25686 ) *C26499 )  ) + (  (  ( cnst13*gz120201 ) +cnst1301 ) + ( cnst13*gz120021 )  ) ;
+    gz[(Ai + 4) * matrix_size + Bi + 3] += cc* (  ( cnst1432- ( cnst2*gz102201 )  ) - ( cnst2*gz102021 )  ) ;
+    double cnst1436 =  (  ( cnst13*gz210021 ) + ( cnst1311+ ( cnst13*gz210201 )  )  ) - (  ( C26499* ( C25685*C25695 )  ) *cnst4 ) ;
+    gz[(Ai + 2) * matrix_size + Bi + 3] += cc* (  ( gz012021*cnst2 ) + (  ( gz012201*cnst2 ) +cnst1436 )  ) ;
+    double C26316 =  (  ( C25763*C26221 ) /C25698 ) + (  ( C26270-C26260 ) /C25707 ) ;
+    double gy021012 =  ( C25685*C25843 ) *C26316;
+    double cnst1446 =  ( cnst11* (  ( C26287*C25808 ) *C26316 )  ) - (  ( cnst19*gy111120 ) + ( cnst19*gy111300 )  ) ;
+    gy[(Ai + 1) * matrix_size + Bi + 4] += cc*cnst1446;
+    double gx201012 =  ( C25727*C26268 ) *C26316;
+    double cnst1450 =  ( gz120030*cnst21 ) - (  (  ( cnst6*gx201012 ) + ( gx201210*cnst21 )  ) + ( cnst21*gx201030 )  ) ;
+    double cnst1453 =  ( cnst2*gx201012 ) + (  ( cnst13*gx201210 ) + (  ( cnst13*gx201030 ) -cnst901 )  ) ;
+    double gy021102 =  ( C25834*C26271 ) *C26316;
+    double gy201102 =  ( C25690*C25818 ) *C26316;
+    double cnst1459 =  (  ( gy201120*cnst13 ) + (  ( gz210300*cnst13 ) +cnst891 )  ) - ( gy201102*cnst2 ) ;
+    double cnst1462 =  (  ( cnst1459+ ( cnst13*gy021300 )  ) + ( cnst13*gy021120 )  ) - ( cnst2*gy021102 ) ;
+    gy[(Ai + 3) * matrix_size + Bi + 4] += cc*cnst1462;
+    double cnst1465 =  ( cnst21*gy021300 ) + (  ( cnst6*gy201102 ) - (  ( gy201120*cnst21 ) + ( gz210300*cnst21 )  )  ) ;
+    gy[(Ai + 5) * matrix_size + Bi + 4] += cc* (  ( cnst1465+ ( gy021120*cnst21 )  ) - ( cnst6*gy021102 )  ) ;
+    double cnst1469 =  ( cnst11* (  ( C25941*C25695 ) *C26316 )  ) - (  ( gx111300*cnst19 ) + ( cnst19*gx111120 )  ) ;
+    gx[(Ai + 1) * matrix_size + Bi + 4] += cc*cnst1469;
+    double cnst1472 =  (  ( gx111210*cnst19 ) + ( cnst11* (  ( C25720*C26215 ) *C26316 )  )  ) + ( gx111030*cnst19 ) ;
+    gx[(Ai + 1) * matrix_size + Bi + 2] += - ( cc*cnst1472 ) ;
+    double gx201102 =  ( C25685*C25737 ) *C26316;
+    double cnst1476 =  (  ( cnst6*gx201102 ) - (  ( gx201120*cnst21 ) + ( gx201300*cnst21 )  )  ) + ( gx021300*cnst21 ) ;
+    double cnst1479 =  (  ( cnst13*gx201120 ) + (  ( cnst13*gx201300 ) +cnst889 )  ) - ( cnst2*gx201102 ) ;
+    double gx021102 =  ( C26304*C25805 ) *C26316;
+    gx[(Ai + 5) * matrix_size + Bi + 4] += cc* (  ( cnst1476+ ( gx021120*cnst21 )  ) - ( cnst6*gx021102 )  ) ;
+    double cnst1485 =  (  ( cnst1479+ ( cnst13*gx021300 )  ) + ( gx021120*cnst13 )  ) - ( gx021102*cnst2 ) ;
+    gx[(Ai + 3) * matrix_size + Bi + 4] += cc*cnst1485;
+    double gx021012 =  ( C26174*C25710 ) *C26316;
+    gx[(Ai + 5) * matrix_size + Bi + 2] += cc* (  (  ( gx021210*cnst21 ) +cnst1450 ) + ( cnst6*gx021012 )  ) ;
+    double cnst1489 =  (  ( cnst13*gx021210 ) + (  ( gz120030*cnst13 ) +cnst1453 )  ) + ( gx021012*cnst2 ) ;
+    gx[(Ai + 3) * matrix_size + Bi + 2] += cc*cnst1489;
+    double C26493 =  (  (  ( C26443+C26351 ) + ( 2* ( ae*C26316 )  )  ) /C25707 ) + (  ( C25763*C26451 ) /C25698 ) ;
+    double gz201003 =  ( C25685*C25687 ) *C26493;
+    double cnst1491 =  (  (  ( cnst1183* ( C25685*C25685 )  ) - ( gz003201*1.5 )  ) - ( 1.5*gz003021 )  ) - ( 1.5*gz201003 ) ;
+    double cnst1499 =  (  ( cnst51* (  ( C25686*C25695 ) *C26493 )  ) - ( cnst0*gz111201 )  ) - ( cnst0*gz111021 ) ;
+    gz[(Ai + 1) * matrix_size + Bi + 3] += cc*cnst1499;
+    double gz021003 =  ( C25685*C26304 ) *C26493;
+    double cnst1502 = cnst1097+ (  (  (  ( cnst3*gz201003 ) -cnst1099 ) -cnst1104 ) - ( gz021003*cnst3 )  ) ;
+    gz[(Ai + 5) * matrix_size + Bi + 3] += cc* ( cnst1115+cnst1502 ) ;
+    double cnst1506 =  (  (  ( gz201021*2.25 ) + (  ( gz201201*2.25 ) +cnst1491 )  ) - ( gz021003*1.5 )  ) + ( gz021201*2.25 ) ;
+    gz[(Ai + 3) * matrix_size + Bi + 3] +=  (  ( 2.25*gz021021 ) +cnst1506 ) *cc;
+    double gy201012 =  ( C25755*C25687 ) *C26316;
+    double cnst1511 =  ( gy021030*cnst21 ) - (  ( gy201030*cnst21 ) + (  ( gy201210*cnst21 ) + ( cnst6*gy201012 )  )  ) ;
+    gy[(Ai + 5) * matrix_size + Bi + 2] += cc* (  ( cnst6*gy021012 ) + (  ( gy021210*cnst21 ) +cnst1511 )  ) ;
+    double cnst1515 =  (  ( cnst13*gy201210 ) + (  ( gy201030*cnst13 ) -cnst894 )  ) + ( cnst2*gy201012 ) ;
+    double cnst1518 =  ( cnst2*gy021012 ) + (  ( gy021210*cnst13 ) + (  ( gy021030*cnst13 ) +cnst1515 )  ) ;
+    gy[(Ai + 3) * matrix_size + Bi + 2] += cc*cnst1518;
+    double C25976 =  (  ( C25763*C26316 ) /C25698 ) + (  ( C26302+C26261 ) /C25707 ) ;
+    double cnst1523 =  (  ( cnst51* ( C25976* ( C25686*C25808 )  )  ) - ( gy111201*cnst0 )  ) - ( cnst0*gy111021 ) ;
+    gy[(Ai + 1) * matrix_size + Bi + 3] += cc*cnst1523;
+    double gx021003 = C25976* ( C26304*C25710 ) ;
+    double gy021003 = C25976* ( C25685*C25834 ) ;
+    double cnst1530 =  (  ( cnst51* ( C25976* ( C25720*C25695 )  )  ) - ( gx111201*cnst0 )  ) - ( gx111021*cnst0 ) ;
+    gx[(Ai + 1) * matrix_size + Bi + 3] += cc*cnst1530;
+    double gx201003 =  ( C25685*C25727 ) *C25976;
+    double cnst1532 =  (  (  (  ( C25685*C25710 ) *C25882 ) - ( 1.5*gx003201 )  ) - ( 1.5*gx003021 )  ) - ( 1.5*gx201003 ) ;
+    double gy201003 = C25976* ( C25687*C25818 ) ;
+    double cnst1538 = cnst1381+ (  (  (  ( cnst3*gy201003 ) -cnst1338 ) -cnst1390 ) - ( cnst3*gy021003 )  ) ;
+    gy[(Ai + 5) * matrix_size + Bi + 3] += cc* ( cnst1538+cnst1401 ) ;
+    double cnst1541 =  (  (  (  ( C25685*C25818 ) *C25882 ) - ( 1.5*gy003201 )  ) - ( 1.5*gy003021 )  ) - ( gy201003*1.5 ) ;
+    double cnst1545 =  (  (  ( cnst1541+ ( 2.25*gy201201 )  ) + ( 2.25*gy201021 )  ) - ( 1.5*gy021003 )  ) + ( 2.25*gy021201 ) ;
+    gy[(Ai + 3) * matrix_size + Bi + 3] += cc* ( cnst1545+ ( 2.25*gy021021 )  ) ;
+    double cnst1549 =  (  ( cnst11* (  ( C25686*C25952 ) *C26316 )  ) + ( gy111210*cnst19 )  ) + ( cnst19*gy111030 ) ;
+    gy[(Ai + 1) * matrix_size + Bi + 2] += - ( cc*cnst1549 ) ;
+    double C26049 =  (  (  ( C26199*2 ) + ( 2*C26316 )  ) /C25707 ) + (  ( C25763*C26312 ) /C25698 ) ;
+    double cnst1555 =  (  ( cnst13*gx120021 ) + (  ( cnst13*gx120201 ) +cnst685 )  ) + ( cnst4* ( C26049* ( C25685*C25720 )  )  ) ;
+    gx[(Ai + 4) * matrix_size + Bi + 3] += cc* (  ( cnst1555- ( gx102201*cnst2 )  ) - ( cnst2*gx102021 )  ) ;
+    double cnst1558 = cnst4* (  ( C25695*C25710 ) *C26049 ) ;
+    double cnst1560 =  ( gx012201*cnst2 ) + (  (  ( cnst13*gx210021 ) + ( cnst568+ ( cnst13*gx210201 )  )  ) -cnst1558 ) ;
+    gx[(Ai + 2) * matrix_size + Bi + 3] += cc* ( cnst1560+ ( cnst2*gx012021 )  ) ;
+    double cnst1563 =  (  (  ( gy120021*cnst13 ) + (  ( gy120201*cnst13 ) +cnst773 )  ) +cnst1558 ) - ( gy102201*cnst2 ) ;
+    gy[(Ai + 4) * matrix_size + Bi + 3] += cc* ( cnst1563- ( gy102021*cnst2 )  ) ;
+    double cnst1566 =  (  ( cnst13*gy210021 ) + (  ( cnst13*gy210201 ) +cnst229 )  ) - (  (  ( C25685*C25808 ) *C26049 ) *cnst4 ) ;
+    gy[(Ai + 2) * matrix_size + Bi + 3] +=  (  ( cnst1566+ ( gy012201*cnst2 )  ) + ( gy012021*cnst2 )  ) *cc;
+    double gx201201 =  ( C25685*C26441 ) *C26221;
+    double cnst1573 =  (  (  (  ( gx201201*2.25 ) +cnst1532 ) + ( 2.25*gx201021 )  ) - ( gx021003*1.5 )  ) + ( gx021201*2.25 ) ;
+    double cnst1574 = gx201201*cnst1;
+    double cnst1578 = cnst1373+ (  (  (  ( cnst3*gx201003 ) -cnst1574 ) -cnst1405 ) - ( gx021003*cnst3 )  ) ;
+    double cnst1581 =  ( cnst1405+ (  (  ( cnst3*gx003201 ) - ( cnst3*gx003021 )  ) -cnst1574 )  ) -cnst1373;
+    double gx021021 =  ( C26311*C25710 ) *C26221;
+    double cnst1586 =  (  (  ( gx201201*cnst7 ) - ( gx201021*cnst7 )  ) - ( gx021201*cnst7 )  ) + ( gx021021*cnst7 ) ;
+    gx[(Ai + 5) * matrix_size + Bi + 5] += cc*cnst1586;
+    double cnst1587 = gx021021*cnst1;
+    gx[(Ai + 3) * matrix_size + Bi + 5] += cc* ( cnst1587+cnst1581 ) ;
+    gx[(Ai + 5) * matrix_size + Bi + 3] += cc* ( cnst1587+cnst1578 ) ;
+    gx[(Ai + 3) * matrix_size + Bi + 3] += cc* (  ( gx021021*2.25 ) +cnst1573 ) ;
+    double cnst1593 = std::sqrt( ( 18./8.0 ) );
+    double cnst1596 =  (  (  ( gx300300*cnst50 ) + ( gx300120*cnst50 )  ) - ( cnst1593*gx300102 )  ) + ( gx120300*cnst50 ) ;
+    double cnst1613 =  (  ( cnst1593*gx030012 ) + (  ( gx030030*cnst50 ) + ( gx030210*cnst50 )  )  ) + ( cnst50*gx210030 ) ;
+    double cnst1617 =  (  (  ( gy030210*cnst50 ) + ( cnst50*gy030030 )  ) + ( gy030012*cnst1593 )  ) + ( cnst50*gy210030 ) ;
+    double cnst1621 =  ( gx120030*cnst50 ) + (  (  ( gx300030*cnst50 ) + ( gx300210*cnst50 )  ) + ( gx300012*cnst1593 )  ) ;
+    double cnst1630 =  (  (  ( gz030030*cnst50 ) + ( gz030210*cnst50 )  ) + ( cnst1593*gz030012 )  ) + ( cnst50*gz210030 ) ;
+    double cnst1639 =  ( gz120300*cnst50 ) + (  (  ( gz300300*cnst50 ) + ( gz300120*cnst50 )  ) - ( cnst1593*gz300102 )  ) ;
+    double cnst1645 =  (  ( cnst1593*gz300012 ) + (  ( gz300030*cnst50 ) + ( cnst50*gz300210 )  )  ) + ( gz120030*cnst50 ) ;
+    double cnst1648 =  (  ( cnst1645+ ( gz120210*cnst50 )  ) + ( gz120012*cnst1593 )  ) - ( gz102030*cnst1593 ) ;
+    double cnst1651 =  ( gx012030*cnst1593 ) + (  ( gx210012*cnst1593 ) + ( cnst1613+ ( cnst50*gx210210 )  )  ) ;
+    double cnst1653 =  ( cnst32* (  ( C25710*C26215 ) *C26312 )  ) + ( cnst1651+ ( cnst1593*gx012210 )  ) ;
+    gx[(Ai + 2) * matrix_size + Bi + 2] += cc*cnst1653;
+    double cnst1656 =  ( cnst50*gy120300 ) + (  (  ( cnst50*gy300300 ) + ( cnst50*gy300120 )  ) - ( gy300102*cnst1593 )  ) ;
+    double cnst1660 =  (  (  ( gz210210*cnst50 ) +cnst1630 ) + ( gz210012*cnst1593 )  ) + ( gz012030*cnst1593 ) ;
+    double cnst1662 =  ( cnst1660+ ( cnst1593*gz012210 )  ) + (  (  ( C25685*C26215 ) *C26448 ) *cnst32 ) ;
+    gz[(Ai + 2) * matrix_size + Bi + 2] += cc*cnst1662;
+    double cnst1664 =  (  ( cnst1593*gx120012 ) + ( cnst1621+ ( cnst50*gx120210 )  )  ) - ( cnst1593*gx102030 ) ;
+    double cnst1669 =  ( cnst1664- ( gx102210*cnst1593 )  ) - (  (  ( C25720*C26268 ) *C26312 ) *cnst32 ) ;
+    gx[(Ai + 4) * matrix_size + Bi + 2] += cc*cnst1669;
+    double cnst1671 =  (  (  ( cnst50*gy120120 ) +cnst1656 ) - ( cnst1593*gy120102 )  ) - ( cnst1593*gy102300 ) ;
+    double cnst1673 =  (  (  ( C26287*C25818 ) *C26312 ) *cnst32 ) + ( cnst1671- ( gy102120*cnst1593 )  ) ;
+    gy[(Ai + 4) * matrix_size + Bi + 4] += cc*cnst1673;
+    double cnst1676 =  (  (  ( cnst50*gz030120 ) + ( cnst50*gz030300 )  ) - ( gz030102*cnst1593 )  ) + ( gz210300*cnst50 ) ;
+    double cnst1679 =  (  ( cnst1596+ ( cnst50*gx120120 )  ) - ( cnst1593*gx120102 )  ) - ( cnst1593*gx102300 ) ;
+    double cnst1681 =  ( cnst32* (  ( C25685*C25941 ) *C26312 )  ) + ( cnst1679- ( cnst1593*gx102120 )  ) ;
+    gx[(Ai + 4) * matrix_size + Bi + 4] += cc*cnst1681;
+    double cnst1684 =  ( cnst1648- ( gz102210*cnst1593 )  ) - (  (  ( C25686*C26268 ) *C26448 ) *cnst32 ) ;
+    gz[(Ai + 4) * matrix_size + Bi + 2] += cc*cnst1684;
+    double cnst1688 =  (  (  ( cnst50*gy030120 ) + ( gy030300*cnst50 )  ) - ( gy030102*cnst1593 )  ) + ( gy210300*cnst50 ) ;
+    double cnst1691 =  ( cnst1593*gy012300 ) + (  ( cnst1688+ ( cnst50*gy210120 )  ) - ( gy210102*cnst1593 )  ) ;
+    double cnst1693 =  (  ( cnst1593*gy012120 ) +cnst1691 ) - (  (  ( C25808*C26271 ) *C26312 ) *cnst32 ) ;
+    gy[(Ai + 2) * matrix_size + Bi + 4] += cc*cnst1693;
+    double cnst1696 =  (  ( cnst1639+ ( cnst50*gz120120 )  ) - ( gz120102*cnst1593 )  ) - ( gz102300*cnst1593 ) ;
+    double cnst1698 =  ( cnst1696- ( gz102120*cnst1593 )  ) + (  ( C26448* ( C26287*C25685 )  ) *cnst32 ) ;
+    gz[(Ai + 4) * matrix_size + Bi + 4] += cc*cnst1698;
+    double cnst1701 =  (  (  ( gx030120*cnst50 ) + ( cnst50*gx030300 )  ) - ( gx030102*cnst1593 )  ) + ( cnst50*gx210300 ) ;
+    double cnst1705 =  ( gy012030*cnst1593 ) + (  ( cnst1593*gy210012 ) + (  ( gy210210*cnst50 ) +cnst1617 )  ) ;
+    double cnst1707 =  ( cnst1705+ ( gy012210*cnst1593 )  ) + (  (  ( C25685*C25952 ) *C26312 ) *cnst32 ) ;
+    gy[(Ai + 2) * matrix_size + Bi + 2] += cc*cnst1707;
+    double cnst1710 =  (  (  ( cnst50*gz210120 ) +cnst1676 ) - ( cnst1593*gz210102 )  ) + ( gz012300*cnst1593 ) ;
+    double cnst1713 =  ( cnst1710+ ( cnst1593*gz012120 )  ) - ( cnst32* ( C26448* ( C26271*C25695 )  )  ) ;
+    gz[(Ai + 2) * matrix_size + Bi + 4] += cc*cnst1713;
+    double cnst1715 =  ( gx012300*cnst1593 ) + (  (  ( gx210120*cnst50 ) +cnst1701 ) - ( cnst1593*gx210102 )  ) ;
+    double cnst1717 =  (  ( gx012120*cnst1593 ) +cnst1715 ) - (  (  ( C25695*C25805 ) *C26312 ) *cnst32 ) ;
+    gx[(Ai + 2) * matrix_size + Bi + 4] += cc*cnst1717;
+    double cnst1720 =  (  ( gy300012*cnst1593 ) + (  ( cnst50*gy300030 ) + ( cnst50*gy300210 )  )  ) + ( gy120030*cnst50 ) ;
+    double cnst1723 =  (  ( cnst1593*gy120012 ) + ( cnst1720+ ( gy120210*cnst50 )  )  ) - ( cnst1593*gy102030 ) ;
+    double cnst1725 =  ( cnst1723- ( cnst1593*gy102210 )  ) - (  (  ( C25686*C25755 ) *C26312 ) *cnst32 ) ;
+    gy[(Ai + 4) * matrix_size + Bi + 2] += cc*cnst1725;
+    double cnst1727 = std::sqrt( ( 11.25/8.0 ) );
+    double cnst1738 =  (  (  ( gx300003*cnst23 ) - ( cnst1727*gx300201 )  ) - ( gx300021*cnst1727 )  ) + ( gx120003*cnst27 ) ;
+    gx[(Ai + 6) * matrix_size + Bi + 3] += cc* (  ( cnst1738- ( cnst31*gx120201 )  ) - ( cnst31*gx120021 )  ) ;
+    double cnst1744 =  (  (  ( gy003210*cnst19 ) - ( gy003030*cnst23 )  ) + ( gy201030*cnst1727 )  ) - ( cnst31*gy201210 ) ;
+    gy[(Ai + 3) * matrix_size + Bi + 0] += cc* (  ( cnst1744+ ( gy021030*cnst1727 )  ) - ( gy021210*cnst31 )  ) ;
+    double cnst1749 =  (  (  ( gx003210*cnst19 ) - ( gx003030*cnst23 )  ) + ( cnst1727*gx201030 )  ) - ( gx201210*cnst31 ) ;
+    double cnst1754 =  (  (  ( gx030201*cnst1727 ) - ( gx030003*cnst23 )  ) + ( cnst1727*gx030021 )  ) + ( cnst19*gx210003 ) ;
+    gx[(Ai + 0) * matrix_size + Bi + 3] += cc* (  ( cnst1754- ( cnst31*gx210201 )  ) - ( cnst31*gx210021 )  ) ;
+    gx[(Ai + 3) * matrix_size + Bi + 0] += cc* (  ( cnst1749+ ( gz120030*cnst1727 )  ) - ( gx021210*cnst31 )  ) ;
+    double cnst1764 =  (  (  ( gz003120*cnst27 ) + ( gz003300*cnst23 )  ) - ( gz201300*cnst1727 )  ) - ( cnst31*gz201120 ) ;
+    gz[(Ai + 3) * matrix_size + Bi + 6] += cc* (  ( cnst1764- ( gz021300*cnst1727 )  ) - ( cnst31*gz021120 )  ) ;
+    double cnst1769 =  (  (  ( cnst1727*gy030201 ) - ( gy030003*cnst23 )  ) + ( gy030021*cnst1727 )  ) + ( gy210003*cnst19 ) ;
+    gy[(Ai + 0) * matrix_size + Bi + 3] += cc* (  ( cnst1769- ( cnst31*gy210201 )  ) - ( cnst31*gy210021 )  ) ;
+    double cnst1774 =  (  (  ( gz030201*cnst1727 ) - ( gz030003*cnst23 )  ) + ( gz030021*cnst1727 )  ) + ( gz210003*cnst19 ) ;
+    gz[(Ai + 0) * matrix_size + Bi + 3] += cc* (  ( cnst1774- ( cnst31*gz210201 )  ) - ( cnst31*gz210021 )  ) ;
+    double cnst1779 =  (  (  ( gx003300*cnst23 ) + ( gx003120*cnst27 )  ) - ( gx201300*cnst1727 )  ) - ( gx201120*cnst31 ) ;
+    double cnst1783 =  (  ( cnst1727*gz201030 ) + (  ( cnst19*gz003210 ) - ( gz003030*cnst23 )  )  ) - ( gz201210*cnst31 ) ;
+    gz[(Ai + 3) * matrix_size + Bi + 0] += cc* (  (  ( gz021030*cnst1727 ) +cnst1783 ) - ( gz021210*cnst31 )  ) ;
+    double cnst1789 =  ( cnst27*gz120003 ) + (  (  ( gz300003*cnst23 ) - ( cnst1727*gz300201 )  ) - ( gz300021*cnst1727 )  ) ;
+    gz[(Ai + 6) * matrix_size + Bi + 3] += cc* (  ( cnst1789- ( cnst31*gz120201 )  ) - ( cnst31*gz120021 )  ) ;
+    double cnst1794 =  (  (  ( cnst27*gy003120 ) + ( gy003300*cnst23 )  ) - ( gz210300*cnst1727 )  ) - ( gy201120*cnst31 ) ;
+    gy[(Ai + 3) * matrix_size + Bi + 6] += cc* (  ( cnst1794- ( cnst1727*gy021300 )  ) - ( cnst31*gy021120 )  ) ;
+    gx[(Ai + 3) * matrix_size + Bi + 6] += cc* (  ( cnst1779- ( gx021300*cnst1727 )  ) - ( gx021120*cnst31 )  ) ;
+    double cnst1803 =  ( gy120003*cnst27 ) + (  (  ( gy300003*cnst23 ) - ( gy300201*cnst1727 )  ) - ( gy300021*cnst1727 )  ) ;
+    gy[(Ai + 6) * matrix_size + Bi + 3] += cc* (  ( cnst1803- ( gy120201*cnst31 )  ) - ( gy120021*cnst31 )  ) ;
 }
